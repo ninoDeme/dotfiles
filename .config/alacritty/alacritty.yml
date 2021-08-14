@@ -1,5 +1,5 @@
 env:
-  TERM: alacritty
+  TERM: "xterm-256color"
 url:
     launcher: xdg-open
 
@@ -36,11 +36,11 @@ selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
 font:
         normal:
-                family: RobotoMono Nerd Font Mono
+                family: SauceCodePro Nerd Font 
         bold:
-                family: RobotoMono Nerd Font Mono
+                family: SauceCodePro Nerd Font 
                 style: Bold
         italic:
-                family: RobotoMono Nerd Font Mono
+                family: SauceCodePro Nerd Font 
                 style: Italic
-        size: 12.00
+        size: 8.50

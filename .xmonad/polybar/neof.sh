@@ -1,2 +1,2 @@
 neofetch
-zsh
+fish

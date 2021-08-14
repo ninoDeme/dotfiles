@@ -47,6 +47,9 @@ if status is-interactive
 	function mv
 	    command mv -i $argv
 	end
+	function mkexec
+	    command chmod u+x
+	end
    # Commands to run in interactive sessions can go here
 end
 function fish_user_key_bindings
@@ -59,3 +62,4 @@ set EDITOR "emacsclient -t -a ''"                 # $EDITOR use Emacs in termina
 set VISUAL "emacsclient -c -a emacs"              # $VISUAL use Emacs in GUI mode
 set -x MANPAGER "nvim -c 'set ft=man' -"
 fish_add_path $HOME/.emacs.d/bin
+fish_add_path $HOME/.cargo/bin
