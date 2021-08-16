@@ -1,0 +1,10 @@
+#+TITLE: Readme
+#+AUTHOR: ninodemeterko
+* Dependencies
+** Git bare repository setup
+Git, curl
+* Installation
+Cloning repository as a bare repository:
+#+begin_bash options
+$ curl http://bit.do/fRBXz | bash
+#+end_bash
