@@ -5,9 +5,17 @@
 Git, curl
 
 * Installation
+** Using install script
 
 Cloning repository as a bare repository:
 
 #+begin_src bash
 curl http://bit.do/fRBXz | bash
 #+end_src
+
+** Manual Installation
+
+Follow the guide at: https://www.atlassian.com/git/tutorials/dotfiles but use .dotfiles instead of .cfg
+
+* Credits
+https://www.atlassian.com/git/tutorials/dotfiles (Git bare repository)
