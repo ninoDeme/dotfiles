@@ -10,7 +10,7 @@ Git, curl
 Cloning repository as a bare repository:
 
 #+begin_src bash
-curl http://bit.do/fRBXz | bash
+curl -Lks http://bit.do/fRBXz | bash
 #+end_src
 
 ** Manual Installation
