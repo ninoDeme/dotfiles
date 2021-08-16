@@ -6,14 +6,14 @@ sudo apt-add-repository ppa:fish-shell/release-3
 curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo apt-get update
-git clone https://github.com/salman-abedin/devour.git && cd devour && sudo make install
-cd ..
 DEBIAN_FRONTEND=noninteractive apt-get install -y apt-fast
 echo debconf apt-fast/maxdownloads string 16 | debconf-set-selections
 echo debconf apt-fast/dlflag boolean false | debconf-set-selections
 echo debconf apt-fast/aptmanager string apt-get | debconf-set-selections
 sudo /usr/bin/apt-fast install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 fish vim neovim emacs python3-neovim vifm spotify-client rustc cargo libasound2-dev libssl-dev exa bat htop discord neofetch
 cd ~/scripts/
+git clone https://github.com/salman-abedin/devour.git && cd devour && sudo make install
+cd ..
 git clone https://github.com/alacritty/alacritty
 cd alacritty
 sudo cp target/release/alacritty /usr/local/bin # or anywhere else in $PATH
