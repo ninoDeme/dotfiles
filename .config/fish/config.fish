@@ -29,7 +29,7 @@ if status is-interactive
 	end
 
 	function em
-	    command emacsclient -c -a="" $argv
+	    command devour emacsclient -c -a="" $argv
 	end
 
 	function emt
@@ -56,10 +56,10 @@ function fish_user_key_bindings
   fish_vi_key_bindings
 end
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 set TERM "xterm-256color"
 set EDITOR "emacsclient -t -a ''"                 # $EDITOR use Emacs in terminal
-set VISUAL "emacsclient -c -a emacs"              # $VISUAL use Emacs in GUI mode
+set VISUAL "devour emacsclient -c -a emacs"              # $VISUAL use Emacs in GUI mode
 set -x MANPAGER "nvim -c 'set ft=man' -"
 fish_add_path $HOME/.emacs.d/bin
 fish_add_path $HOME/.cargo/bin
