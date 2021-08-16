@@ -1,10 +1,13 @@
-#+TITLE: Readme
+#+TITLE: Ninodemeterko Dotfiles
 #+AUTHOR: ninodemeterko
 * Dependencies
 ** Git bare repository setup
 Git, curl
+
 * Installation
+
 Cloning repository as a bare repository:
-#+begin_bash options
-$ curl http://bit.do/fRBXz | bash
-#+end_bash
+
+#+begin_src bash
+curl http://bit.do/fRBXz | bash
+#+end_src
