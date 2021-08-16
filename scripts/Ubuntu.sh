@@ -7,7 +7,7 @@ curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key 
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo apt-get update
 sudo apt-get install -y apt-fast
-sudo /usr/bin/apt-fast install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 fish vim neovim emacs python3-neovim vifm spotify-client rustc cargo libasound2-dev libssl-dev exa bat htop wget neofetch firefox
+sudo /usr/bin/apt-fast install cmake libx11-dev pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 fish vim neovim emacs python3-neovim vifm spotify-client rustc cargo libasound2-dev libssl-dev exa bat htop wget neofetch firefox
 cd ~/Downloads/
 wget https://dl.discordapp.net/apps/linux/0.0.12/discord-0.0.12.deb
 sudo apt install ./discord-0.0.12.deb
