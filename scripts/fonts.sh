@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 mkdir fonts
 curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/SourceCodePro.zip >> fonts/SourceCodePro.zip
 curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DejaVuSansMono.zip >> fonts/DejaVuSansMono.zip
