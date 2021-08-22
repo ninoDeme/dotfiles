@@ -1,9 +1,9 @@
 env:
   TERM: "xterm-256color"
 url:
+    modifiers: Control
     launcher: xdg-open
 
-    modifiers: Control
 colors:
   primary:
     background: '0x272a34'
@@ -30,7 +30,7 @@ colors:
     cyan:    '0x49AEE6'
     white:   '0xFFFFFF'
 
-draw_bold_text_with_bright_colors: true
+background_opacity: 0.8
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"

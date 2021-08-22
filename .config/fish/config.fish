@@ -4,53 +4,19 @@ function fish_greeting
 end
 
 if status is-interactive
-	function ls
-	    command exa -al --group-directories-first $argv
-	end
-
-	function la
-	    command exa -a --group-directories-first $argv
-	end
-
-	function l
-	    command exa -l --group-directories-first $argv
-	end
-
-	function le
-	    command exa --group-directories-first $argv
-	end
-
-	function lt
-	    command exa -aT --group-directories-first $argv
-	end
-
-	function l.
-	    command exa -a $argv | egrep "^\."
-	end
-
-	function em
-	    command devour emacsclient -c -a="" $argv
-	end
-
-	function emt
-	    command emacsclient -nw -a="" $argv
-	end
-
-	function cp
-	    command cp -i $argv
-	end
-
-	function rm
-	    command rm -i $argv
-	end
-
-	function mv
-	    command mv -i $argv
-	end
+	alias ls='exa -al --group-directories-first'
+	alias la='exa -a --group-directories-first'
+	alias l='exa -l --group-directories-first'
+	alias le='exa --group-directories-first'
+	alias lt='exa -aT --group-directories-first'
+	alias em='devour emacsclient -c -a=\"\"'
+	alias emt='emacsclient -nw -a=\"\"'
+	alias cp='cp -i'
+	alias rm='rm -i'
+	alias mv='mv -i'
 	function mkexec
 	    command chmod u+x
 	end
-   # Commands to run in interactive sessions can go here
 end
 function fish_user_key_bindings
   fish_vi_key_bindings
