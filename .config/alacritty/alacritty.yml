@@ -30,7 +30,7 @@ colors:
     cyan:    '0x49AEE6'
     white:   '0xFFFFFF'
 
-background_opacity: 0.8
+background_opacity: 0.9
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
