@@ -1,0 +1,5 @@
+[user]
+	email = ninodemeterko@hotmail.com
+	name = ninodemeterko
+[credential]
+	helper = libsecret
