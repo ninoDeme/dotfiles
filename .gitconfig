@@ -3,3 +3,7 @@
 	name = ninodemeterko
 [credential]
 	helper = libsecret
+[merge]
+	tool = emacsclient -nw -a=\"\"
+[diff]
+	tool = emacsclient -nw -a=\"\"
