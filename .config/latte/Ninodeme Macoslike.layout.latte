@@ -46,7 +46,7 @@ PreloadWeight=0
 
 [Containments][1][Applets][2][Configuration][General]
 isInLatteDock=true
-launchers59=applications:firefox.desktop,applications:discord-canary.desktop,applications:spotify.desktop,applications:Alacritty.desktop,applications:kitty.desktop,applications:emacs.desktop,applications:org.kde.dolphin.desktop,applications:systemsettings.desktop,applications:gimp.desktop,applications:steam-native.desktop,applications:Fightcade.desktop
+launchers59=applications:firefox.desktop,applications:discord-canary.desktop,applications:spotify.desktop,applications:kitty.desktop,applications:emacs.desktop,applications:org.kde.dolphin.desktop,applications:systemsettings.desktop,applications:gimp.desktop,applications:steam-native.desktop,applications:Fightcade.desktop
 
 [Containments][1][ConfigDialog]
 DialogHeight=600
@@ -62,8 +62,11 @@ appletOrder=2;138
 backgroundAllCorners=true
 backgroundRadius=23
 blurEnabled=false
+closeActiveWindowEnabled=true
 configurationSticker=true
+dragActiveWindowEnabled=true
 durationTime=x1
+panelOutline=true
 panelShadows=false
 panelSize=100
 panelTransparency=93
@@ -101,13 +104,6 @@ immutability=1
 plugin=org.kde.plasma.keyboardlayout
 
 [Containments][17][Applets][129][Configuration]
-PreloadWeight=0
-
-[Containments][17][Applets][141]
-immutability=1
-plugin=org.kde.plasma.mediacontroller
-
-[Containments][17][Applets][141][Configuration]
 PreloadWeight=0
 
 [Containments][17][Applets][88]
@@ -223,7 +219,7 @@ raiseOnDesktopChange=false
 settingsComplexity=4
 timerHide=700
 timerShow=200
-viewType=1
+viewType=0
 visibility=0
 wallpaperplugin=org.kde.image
 
@@ -232,7 +228,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][19][Applets][114][Configuration]
-PreloadWeight=38
+PreloadWeight=0
 SystrayContainmentId=17
 
 [Containments][19][Applets][131]
@@ -352,6 +348,8 @@ appletOrder=133;132;131;114;140;135
 appletShadowsEnabled=false
 autoDecreaseIconSize=false
 autoSizeEnabled=false
+backgroundShadowSize=12
+disablePanelShadowForMaximized=true
 dragActiveWindowEnabled=true
 durationTime=x1
 floatingInternalGapIsForced=false
@@ -362,7 +360,7 @@ mouseWheelActions=false
 panelPosition=10
 panelShadows=false
 panelSize=100
-panelTransparency=90
+panelTransparency=85
 plasmaBackgroundForPopups=true
 shadowOpacity=25
 shadows=None
