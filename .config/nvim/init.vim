@@ -11,7 +11,6 @@ endif
 " Plugins
 call plug#begin(stdpath('data') . '/plugged')
 
-Plug 'tpope/vim-fugitive'
 Plug 'vifm/vifm.vim'
 Plug 'dag/vim-fish'
 Plug 'kyazdani42/nvim-tree.lua'
@@ -43,7 +42,7 @@ Plug 'johann2357/nvim-smartbufs'
 Plug 'hoob3rt/lualine.nvim'
 Plug 'glepnir/dashboard-nvim'
 Plug 'nvim-treesitter/completion-treesitter'
-Plug 'TimUntersberger/neogit'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'b3nj5m1n/kommentary'
 Plug 'tpope/vim-surround'
 Plug 'editorconfig/editorconfig-vim'
@@ -97,10 +96,13 @@ vim.g.completion_chain_complete_list = {
     { mode = 'omni'},
   },
 }
+require('gitsigns').setup{
+	signcolumn = true,
+	numhl = true,
+	current_line_blame = true,
+}
 vim.cmd[[autocmd FileType org setlocal iskeyword+=:,#,+]]
 require'colorizer'.setup()
-local neogit = require('neogit')
-neogit.setup {}
 require("bufferline").setup{}
 require('kommentary.config').use_extended_mappings()
 require'qf_helper'.setup()
