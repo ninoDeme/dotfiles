@@ -53,6 +53,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'liuchengxu/vim-which-key'
 Plug 'AckslD/nvim-whichkey-setup.lua'
 Plug 'kristijanhusak/orgmode.nvim'
+Plug 'famiu/feline.nvim'
 
 " Color schemes
 Plug 'norcalli/nvim-colorizer.lua'
@@ -65,7 +66,9 @@ call plug#end()
 
 filetype plugin indent on
 colorscheme nebulous
+
 lua <<EOF
+
 local function setup_servers()
   require'lspinstall'.setup()
   local servers = require'lspinstall'.installed_servers()
@@ -74,7 +77,7 @@ local function setup_servers()
   end
 end
 setup_servers()
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
+ -- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
 require'lspinstall'.post_install_hook = function ()
   setup_servers() -- reload installed servers
   vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
@@ -82,14 +85,17 @@ end
 
 require('lualine').setup{
 	options = {
-		theme = 'codedark',
-		section_separators = '',
+ 		theme = 'codedark',
+ 		section_separators = '',
 		component_separators = '|'
 	}
 }
+-- require('feline').setup({
+--     preset = 'noicon'
+-- })
 require('orgmode').setup({
-  org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
-  org_default_notes_file = '~/Dropbox/org/refile.org',
+  org_agenda_files = {'~/Documents/org/*', '~/my-orgs/**/*'},
+  org_default_notes_file = '~/Documents/org/refile.org',
 })
 vim.g.completion_chain_complete_list = {
   org = {
@@ -121,12 +127,11 @@ require("whichkey_setup").config{
 }
 require("dapui").setup()
 require'nvim-web-devicons'.setup()
+
 EOF
-	" end lua
+
 autocmd BufEnter * lua require'completion'.on_attach()
 let mapleader = "\<Space>"
-noremap <leader>p "*p
-nnoremap <leader>sv :source $MYVIMRC<CR>
 let g:airline_powerline_fonts = 1
 set showcmd
 let g:dashboard_default_executive ='telescope'
@@ -135,6 +140,7 @@ set hlsearch
 set ignorecase
 set smartcase
 set termguicolors
+set hidden
 
 set ruler
 set laststatus=2
@@ -143,7 +149,7 @@ set visualbell
 if has('mouse')
 	set mouse=a
 endif
-set guifont=RobotoMono\ Nerd\ Font:h10
+set guifont=RobotoMono\ Nerd\ Font:h9
 set cmdheight=2
 set number                     " Show current line number
 set relativenumber             " Show relative line numbers
@@ -155,14 +161,41 @@ set completeopt=menuone,noinsert,noselect
 " Avoid showing message extra message when using completion
 set shortmess+=c
 noremap <leader><leader> :NvimTreeToggle<CR>
+" paste from system clipboard
+noremap <leader>p "*p
+nnoremap <leader>sv :source $MYVIMRC<CR>
+" DAP mode bindings
 noremap <leader>dd :lua require("dapui").toggle("sidebar")<CR>
+noremap <F5> :lua require'dap'.continue()<CR>
 noremap <leader>db :lua require'dap'.toggle_breakpoint()<CR>
+" Go to next buffer (alt-tab equivalent)
 noremap <leader><Tab> :BufferLineCycleNext<CR>
+" close current buffer
+nnoremap <silent><Leader>qq :lua require("nvim-smartbufs").close_current_buffer()<CR>
+" open numbered terminals
 nnoremap <Leader>t1 :lua require("nvim-smartbufs").goto_terminal(1)<CR>
 nnoremap <Leader>t2 :lua require("nvim-smartbufs").goto_terminal(2)<CR>
 nnoremap <Leader>t3 :lua require("nvim-smartbufs").goto_terminal(3)<CR>
 nnoremap <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
+" exit terminal mode
 tnoremap <Esc> <C-\><C-n>
-nnoremap <Leader>qq :lua require("nvim-smartbufs").close_current_buffer()<CR>
-noremap <F5> :lua require'dap'.continue()<CR>
+" use ALT+movement keys to navigate windows in all modes
+tnoremap <silent><A-h> <C-\><C-N><C-w>h
+tnoremap <silent><C-A-h> <C-\><C-N>:BufferLineCyclePrev<CR>
+tnoremap <silent><A-j> <C-\><C-N><C-w>j
+tnoremap <silent><A-k> <C-\><C-N><C-w>k
+tnoremap <silent><A-l> <C-\><C-N><C-W>l
+tnoremap <silent><C-A-l> <C-\><C-N>:BufferLineCycleNext<CR>
+inoremap <silent><A-h> <C-\><C-N><C-w>h
+inoremap <silent><C-A-h> <C-\><C-N>:BufferLineCyclePrev<CR>
+inoremap <silent><A-j> <C-\><C-N><C-w>j
+inoremap <silent><A-k> <C-\><C-N><C-w>k
+inoremap <silent><A-l> <C-\><C-N><C-w>l
+inoremap <silent><C-A-l> <C-\><C-N>:BufferLineCycleNext<CR>
+nnoremap <silent><A-h> <C-w>h
+nnoremap <silent><C-A-h> :BufferLineCyclePrev<CR>
+nnoremap <silent><A-j> <C-w>j
+nnoremap <silent><A-k> <C-w>k
+nnoremap <silent><A-l> <C-w>l
+nnoremap <silent><C-A-l> :BufferLineCycleNext<CR>
 

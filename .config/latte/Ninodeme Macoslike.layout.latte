@@ -28,7 +28,7 @@ immutability=1
 plugin=com.github.zren.presentwindows
 
 [Containments][1][Applets][138][Configuration]
-PreloadWeight=0
+PreloadWeight=60
 
 [Containments][1][Applets][138][Configuration][ConfigDialog]
 DialogHeight=558
@@ -46,7 +46,7 @@ PreloadWeight=0
 
 [Containments][1][Applets][2][Configuration][General]
 isInLatteDock=true
-launchers59=applications:firefox.desktop,applications:discord-canary.desktop,applications:spotify.desktop,applications:kitty.desktop,applications:emacs.desktop,applications:org.kde.dolphin.desktop,applications:systemsettings.desktop,applications:gimp.desktop,applications:steam-native.desktop,applications:Fightcade.desktop
+launchers59=applications:firefox.desktop,applications:discord.desktop,applications:spotify.desktop,applications:kitty.desktop,applications:emacs.desktop,applications:org.kde.dolphin.desktop,applications:systemsettings.desktop,applications:gimp.desktop,applications:steam-native.desktop,applications:Fightcade.desktop
 
 [Containments][1][ConfigDialog]
 DialogHeight=600
@@ -111,7 +111,7 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][17][Applets][141][Configuration]
-PreloadWeight=34
+PreloadWeight=10
 
 [Containments][17][Applets][88]
 immutability=1
@@ -274,7 +274,7 @@ immutability=1
 plugin=org.kde.plasma.kickoff
 
 [Containments][19][Applets][133][Configuration]
-PreloadWeight=92
+PreloadWeight=100
 
 [Containments][19][Applets][133][Configuration][ConfigDialog]
 DialogHeight=558
@@ -340,6 +340,18 @@ showSeparator=false
 DialogHeight=558
 DialogWidth=720
 
+[Containments][19][Applets][143]
+immutability=1
+plugin=org.kde.latte.separator
+
+[Containments][19][Applets][143][Configuration][ConfigDialog]
+DialogHeight=558
+DialogWidth=720
+
+[Containments][19][Applets][143][Configuration][General]
+lengthMargin=1
+thickMargin=30
+
 [Containments][19][ConfigDialog]
 DialogHeight=1254
 DialogWidth=529
@@ -351,13 +363,11 @@ PreloadWeight=0
 advanced=true
 alignment=10
 alignmentUpgraded=true
-appletOrder=133;132;131;114;140;135
-appletShadowsEnabled=false
+appletOrder=133;132;131;114;140;135;143
 autoDecreaseIconSize=false
 autoSizeEnabled=false
 backgroundShadowSize=12
 disablePanelShadowForMaximized=true
-dragActiveWindowEnabled=true
 durationTime=x1
 floatingInternalGapIsForced=false
 iconSize=30
