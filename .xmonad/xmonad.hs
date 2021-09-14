@@ -23,7 +23,7 @@ import qualified Data.Map        as M
 -- Terminal padrão
 --
 myTerminal      :: [Char]
-myTerminal      = "alacritty"
+myTerminal      = "kitty"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -82,7 +82,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-C-<Return>", addName "Launch quake Terminal alacritty" $ namedScratchpadAction scratchpads "quakeTerm")
 
     -- launch rofi "run menu"
-    , ("M-r", addName "Launch Run Menu (rofi)" $ spawn "rofi -config ~/.xmonad/rofi/rofi.rasi -combi-modi window,drun -show combi -modi combi")
+    , ("M-x", addName "Launch Run Menu (rofi)" $ spawn "sh ~/.config/rofi/launchers/misc/launcher.sh")
 
     -- launch file managers
     , ("M-e", addName "Launch vifm file manager" $ runInTerm "" "vifm")
@@ -226,7 +226,7 @@ myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 --
 --
 scratchpads = [
-           NS "quakeTerm" (myTerminal ++ " -t=quakeAlacritty -e tmux") (title =? "quakeAlacritty") (customFloating $ W.RationalRect 0 0 1 (2/3))
+           NS "quakeTerm" (myTerminal ++ " -T=quakeTerminal") (title =? "quakeTerminal") (customFloating $ W.RationalRect 0 0 1 (2/3))
               ]
 ------------------------------------------------------------------------
 -- Layouts:
@@ -304,7 +304,7 @@ myManageHook = composeAll
 myStartupHook :: X()
 myStartupHook = do
   spawnOnce "nitrogen --restore"
-  spawnOnce "xinput --set-prop 'Logitech G502 HERO Gaming Mouse' 'libinput Accel Speed' -1"
+  -- spawnOnce "xinput --set-prop 'Logitech G502 HERO Gaming Mouse' 'libinput Accel Speed' -1"
   spawnOnce "picom --experimental-backends"
   spawn "killall polybar; polybar --config=~/.xmonad/polybar/polybar.ini example"
   ewmhDesktopsStartup
