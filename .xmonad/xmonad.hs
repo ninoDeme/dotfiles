@@ -82,11 +82,11 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-C-<Return>", addName "Launch quake Terminal alacritty" $ namedScratchpadAction scratchpads "quakeTerm")
 
     -- launch rofi "run menu"
-    , ("M-x", addName "Launch Run Menu (rofi)" $ spawn "sh ~/.config/rofi/launchers/misc/launcher.sh")
+    , ("M-x", addName "Launch Run Menu (rofi)" $ spawn "rofi -modi drun,run,window,combi -combi-modi window,drun -show combi -window-thumbnail true -show-icons true")
 
     -- launch file managers
     , ("M-e", addName "Launch vifm file manager" $ runInTerm "" "vifm")
-    , ("M-S-e", addName "Launch caja file manager" $ spawn "caja")
+    , ("M-S-e", addName "Launch visual file manager" $ spawn "dolphin")
 
     -- launch firefox
     , ("M-b", addName "Launch Firefox" $ spawn "firefox")
