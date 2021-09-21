@@ -132,7 +132,6 @@ EOF
 
 autocmd BufEnter * lua require'completion'.on_attach()
 let mapleader = "\<Space>"
-let g:airline_powerline_fonts = 1
 set showcmd
 let g:dashboard_default_executive ='telescope'
 set wildmenu

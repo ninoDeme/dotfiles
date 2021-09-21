@@ -1,9 +1,6 @@
-function fish_greeting
-		 command echo ""
-		 command neofetch
-end
-
 if status is-interactive
+	function fish_greeting
+	end
 	alias ls='exa -al --group-directories-first'
 	alias la='exa -a --group-directories-first'
 	alias l='exa -l --group-directories-first'
