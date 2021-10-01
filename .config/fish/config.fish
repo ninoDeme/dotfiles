@@ -28,4 +28,5 @@ alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 set EDITOR "nvim"
 set -x MANPAGER "nvim -c 'set ft=man' -"
 fish_add_path $HOME/.emacs.d/bin
+fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
