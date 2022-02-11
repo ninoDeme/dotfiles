@@ -4,6 +4,7 @@
 import Data.Monoid
 import System.Exit
 import XMonad
+import XMonad.Util.Cursor
 import XMonad.Actions.CopyWindow
 import XMonad.Actions.GroupNavigation
 import XMonad.Config.Desktop
@@ -76,7 +77,7 @@ customKeys :: XConfig l -> [((KeyMask, KeySym), NamedAction)]
 customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
 
     -- launch a terminal
-    [ ("M-<Return>", addName "Launch Terminal alacritty" $ spawn myTerminal)
+    [ ("M-<Return>", addName "Launch Terminal" $ spawn myTerminal)
 
     -- launch a terminal
     , ("M-C-<Return>", addName "Launch quake Terminal alacritty" $ namedScratchpadAction scratchpads "quakeTerm")
@@ -92,7 +93,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-b", addName "Launch Firefox" $ spawn "firefox")
 
     -- launch discord
-    , ("M-d", addName "Launch Discord" $ spawn "discord")
+    , ("M-d", addName "Launch Discord" $ spawn "discord;flatpak run com.discordapp.Discord")
 
     -- kill polybar
     , ("M-f", addName "Hide Polybar" $ spawn "killall polybar")
@@ -272,7 +273,8 @@ myManageHook :: Query (Endo WindowSet)
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
-    , className =? "Wine"          --> doFloat
+    , className =? "Wine"           --> doFloat
+    , title =? "Whisker Menu"   --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore ]
 
@@ -303,15 +305,16 @@ myManageHook = composeAll
 -- By default, do nothing.
 myStartupHook :: X()
 myStartupHook = do
+  setDefaultCursor xC_left_ptr
   spawnOnce "nitrogen --restore"
   -- spawnOnce "xinput --set-prop 'Logitech G502 HERO Gaming Mouse' 'libinput Accel Speed' -1"
   spawnOnce "picom --experimental-backends"
   spawn "killall polybar; polybar --config=~/.xmonad/polybar/polybar.ini example"
   ewmhDesktopsStartup
   spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)"
-  spawnOnce "emacs --daemon"
   spawnOnce "numlockx on"
   spawnOnce "discord --start-minimized"
+  spawnOnce "flatpak run com.discordapp.Discord --start-minimized"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
