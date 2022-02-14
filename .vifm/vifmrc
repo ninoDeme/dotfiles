@@ -128,13 +128,14 @@ mark h ~/
 " %D the other window directory name.
 " %m run the command in a menu window
 
+command! open xdg-open %c
 command! df df -h %m 2> /dev/null
-command! diff vim -d %f %F
+command! diff nvim -d %f %F
 command! zip zip -r %f.zip %f
 command! run !! ./%f
 command! make !!make %a
 command! mkcd :mkdir %a | cd %a
-command! vgrep vim "+grep %a"
+command! vgrep nvim "+grep %a"
 command! reload :write | restart full
 
 " ------------------------------------------------------------------------------
@@ -463,7 +464,8 @@ endif
 nnoremap I cw<c-a>
 nnoremap cc cw<c-u>
 nnoremap A cw
-
+" Open file in default application
+nnoremap E :!xdg-open %f &<cr>
 " Open console in current directory
 nnoremap ,t :!alacritty &<cr>
 

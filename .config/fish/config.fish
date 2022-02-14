@@ -25,6 +25,7 @@ alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/mas
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 # set EDITOR "emacsclient -t -a ''"                 # $EDITOR use Emacs in terminal
 # set VISUAL "devour emacsclient -c -a emacs"              # $VISUAL use Emacs in GUI mode
+set -x QT_QPA_PLATFORMTHEME "kvantum"
 set EDITOR "nvim"
 set -x MANPAGER "nvim -c 'set ft=man' -"
 fish_add_path $HOME/.emacs.d/bin

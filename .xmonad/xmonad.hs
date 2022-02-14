@@ -80,14 +80,15 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     [ ("M-<Return>", addName "Launch Terminal" $ spawn myTerminal)
 
     -- launch a terminal
-    , ("M-C-<Return>", addName "Launch quake Terminal alacritty" $ namedScratchpadAction scratchpads "quakeTerm")
+    , ("M-C-<Return>", addName "Launch quake Terminal" $ namedScratchpadAction scratchpads "quakeTerm")
 
     -- launch rofi "run menu"
     , ("M-x", addName "Launch Run Menu (rofi)" $ spawn "rofi -modi drun,run,window,combi -combi-modi window,drun -show combi -window-thumbnail true -show-icons true")
+    , ("M-S-x", addName "Launch dmenu" $ spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
 
     -- launch file managers
     , ("M-e", addName "Launch vifm file manager" $ runInTerm "" "vifm")
-    , ("M-S-e", addName "Launch visual file manager" $ spawn "dolphin")
+    , ("M-S-e", addName "Launch visual file manager" $ spawn "xdg-open $HOME")
 
     -- launch firefox
     , ("M-b", addName "Launch Firefox" $ spawn "firefox")
@@ -227,7 +228,7 @@ myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 --
 --
 scratchpads = [
-           NS "quakeTerm" (myTerminal ++ " -T=quakeTerminal") (title =? "quakeTerminal") (customFloating $ W.RationalRect 0 0 1 (2/3))
+           NS "quakeTerm" (myTerminal ++ " -T=quakeTerminal") (title =? "quakeTerminal") (customFloating $ W.RationalRect 0 0 1 (1/2))
               ]
 ------------------------------------------------------------------------
 -- Layouts:
@@ -274,6 +275,7 @@ myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , className =? "Wine"           --> doFloat
+    , className =? "leagueclientux.exe" --> doFloat
     , title =? "Whisker Menu"   --> doIgnore
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore ]
