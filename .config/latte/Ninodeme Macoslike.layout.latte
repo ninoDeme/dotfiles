@@ -46,7 +46,7 @@ PreloadWeight=0
 
 [Containments][1][Applets][2][Configuration][General]
 isInLatteDock=true
-launchers59=applications:firefox.desktop,applications:discord.desktop,applications:spotify.desktop,applications:kitty.desktop,applications:emacs.desktop,applications:org.kde.dolphin.desktop,applications:systemsettings.desktop,applications:gimp.desktop,applications:steam-native.desktop,applications:Fightcade.desktop
+launchers59=applications:firefox.desktop,applications:kitty.desktop,applications:org.kde.dolphin.desktop,applications:systemsettings.desktop,applications:steam.desktop,applications:com.discordapp.Discord.desktop
 
 [Containments][1][ConfigDialog]
 DialogHeight=600
@@ -58,7 +58,7 @@ PreloadWeight=0
 [Containments][1][General]
 advanced=false
 alignmentUpgraded=true
-appletOrder=2;138
+appletOrder=2
 backgroundAllCorners=true
 backgroundRadius=23
 blurEnabled=false
@@ -66,6 +66,7 @@ closeActiveWindowEnabled=true
 configurationSticker=true
 dragActiveWindowEnabled=true
 durationTime=x1
+iconSize=52
 panelOutline=true
 panelShadows=false
 panelSize=100
@@ -110,12 +111,29 @@ PreloadWeight=0
 immutability=1
 plugin=org.kde.plasma.printmanager
 
+[Containments][17][Applets][139][Configuration]
+PreloadWeight=10
+
+[Containments][17][Applets][140]
+immutability=1
+plugin=org.kde.plasma.vault
+
+[Containments][17][Applets][140][Configuration]
+PreloadWeight=10
+
+[Containments][17][Applets][141]
+immutability=1
+plugin=org.kde.plasma.manage-inputmethod
+
+[Containments][17][Applets][141][Configuration]
+PreloadWeight=10
+
 [Containments][17][Applets][144]
 immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][17][Applets][144][Configuration]
-PreloadWeight=26
+PreloadWeight=10
 
 [Containments][17][Applets][88]
 immutability=1
@@ -146,6 +164,7 @@ DialogHeight=558
 DialogWidth=720
 
 [Containments][17][Applets][91][Configuration][General]
+currentTab=streams
 raiseMaximumVolume=true
 
 [Containments][17][Applets][92]
@@ -176,13 +195,6 @@ plugin=org.kde.plasma.clipboard
 [Containments][17][Applets][95][Configuration]
 PreloadWeight=0
 
-[Containments][17][Applets][96]
-immutability=1
-plugin=org.kde.plasma.bluetooth
-
-[Containments][17][Applets][96][Configuration]
-PreloadWeight=0
-
 [Containments][17][Applets][97]
 immutability=1
 plugin=org.kde.plasma.devicenotifier
@@ -205,9 +217,9 @@ DialogWidth=963
 PreloadWeight=26
 
 [Containments][17][General]
-extraItems=org.kde.plasma.battery,org.kde.plasma.networkmanagement,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.plasma.nightcolorcontrol,org.kde.plasma.printmanager
-hiddenItems=MSM Notifier for Plasma5,matray,Package Manager,qBittorrent
-knownItems=org.kde.plasma.battery,org.kde.plasma.networkmanagement,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.plasma.nightcolorcontrol,org.kde.plasma.printmanager
+extraItems=org.kde.plasma.battery,org.kde.plasma.networkmanagement,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.plasma.nightcolorcontrol,org.kde.plasma.printmanager,org.kde.plasma.vault,org.kde.plasma.manage-inputmethod
+hiddenItems=MSM Notifier for Plasma5,matray,Package Manager,qBittorrent,Latte Dock_microphone
+knownItems=org.kde.plasma.battery,org.kde.plasma.networkmanagement,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.plasma.nightcolorcontrol,org.kde.plasma.printmanager,org.kde.plasma.vault,org.kde.plasma.manage-inputmethod
 scaleIconsToFit=true
 
 [Containments][19]
@@ -230,7 +242,7 @@ raiseOnDesktopChange=false
 settingsComplexity=4
 timerHide=700
 timerShow=200
-viewType=0
+viewType=1
 visibility=0
 wallpaperplugin=org.kde.image
 
@@ -239,7 +251,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][19][Applets][114][Configuration]
-PreloadWeight=0
+PreloadWeight=9
 SystrayContainmentId=17
 
 [Containments][19][Applets][131]
@@ -278,7 +290,7 @@ immutability=1
 plugin=org.kde.plasma.kickoff
 
 [Containments][19][Applets][133][Configuration]
-PreloadWeight=100
+PreloadWeight=84
 
 [Containments][19][Applets][133][Configuration][ConfigDialog]
 DialogHeight=558
@@ -286,6 +298,7 @@ DialogWidth=720
 
 [Containments][19][Applets][133][Configuration][General]
 favoritesPortedToKAstats=true
+icon=fedora-logo-icon
 systemFavorites=suspend\\,hibernate\\,reboot\\,shutdown
 
 [Containments][19][Applets][135]
@@ -325,31 +338,12 @@ mousewheel_down=qdbus org.kde.kglobalaccel /component/kwin invokeShortcut "Switc
 mousewheel_up=qdbus org.kde.kglobalaccel /component/kwin invokeShortcut "Switch One Desktop to the Left"
 peekingEnabled=true
 
-[Containments][19][Applets][140]
-immutability=1
-plugin=org.kde.plasma.betterinlineclock
-
-[Containments][19][Applets][140][Configuration]
-PreloadWeight=0
-
-[Containments][19][Applets][140][Configuration][Appearance]
-customOffsetX=45.370370370370374
-customSpacing=3.5185185185185186
-dateFormat=shortDate
-fixedFont=true
-fontSize=14
-showSeparator=false
-
-[Containments][19][Applets][140][Configuration][ConfigDialog]
-DialogHeight=558
-DialogWidth=720
-
 [Containments][19][Applets][143]
 immutability=1
 plugin=org.kde.latte.separator
 
 [Containments][19][Applets][143][Configuration]
-PreloadWeight=34
+PreloadWeight=2
 
 [Containments][19][Applets][143][Configuration][ConfigDialog]
 DialogHeight=558
@@ -358,6 +352,69 @@ DialogWidth=720
 [Containments][19][Applets][143][Configuration][General]
 lengthMargin=1
 thickMargin=30
+
+[Containments][19][Applets][145]
+immutability=1
+plugin=org.kde.plasma.betterinlineclock
+
+[Containments][19][Applets][145][Configuration]
+PreloadWeight=31
+
+[Containments][19][Applets][145][Configuration][Appearance]
+customOffsetY=1
+enabledCalendarPlugins=/usr/lib64/qt5/plugins/plasmacalendarplugins/holidaysevents.so
+fixedFont=true
+fontSize=15
+use24hFormat=2
+
+[Containments][19][Applets][145][Configuration][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
+
+[Containments][19][Applets][155]
+immutability=1
+plugin=org.kde.latte.separator
+
+[Containments][19][Applets][155][Configuration]
+PreloadWeight=34
+
+[Containments][19][Applets][155][Configuration][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
+
+[Containments][19][Applets][155][Configuration][General]
+thickMargin=34
+
+[Containments][19][Applets][156]
+immutability=1
+plugin=org.kde.latte.separator
+
+[Containments][19][Applets][156][Configuration]
+PreloadWeight=34
+
+[Containments][19][Applets][156][Configuration][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
+
+[Containments][19][Applets][156][Configuration][General]
+lengthMargin=1
+thickMargin=16
+
+[Containments][19][Applets][158]
+immutability=1
+plugin=org.kde.windowbuttons
+
+[Containments][19][Applets][158][Configuration]
+PreloadWeight=34
+
+[Containments][19][Applets][158][Configuration][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
+
+[Containments][19][Applets][158][Configuration][General]
+buttonSizePercentage=70
+buttons=3|4|5|10|2|9
+containmentType=Latte
 
 [Containments][19][ConfigDialog]
 DialogHeight=1254
@@ -370,32 +427,29 @@ PreloadWeight=0
 advanced=true
 alignment=10
 alignmentUpgraded=true
-appletOrder=133;132;131;114;140;135;143
+appletOrder=155;133;156;132;131;145;114;158;143;135
+appletShadowsEnabled=false
 autoDecreaseIconSize=false
 autoSizeEnabled=false
-backgroundShadowSize=12
+blurEnabled=false
 disablePanelShadowForMaximized=true
 dragActiveWindowEnabled=true
 durationTime=x1
 floatingInternalGapIsForced=false
-iconSize=30
-inConfigureAppletsMode=true
-lockedZoomApplets=140
+iconSize=22
+lengthExtMargin=5
 mouseWheelActions=false
 panelPosition=10
-panelShadows=false
 panelSize=100
-panelTransparency=85
 plasmaBackgroundForPopups=true
 shadowOpacity=25
 shadows=None
 shadowsUpgraded=true
-solidBackgroundForMaximized=true
-splitterPosition=4
-splitterPosition2=5
+splitterPosition=6
+splitterPosition2=8
 taskScrollAction=ScrollNone
 tasksUpgraded=true
-thickMargin=0
+thickMargin=15
 titleTooltips=false
 zoomLevel=0
 
@@ -420,7 +474,7 @@ customBackground=
 customTextColor=
 disableBordersForMaximizedWindows=true
 icon=
-lastUsedActivity=f7b91ade-752f-4bd3-a308-009b185ca167
+lastUsedActivity=4d5d19d9-da30-40f6-b177-fb90fc992281
 launchers=
 popUpMargin=-1
 preferredForShortcutsTouched=false

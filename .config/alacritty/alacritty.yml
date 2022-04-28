@@ -30,17 +30,18 @@ colors:
     cyan:    '0x49AEE6'
     white:   '0xFFFFFF'
 
-background_opacity: 0.9
+background_opacity: 0.95
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
 font:
         normal:
-                family: SauceCodePro Nerd Font 
+                family: NotoMono Nerd Font
+
         bold:
-                family: SauceCodePro Nerd Font 
+                family: NotoMono Nerd Font
                 style: Bold
         italic:
-                family: SauceCodePro Nerd Font 
+                family: NotoMono Nerd Font
                 style: Italic
-        size: 8.50
+        size: 10
