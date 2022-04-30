@@ -16,7 +16,7 @@ Plug 'vifm/vifm.vim'
 Plug 'dag/vim-fish'
 Plug 'lambdalisue/vim-pager'
 Plug 'chrisbra/Colorizer'
-Plug 'kyazdani42/nvim-tree.lua'
+Plug 'kyazdani42/nvim-tree.lua', { 'on':'NvimTreeToggle' }
 Plug 'kosayoda/nvim-lightbulb'
 Plug 'simrat39/rust-tools.nvim'
 Plug 'nvim-lua/completion-nvim'
@@ -42,8 +42,8 @@ Plug 'stevearc/qf_helper.nvim'
 Plug 'p00f/nvim-ts-rainbow'
 Plug 'romgrk/nvim-treesitter-context'
 Plug 'justinmk/vim-sneak'
-Plug 'kristijanhusak/orgmode.nvim'
 Plug 'L3MON4D3/LuaSnip' " Snippets plugin
+Plug 'ludovicchabant/vim-gutentags'
 
 " Lsp and DAP
 Plug 'neovim/nvim-lspconfig'
@@ -65,9 +65,7 @@ Plug 'saadparwaiz1/cmp_luasnip' " Snippets source for nvim-cmp
 " Color schemes
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'tjdevries/colorbuddy.nvim'
-Plug 'RishabhRD/nvim-rdark'
 Plug 'ishan9299/modus-theme-vim'
-Plug 'Yagua/nebulous.nvim'
 
 call plug#end() " }}}
 
@@ -97,6 +95,7 @@ lsp_installer.on_server_ready(function(server) --{{{
 local lspconfig = require('lspconfig')
 
 require'nvim-tree'.setup()
+local lspkind = require('lspkind')
 local cmp = require 'cmp'
 cmp.setup { --{{{
   snippet = {
@@ -135,31 +134,32 @@ cmp.setup { --{{{
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
   },
+--  formatting = {
+--    format = lspkind.cmp_format({
+--      mode = 'symbol', -- show only symbol annotations
+--      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+--
+--      -- The function below will be called before any actual modifications from lspkind
+--      -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+--      before = function (entry, vim_item)
+--        return vim_item
+--      end
+--    })
+--  }
 } --}}}
 
 require('lualine').setup{
 	options = {
  		theme = 'codedark',
  		section_separators = '',
-		component_separators = '|'
+		component_separators = '│'
 	}
-}
-require('orgmode').setup_ts_grammar()
-require('orgmode').setup({
-  org_agenda_files = {'~/Documents/org/*', '~/my-orgs/**/*'},
-  org_default_notes_file = '~/Documents/org/refile.org',
-})
-vim.g.completion_chain_complete_list = {
-  org = {
-    { mode = 'omni'},
-  },
 }
 require('gitsigns').setup{
 	signcolumn = true,
 	numhl = true,
 	current_line_blame = true,
 }
-vim.cmd[[autocmd FileType org setlocal iskeyword+=:,#,+]]
 require'colorizer'.setup()
 require("bufferline").setup{}
 require('kommentary.config').use_extended_mappings()
@@ -171,11 +171,14 @@ require'nvim-treesitter.configs'.setup {
 }
 require'treesitter-context'.setup{enable = true, throttle = true,}
 require("dapui").setup()
+vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
 require'nvim-web-devicons'.setup()
 
 EOF
 
+autocmd FileType org setlocal iskeyword+=:,#,+
 autocmd BufEnter * lua require'completion'.on_attach()
+autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
 let mapleader = "\<Space>"
 set showcmd
 let g:dashboard_default_executive ='telescope'
@@ -214,24 +217,25 @@ set shortmess+=c
 
 noremap <leader><leader> :NvimTreeToggle<CR>
 
-"copy and paste from system clipboard
+" copy and paste from system clipboard
 noremap <Leader>Y "*y
 noremap <Leader>P "*p
 noremap <Leader>y "+y
 noremap <Leader>p "+p
+
 " reload config
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " DAP mode bindings
-noremap <leader>dd :lua require("dapui").toggle("sidebar")<CR>
-noremap <F5> :lua require'dap'.continue()<CR>
-noremap <leader>db :lua require'dap'.toggle_breakpoint()<CR>
+noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
+noremap <silent> <F5> :lua require'dap'.continue()<CR>
+noremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
 
 " Go to next buffer (alt-tab equivalent)
-noremap <leader><Tab> :BufferLineCycleNext<CR>
+noremap <silent> <leader><Tab> :BufferLineCycleNext<CR>
 
 " close current buffer
-nnoremap <silent><Leader>qq :lua require("nvim-smartbufs").close_current_buffer()<CR>
+nnoremap <silent> <Leader>qq :lua require("nvim-smartbufs").close_current_buffer()<CR>
 
 " open numbered terminals
 nnoremap <Leader>t1 :lua require("nvim-smartbufs").goto_terminal(1)<CR>
@@ -239,7 +243,7 @@ nnoremap <Leader>t2 :lua require("nvim-smartbufs").goto_terminal(2)<CR>
 nnoremap <Leader>t3 :lua require("nvim-smartbufs").goto_terminal(3)<CR>
 nnoremap <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
 
-" exit terminal mode
+" esc to exit terminal mode
 tnoremap <Esc> <C-\><C-n>
 
 " use ALT+movement keys to navigate windows in all modes {{{
