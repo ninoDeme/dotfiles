@@ -32,3 +32,5 @@ set -x XDG_DATA_DIRS " /usr/local/share/:/usr/share/:/var/lib/flatpak/exports/sh
 fish_add_path $HOME/.emacs.d/bin
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/.npm-global/bin
+
