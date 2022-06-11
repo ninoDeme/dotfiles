@@ -7,6 +7,10 @@ Git, curl
 
 Polybar, Rofi, nitrogen, picom, xmonad-contrib
 
+## Awesome config
+
+picom, lain, i3lock, flameshot, xfce4-power-manager, network-manager-applet
+
 # Installation
 ## Using install script
 
@@ -22,3 +26,8 @@ Follow the guide at: https://www.atlassian.com/git/tutorials/dotfiles but use .d
 
 # Credits
 https://www.atlassian.com/git/tutorials/dotfiles (Git bare repository)
+
+## Awesome config
+https://github.com/ChrisTitusTech/titus-awesome (exit screen, icons, autostart, and a lot of ideas)
+
+https://github.com/lcpz/awesome-copycats
