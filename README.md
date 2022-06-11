@@ -1,3 +1,7 @@
+#Dotfiles
+
+Mostly for personal use
+
 # Dependencies
 ## Git bare repository setup
 
