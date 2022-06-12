@@ -9,17 +9,21 @@ local lain = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
 local gears = require("gears")
+local naughty = require("naughty")
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 
+local apps = require("configuration.apps")
+
 local theme = {}
+local nconf = naughty.config
 
 local markup = lain.util.markup
 
 theme.font = "NotoSans Nerd Font 10"
-local terminal = "kitty"
+theme.font_mono = "NotoMono Nerd Font 10"
 
 theme.bg_normal   = "#383c4a"
 theme.dir         = os.getenv("HOME") .. "/.config/awesome/theme.lua"
@@ -29,10 +33,10 @@ theme.bg_minimize = "#4b5162"
 theme.bg_systray  = theme.bg_normal
 
 theme.fg_normal   = "#aaaaaa"
-theme.fg_focus    = "#ffffff"
+theme.fg_focus    = "#eeeeee"
 theme.fg_urgent   = "#ffffff"
 theme.fg_minimize = "#eeeeee"
-theme.fg_contrast = "#111111"
+theme.fg_icon = "#78A4FF"
 
 theme.useless_gap   = dpi(2)
 theme.border_width  = dpi(2)
@@ -40,6 +44,15 @@ theme.border_normal = "#535d6c"
 theme.border_focus  = "#5294e2"
 theme.border_marked = "#91231c"
 
+theme.tasklist_bg_focus = theme.bg_normal
+
+theme.taglist_fg_occupied = theme.fg_minimize
+theme.taglist_fg_empty = theme.fg_normal
+
+theme.systray_icon_spacing = dpi(1)
+
+nconf.defaults.icon_size = dpi(64)
+nconf.defaults.bg = theme.bg_normal .. "80"
 -- There are other variable sets
 -- overriding the default one when
 -- {{{ Menu
@@ -56,33 +69,58 @@ theme.border_marked = "#91231c"
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
--- Keyboard map indicator and switcher
+-- Separators
+local separatorempty = wibox.widget.textbox(" ")
+local separatorbar = wibox.widget.textbox("|")
+separatorbar = wibox.container.margin(separatorbar,1,1,0,2)
+--separatorbar = wibox.widget.textbox("")
+
+local mysystray = wibox.widget.systray()
+mysystray.base_size = 19
+mysystray = wibox.container.margin(mysystray,0,1,1,0)
+
 local mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- Create a textclock widget
-
-local mytextclock = wibox.widget{
+local clockicon = wibox.widget{
+    markup = markup.fg.color(theme.fg_icon ," "),
+    font = "NotoSans Nerd Font 11.5 ",
+    widget = wibox.widget.textbox
+}
+local dateicon = wibox.widget{
+    markup = markup.fg.color(theme.fg_icon ," "),
+    font = "NotoSans Nerd Font 10 ",
+    widget = wibox.widget.textbox
+}
+local myclock = wibox.widget {
     font = theme.font,
-    format = " %A %B %d %Y, %H:%M  ",
+    format = "%H:%M ",
     widget = wibox.widget.textclock
 }
-local containerclock = wibox.container.background(mytextclock)
+local mydate = wibox.widget {
+    font = theme.font,
+    format = " %A, %d de %B de %Y ",
+    widget = wibox.widget.textclock
+}
+local clock =  wibox.layout.fixed.horizontal(dateicon , mydate, separatorbar , clockicon, myclock)
+local containerclock = wibox.container.background(clock)
 containerclock.fg = theme.fg_focus
 theme.cal = lain.widget.cal({
     attach_to = { containerclock },
     notification_preset = {
         shape = gears.shape.infobubble,
-        font = theme.font,
         fg   = theme.fg_focus,
-        bg   = theme.bg_normal,
+        bg   = nconf.defaults.bg,
+        font = theme.font_mono,
         margin = dpi(20),
-        type = "tooltip"
-    }
+        icon_size = 128
+    },
+
+    week_start = 1,
+
 })
 
--- Separators
-local separatorempty = wibox.widget.textbox(" ")
-local separatorbar = wibox.widget.textbox("|")
+local mprisw = require("mpris-awesome")
 
 -- ALSA volume
 
@@ -91,10 +129,12 @@ local volicon = wibox.widget{
     font = "NotoSans Nerd Font 14.5 ",
     widget = wibox.widget.textbox
 }
+local voliconcontainer = wibox.container.background(volicon)
+voliconcontainer.fg = theme.fg_icon
 
 theme.volume = lain.widget.alsabar {
     width = dpi(62), border_width = 0, ticks = true, ticks_size = dpi(6),
-    notification_preset = { font = theme.font },
+    notification_preset = { font = theme.font, bg = theme.bg_focus },
     --togglechannel = "IEC958,3",
     timeout = 0.5,
     settings = function()
@@ -111,10 +151,12 @@ theme.volume = lain.widget.alsabar {
     colors = {
         background   = theme.bg_normal,
         mute         = "#db1b0d",
-        unmute       = theme.fg_normal
+        unmute       = theme.fg_focus
     }
 }
-theme.volume.tooltip.wibox.fg = theme.fg_contrast
+theme.volume.tooltip.wibox.fg = "#000000"
+theme.volume.tooltip.wibox.bg = "#000000"
+
 volicon:buttons(my_table.join (
           awful.button({}, 1, function()
             awful.spawn("pavucontrol")
@@ -158,8 +200,8 @@ theme.volume.bar:buttons(my_table.join (
           end)
 ))
 
-local volumebg = wibox.container.background(theme.volume.bar, theme.fg_normal, gears.shape.rectangle)
-local volumewidget = wibox.container.margin(volumebg, dpi(2), dpi(7), dpi(4), dpi(4))
+local volumebg = wibox.container.background(theme.volume.bar, theme.fg_focus, gears.shape.rectangle)
+local volumewidget = wibox.container.margin(volumebg, dpi(2), dpi(5), dpi(4), dpi(4))
 
 -- {{{ Wibar
 -- Create a wibox for each screen and add it
@@ -213,13 +255,14 @@ function theme.at_screen_connect(s)
 
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9", "ﭮ" }, s, awful.layout.layouts[1])
+    awful.tag({ "1", "2", "3", "4", "5", "", "ﭮ" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
+    s.mylayoutbox = wibox.container.margin(s.mylayoutbox, 2, 2,2,2)
     s.mylayoutbox:buttons(gears.table.join(
         awful.button({}, 1, function() awful.layout.inc(1) end),
         awful.button({}, 2, function () awful.layout.set( awful.layout.layouts[1] ) end),
@@ -261,16 +304,16 @@ function theme.at_screen_connect(s)
                             id = 'icon_role',
                             widget = wibox.widget.imagebox
                         },
-                        margins = 3,
+                        margins = 3.2,
                         widget = wibox.container.margin
                     },
-                    {
-                        id     = 'text_role',
-                        widget = wibox.widget.textbox,
-                    },
+                        {   
+                            id     = 'text_role',
+                            widget = wibox.widget.textbox,
+                        },
                     layout = wibox.layout.fixed.horizontal,
                 },
-                left  = 2,
+                left  = 1,
                 right = 10,
                 widget = wibox.container.margin
             },
@@ -287,31 +330,30 @@ function theme.at_screen_connect(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
+--            mylauncher,
             s.mytaglist,
+            separatorbar,
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            volicon,
+            mprisw(),
+            separatorbar,
+            voliconcontainer,
             volumewidget,
 --            mykeyboardlayout,
-            separatorempty,
-            wibox.widget.systray(),
-            separatorempty,
+            separatorbar,
+            mysystray,
+            separatorbar,
             containerclock,
+            separatorbar,
             s.mylayoutbox,
         },
     }
 end
 
-theme.tasklist_bg_focus = theme.bg_normal
 
-theme.taglist_fg_occupied = theme.fg_minimize
-theme.taglist_fg_empty = theme.fg_normal
-
-theme.systray_icon_spacing = dpi(2)
 
 -- Generate taglist squares:
 -- local taglist_square_size = dpi(4)

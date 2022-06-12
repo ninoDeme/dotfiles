@@ -2,6 +2,8 @@
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
+os.setlocale(os.getenv("LC_TIME"))
+
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -19,6 +21,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+local apps = require("configuration.apps")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -68,12 +71,12 @@ local function run_once(cmd)
     local findme = cmd
     local firstspace = cmd:find(' ')
     if firstspace then
-      findme = cmd:sub(0, firstspace - 1)
+        findme = cmd:sub(0, firstspace - 1)
     end
     awful.spawn(string.format('bash -c "pgrep -u $USER -x %s > /dev/null || (%s)"', findme, cmd))
-  end
+end
 
-local function findWindow(windowName, ifSucces )
+local function findWindow(windowName, ifSucces)
     awful.spawn.easy_async(
         "bash -c 'wmctrl -l | grep " .. windowName .. " -o -i'",
         function(stdout, stderr, reason, exitcode)
@@ -82,16 +85,17 @@ local function findWindow(windowName, ifSucces )
             end
         end)
 end
+
 -- {{{ Variable definitions
 
 -- dont use gap when theres only 1 window
 beautiful.gap_single_client = false
 
 -- This is used later as the default terminal and editor to run.
-terminal = "kitty"
-browser = "firefox"
-editor = os.getenv("EDITOR") or "nvim"
-editor_cmd = terminal .. " -e " .. editor
+local terminal = apps.default.terminal
+local browser = apps.default.browser
+local editor = os.getenv("EDITOR") or "nvim"
+local editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -188,6 +192,8 @@ beautiful.gap_single_client = false
 
 -- Tags
 local discordTag = awful.tag.find_by_name(awful.screen.focused(), "ﭮ")
+local browserTag = awful.tag.find_by_name(awful.screen.focused(), "")
+
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
@@ -239,9 +245,12 @@ globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey, }, "Return", function() awful.spawn(terminal) end,
         { description = "open a terminal", group = "launcher" }),
+        awful.key({ modkey, }, "x", function() awful.spawn(terminal) end,
+        { description = "open a terminal", group = "launcher" }),
+
     awful.key({ modkey, "Control" }, "r", awesome.restart,
         { description = "reload awesome", group = "awesome" }),
-    awful.key({ modkey, "Shift" }, "q", awesome.quit,
+    awful.key({ modkey, "Shift" }, "q", function() exit_screen_show() end,
         { description = "quit awesome", group = "awesome" }),
 
     awful.key({ modkey, }, "l", function() awful.tag.incmwfact(0.05) end,
@@ -277,7 +286,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "r", function() awful.screen.focused().mypromptbox:run() end,
         { description = "run prompt", group = "launcher" }),
 
-    awful.key({ modkey }, "x",
+    awful.key({ modkey, "Shift" }, "r",
         function()
             awful.prompt.run {
                 prompt       = "Run Lua code: ",
@@ -291,19 +300,30 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "space", function() menubar.show() end,
         { description = "show the menubar", group = "launcher" }),
     -- Aplications
-    awful.key({ }, "Print", function() awful.spawn("flameshot gui") end,
-    { description = "show the menubar", group = "launcher" }),
+    awful.key({}, "Print", function() awful.spawn("flameshot gui") end,
+        { description = "show the menubar", group = "launcher" }),
 
     awful.key({ modkey }, "d", function()
-        findWindow("Discord", function() awful.spawn("flatpak run com.discordapp.Discord") end)
+        findWindow("Discord", function() awful.spawn(apps.default.discord) end)
         discordTag:view_only()
     end,
-        { description = "spawn discord", group = "Applications" }),
+        { description = "Spawn discord", group = "Applications" }),
     awful.key({ modkey, "Control" }, "d", function()
-        findWindow("Discord", function() awful.spawn("flatpak run com.discordapp.Discord") end)
+        findWindow("Discord", function() awful.spawn(apps.default.discord) end)
         awful.tag.viewtoggle(discordTag)
     end,
-        { description = "Toggle discord", group = "Applications" })
+        { description = "Toggle discord", group = "Applications" }),
+
+    awful.key({ modkey }, "b", function()
+        findWindow(browser, function() awful.spawn(browser) end)
+        browserTag:view_only()
+    end,
+        { description = "Spawn browser", group = "Applications" }),
+    awful.key({ modkey, "Control" }, "b", function()
+        findWindow(browser, function() awful.spawn(browser) end)
+        awful.tag.viewtoggle(browserTag)
+    end,
+        { description = "Toggle browser", group = "Applications" })
 
 )
 
@@ -314,8 +334,18 @@ clientkeys = gears.table.join(
             c:raise()
         end,
         { description = "toggle fullscreen", group = "client" }),
-    awful.key({ modkey, "Shift" }, "c", function(c) c:kill() end,
+--    awful.key({ modkey, "Shift" }, "c", function(c) c:kill() end,
+    awful.key({ modkey, "Shift" }, "c" , function () awful.spawn("sh " .. gears.filesystem.get_configuration_dir() .. "/KillOrSteam.sh") end,
         { description = "close", group = "client" }),
+    awful.key({ "Mod1" }, "F4" , function () awful.spawn("xkill") end,
+        { description = "kill (select)", group = "client" }),
+        awful.key({ "Mod1", "Shift" }, "F4",
+        function (c)
+            if c.pid then
+                awful.spawn("kill -9 " .. c.pid)
+            end
+        end,
+        { description = "kill (active)", group = "client" }),
     awful.key({ modkey, "Control" }, "space", awful.client.floating.toggle,
         { description = "toggle floating", group = "client" }),
     awful.key({ modkey, "Control" }, "Return", function(c) c:swap(awful.client.getmaster()) end,
@@ -470,6 +500,9 @@ awful.rules.rules = {
     { rule = { class = "discord" },
         properties = { tag = "ﭮ" } },
 
+    { rule = { class = "firefox" },
+        properties = { tag = " " } },
+
     -- Add titlebars to normal clients and dialogs
     { rule_any = { type = { "normal", "dialog" }
     }, properties = { titlebars_enabled = false }
@@ -550,10 +583,10 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- Autostart
 -- Autorun programs
 
-local apps = require("configuration.apps")
 
 --awful.spawn.single_instance("flatpak run com.discordapp.Discord", {})
 findProgram("discord", "flatpak run com.discordapp.Discord")
+--run_once("flatpak run com.discordapp.Discord")
 
 for _, app in ipairs(apps.run_on_start_up) do
     run_once(app)

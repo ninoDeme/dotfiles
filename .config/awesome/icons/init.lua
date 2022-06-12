@@ -6,6 +6,7 @@ return {
   code = dir .. '/code-braces.svg',
   social = dir .. '/forum.svg',
   folder = dir .. '/folder.svg',
+  discord = dir .. '/discord.svg',
   music = dir .. '/music.svg',
   game = dir .. '/google-controller.svg',
   lab = dir .. '/flask.svg',
