@@ -134,7 +134,7 @@ lock:connect_signal(
 local screen_geometry = awful.screen.focused().geometry
 
 -- Create the widget
-exit_screen =
+local exit_screen =
   wibox(
   {
     screen = 1,
@@ -153,12 +153,12 @@ exit_screen.fg = beautiful.fg_normal
 
 local exit_screen_grabber
 
-function exit_screen_hide()
+local function exit_screen_hide()
   awful.keygrabber.stop(exit_screen_grabber)
   exit_screen.visible = false
 end
 
-function exit_screen_show()
+function Exit_screen_show()
   -- naughty.notify({text = "starting the keygrabber"})
   exit_screen_grabber =
     awful.keygrabber.run(

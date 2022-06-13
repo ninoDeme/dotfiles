@@ -133,7 +133,7 @@ mymainmenu = awful.menu({ items = {
     { "edit config", "code " .. gears.filesystem.get_configuration_dir() },
     { "open terminal", terminal },
     { "restart", awesome.restart },
-    { "quit", function() exit_screen_show() end },
+    { "quit", function() Exit_screen_show() end },
 }
 })
 
@@ -175,6 +175,21 @@ screen.connect_signal("property::geometry", function(s)
 end)
 
 -- Create a wibox for each screen and add it
+awful.screen.connect_for_each_screen(function(s)
+    -- Wallpaper
+    local wallpaper = beautiful.wallpaper
+    if type(wallpaper) == "function" then
+        wallpaper = wallpaper(s)
+    end
+    gears.wallpaper.maximized(wallpaper, s, true)
+
+
+    -- Each screen has its own tag table.
+    awful.tag({ "1", "2", "3", "4", "5", "", "ﭮ" }, s, awful.layout.layouts[1])
+
+end)
+
+require("panel")
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
 
 screen.connect_signal("arrange", function(s)
@@ -241,6 +256,10 @@ globalkeys = gears.table.join(
     awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn("pactl set-sink-volume 0 +4%") end),
     awful.key({}, "XF86AudioLowerVolume", function() awful.spawn("pactl set-sink-volume 0 -4%") end),
     awful.key({}, "XF86AudioMute", function() awful.spawn("pactl set-sink-mute 0 toggle") end),
+    awful.key({}, "XF86AudioPlay", function () awful.util.spawn("playerctl play-pause -p '" .. Default_player .. "'") end),
+    awful.key({}, "XF86AudioNext", function () awful.util.spawn("playerctl next -p '" .. Default_player .. "'") end),
+    awful.key({}, "XF86AudioPrev", function () awful.util.spawn("playerctl previous -p '" .. Default_player .. "'") end),
+
 
     -- Standard program
     awful.key({ modkey, }, "Return", function() awful.spawn(terminal) end,
@@ -250,7 +269,7 @@ globalkeys = gears.table.join(
 
     awful.key({ modkey, "Control" }, "r", awesome.restart,
         { description = "reload awesome", group = "awesome" }),
-    awful.key({ modkey, "Shift" }, "q", function() exit_screen_show() end,
+    awful.key({ modkey, "Shift" }, "q", function() Exit_screen_show() end,
         { description = "quit awesome", group = "awesome" }),
 
     awful.key({ modkey, }, "l", function() awful.tag.incmwfact(0.05) end,
@@ -300,8 +319,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "space", function() menubar.show() end,
         { description = "show the menubar", group = "launcher" }),
     -- Aplications
-    awful.key({}, "Print", function() awful.spawn("flameshot gui") end,
-        { description = "show the menubar", group = "launcher" }),
+    awful.key({}, "Print", function() awful.spawn("flameshot gui") end),
 
     awful.key({ modkey }, "d", function()
         findWindow("Discord", function() awful.spawn(apps.default.discord) end)
