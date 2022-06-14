@@ -20,13 +20,14 @@ local nconf = naughty.config
 
 local markup = lain.util.markup
 
+theme.dir         = os.getenv("HOME") .. "/.config/awesome/theme.lua"
+
 theme.font = "NotoSans Nerd Font 10"
 theme.font_mono = "NotoMono Nerd Font 10"
 theme.nosfont = "NotoSans Nerd Font "
 theme.nosfont_mono = "NotoMono Nerd Font "
 
 theme.bg_normal   = "#383c4a"
-theme.dir         = os.getenv("HOME") .. "/.config/awesome/theme.lua"
 theme.bg_focus    = "#5294e2"
 theme.bg_urgent   = "#ff0000"
 theme.bg_minimize = "#4b5162"
@@ -36,7 +37,8 @@ theme.fg_normal   = "#aaaaaa"
 theme.fg_focus    = "#eeeeee"
 theme.fg_urgent   = "#ffffff"
 theme.fg_minimize = "#eeeeee"
-theme.fg_icon = "#78A4FF"
+theme.fg_icon = "#6894FF"
+theme.hotkeys_modifiers_fg = theme.fg_focus
 
 theme.useless_gap   = dpi(2)
 theme.border_width  = dpi(2)
@@ -53,10 +55,8 @@ theme.systray_icon_spacing = dpi(1)
 
 nconf.defaults.icon_size = dpi(64)
 nconf.defaults.bg = theme.bg_normal .. "80"
--- There are other variable sets
--- overriding the default one when
--- {{{ Menu
--- Create a launcher widget and a main menu
+
+theme.gap_single_client = false
 
 -- defined, the sets are:
 -- taglist_[bg|fg]_[focus|urgent|occupied|empty|volatile]
@@ -88,12 +88,18 @@ theme.menu_width        = dpi(100)
 -- beautiful.variable in your rc.lua
 --theme.bg_widget = "#cc0000"
 
--- Define the image to load
-theme.titlebar_close_button_normal = themes_path .. "default/titlebar/close_normal.png"
-theme.titlebar_close_button_focus  = themes_path .. "default/titlebar/close_focus.png"
+-- Define the icon theme for application icons. If not set then the icons
+-- from /usr/share/icons and /usr/share/icons/hicolor will be used.
+theme.icon_theme = "/usr/share/icons/Arc/"
 
-theme.titlebar_minimize_button_normal = themes_path .. "default/titlebar/minimize_normal.png"
-theme.titlebar_minimize_button_focus  = themes_path .. "default/titlebar/minimize_focus.png"
+-- Define the image to load
+theme.titlebar_close_button_normal = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-close-symbolic.svg", theme.fg_normal)
+theme.titlebar_close_button_focus  = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-close-symbolic.svg", theme.fg_focus)
+
+--theme.titlebar_minimize_button_normal = themes_path .. "default/titlebar/minimize_normal.png"
+--theme.titlebar_minimize_button_focus  = themes_path .. "default/titlebar/minimize_focus.png"
+theme.titlebar_minimize_button_normal = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-minimize-symbolic.svg", theme.fg_normal)
+theme.titlebar_minimize_button_focus  = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-minimize-symbolic.svg", theme.fg_focus)
 
 theme.titlebar_ontop_button_normal_inactive = themes_path .. "default/titlebar/ontop_normal_inactive.png"
 theme.titlebar_ontop_button_focus_inactive  = themes_path .. "default/titlebar/ontop_focus_inactive.png"
@@ -110,10 +116,12 @@ theme.titlebar_floating_button_focus_inactive  = themes_path .. "default/titleba
 theme.titlebar_floating_button_normal_active   = themes_path .. "default/titlebar/floating_normal_active.png"
 theme.titlebar_floating_button_focus_active    = themes_path .. "default/titlebar/floating_focus_active.png"
 
-theme.titlebar_maximized_button_normal_inactive = themes_path .. "default/titlebar/maximized_normal_inactive.png"
-theme.titlebar_maximized_button_focus_inactive  = themes_path .. "default/titlebar/maximized_focus_inactive.png"
-theme.titlebar_maximized_button_normal_active   = themes_path .. "default/titlebar/maximized_normal_active.png"
-theme.titlebar_maximized_button_focus_active    = themes_path .. "default/titlebar/maximized_focus_active.png"
+--theme.titlebar_maximized_button_normal_inactive = themes_path .. "default/titlebar/maximized_normal_inactive.png"
+theme.titlebar_maximized_button_normal_inactive = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-maximize-symbolic.svg", theme.fg_normal)
+theme.titlebar_maximized_button_focus_inactive  = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-maximize-symbolic.svg", theme.fg_focus)
+--theme.titlebar_maximized_button_normal_active   = themes_path .. "default/titlebar/maximized_normal_active.png"
+theme.titlebar_maximized_button_normal_active   = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-restore-symbolic.svg", theme.fg_normal)
+theme.titlebar_maximized_button_focus_active    = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-restore-symbolic.svg", theme.fg_focus)
 
 theme.wallpaper = "/usr/share/endeavouros/backgrounds/eos_wallpapers_community/Endy_vector_satelliet.png"
 
@@ -140,9 +148,7 @@ theme.awesome_icon = theme_assets.awesome_icon(
     theme.menu_height, theme.bg_normal, theme.fg_focus
 )
 
--- Define the icon theme for application icons. If not set then the icons
--- from /usr/share/icons and /usr/share/icons/hicolor will be used.
-theme.icon_theme = "/usr/share/icons/Arc/"
+
 return theme
 
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

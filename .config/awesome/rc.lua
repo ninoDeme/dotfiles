@@ -18,9 +18,11 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+local icons = require('icons')
 local apps = require("configuration.apps")
 
 -- {{{ Error handling
@@ -50,7 +52,7 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
-require("exit_screen")
+local exit_screen_show = require("exit_screen")
 
 -- }}}
 FindProgramResult = false
@@ -133,7 +135,7 @@ mymainmenu = awful.menu({ items = {
     { "edit config", "code " .. gears.filesystem.get_configuration_dir() },
     { "open terminal", terminal },
     { "restart", awesome.restart },
-    { "quit", function() Exit_screen_show() end },
+    { "quit", function() exit_screen_show() end },
 }
 })
 
@@ -189,8 +191,24 @@ awful.screen.connect_for_each_screen(function(s)
 
 end)
 
+-- Tags
+local discordTag = awful.tag.find_by_name(awful.screen.focused(), "ﭮ")
+local browserTag = awful.tag.find_by_name(awful.screen.focused(), "")
+
 require("panel")
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
+
+-- Add titlebars on floating windows
+client.connect_signal("property::floating", function(c)
+    if c.floating then
+        c.ontop = true
+        awful.titlebar.show(c)
+    else
+        c.ontop = false
+        awful.titlebar.hide(c)
+    end
+end)
+
 
 screen.connect_signal("arrange", function(s)
     local only_one = #s.tiled_clients == 1
@@ -203,11 +221,6 @@ screen.connect_signal("arrange", function(s)
     end
 end)
 
-beautiful.gap_single_client = false
-
--- Tags
-local discordTag = awful.tag.find_by_name(awful.screen.focused(), "ﭮ")
-local browserTag = awful.tag.find_by_name(awful.screen.focused(), "")
 
 
 -- {{{ Mouse bindings
@@ -269,7 +282,7 @@ globalkeys = gears.table.join(
 
     awful.key({ modkey, "Control" }, "r", awesome.restart,
         { description = "reload awesome", group = "awesome" }),
-    awful.key({ modkey, "Shift" }, "q", function() Exit_screen_show() end,
+    awful.key({ modkey, "Shift" }, "q", function() exit_screen_show() end,
         { description = "quit awesome", group = "awesome" }),
 
     awful.key({ modkey, }, "l", function() awful.tag.incmwfact(0.05) end,
@@ -322,23 +335,23 @@ globalkeys = gears.table.join(
     awful.key({}, "Print", function() awful.spawn("flameshot gui") end),
 
     awful.key({ modkey }, "d", function()
-        findWindow("Discord", function() awful.spawn(apps.default.discord) end)
+        findWindow("Discord", function() awful.spawn(apps.default.discord, {tag = "ﭮ" }) end)
         discordTag:view_only()
     end,
         { description = "Spawn discord", group = "Applications" }),
     awful.key({ modkey, "Control" }, "d", function()
-        findWindow("Discord", function() awful.spawn(apps.default.discord) end)
+        findWindow("Discord", function() awful.spawn(apps.default.discord, {tag = "ﭮ" }) end)
         awful.tag.viewtoggle(discordTag)
     end,
         { description = "Toggle discord", group = "Applications" }),
 
     awful.key({ modkey }, "b", function()
-        findWindow(browser, function() awful.spawn(browser) end)
+        findWindow(browser, function() awful.spawn(browser, {tag = browserTag }) end)
         browserTag:view_only()
     end,
         { description = "Spawn browser", group = "Applications" }),
     awful.key({ modkey, "Control" }, "b", function()
-        findWindow(browser, function() awful.spawn(browser) end)
+        findWindow(browser, function() awful.spawn(browser, {tag = browserTag }) end)
         awful.tag.viewtoggle(browserTag)
     end,
         { description = "Toggle browser", group = "Applications" })
@@ -491,7 +504,7 @@ awful.rules.rules = {
             "pinentry",
         },
         class = {
-            "pavucontrol",
+            "Pavucontrol",
             "Arandr",
             "Blueman-manager",
             "Gpick",
@@ -518,8 +531,7 @@ awful.rules.rules = {
     { rule = { class = "discord" },
         properties = { tag = "ﭮ" } },
 
-    { rule = { class = "firefox" },
-        properties = { tag = " " } },
+
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = { type = { "normal", "dialog" }
@@ -563,7 +575,7 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    awful.titlebar(c):setup {
+    awful.titlebar(c, { size = 22}):setup {
         { -- Left
             awful.titlebar.widget.iconwidget(c),
             buttons = buttons,
@@ -578,10 +590,11 @@ client.connect_signal("request::titlebars", function(c)
             layout  = wibox.layout.flex.horizontal
         },
         { -- Right
-            awful.titlebar.widget.floatingbutton(c),
+--            awful.titlebar.widget.floatingbutton(c),
+            awful.titlebar.widget.minimizebutton(c),
             awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.stickybutton(c),
-            awful.titlebar.widget.ontopbutton(c),
+--            awful.titlebar.widget.stickybutton(c),
+--            awful.titlebar.widget.ontopbutton(c),
             awful.titlebar.widget.closebutton(c),
             layout = wibox.layout.fixed.horizontal()
         },

@@ -123,7 +123,7 @@ volicon:buttons(my_table.join (
 ))
 volume.bar:buttons(my_table.join (
           awful.button({}, 1, function()
-            awful.spawn("pavucontrol")
+            awful.spawn("pavucontrol", {properties = { floating = true}})
           end),
           awful.button({}, 2, function()
             os.execute(string.format("%s set %s 100%%", volume.cmd, volume.channel))

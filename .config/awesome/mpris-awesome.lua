@@ -89,8 +89,8 @@ local mprisW, mprisTimer = watch("bash -c '" .. GET_MPD_CMD1 .. '"$(<~/.config/a
     end
     current_song = words[3]
     if current_song ~= nil then
-        if string.len(current_song) > 100 then
-            current_song = string.sub(current_song, 0, 100) .. ".."
+        if string.len(current_song) > 70 then
+            current_song = string.sub(current_song, 0, 70) .. ".."
         end
     end
 

@@ -2,8 +2,11 @@ local beautiful = require("beautiful")
 local lain = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
+local xresources = require("beautiful.xresources")
+local dpi = xresources.apply_dpi
 local gears = require("gears")
 local naughty = require("naughty")
+local clickable_container = require("clickable-container")
 
 local widgets = require("widgets")
 
@@ -48,6 +51,13 @@ local tasklist_buttons = gears.table.join(
         awful.client.focus.byidx(-1)
     end))
 
+client.connect_signal("property::name", function(c)
+    if string.len(c.name) > 60 then
+        c.name = string.sub(c.name, 0, 60) .. "..."
+    end
+end)
+    
+
 
 function beautiful.at_screen_connect(s)
 
@@ -67,7 +77,10 @@ function beautiful.at_screen_connect(s)
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
-        buttons = taglist_buttons
+        buttons = taglist_buttons,
+        layout = {
+            layout = wibox.layout.fixed.horizontal
+        },
     }
 
     -- Create a tasklist widget
@@ -89,27 +102,33 @@ function beautiful.at_screen_connect(s)
             spacing = 2,
             layout  = wibox.layout.fixed.horizontal
         },
+
         widget_template = {
             {
-                
                 {
                     {
                         {
-                            id = 'icon_role',
-                            widget = wibox.widget.imagebox
+                            {
+                                id = 'icon_role',
+                                widget = wibox.widget.imagebox
+                            },
+                            top = dpi(4),
+                            bottom = dpi(4),
+                            right = dpi(3),
+                            left = dpi(3),
+                            widget = wibox.container.margin
                         },
-                        margins = 3.2,
-                        widget = wibox.container.margin
+                            {
+                                id     = 'text_role',
+                                widget = wibox.widget.textbox,
+                            },
+                        layout = wibox.layout.fixed.horizontal,
                     },
-                        {   
-                            id     = 'text_role',
-                            widget = wibox.widget.textbox,
-                        },
-                    layout = wibox.layout.fixed.horizontal,
+                    left  = 1,
+                    right = 10,
+                    widget = wibox.container.margin
                 },
-                left  = 1,
-                right = 10,
-                widget = wibox.container.margin
+                widget = clickable_container
             },
             id     = 'background_role',
             widget = wibox.container.background,

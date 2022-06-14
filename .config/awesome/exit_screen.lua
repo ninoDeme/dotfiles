@@ -153,12 +153,12 @@ exit_screen.fg = beautiful.fg_normal
 
 local exit_screen_grabber
 
-local function exit_screen_hide()
+function exit_screen_hide()
   awful.keygrabber.stop(exit_screen_grabber)
   exit_screen.visible = false
 end
 
-function Exit_screen_show()
+function exit_screen_show()
   -- naughty.notify({text = "starting the keygrabber"})
   exit_screen_grabber =
     awful.keygrabber.run(
@@ -249,3 +249,5 @@ exit_screen:setup {
   expand = 'none',
   layout = wibox.layout.align.vertical
 }
+
+return exit_screen_show
