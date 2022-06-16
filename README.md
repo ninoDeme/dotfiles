@@ -9,11 +9,15 @@ Git, curl
 
 ## Xmonad config
 
-Polybar, Rofi, nitrogen, picom, xmonad-contrib
+Polybar or xmobar, Rofi, nitrogen, picom, xmonad-contrib, network-manager-applet, xfce4-power-manager, flameshot, dmenu
 
 ## Awesome config
 
 picom, lain, i3lock, flameshot, xfce4-power-manager, network-manager-applet
+
+## Qtile config
+
+Rofi, nitrogen, picom, network-manager-applet, xfce4-power-manager, flameshot, dmenu
 
 # Installation
 ## Using install script

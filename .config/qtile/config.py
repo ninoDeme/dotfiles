@@ -51,16 +51,19 @@ keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating"),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+
+    Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod, "shift"], "c", lazy.window.kill(), desc="Kill focused window"),
-    Key([mod, "shift"], "r", lazy.restart(), desc="Reload the config"),
+    Key([], "Print", lazy.spawn("flameshot gui")),
     Key([mod, "control"], "space", lazy.spawn(scripts + "dmenu-exec.sh"), desc = "Run dmenu"),
     Key([mod,], "space", lazy.spawn(scripts + "rofi-exec.sh"), desc = "Run rofi"),
-    Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+
+    Key([mod, "shift"], "c", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod, "shift"], "r", lazy.restart(), desc="Reload the config"),
+    Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 ]
 
 groups = [Group(i) for i in "123456789"]

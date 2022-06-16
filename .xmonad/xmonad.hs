@@ -128,6 +128,9 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     -- launch emacs
     , ("M-S-z", addName "Launch Emacs" $ spawn "emacsclient -c -a=\"\"")
 
+    -- print screen
+    , ("<Print>", addName "Print Screen" $ spawn "flameshot gui")
+
     -- launch monitor
     , ("M-m", addName "Launch Task Manager" $ spawn "mate-system-monitor")
     , ("M-S-m", addName "Launch Terminal-based Task Manager" $ runInTerm "" "htop")
