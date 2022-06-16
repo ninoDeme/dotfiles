@@ -38,11 +38,13 @@ myClickJustFocuses = False
 
 -- Use xmobar?
 useXmobar :: Bool
-useXmobar = True
+useXmobar = False
 -- Width of the window border in pixels.
 --
 myBorderWidth   :: Dimension
 myBorderWidth   = 2
+
+myFont = "xft:NotoMono Nerd Font:weight=bold:pixelsize=11:antialias=true:hinting=true"
 
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
@@ -96,7 +98,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
 
     -- launch rofi "run menu"
     , ("M-<Space>", addName "Launch Run Menu (rofi)" $ spawn "rofi -modi drun,run,window,combi -combi-modi window,drun -show combi -window-thumbnail true -show-icons true")
-    , ("M-S-<Space>", addName "Launch dmenu" $ spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
+    , ("M-C-<Space>", addName "Launch dmenu" $ spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
 
     -- launch file managers
     , ("M-e", addName "Launch vifm file manager" $ runInTerm "" "vifm")
