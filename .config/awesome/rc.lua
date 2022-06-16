@@ -18,12 +18,14 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local hotkeys_popup_sized = hotkeys_popup.widget.new({ width = 700, height = 780 });
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
-require("awful.hotkeys_popup.keys")
+--require("awful.hotkeys_popup.keys")
 local icons = require('icons')
 local apps = require("configuration.apps")
+local clickable_container = require("clickable-container")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -55,18 +57,18 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 local exit_screen_show = require("exit_screen")
 
 -- }}}
-FindProgramResult = false
 local function findProgram(programName, cmd)
     awful.spawn.easy_async(
         "pgrep -i " .. programName,
         function(stdout, stderr, reason, exitcode)
             if exitcode ~= 0 then
                 if cmd ~= nil then awful.spawn(cmd) end
-                FindProgramResult = true
+                return true
             else
-                FindProgramResult = false
+                return false
             end
-        end)
+        end
+    )
 end
 
 local function run_once(cmd)
@@ -106,6 +108,7 @@ local editor_cmd = terminal .. " -e " .. editor
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 
+--awful.layout.floating.resize_jump_to_corner = false
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile,
@@ -130,11 +133,11 @@ awful.layout.layouts = {
 -- beautiful.init(gears.filesystem.get_themes_dir() .. "gtk/theme.lua")
 
 mymainmenu = awful.menu({ items = {
-    { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
+    { "hotkeys", function() hotkeys_popup_sized:show_help(nil, awful.screen.focused()) end },
     { "manual", terminal .. " -e man awesome" },
     { "edit config", "code " .. gears.filesystem.get_configuration_dir() },
     { "open terminal", terminal },
-    { "restart", awesome.restart },
+    { "restart awesome", awesome.restart },
     { "quit", function() exit_screen_show() end },
 }
 })
@@ -198,17 +201,50 @@ local browserTag = awful.tag.find_by_name(awful.screen.focused(), "")
 require("panel")
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
 
+
+-- Add titlebars on floating layout
+tag.connect_signal("property::layout", function(t)
+    for _ , c in ipairs(t.screen.all_clients) do
+        if c.requests_no_titlebar == false and t.layout == awful.layout.suit.floating then
+            awful.titlebar.show(c)
+        elseif c.floating == false then
+            awful.titlebar.hide(c)
+        end
+    end
+end)
+
 -- Add titlebars on floating windows
 client.connect_signal("property::floating", function(c)
     if c.floating then
         c.ontop = true
-        awful.titlebar.show(c)
+        if c.requests_no_titlebar == false then
+            awful.titlebar.show(c)
+        end
     else
         c.ontop = false
         awful.titlebar.hide(c)
     end
 end)
 
+
+
+
+-- Clients aren't urgent when spawned
+client.disconnect_signal("request::activate", awful.ewmh.activate)
+function awful.ewmh.activate(c)
+    if c:isvisible() then
+        client.focus = c
+        c:raise()
+    end
+end
+
+client.connect_signal("request::activate", awful.ewmh.activate)
+
+--client.connect_signal("manage", function (c)
+--    c.shape = function(cr,w,h)
+--        gears.shape.rounded_rect(cr,w,h,15)
+--    end
+--end)
 
 screen.connect_signal("arrange", function(s)
     local only_one = #s.tiled_clients == 1
@@ -233,12 +269,14 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    awful.key({ modkey, }, "s", hotkeys_popup.show_help,
+    awful.key({ modkey, }, "F1", function() hotkeys_popup_sized:show_help(nil, awful.screen.focused()) end,
         { description = "show help", group = "awesome" }),
     awful.key({ modkey, }, "Left", awful.tag.viewprev,
         { description = "view previous", group = "tag" }),
     awful.key({ modkey, }, "Right", awful.tag.viewnext,
         { description = "view next", group = "tag" }),
+    awful.key({modkey}, 'z', awful.tag.history.restore,
+        {description = 'go back', group = 'tag'}),
 
     awful.key({ modkey, }, "j",
         function()
@@ -280,7 +318,7 @@ globalkeys = gears.table.join(
         awful.key({ modkey, }, "x", function() awful.spawn(terminal) end,
         { description = "open a terminal", group = "launcher" }),
 
-    awful.key({ modkey, "Control" }, "r", awesome.restart,
+    awful.key({ modkey, "Shift" }, "r", awesome.restart,
         { description = "reload awesome", group = "awesome" }),
     awful.key({ modkey, "Shift" }, "q", function() exit_screen_show() end,
         { description = "quit awesome", group = "awesome" }),
@@ -425,8 +463,8 @@ for i = 1, 9 do
                 if tag then
                     tag:view_only()
                 end
-            end,
-            { description = "view tag #" .. i, group = "tag" }),
+            end),
+--            { description = "view tag #" .. i, group = "tag" }),
         -- Toggle tag display.
         awful.key({ modkey, "Control" }, "#" .. i + 9,
             function()
@@ -435,8 +473,8 @@ for i = 1, 9 do
                 if tag then
                     awful.tag.viewtoggle(tag)
                 end
-            end,
-            { description = "toggle tag #" .. i, group = "tag" }),
+            end),
+--            { description = "toggle tag #" .. i, group = "tag" }),
         -- Move client to tag.
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
             function()
@@ -446,8 +484,8 @@ for i = 1, 9 do
                         client.focus:move_to_tag(tag)
                     end
                 end
-            end,
-            { description = "move focused client to tag #" .. i, group = "tag" }),
+            end),
+--            { description = "move focused client to tag #" .. i, group = "tag" }),
         -- Toggle tag on focused client.
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
             function()
@@ -457,10 +495,26 @@ for i = 1, 9 do
                         client.focus:toggle_tag(tag)
                     end
                 end
-            end,
-            { description = "toggle focused client on tag #" .. i, group = "tag" })
+            end)
+--            { description = "toggle focused client on tag #" .. i, group = "tag" })
     )
 end
+
+-- tag switch descriptions
+globalkeys = gears.table.join(globalkeys,
+        -- View tag only.
+        awful.key({ modkey }, "#", function() end,
+            { description = "view tag #", group = "tag" }),
+        -- Toggle tag display.
+        awful.key({ modkey, "Control" }, "#", function() end,
+            { description = "toggle tag #", group = "tag" }),
+        -- Move client to tag.
+        awful.key({ modkey, "Shift" }, "#", function() end,
+            { description = "move focused client to tag #", group = "tag" }),
+        -- Toggle tag on focused client.
+        awful.key({ modkey, "Control", "Shift" }, "#", function() end,
+            { description = "toggle focused client on tag #", group = "tag" })
+)
 
 clientbuttons = gears.table.join(
     awful.button({}, 1, function(c)
@@ -531,13 +585,6 @@ awful.rules.rules = {
     { rule = { class = "discord" },
         properties = { tag = "ﭮ" } },
 
-
-
-    -- Add titlebars to normal clients and dialogs
-    { rule_any = { type = { "normal", "dialog" }
-    }, properties = { titlebars_enabled = false }
-    },
-
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
@@ -559,7 +606,13 @@ client.connect_signal("manage", function(c)
     end
 end)
 
-
+local function clickable_container_circle(cr)
+    return {
+        cr,
+        shape = gears.shape.circle,
+        widget = clickable_container
+    }
+end
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
@@ -575,30 +628,34 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    awful.titlebar(c, { size = 22}):setup {
-        { -- Left
-            awful.titlebar.widget.iconwidget(c),
-            buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
-        },
-        { -- Middle
-            { -- Title
-                align  = "center",
-                widget = awful.titlebar.widget.titlewidget(c)
+
+    awful.titlebar(c, { size = 20}):setup {
+        {
+            { -- Left
+                awful.titlebar.widget.iconwidget(c),
+                buttons = buttons,
+                layout  = wibox.layout.fixed.horizontal
             },
-            buttons = buttons,
-            layout  = wibox.layout.flex.horizontal
+            { -- Middle
+                { -- Title
+                    align  = "center",
+                    widget = awful.titlebar.widget.titlewidget(c)
+                },
+                buttons = buttons,
+                layout  = wibox.layout.flex.horizontal
+            },
+            { -- Right
+                clickable_container_circle(awful.titlebar.widget.minimizebutton(c)),
+                clickable_container_circle(awful.titlebar.widget.maximizedbutton(c)),
+                clickable_container_circle(awful.titlebar.widget.closebutton(c)),
+                layout = wibox.layout.fixed.horizontal()
+            },
+            layout = wibox.layout.align.horizontal
         },
-        { -- Right
---            awful.titlebar.widget.floatingbutton(c),
-            awful.titlebar.widget.minimizebutton(c),
-            awful.titlebar.widget.maximizedbutton(c),
---            awful.titlebar.widget.stickybutton(c),
---            awful.titlebar.widget.ontopbutton(c),
-            awful.titlebar.widget.closebutton(c),
-            layout = wibox.layout.fixed.horizontal()
-        },
-        layout = wibox.layout.align.horizontal
+    left = 2,
+    top = 2,
+    bottom = 2,
+    widget = wibox.container.margin
     }
 end)
 

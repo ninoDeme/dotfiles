@@ -16,7 +16,7 @@ local markup = require("lain.util.markup")
 --local GET_MPD_CMD = "playerctl -f '{{status}};{{xesam:artist}};{{xesam:title}}' metadata"
 local GET_MPD_CMD1 = "playerctl -p "
 local GET_MPD_CMD2 = ' -f "{{status}};{{xesam:artist}};{{xesam:title}}" metadata'
-local GET_MPD_CMD = "playerctl -p %s -f '{{status}};{{xesam:artist}};{{xesam:title}}' metadata"
+--local GET_MPD_CMD = "playerctl -p %s -f '{{status}};{{xesam:artist}};{{xesam:title}}' metadata"
 
 
 local TOGGLE_MPD_CMD = "playerctl play-pause -p '"
@@ -32,6 +32,7 @@ local LIBRARY_ICON_NAME = gears.color.recolor_image(PATH_TO_ICONS .. "/actions/2
 
 Default_player = ''
 awful.spawn('bash -c "echo \'\'' .. ' > ~/.config/awesome/mpris-defaultplayer"')
+local substituted = 0
 
 local icon = wibox.widget {
     id = "icon",
@@ -89,24 +90,27 @@ local mprisW, mprisTimer = watch("bash -c '" .. GET_MPD_CMD1 .. '"$(<~/.config/a
     end
     current_song = words[3]
     if current_song ~= nil then
-        if string.len(current_song) > 70 then
+        current_song, substituted = string.gsub(current_song, " %- YouTube", "")
+        if string.len(current_song) > 40 and substituted == 0 then
+            current_song = string.sub(current_song, 0, 40) .. ".."
+        elseif string.len(current_song) > 70 then
             current_song = string.sub(current_song, 0, 70) .. ".."
         end
     end
 
     if player_status == "Playing" then
         icon.image = PLAY_ICON_NAME
-        widget.colors = { beautiful.widget_main_color }
+--        widget.colors = { beautiful.widget_main_color }
         widget:set_text(artist .. current_song)
     elseif player_status == "Paused" then
         icon.image = PAUSE_ICON_NAME
-        widget.colors = { beautiful.widget_main_color }
+--        widget.colors = { beautiful.widget_main_color }
         widget:set_text(artist .. current_song)
     elseif player_status == "Stopped" then
         icon.image = STOP_ICON_NAME
     else -- no player is running
         icon.image = LIBRARY_ICON_NAME
-        widget.colors = { beautiful.widget_red }
+--        widget.colors = { beautiful.widget_red }
         widget:set_text("")
     end
 

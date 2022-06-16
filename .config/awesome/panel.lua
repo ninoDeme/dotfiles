@@ -31,14 +31,10 @@ local taglist_buttons = gears.table.join(
 
 local tasklist_buttons = gears.table.join(
     awful.button({}, 1, function(c)
-        if c == client.focus then
+        if c.minimized == false then
             c.minimized = true
         else
-            c:emit_signal(
-                "request::activate",
-                "tasklist",
-                { raise = true }
-            )
+            c.minimized = false
         end
     end),
     awful.button({}, 3, function()
@@ -51,12 +47,11 @@ local tasklist_buttons = gears.table.join(
         awful.client.focus.byidx(-1)
     end))
 
-client.connect_signal("property::name", function(c)
-    if string.len(c.name) > 60 then
-        c.name = string.sub(c.name, 0, 60) .. "..."
-    end
-end)
-    
+--client.connect_signal("property::name", function(c)
+--    if string.len(c.name) > 60 then
+--        c.name = string.sub(c.name, 0, 60) .. "..."
+--    end
+--end)
 
 
 function beautiful.at_screen_connect(s)
@@ -118,10 +113,15 @@ function beautiful.at_screen_connect(s)
                             left = dpi(3),
                             widget = wibox.container.margin
                         },
+                        {
                             {
                                 id     = 'text_role',
                                 widget = wibox.widget.textbox,
                             },
+                            strategy = "max",
+                            width = dpi(500),
+                            widget = wibox.container.constraint
+                        },
                         layout = wibox.layout.fixed.horizontal,
                     },
                     left  = 1,
@@ -158,6 +158,8 @@ function beautiful.at_screen_connect(s)
 --            mykeyboardlayout,
             widgets.separatorbar,
             widgets.mysystray,
+            widgets.separatorbar,
+            widgets.date,
             widgets.separatorbar,
             widgets.clock,
             widgets.separatorbar,

@@ -58,6 +58,8 @@ nconf.defaults.bg = theme.bg_normal .. "80"
 
 theme.gap_single_client = false
 
+theme.titlebar_bg_focus = theme.bg_normal
+
 -- defined, the sets are:
 -- taglist_[bg|fg]_[focus|urgent|occupied|empty|volatile]
 -- tasklist_[bg|fg]_[focus|urgent]
@@ -93,12 +95,12 @@ theme.menu_width        = dpi(100)
 theme.icon_theme = "/usr/share/icons/Arc/"
 
 -- Define the image to load
-theme.titlebar_close_button_normal = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-close-symbolic.svg", theme.fg_normal)
+theme.titlebar_close_button_normal = theme.icon_theme .. "actions/symbolic/window-close-symbolic.svg"
 theme.titlebar_close_button_focus  = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-close-symbolic.svg", theme.fg_focus)
 
 --theme.titlebar_minimize_button_normal = themes_path .. "default/titlebar/minimize_normal.png"
 --theme.titlebar_minimize_button_focus  = themes_path .. "default/titlebar/minimize_focus.png"
-theme.titlebar_minimize_button_normal = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-minimize-symbolic.svg", theme.fg_normal)
+theme.titlebar_minimize_button_normal = theme.icon_theme .. "actions/symbolic/window-minimize-symbolic.svg"
 theme.titlebar_minimize_button_focus  = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-minimize-symbolic.svg", theme.fg_focus)
 
 theme.titlebar_ontop_button_normal_inactive = themes_path .. "default/titlebar/ontop_normal_inactive.png"
@@ -117,10 +119,10 @@ theme.titlebar_floating_button_normal_active   = themes_path .. "default/titleba
 theme.titlebar_floating_button_focus_active    = themes_path .. "default/titlebar/floating_focus_active.png"
 
 --theme.titlebar_maximized_button_normal_inactive = themes_path .. "default/titlebar/maximized_normal_inactive.png"
-theme.titlebar_maximized_button_normal_inactive = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-maximize-symbolic.svg", theme.fg_normal)
+theme.titlebar_maximized_button_normal_inactive = theme.icon_theme .. "actions/symbolic/window-maximize-symbolic.svg"
 theme.titlebar_maximized_button_focus_inactive  = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-maximize-symbolic.svg", theme.fg_focus)
 --theme.titlebar_maximized_button_normal_active   = themes_path .. "default/titlebar/maximized_normal_active.png"
-theme.titlebar_maximized_button_normal_active   = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-restore-symbolic.svg", theme.fg_normal)
+theme.titlebar_maximized_button_normal_active   = theme.icon_theme .. "actions/symbolic/window-restore-symbolic.svg"
 theme.titlebar_maximized_button_focus_active    = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-restore-symbolic.svg", theme.fg_focus)
 
 theme.wallpaper = "/usr/share/endeavouros/backgrounds/eos_wallpapers_community/Endy_vector_satelliet.png"

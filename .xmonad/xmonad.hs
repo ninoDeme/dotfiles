@@ -2,6 +2,7 @@
 --
 
 import Data.Monoid
+import Data.Maybe (fromJust)
 import System.Exit
 import XMonad
 import XMonad.Util.Cursor
@@ -10,6 +11,7 @@ import XMonad.Actions.GroupNavigation
 import XMonad.Config.Desktop
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.DynamicLog
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spacing
 import XMonad.Util.EZConfig
@@ -34,6 +36,9 @@ myFocusFollowsMouse = True
 myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
+-- Use xmobar?
+useXmobar :: Bool
+useXmobar = True
 -- Width of the window border in pixels.
 --
 myBorderWidth   :: Dimension
@@ -58,14 +63,19 @@ myModMask       = mod4Mask
 --
 myWorkspaces :: [[Char]]
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
+myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
+
+clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
+    where i = fromJust $ M.lookup ws myWorkspaceIndices
+
 
 -- Border colors for unfocused and focused windows, respectively.
 --
 
 myNormalBorderColor  :: [Char]
 myFocusedBorderColor :: [Char]
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#0000dd"
+myNormalBorderColor  = "#535d6c"
+myFocusedBorderColor = "#5294e2"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -78,13 +88,15 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
 
     -- launch a terminal
     [ ("M-<Return>", addName "Launch Terminal" $ spawn myTerminal)
+    , ("M-x", addName "Launch Terminal" $ spawn myTerminal)
 
     -- launch a terminal
     , ("M-C-<Return>", addName "Launch quake Terminal" $ namedScratchpadAction scratchpads "quakeTerm")
+    , ("M-C-x", addName "Launch quake Terminal" $ namedScratchpadAction scratchpads "quakeTerm")
 
     -- launch rofi "run menu"
-    , ("M-x", addName "Launch Run Menu (rofi)" $ spawn "rofi -modi drun,run,window,combi -combi-modi window,drun -show combi -window-thumbnail true -show-icons true")
-    , ("M-S-x", addName "Launch dmenu" $ spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
+    , ("M-<Space>", addName "Launch Run Menu (rofi)" $ spawn "rofi -modi drun,run,window,combi -combi-modi window,drun -show combi -window-thumbnail true -show-icons true")
+    , ("M-S-<Space>", addName "Launch dmenu" $ spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
 
     -- launch file managers
     , ("M-e", addName "Launch vifm file manager" $ runInTerm "" "vifm")
@@ -94,13 +106,13 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-b", addName "Launch Firefox" $ spawn "firefox")
 
     -- launch discord
-    , ("M-d", addName "Launch Discord" $ spawn "discord;flatpak run com.discordapp.Discord")
+    , ("M-d", addName "Launch Discord" $ spawn "flatpak run com.discordapp.Discord")
 
     -- kill polybar
     , ("M-f", addName "Hide Polybar" $ spawn "killall polybar")
 
     -- launch polybar
-    , ("M-S-f", addName "Show Polybar" $ spawn "polybar --config=~/.xmonad/polybar/polybar.ini example")
+    , ("M-S-f", addName "Show Polybar" $ spawn "polybar --config=~/.xmonad/polybar/polybar.ini xmonad")
 
     -- launch steam
     , ("M-s", addName "Launch Steam" $ spawn "steam")
@@ -122,7 +134,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-S-c", addName "Close Focused Window" kill)
 
      -- Rotate through the available layout algorithms
-    , ("M-<Space>", addName "Cycle Through Available Layouts" $ sendMessage NextLayout)
+    , ("M-<Tab>", addName "Cycle Through Available Layouts" $ sendMessage NextLayout)
 
     -- Resize viewed windows to the correct size
     , ("M-n", addName "Resize Windows To The Correct Size" refresh)
@@ -176,7 +188,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-S-q", addName "LogOut" $ io exitSuccess)
 
     -- Restart xmonad
-    , ("M-q", addName "Restart Xmonad" $ spawn "xmonad --recompile; xmonad --restart")
+    , ("M-S-r", addName "Restart Xmonad" $ spawn "xmonad --recompile; killall xmobar ; xmonad --restart")
 
     --
     -- Super-1..9, Switch to workspace N
@@ -241,7 +253,7 @@ scratchpads = [
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = spacingRaw True (Border 0 5 5 5) True (Border 5 5 5 5) True $ avoidStruts (smartBorders tiled ||| Mirror tiled ||| Full)
+myLayout = spacingRaw True (Border 0 5 5 5) True (Border 5 5 5 5) True  (avoidStruts (smartBorders ( tiled ||| (Mirror tiled))))  ||| smartBorders Full
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -296,7 +308,55 @@ myManageHook = composeAll
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
--- myLogHook =
+windowCount :: X (Maybe String)
+windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
+
+colorBack = "#282c34"
+colorFore = "#bbc2cf"
+
+color01 = "#1c1f24"
+color02 = "#ff6c6b"
+color03 = "#98be65"
+color04 = "#da8548"
+color05 = "#51afef"
+color06 = "#c678dd"
+color07 = "#5699af"
+color08 = "#202328"
+color09 = "#5b6268"
+color10 = "#da8548"
+color11 = "#4db5bd"
+color12 = "#ecbe7b"
+color13 = "#3071db"
+color14 = "#a9a1e1"
+color15 = "#46d9ff"
+color16 = "#dfdfdf"
+
+myLogHook h True = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP 
+              { ppOutput = hPutStrLn h 
+                -- Current workspace
+              , ppCurrent = xmobarColor color06 "" . wrap
+                            ("<box type=Bottom width=2 mb=2 color=" ++ color06 ++ ">") "</box>"
+                -- Visible but not current workspace
+              , ppVisible = xmobarColor color06 "" . clickable
+                -- Hidden workspace with windows
+              , ppHidden = xmobarColor color05 "" . wrap
+                           ("<box type=Bottom width=2 mt=2 color=" ++ color05 ++ ">") "</box>" . clickable
+                -- Hidden workspaces (no windows)
+              , ppHiddenNoWindows = xmobarColor color05 ""  . clickable
+                -- Title of active window
+              , ppTitle = xmobarColor color16 "" . shorten 120
+                -- Separator character
+              , ppSep =  "<fc=" ++ color09 ++ "> <fn=1>|</fn> </fc>"
+                -- Urgent workspace
+              , ppUrgent = xmobarColor color02 "" . wrap "!" "!"
+                -- Adding # of windows on current workspace to the bar
+              , ppExtras  = [windowCount]
+                -- order of things in xmobar
+              , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
+              }
+
+myLogHook h False = return ()
+
 ------------------------------------------------------------------------
 -- Startup hook
 
@@ -308,25 +368,32 @@ myManageHook = composeAll
 myStartupHook :: X()
 myStartupHook = do
   setDefaultCursor xC_left_ptr
-  spawnOnce "nitrogen --restore"
+  spawnOnce "nitrogen --restore &"
   -- spawnOnce "xinput --set-prop 'Logitech G502 HERO Gaming Mouse' 'libinput Accel Speed' -1"
-  spawnOnce "picom --experimental-backends"
-  spawn "killall polybar; polybar --config=~/.xmonad/polybar/polybar.ini example"
-  ewmhDesktopsStartup
-  spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)"
-  spawnOnce "numlockx on"
-  spawnOnce "discord --start-minimized"
-  spawnOnce "flatpak run com.discordapp.Discord --start-minimized"
+  spawnOnce "picom --experimental-backends --config ~/.xmonad/picom/picom.conf &"
+  if useXmobar then spawn "killall polybar"
+  else spawn "killall polybar; polybar --config=~/.xmonad/polybar/polybar.ini xmonad &"
+  spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) &"
+  spawnOnce "numlockx on &"
+  spawnOnce "nm-applet"
+  spawnOnce "flatpak run com.discordapp.Discord --start-minimized &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
+
+spawnXmobar True = do 
+  spawnPipe "xmobar $HOME/.xmonad/xmobar.config"
+spawnXmobar False = do 
+  spawnPipe ""
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main :: IO ()
 main = do
   -- start xmonad
-  xmonad $ docks $ addDescrKeys' ((mod4Mask, xK_F1), xMessage) myKeys defaults
+  xmproc <- spawnXmobar useXmobar
+--  xmproc <- spawnPipe "xmobar $HOME/.xmonad/xmobar.config"
+  xmonad $  ewmh . docks $ addDescrKeys' ((mod4Mask, xK_F1), xMessage) myKeys (defaults xmproc)
   xmonad desktopConfig
 
 -- A structure containing your configuration settings, overriding
@@ -335,7 +402,7 @@ main = do
 --
 -- No need to modify this.
 --
-defaults = def {
+defaults xmproc = def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -352,7 +419,8 @@ defaults = def {
       -- hooks, layouts
         layoutHook         = myLayout,
         manageHook         = manageDocks <+> myManageHook <+> namedScratchpadManageHook scratchpads, -- make sure to include myManageHook definition from above
-        handleEventHook    = handleEventHook def <+> ewmhDesktopsEventHook,
-        logHook            = ewmhDesktopsLogHook,
-        startupHook        = myStartupHook
+        handleEventHook    = handleEventHook def,
+        startupHook        = myStartupHook,
+      -- 
+        logHook            = myLogHook xmproc useXmobar
     }

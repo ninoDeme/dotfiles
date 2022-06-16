@@ -48,11 +48,15 @@ local mydate = wibox.widget {
     format = " %A, %d de %B de %Y ",
     widget = wibox.widget.textclock
 }
-local clock =  wibox.layout.fixed.horizontal(dateicon , mydate, separatorbar , clockicon, myclock)
+local clock =  wibox.layout.fixed.horizontal(clockicon, myclock)
 local containerclock = wibox.container.background(clock)
 containerclock.fg = beautiful.fg_focus
+local date =  wibox.layout.fixed.horizontal(dateicon , mydate)
+local containerdate = wibox.container.background(date)
+containerdate.fg = beautiful.fg_focus
+
 local cal = lain.widget.cal({
-    attach_to = { containerclock },
+    attach_to = { containerdate },
     notification_preset = {
         shape = gears.shape.infobubble,
         fg   = beautiful.fg_focus,
@@ -153,5 +157,6 @@ return {
   separatorbar = separatorbar,
   separatorempty = separatorempty,
   mpris_widget = require("mpris-awesome"),
-  clock = containerclock
+  clock = containerclock,
+  date = containerdate
 }
