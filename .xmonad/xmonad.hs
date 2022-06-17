@@ -374,6 +374,7 @@ myStartupHook :: X()
 myStartupHook = do
   setDefaultCursor xC_left_ptr
   spawnOnce "nitrogen --restore &"
+  spawnOnce "/usr/lib/xfce4/notifyd/xfce4-notifyd &"
   -- spawnOnce "xinput --set-prop 'Logitech G502 HERO Gaming Mouse' 'libinput Accel Speed' -1"
   spawnOnce "picom --experimental-backends --config ~/.xmonad/picom/picom.conf &"
   if useXmobar then spawn "killall polybar"
