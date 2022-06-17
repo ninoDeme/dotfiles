@@ -38,7 +38,7 @@ myClickJustFocuses = False
 
 -- Use xmobar?
 useXmobar :: Bool
-useXmobar = False
+useXmobar = True
 -- Width of the window border in pixels.
 --
 myBorderWidth   :: Dimension
@@ -387,7 +387,7 @@ myStartupHook = do
   -- spawnOnce "xinput --set-prop 'Logitech G502 HERO Gaming Mouse' 'libinput Accel Speed' -1"
   spawnOnce "picom --experimental-backends --config ~/.config/xmonad/picom/picom.conf &"
   if useXmobar then spawn "killall polybar"
-  else spawn "killall polybar; polybar --config=~/.config/.xmonad/polybar/polybar.ini xmonad &"
+  else spawn "killall polybar; polybar --config=~/.config/xmonad/polybar/polybar.ini xmonad &"
   spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) &"
   spawnOnce "numlockx on &"
   spawnOnce "nm-applet"
