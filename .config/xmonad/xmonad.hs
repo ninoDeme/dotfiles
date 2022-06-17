@@ -398,7 +398,7 @@ myStartupHook = do
 
 
 spawnXmobar True = do 
-  spawnPipe "xmobar $HOME/.config/xmonad/xmobar.config"
+  spawnPipe "xmobar $HOME/.config/xmonad/xmobar.hs"
 spawnXmobar False = do 
   spawnPipe ""
 -- Run xmonad with the settings you specify. No need to modify this.
@@ -407,7 +407,7 @@ main :: IO ()
 main = do
   -- start xmonad
   xmproc <- spawnXmobar useXmobar
---  xmproc <- spawnPipe "xmobar $HOME/.xmonad/xmobar.config"
+--  xmproc <- spawnPipe "xmobar $HOME/.xmonad/xmobar.hs"
   xmonad $  ewmh . docks $ addDescrKeys' ((mod4Mask, xK_F1), xMessage) myKeys (defaults xmproc)
   xmonad desktopConfig
 
