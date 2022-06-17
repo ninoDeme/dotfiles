@@ -4,10 +4,16 @@ import os
 import subprocess
 
 from curses.ascii import alt
+from turtle import color
 from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+from pygments import highlight
+
+from themes import gruvbox, arc
+
+theme = arc
 
 mod = "mod4"
 terminal = "kitty"
@@ -34,13 +40,17 @@ keys = [
     Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+    Key([mod, "control"], "Return", lazy.layout.shuffle_left(), desc="Make focused window Master"),
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
-    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key([mod], "i", lazy.layout.grow(), desc="Grow window to the left"),
+    Key([mod], "m", lazy.layout.shrink(), desc="Grow window to the right"),
+#    Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
+#    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating"),
+    Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Toggle floating"),
+
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -52,8 +62,12 @@ keys = [
         desc="Toggle between split and unsplit sides of stack",
     ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "s", lazy.spawn("steam"), desc="Launch steam"),
+    Key([mod, "shift"], "s", lazy.spawn("firefox"), desc="Launch lutris"),
+    Key([mod], "d", lazy.spawn("flatpak run com.discordapp.Discord"), desc="Launch discord"),
+    Key([mod], "b", lazy.spawn("firefox"), desc="Launch firefox"),
 
-    Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating"),
+
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([], "Print", lazy.spawn("flameshot gui")),
@@ -61,7 +75,9 @@ keys = [
     Key([mod,], "space", lazy.spawn(scripts + "rofi-exec.sh"), desc = "Run rofi"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 
+    Key(["mod1"], "F4", lazy.spawn("xkill"), desc="Force kill window"),
     Key([mod, "shift"], "c", lazy.window.kill(), desc="Kill focused window"),
+
     Key([mod, "shift"], "r", lazy.restart(), desc="Reload the config"),
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 ]
@@ -93,13 +109,20 @@ for i in groups:
     )
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
+#    layout.Columns(),
+    layout.MonadTall(
+        border_focus= theme.fg_active,
+        border_normal= theme.bg, 
+        border_width=3,
+        margin = 5,
+        ratio = 0.55,
+        single_border_width = 0,
+        single_margin = 0),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
-    layout.MonadTall(),
     # layout.MonadWide(),
     # layout.RatioTile(),
     # layout.Tile(),
@@ -115,26 +138,42 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+
+
+
+
 screens = [
     Screen(
+        wallpaper = theme.wallpaper,
+        wallpaper_mode='fill',
         top=bar.Bar(
             [
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.TextBox("|", foreground = "#aaaaaa"),
-                widget.CurrentLayout(),
-                widget.TextBox("|", foreground = "#aaaaaa"),
-                widget.WindowName(),
+                widget.GroupBox(
+                    highlight_method= 'block',
+                    active = theme.fg_active,
+                    inactive = theme.fg_minimized,
+                    this_current_screen_border = theme.bgalt,
+                    rounded = False),
+                widget.Prompt(foreground = theme.fg),
+                widget.CurrentLayout(foreground = theme.fgalt, background = theme.bgalt, padding = 6),
+                widget.WindowName(foreground = theme.fg, padding = 6),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.Systray(padding = 2),
+                widget.Spacer(5),
+                widget.Clock(format="%a %d/%m/%Y %H:%M", 
+                foreground = theme.fgalt,
+                background = theme.bgalt,
+                padding = 6,),
+                widget.Spacer(3)
             ],
             21,
+            background = theme.bg,
+#            foreground = theme.fg
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
