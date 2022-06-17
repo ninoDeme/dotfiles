@@ -44,6 +44,9 @@ useXmobar = False
 myBorderWidth   :: Dimension
 myBorderWidth   = 2
 
+--Config location
+xmonadDir = "$HOME/.config/xmonad"
+
 myFont = "xft:NotoMono Nerd Font:weight=bold:pixelsize=11:antialias=true:hinting=true"
 
 -- modMask lets you specify which modkey you want to use. The default
@@ -114,7 +117,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-f", addName "Hide Polybar" $ spawn "killall polybar")
 
     -- launch polybar
-    , ("M-S-f", addName "Show Polybar" $ spawn "polybar --config=~/.xmonad/polybar/polybar.ini xmonad")
+    , ("M-S-f", addName "Show Polybar" $ spawn "polybar --config=~/.config/xmonad/polybar/polybar.ini xmonad")
 
     -- launch steam
     , ("M-s", addName "Launch Steam" $ spawn "steam")
@@ -169,13 +172,13 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-h", sendMessage' Shrink)
 
     -- Expand the master area
+    , ("M-m", sendMessage' Shrink)
+
+    -- Expand the master area
     , ("M-l", sendMessage' Expand)
 
     -- Shrink the master area
-    , ("M-i", sendMessage' Shrink)
-
-    -- Expand the master area
-    , ("M-m", sendMessage' Expand)
+    , ("M-i", sendMessage' Expand)
 
     -- Push window back into tiling
     , ("M-t", addName "Push window back into tiling" $ withFocused ( windows . W.sink))
@@ -382,9 +385,9 @@ myStartupHook = do
   spawnOnce "nitrogen --restore &"
   spawnOnce "/usr/lib/xfce4/notifyd/xfce4-notifyd &"
   -- spawnOnce "xinput --set-prop 'Logitech G502 HERO Gaming Mouse' 'libinput Accel Speed' -1"
-  spawnOnce "picom --experimental-backends --config ~/.xmonad/picom/picom.conf &"
+  spawnOnce "picom --experimental-backends --config ~/.config/xmonad/picom/picom.conf &"
   if useXmobar then spawn "killall polybar"
-  else spawn "killall polybar; polybar --config=~/.xmonad/polybar/polybar.ini xmonad &"
+  else spawn "killall polybar; polybar --config=~/.config/.xmonad/polybar/polybar.ini xmonad &"
   spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) &"
   spawnOnce "numlockx on &"
   spawnOnce "nm-applet"
@@ -395,7 +398,7 @@ myStartupHook = do
 
 
 spawnXmobar True = do 
-  spawnPipe "xmobar $HOME/.xmonad/xmobar.config"
+  spawnPipe "xmobar $HOME/.config/xmonad/xmobar.config"
 spawnXmobar False = do 
   spawnPipe ""
 -- Run xmonad with the settings you specify. No need to modify this.
