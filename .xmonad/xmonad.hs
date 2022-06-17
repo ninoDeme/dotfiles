@@ -132,8 +132,8 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("<Print>", addName "Print Screen" $ spawn "flameshot gui")
 
     -- launch monitor
-    , ("M-m", addName "Launch Task Manager" $ spawn "mate-system-monitor")
-    , ("M-S-m", addName "Launch Terminal-based Task Manager" $ runInTerm "" "htop")
+--    , ("M-m", addName "Launch Task Manager" $ spawn "mate-system-monitor")
+--    , ("M-S-m", addName "Launch Terminal-based Task Manager" $ runInTerm "" "htop")
 
     -- close focused window
     , ("M-S-c", addName "Close Focused Window" kill)
@@ -170,6 +170,12 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
 
     -- Expand the master area
     , ("M-l", sendMessage' Expand)
+
+    -- Shrink the master area
+    , ("M-i", sendMessage' Shrink)
+
+    -- Expand the master area
+    , ("M-m", sendMessage' Expand)
 
     -- Push window back into tiling
     , ("M-t", addName "Push window back into tiling" $ withFocused ( windows . W.sink))
