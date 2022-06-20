@@ -8,3 +8,4 @@ build-*
 xmonad
 stack.yaml
 xmonad-contrib
+hie.yaml

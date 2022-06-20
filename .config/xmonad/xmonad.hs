@@ -1,5 +1,3 @@
--- Imports
---
 
 import Data.Monoid
 import Data.Maybe (fromJust)
@@ -25,6 +23,7 @@ import qualified Data.Map        as M
 
 -- Terminal padrão
 --
+
 myTerminal      :: [Char]
 myTerminal      = "kitty"
 
@@ -45,7 +44,7 @@ myBorderWidth   :: Dimension
 myBorderWidth   = 2
 
 --Config location
-xmonadDir = "$HOME/.config/xmonad"
+xmonadDir = "$HOME/.config/xmonad/"
 
 myFont = "xft:NotoMono Nerd Font:weight=bold:pixelsize=11:antialias=true:hinting=true"
 
@@ -117,7 +116,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-f", addName "Hide Polybar" $ spawn "killall polybar")
 
     -- launch polybar
-    , ("M-S-f", addName "Show Polybar" $ spawn "polybar --config=~/.config/xmonad/polybar/polybar.ini xmonad")
+    , ("M-S-f", addName "Show Polybar" $ spawn ("polybar --config=" ++ xmonadDir ++ "/polybar/polybar.ini xmonad"))
 
     -- launch steam
     , ("M-s", addName "Launch Steam" $ spawn "steam")
@@ -369,7 +368,7 @@ myLogHook h True = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmob
               , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
               }
 
-myLogHook h False = return ()
+myLogHook _ False = return ()
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -385,9 +384,9 @@ myStartupHook = do
   spawnOnce "nitrogen --restore &"
   spawnOnce "/usr/lib/xfce4/notifyd/xfce4-notifyd &"
   -- spawnOnce "xinput --set-prop 'Logitech G502 HERO Gaming Mouse' 'libinput Accel Speed' -1"
-  spawnOnce "picom --experimental-backends --config ~/.config/xmonad/picom/picom.conf &"
+  spawnOnce ("picom --experimental-backends --config " ++ xmonadDir ++ "/picom/picom.conf &")
   if useXmobar then spawn "killall polybar"
-  else spawn "killall polybar; polybar --config=~/.config/xmonad/polybar/polybar.ini xmonad &"
+  else spawn ("killall polybar; polybar --config=" ++ xmonadDir ++ "polybar/polybar.ini xmonad &")
   spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) &"
   spawnOnce "numlockx on &"
   spawnOnce "nm-applet"
@@ -397,17 +396,15 @@ myStartupHook = do
 -- Now run xmonad with all the defaults we set up.
 
 
-spawnXmobar True = do 
-  spawnPipe "xmobar $HOME/.config/xmonad/xmobar.hs"
-spawnXmobar False = do 
-  spawnPipe ""
+spawnXmobar True = spawnPipe ("xmobar " ++ xmonadDir ++ "xmobarrc")
+spawnXmobar False = spawnPipe ""
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main :: IO ()
 main = do
   -- start xmonad
   xmproc <- spawnXmobar useXmobar
---  xmproc <- spawnPipe "xmobar $HOME/.xmonad/xmobar.hs"
+--  xmproc <- spawnPipe "xmobar $HOME/.xmonad/xmobarrc"
   xmonad $  ewmh . docks $ addDescrKeys' ((mod4Mask, xK_F1), xMessage) myKeys (defaults xmproc)
   xmonad desktopConfig
 

@@ -17,11 +17,7 @@ Config { font = "xft:NotoMono Nerd Font:weight=bold:pixelsize=11:antialias=true:
        , allDesktops = True
        , overrideRedirect = True
 --       , textOutputFormat = Ansi
-       , commands = [ Run Network "eth0" ["-L","0","-H","32",
-                                          "--normal","green","--high","red"] 10
-                    , Run Network "eth1" ["-L","0","-H","32",
-                                          "--normal","green","--high","red"] 10
-                    , Run Cpu ["-L","3","-H","50",
+       , commands = [ Run Cpu ["-L","3","-H","50",
                                "--normal","green","--high","red"] 10
                     , Run Memory ["-t","Mem: <usedratio>%"] 10
                     , Run Swap [] 10
