@@ -6,7 +6,7 @@ return require('packer').startup(function(use)
 	use 'vifm/vifm.vim'
 	use 'dag/vim-fish'
 	use 'lambdalisue/vim-pager'
-	use 'chrisbra/Colorizer'
+	-- use 'chrisbra/Colorizer'
 	use 'kyazdani42/nvim-tree.lua'
 	use 'kosayoda/nvim-lightbulb'
 	use 'simrat39/rust-tools.nvim'
@@ -58,4 +58,6 @@ return require('packer').startup(function(use)
 -- Color schemes
 	use 'tjdevries/colorbuddy.nvim'
 	use 'ishan9299/modus-theme-vim'
+
+	use 'norcalli/nvim-colorizer.lua'
 end)

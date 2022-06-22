@@ -17,6 +17,7 @@ import XMonad.Util.NamedActions
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
+import XMonad.Hooks.WorkspaceHistory
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -37,7 +38,8 @@ myClickJustFocuses = False
 
 -- Use xmobar?
 useXmobar :: Bool
-useXmobar = True
+useXmobar = False
+-- useXmobar = True
 -- Width of the window border in pixels.
 --
 myBorderWidth   :: Dimension
@@ -99,7 +101,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-C-x", addName "Launch quake Terminal" $ namedScratchpadAction scratchpads "quakeTerm")
 
     -- launch rofi "run menu"
-    , ("M-<Space>", addName "Launch Run Menu (rofi)" $ spawn "rofi -modi drun,run,window,combi -combi-modi window,drun -show combi -window-thumbnail true -show-icons true")
+    , ("M-<Space>", addName "Launch Run Menu (rofi)" $ spawn "rofi -show combi")
     , ("M-C-<Space>", addName "Launch dmenu" $ spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
 
     -- launch file managers
@@ -125,10 +127,10 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-S-s", addName "Launch lutris" $ spawn "lutris")
 
     -- launch vscode
-    , ("M-z", addName "Launch Vscode" $ spawn "code")
+    , ("M-c", addName "Launch Vscode" $ spawn "code")
 
     -- launch emacs
-    , ("M-S-z", addName "Launch Emacs" $ spawn "emacsclient -c -a=\"\"")
+    , ("M-C-c", addName "Launch editor in config dir" $ spawn ("code " ++ xmonadDir))
 
     -- print screen
     , ("<Print>", addName "Print Screen" $ spawn "flameshot gui")
@@ -370,6 +372,7 @@ myLogHook h True = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmob
 
 myLogHook _ False = return ()
 
+
 ------------------------------------------------------------------------
 -- Startup hook
 
@@ -382,6 +385,7 @@ myStartupHook :: X()
 myStartupHook = do
   setDefaultCursor xC_left_ptr
   spawnOnce "nitrogen --restore &"
+  spawnOnce "kdeconnect-indicator &"
   spawnOnce "/usr/lib/xfce4/notifyd/xfce4-notifyd &"
   -- spawnOnce "xinput --set-prop 'Logitech G502 HERO Gaming Mouse' 'libinput Accel Speed' -1"
   spawnOnce ("picom --experimental-backends --config " ++ xmonadDir ++ "/picom/picom.conf &")
@@ -434,5 +438,5 @@ defaults xmproc = def {
         handleEventHook    = handleEventHook def,
         startupHook        = myStartupHook,
       -- 
-        logHook            = myLogHook xmproc useXmobar
+        logHook            = workspaceHistory >> myLogHook xmproc useXmobar
     }

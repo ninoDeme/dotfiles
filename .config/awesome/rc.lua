@@ -369,7 +369,26 @@ globalkeys = gears.table.join(
     -- Menubar
     awful.key({ modkey }, "space", function() menubar.show() end,
         { description = "show the menubar", group = "launcher" }),
+
+    -- Rofi
+    awful.key({ modkey, "Control" }, "space", function() awful.spawn("rofi -show combi") end,
+        { description = "show rofi", group = "launcher" }),
+
     -- Aplications
+    awful.key({ modkey }, "e", function() awful.spawn(apps.default.files) end,
+        { description = "Open file manager", group = "Applications" }),
+
+    awful.key({ modkey }, "s", function() awful.spawn("steam") end,
+        { description = "Open steam", group = "Applications" }),
+    awful.key({ modkey, "Shift" }, "s", function() awful.spawn("lutris") end,
+        { description = "Open lutris", group = "Applications" }),
+
+    awful.key({ modkey }, "c", function() awful.spawn(apps.default.editor) end,
+        { description = "Open editor", group = "Applications" }),
+
+    awful.key({ modkey, "Control" }, "c", function() awful.spawn(apps.default.editor .. " " .. gears.filesystem.get_configuration_dir()) end,
+        { description = "Edit awesome config", group = "Applications" }),
+
     awful.key({}, "Print", function() awful.spawn("flameshot gui") end),
 
     awful.key({ modkey }, "d", function()
@@ -415,13 +434,13 @@ clientkeys = gears.table.join(
             end
         end,
         { description = "kill (active)", group = "client" }),
-    awful.key({ modkey, "Control" }, "space", awful.client.floating.toggle,
+    awful.key({ modkey }, "t", awful.client.floating.toggle,
         { description = "toggle floating", group = "client" }),
     awful.key({ modkey, "Control" }, "Return", function(c) c:swap(awful.client.getmaster()) end,
         { description = "move to master", group = "client" }),
     awful.key({ modkey, }, "o", function(c) c:move_to_screen() end,
         { description = "move to screen", group = "client" }),
-    awful.key({ modkey, }, "t", function(c) c.ontop = not c.ontop end,
+    awful.key({ modkey, "Shift" }, "t", function(c) c.ontop = not c.ontop end,
         { description = "toggle keep on top", group = "client" }),
     awful.key({ modkey, }, "n",
         function(c)

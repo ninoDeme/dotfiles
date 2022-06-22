@@ -79,6 +79,11 @@ require('lualine').setup {
   }
 }
 
+-- require ('colorizer').setup {
+  --[[ 'css';
+  'javascript';
+  'html'
+} ]]
 
 local null_ls = require("null-ls")
 local prettier = require("prettier")
@@ -165,6 +170,8 @@ autocmd FileType org setlocal iskeyword+=:,#,+
 autocmd BufEnter * lua require'completion'.on_attach()
 autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
 
+set termguicolors
+
 if has('mouse')
 	set mouse=a
 endif
@@ -174,7 +181,6 @@ endif
 vim.g.mapleader = " "
 
 -- plugin options
-vim.g.colorizer_auto_filetype = 'css,html,man'
 vim.g.dashboard_default_executive = "telescope"
 vim.fn.sign_define('DapBreakpoint', { text = '🛑', texthl = '', linehl = '', numhl = '' })
 

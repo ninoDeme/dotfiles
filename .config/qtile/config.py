@@ -72,7 +72,7 @@ keys = [
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([], "Print", lazy.spawn("flameshot gui")),
     Key([mod, "control"], "space", lazy.spawn(scripts + "dmenu-exec.sh"), desc = "Run dmenu"),
-    Key([mod,], "space", lazy.spawn(scripts + "rofi-exec.sh"), desc = "Run rofi"),
+    Key([mod,], "space", lazy.spawn("rofi -show combi"), desc = "Run rofi"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 
     Key(["mod1"], "F4", lazy.spawn("xkill"), desc="Force kill window"),

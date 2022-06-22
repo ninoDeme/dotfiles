@@ -42,7 +42,8 @@ if test -e $HOME/.config/fish/bitwarden.fish
 	source $HOME/.config/fish/bitwarden.fish
 end
 set EDITOR "nvim"
-set -x MANPAGER "nvim -R -c 'set ft=man' -"
+# set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
+set -x MANPAGER 'nvim -c MANPAGER -'
 set -x XDG_DATA_DIRS " /usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
 fish_add_path $HOME/.emacs.d/bin
 fish_add_path $HOME/.local/bin
