@@ -389,6 +389,9 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Control" }, "c", function() awful.spawn(apps.default.editor .. " " .. gears.filesystem.get_configuration_dir()) end,
         { description = "Edit awesome config", group = "Applications" }),
 
+    awful.key({ modkey }, "a", function() awful.spawn("emacs ~/.emacs.d/init.el") end,
+        { description = "Open editor", group = "Applications" }),
+
     awful.key({}, "Print", function() awful.spawn("flameshot gui") end),
 
     awful.key({ modkey }, "d", function()
