@@ -1,6 +1,8 @@
 require('plugins')
 
 -- plugin setup
+local luasnip = require 'luasnip'
+local lspconfig = require('lspconfig')
 local lsp_installer = require("nvim-lsp-installer") --{{{
 
 -- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
@@ -18,7 +20,6 @@ lsp_installer.on_server_ready(function(server)
   -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
   server:setup(opts)
 end) --}}}
-local lspconfig = require('lspconfig')
 local lspkind = require('lspkind')
 local cmp = require 'cmp'
 cmp.setup { --{{{
@@ -38,8 +39,8 @@ cmp.setup { --{{{
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
---      elseif luasnip.expand_or_jumpable() then
---        luasnip.expand_or_jump()
+     elseif luasnip.expand_or_jumpable() then
+       luasnip.expand_or_jump()
       else
         fallback()
       end
@@ -65,9 +66,8 @@ cmp.setup { --{{{
   }
 } --}}}
 
-require("dapui").setup()
+-- require("dapui").setup()
 
-local luasnip = require 'luasnip'
 
 require 'nvim-tree'.setup()
 
@@ -85,7 +85,7 @@ require('lualine').setup {
   'html'
 } ]]
 
-local null_ls = require("null-ls")
+-- local null_ls = require("null-ls")
 local prettier = require("prettier")
 
 --[[ null_ls.setup({
@@ -152,8 +152,14 @@ require('kommentary.config').use_extended_mappings()
 require 'qf_helper'.setup()
 
 require 'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+  },
   rainbow = {
     enable = true
+  },
+  indent = {
+    enable = true,
   }
 }
 require 'treesitter-context'.setup { enable = true, throttle = true, }
