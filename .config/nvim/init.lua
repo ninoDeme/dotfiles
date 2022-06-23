@@ -90,11 +90,11 @@ require('lualine').setup {
   }
 }
 
--- require ('colorizer').setup {
-  --[[ 'css';
+--[[ require ('colorizer').setup {
+  'css';
   'javascript';
   'html'
-} ]]
+}  ]]
 
 local prettier = require("prettier")
 

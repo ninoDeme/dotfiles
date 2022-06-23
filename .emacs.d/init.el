@@ -8,6 +8,20 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
+(setq modus-themes-headings
+      '((1 . (rainbow variable-pitch 1.5))
+        (2 . (rainbow variable-pitch 1.3))
+        (3 . (rainbow variable-pitch 1.1))
+        (t . (rainbow variable-pitch ))))
+;; (setq modus-themes-org-blocks '(grayscale))
+(setq modus-themes-mixed-fonts t)
+(setq modus-themes-variable-pitch-ui t)
+(setq modus-themes-region '(bg-only no-extend))
+(setq modus-themes-subtle-line-numbers t)
+(setq modus-themes-mode-line '(borderless ))
+(setq modus-themes-syntax '(yellow-comments))
+(load-theme 'modus-vivendi t)
+
 ;; Change font
 (set-face-attribute 'default nil :font "NotoMono Nerd Font" :height 110)
 ;; Set the fixed pitch face
@@ -19,10 +33,14 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Add line numbers
-(add-hook 'prog-mode-hook 'menu-bar--display-line-numbers-mode-relative)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 
 ;; Kill buffers witout prompt
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+
+(set-frame-parameter (selected-frame) 'alpha '(90 . 90))
+(add-to-list 'default-frame-alist '(alpha . (90 . 90)))
 
 ;; Packages  ======================================================================================
 
@@ -43,6 +61,7 @@
   (require 'use-package))
 (setq use-package-always-ensure t)
 
+(use-package bug-hunter)
 
 ;; Define keymaps  ================================================================================
 
@@ -141,15 +160,17 @@
   :ensure t
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 30))
-  :config (setq doom-modeline-indent-info t))
+  :config (setq doom-modeline-indent-info t)
+  (setq doom-modeline-icon t)
+  (setq doom-modeline-buffer-file-name-style 'truncate-upto-project))
 
 ;; Themes
-(use-package doom-themes
-  :config 
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-	doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-tomorrow-night t)
-  (doom-themes-org-config))
+;; (use-package doom-themes
+;;   :config 
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;; 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   (load-theme 'doom-tomorrow-night t)
+;;   (doom-themes-org-config))
 
 (use-package projectile ; Project manager
   :diminish projectile-mode
@@ -188,29 +209,29 @@
   (font-lock-add-keywords 'org-mode
                           '(("^ *\\([-]\\) "
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-  (dolist (face '((org-level-1 . 1.2)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.05)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "NotoSans Nerd Font" :weight 'regular :height (cdr face)))
+  ;; (dolist (face '((org-level-1 . 1.2)
+  ;;                 (org-level-2 . 1.1)
+  ;;                 (org-level-3 . 1.05)
+  ;;                 (org-level-4 . 1.0)
+  ;;                 (org-level-5 . 1.1)
+  ;;                 (org-level-6 . 1.1)
+  ;;                 (org-level-7 . 1.1)
+  ;;                 (org-level-8 . 1.1)))
+  ;;   (set-face-attribute (car face) nil :font "NotoSans Nerd Font" :weight 'regular :height (cdr face)))
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
-  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
-  (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
-  (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch))
-
+  ;; (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+  ;; (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+  ;; (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  ;; (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  ;; (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  ;; (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch)
+)
 (use-package org
   :hook (org-mode . org-mode-setup)
   :config
@@ -219,12 +240,29 @@
 
 (defun org-mode-visual-fill ()
   (visual-line-mode 1)
-  (setq visual-fill-column-width 120
+  (setq visual-fill-column-width 100
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
 (use-package visual-fill-column
   :hook (org-mode . org-mode-visual-fill))
+
+(use-package company
+  :config (global-company-mode 1)
+  (add-hook 'after-init-hook 'company-tng-mode))
+;; LSP mode config
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-l")
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
 
 ;; Automaticaly created stuff {{{
 (custom-set-variables
@@ -235,7 +273,7 @@
  '(custom-safe-themes
    '("1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
  '(package-selected-packages
-   '(org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
+   '(lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
