@@ -9,7 +9,11 @@
 (scroll-bar-mode -1)
 
 ;; Change font
-(set-face-attribute 'default nil :font "NotoMono Nerd font" :height 110)
+(set-face-attribute 'default nil :font "NotoMono Nerd Font" :height 110)
+;; Set the fixed pitch face
+(set-face-attribute 'fixed-pitch nil :font "NotoMono Nerd Font" :height 110)
+;; Set the variable pitch face
+(set-face-attribute 'variable-pitch nil :font "NotoSans Nerd Font" :height 110 :weight 'regular)
 
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -114,9 +118,7 @@
   :config
   (leader-key
     "s" 'swiper
-    "C-s" 'swiper
-    "b" 'counsel-switch-buffer
-    "C-b" 'counsel-switch-buffer)
+    "b" 'counsel-switch-buffer)
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) "))
@@ -159,9 +161,6 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; Org mode
-(use-package org)
-
 ;; Better help
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key)
@@ -174,6 +173,50 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
+;; Org mode
+
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode)
+  :after org
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+(defun org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  ;; Replace list hyphen with dot
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "NotoSans Nerd Font" :weight 'regular :height (cdr face)))
+
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
+  (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch))
+
+(use-package org
+  :hook (org-mode . org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾"
+	org-hide-emphasis-markers t))
+
 ;; Automaticaly created stuff {{{
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -183,7 +226,7 @@
  '(custom-safe-themes
    '("1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
  '(package-selected-packages
-   '(evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
+   '(org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
