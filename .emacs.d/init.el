@@ -75,6 +75,7 @@
     :global-prefix "C-SPC")
   (leader-key
     "e" 'counsel-find-file
+    "E" 'dired-jump
     "RET" 'vterm
     "g" 'magit-status
     "SPC" 'treemacs))
@@ -121,15 +122,26 @@
   :after (treemacs projectile)
   :ensure t)
 
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
+(use-package lsp-treemacs)
+
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-enable-once)
   :hook (counsel-find-file . treemacs-icons-dired-enable-once)
   :ensure t)
 
-(use-package treemacs-magit
-  :after (treemacs magit)
-  :ensure t)
-(use-package lsp-treemacs)
+(use-package dired
+  :ensure nil
+  :commands (dired dired-jump)
+  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  :config
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-up-directory
+    (kbd "L") 'dired-view-file
+    (kbd "M-l") 'dired-display-file
+    "l" 'dired-find-file))
 
 (use-package hydra) ;; create temporary keymaps
 
