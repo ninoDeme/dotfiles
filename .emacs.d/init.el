@@ -53,7 +53,7 @@
     :prefix "SPC"
     :global-prefix "C-SPC")
   (leader-key
-    "e" 'dired
+    "e" 'counsel-find-file
     "RET" 'term
     "g" 'magit-status))
 
@@ -216,6 +216,15 @@
   :config
   (setq org-ellipsis " ▾"
 	org-hide-emphasis-markers t))
+
+(defun org-mode-visual-fill ()
+  (visual-line-mode 1)
+  (setq visual-fill-column-width 120
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :hook (org-mode . org-mode-visual-fill))
 
 ;; Automaticaly created stuff {{{
 (custom-set-variables

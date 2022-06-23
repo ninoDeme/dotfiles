@@ -58,16 +58,26 @@ cmp.setup { --{{{
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = 'path' },
+    { name = 'treesitter' },
   },
   formatting = {
     format = lspkind.cmp_format({
       mode = 'symbol_text', -- show only symbol annotations
     })
   }
-} --}}}
-
+}
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+--}}}
 -- require("dapui").setup()
-
 
 require 'nvim-tree'.setup()
 
@@ -85,23 +95,7 @@ require('lualine').setup {
   'html'
 } ]]
 
--- local null_ls = require("null-ls")
 local prettier = require("prettier")
-
---[[ null_ls.setup({
-  on_attach = function(client, bufnr)
-    if client.resolved_capabilities.document_formatting then
-      vim.cmd("nnoremap <silent><buffer> <Leader>f :lua vim.lsp.buf.format( async == true )<CR>")
-      -- format on save
-      -- vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()")
-    end
-
-    if client.resolved_capabilities.document_range_formatting then
-      vim.cmd("xnoremap <silent><buffer> <Leader>f :lua vim.lsp.buf.range_formatting({})<CR>")
-    end
-  end,
-}) ]]
-
 
 prettier.setup({
   bin = 'prettier', -- or `prettierd`
@@ -173,7 +167,6 @@ set notimeout
 filetype plugin indent on
 
 autocmd FileType org setlocal iskeyword+=:,#,+
-autocmd BufEnter * lua require'completion'.on_attach()
 autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
 
 set termguicolors
@@ -227,7 +220,7 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
+set completeopt=menu,menuone,noselect
 
 " Avoid showing message extra message when using completion
 set shortmess+=c

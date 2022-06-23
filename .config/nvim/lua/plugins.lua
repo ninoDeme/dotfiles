@@ -10,7 +10,6 @@ return require('packer').startup(function(use)
 	use 'kyazdani42/nvim-tree.lua'
 	use 'kosayoda/nvim-lightbulb'
 	-- use 'simrat39/rust-tools.nvim'
-	use 'nvim-lua/completion-nvim'
 	use 'LoricAndre/OneTerm.nvim'
 	use 'gennaro-tedesco/nvim-peekup'
 	use 'nvim-lua/plenary.nvim'
@@ -24,7 +23,6 @@ return require('packer').startup(function(use)
 	use 'johann2357/nvim-smartbufs'
 	use 'hoob3rt/lualine.nvim'
 	use 'glepnir/dashboard-nvim'
-	use 'nvim-treesitter/completion-treesitter'
 	use 'lewis6991/gitsigns.nvim'
 	use 'b3nj5m1n/kommentary'
 	use 'tpope/vim-surround'
@@ -54,6 +52,10 @@ return require('packer').startup(function(use)
 	use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
 	use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
 	use 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
+	use 'hrsh7th/cmp-path'
+	use 'hrsh7th/cmp-buffer'
+	use 'hrsh7th/cmp-cmdline'
+	use 'ray-x/cmp-treesitter'
 
 -- Color schemes
 	use 'tjdevries/colorbuddy.nvim'
