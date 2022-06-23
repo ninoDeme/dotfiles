@@ -33,7 +33,7 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Add line numbers
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 
 ;; Kill buffers witout prompt
@@ -68,13 +68,16 @@
 (use-package general
   :config (general-evil-setup t)
   (general-create-definer leader-key
-    :keymaps '(normal visual emacs insert)
+    :keymaps '(normal visual emacs insert treemacs) 
     :prefix "SPC"
+    :prefix-map 'leader-key-map
+    :prefix-command 'leader-key-cmd
     :global-prefix "C-SPC")
   (leader-key
     "e" 'counsel-find-file
-    "RET" 'term
-    "g" 'magit-status))
+    "RET" 'vterm
+    "g" 'magit-status
+    "SPC" 'treemacs))
 
 ;; Install and configure packages ===============================================================
 
@@ -105,6 +108,28 @@
   :ensure t
   :config
   (global-evil-surround-mode 1))
+
+(use-package treemacs)
+(use-package treemacs-evil
+  :after (treemacs evil)
+  :ensure t
+  :config (evil-define-key 'treemacs treemacs-mode-map (kbd "SPC") 'leader-key-cmd)
+	(evil-define-key 'treemacs treemacs-mode-map (kbd "C-SPC") 'leader-key-cmd)
+  )
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :hook (counsel-find-file . treemacs-icons-dired-enable-once)
+  :ensure t)
+
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
+(use-package lsp-treemacs)
 
 (use-package hydra) ;; create temporary keymaps
 
@@ -145,6 +170,10 @@
 (use-package ivy-rich
   :config (ivy-rich-mode 1))
 
+(use-package all-the-icons-ivy-rich
+  :ensure t
+  :init (all-the-icons-ivy-rich-mode 1))
+
 (use-package which-key
   :defer 0
   :diminish which-key-mode
@@ -171,6 +200,9 @@
 ;; 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
 ;;   (load-theme 'doom-tomorrow-night t)
 ;;   (doom-themes-org-config))
+
+(use-package vterm
+  :ensure t)
 
 (use-package projectile ; Project manager
   :diminish projectile-mode
@@ -248,8 +280,13 @@
   :hook (org-mode . org-mode-visual-fill))
 
 (use-package company
+  :bind (:map company-active-map
+	      ("C-j" . company-select-next)
+	      ("C-k" . company-select-previous)
+	      ("C-l" . company-complete-selection))
   :config (global-company-mode 1)
-  (add-hook 'after-init-hook 'company-tng-mode))
+  (add-hook 'prog-mode-hook '(company-mode 1)))
+
 ;; LSP mode config
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -273,7 +310,7 @@
  '(custom-safe-themes
    '("1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
  '(package-selected-packages
-   '(lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
+   '(vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
