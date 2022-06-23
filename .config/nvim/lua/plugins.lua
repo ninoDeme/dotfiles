@@ -1,3 +1,4 @@
+-- ~/.config/nvim/init.lua
 vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
 
@@ -9,16 +10,12 @@ return require('packer').startup(function(use)
 	-- use 'chrisbra/Colorizer'
 	use 'kyazdani42/nvim-tree.lua'
 	use 'kosayoda/nvim-lightbulb'
-	-- use 'simrat39/rust-tools.nvim'
 	use 'LoricAndre/OneTerm.nvim'
 	use 'gennaro-tedesco/nvim-peekup'
 	use 'nvim-lua/plenary.nvim'
 	use 'nvim-telescope/telescope.nvim'
-	-- use 'mfussenegger/nvim-jdtls'
 	use 'kyazdani42/nvim-web-devicons'
 	use 'nvim-treesitter/nvim-treesitter'
-	use 'preservim/nerdcommenter'
-	use 'xiyaowong/nvim-transparent'
 	use 'akinsho/bufferline.nvim'
 	use 'johann2357/nvim-smartbufs'
 	use 'hoob3rt/lualine.nvim'
@@ -45,7 +42,6 @@ return require('packer').startup(function(use)
 	use 'ojroques/nvim-lspfuzzy'
 	use 'onsails/lspkind.nvim'
 	use 'williamboman/nvim-lsp-installer'
-	-- use'jose-elias-alvarez/null-ls.nvim'
 	use'MunifTanjim/prettier.nvim'
 
 -- Autocompletion
@@ -60,6 +56,5 @@ return require('packer').startup(function(use)
 -- Color schemes
 	use 'tjdevries/colorbuddy.nvim'
 	use 'ishan9299/modus-theme-vim'
-
 	use 'norcalli/nvim-colorizer.lua'
 end)

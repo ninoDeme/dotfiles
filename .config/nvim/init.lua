@@ -1,4 +1,5 @@
 require('plugins')
+-- ~/.config/nvim/lua/plugins.lua use <gf> to go to file
 
 -- plugin setup
 local luasnip = require 'luasnip'
@@ -241,6 +242,13 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
 noremap <silent> <F5> :lua require'dap'.continue()<CR>
 noremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
+
+" qf_helper bindings
+nnoremap <silent> <C-N> <cmd>QNext<CR>
+nnoremap <silent> <C-P> <cmd>QPrev<CR>
+" toggle the quickfix open/closed without jumping to it
+nnoremap <silent> <leader>q <cmd>QFToggle!<CR>
+nnoremap <silent> <leader>l <cmd>LLToggle!<CR>
 
 " Go to next buffer (alt-tab equivalent)
 noremap <silent> <leader><Tab> :BufferLineCycleNext<CR>
