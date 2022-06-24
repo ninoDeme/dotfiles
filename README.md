@@ -25,7 +25,7 @@ Rofi, nitrogen, picom, network-manager-applet, xfce4-power-manager, flameshot, d
 Cloning repository as a bare repository:
 
 ```sh
-curl -Lks http://bit.do/fRBXz | sh
+curl -Lks https://raw.githubusercontent.com/ninoDeme/dotfiles/main/scripts/Bare.sh | sh
 ```
 
 ## Manual Installation
