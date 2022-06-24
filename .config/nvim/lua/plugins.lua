@@ -19,7 +19,6 @@ return require('packer').startup(function(use)
 	use 'akinsho/bufferline.nvim'
 	use 'johann2357/nvim-smartbufs'
 	use 'hoob3rt/lualine.nvim'
-	use 'glepnir/dashboard-nvim'
 	use 'lewis6991/gitsigns.nvim'
 	use 'b3nj5m1n/kommentary'
 	use 'tpope/vim-surround'

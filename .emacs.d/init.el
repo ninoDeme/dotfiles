@@ -1,4 +1,16 @@
-;; Personal config ================================================================================
+; Personal config ================================================================================
+
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 50 1000 1000))
+
+(defun display-startup-time ()
+  (message "Emacs loaded in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time
+                     (time-subtract after-init-time before-init-time)))
+           gcs-done))
+
+(add-hook 'emacs-startup-hook #'display-startup-time)
 
 ;; Disable "bloat" to make emacs look more minimal
 (setq inhibit-startup-message t)
@@ -60,16 +72,22 @@
 (eval-when-compile
   (require 'use-package))
 (setq use-package-always-ensure t)
+(setq use-package-always-defer t)
+(setq use-package-verbose t)
 
-(use-package bug-hunter)
+(use-package no-littering) ;; Avoid clutering .emacs.d
+(use-package bug-hunter
+  :commands (bug-hunter-file bug-hunter-init-file))
 
 ;; Define keymaps  ================================================================================
 
 (use-package general
+  :demand t
   :config (general-evil-setup t)
   (general-create-definer leader-key
     :keymaps '(normal visual emacs insert treemacs) 
     :prefix "SPC"
+  :non-normal-prefix "C-SPC"
     :prefix-map 'leader-key-map
     :prefix-command 'leader-key-cmd
     :global-prefix "C-SPC")
@@ -82,9 +100,11 @@
 
 ;; Install and configure packages ===============================================================
 
-(use-package undo-fu) ;; better redo functionality for evil mode
+(use-package undo-fu
+  :defer 1) ;; better redo functionality for evil mode
 ;; Vim mode
 (use-package evil
+  :demand t
   :init (setq evil-undo-system 'undo-fu)
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
@@ -99,18 +119,23 @@
   :config (evil-mode 1))
 
 (use-package evil-collection
+  :demand t
   :after evil
   :config (evil-collection-init))
 
 (use-package evil-commentary ;; Evil comment support
+  :after evil
+  :defer 0
   :config (evil-commentary-mode))
 
 (use-package evil-surround ;; Evil surround (ys* to add surrounding cs<old><new> change surrounding)
   :ensure t
+  :defer 0
   :config
   (global-evil-surround-mode 1))
 
-(use-package treemacs)
+(use-package treemacs
+  :commands treemacs)
 (use-package treemacs-evil
   :after (treemacs evil)
   :ensure t
@@ -125,7 +150,8 @@
 (use-package treemacs-magit
   :after (treemacs magit)
   :ensure t)
-(use-package lsp-treemacs)
+(use-package lsp-treemacs
+  :after (lsp treemacs))
 
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-enable-once)
@@ -143,18 +169,24 @@
     (kbd "M-l") 'dired-display-file
     "l" 'dired-find-file))
 
-(use-package hydra) ;; create temporary keymaps
+;; (use-package hydra) ;; create temporary keymaps
 
-(use-package magit)
+(use-package magit
+  :commands (magit-status)
+  :defer 1)
 
 ;; ivy stuff 
-(use-package swiper)
+(use-package swiper
+  :commands (swiper)
+)
 (use-package counsel
   :config (counsel-mode 1)
   (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
+
 (use-package counsel-projectile
-  :after projectile
+  :after (projectile counsel)
   :config (counsel-projectile-mode 1))
+
 (use-package ivy 
   :diminish
   :bind (:map ivy-minibuffer-map
@@ -180,6 +212,7 @@
   (setq ivy-count-format "(%d/%d) "))
 
 (use-package ivy-rich
+  :after (all-the-icons-ivy-rich)
   :config (ivy-rich-mode 1))
 
 (use-package all-the-icons-ivy-rich
@@ -214,10 +247,12 @@
 ;;   (doom-themes-org-config))
 
 (use-package vterm
-  :ensure t)
+  :ensure t
+  :commands 'vterm)
 
 (use-package projectile ; Project manager
   :diminish projectile-mode
+  :defer 0
   :config 
   (leader-key
     "p" 'projectile-command-map)) ; Leader (SPC) + p to open projectile map
@@ -244,7 +279,8 @@
   :hook (org-mode . org-bullets-mode)
   :after org
   :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●"))
+  )
 
 (defun org-mode-setup ()
   (org-indent-mode)
@@ -292,12 +328,15 @@
   :hook (org-mode . org-mode-visual-fill))
 
 (use-package company
+  :defer 0
   :bind (:map company-active-map
 	      ("C-j" . company-select-next)
 	      ("C-k" . company-select-previous)
 	      ("C-l" . company-complete-selection))
-  :config (global-company-mode 1)
-  (add-hook 'prog-mode-hook '(company-mode 1)))
+  :config (global-company-mode 1))
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 ;; LSP mode config
 (use-package lsp-mode
@@ -305,13 +344,19 @@
   :init
   (setq lsp-keymap-prefix "C-l")
   :config
+  (message "LOADING LSP =======================")
   (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
 
 (use-package lsp-pyright
   :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp))))  ; or lsp-deferred
+  :hook (python-mode . lsp))  ; or lsp-deferred
+
+(setq gc-cons-threshold (* 2 1000 1000))
 
 ;; Automaticaly created stuff {{{
 (custom-set-variables
