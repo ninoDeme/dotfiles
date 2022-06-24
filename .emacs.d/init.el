@@ -1,5 +1,11 @@
-; Personal config ================================================================================
+;;; init.el --- My emacs config
 
+;; Author: ninodemeterko@hotmail.com
+;; URL: https://github.com/ninoDeme/dotfiles
+
+;;; Commentary:
+
+;;; Code:
 ;; The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 50 1000 1000))
 
@@ -85,7 +91,7 @@
   :demand t
   :config (general-evil-setup t)
   (general-create-definer leader-key
-    :keymaps '(normal visual emacs insert treemacs) 
+    :keymaps '(normal visual emacs insert treemacs)
     :prefix "SPC"
   :non-normal-prefix "C-SPC"
     :prefix-map 'leader-key-map
@@ -327,6 +333,8 @@
 (use-package visual-fill-column
   :hook (org-mode . org-mode-visual-fill))
 
+(use-package flycheck
+  :hook (prog-mode . flycheck-mode))
 (use-package company
   :defer 0
   :bind (:map company-active-map
@@ -343,6 +351,8 @@
   :commands (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-l")
+  (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
   :config
   (message "LOADING LSP =======================")
   (lsp-enable-which-key-integration t))
@@ -367,7 +377,7 @@
  '(custom-safe-themes
    '("1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
  '(package-selected-packages
-   '(vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
+   '(flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
