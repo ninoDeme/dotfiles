@@ -11,7 +11,7 @@ case "$chosen" in
 esac
 
 # Set project list in format "<name that will appear on rofi>,<work dir>,<main file or use dot to use work dir>"
-projects=("qtile,$HOME/.config/qtile,config.py" "AwesomeWM,$HOME/.config/awesome,rc.lua" "XMonad,$HOME/.config/xmonad,xmonad.hs" "Rofi,$HOME/.config/rofi,config.rasi" "Neovim,$HOME/.config/nvim,init.lua" "scripts,$HOME/scripts,." "Emacs,$HOME/.emacs.d,init.el")
+projects=("qtile,$HOME/.config/qtile,config.py" "AwesomeWM,$HOME/.config/awesome,rc.lua" "XMonad,$HOME/.config/xmonad,xmonad.hs" "Rofi,$HOME/.config/rofi,config.rasi" "Neovim,$HOME/.config/nvim,init.lua" "scripts,$HOME/scripts,." "Emacs,$HOME/.emacs.d,init.el" "Fish_Shell,$HOME/.config/fish,config.fish" "Bash,$HOME,.bashrc")
 
 # Generate project prompt
 rofi_prompt=""
