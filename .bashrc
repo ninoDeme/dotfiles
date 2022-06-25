@@ -7,7 +7,7 @@
 [[ -z "$FUNCNEST" ]] && export FUNCNEST=100          # limits recursive functions, see 'man bash'
 
 # Set prompt
-PS1="\[\033[1;33m\][\[\033[1;36m\]\u\[\033[1;37m\]@\[\033[1;32m\]\h\[\033[1;37m\]:\[\033[1;31m\]\w\[\033[1;33m\]] \[\033[1;37m\]~>\[\033[0m\] "
+PS1="\[\033[1;33m\][\[\033[1;36m\]\u\[\033[1;37m\]@\[\033[1;32m\]\h\[\033[1;37m\]:\[\033[1;31m\]\w\[\033[1;33m\]]\[\033[1;37m\]>\[\033[0m\] "
 
 ## Use the up and down arrow keys for finding a command in history
 ## (you can write some initial letters of the command first).
@@ -57,6 +57,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 export EDITOR="nvim"
 # set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
 export MANPAGER="nvim -c MANPAGER -"
+export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
 
 PATH="$HOME/.emacs.d/bin:$PATH"
 if [ -d "$HOME/.local/bin" ] ;
@@ -129,3 +130,7 @@ shopt -s cdable_vars
 # export documents="$HOME/Documents"
 # export dropbox="$HOME/Dropbox"
 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

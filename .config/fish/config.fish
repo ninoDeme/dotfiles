@@ -57,7 +57,7 @@ end
 set EDITOR "nvim"
 # set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
 set -x MANPAGER 'nvim -c MANPAGER -'
-set -x XDG_DATA_DIRS " /usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
+set -x XDG_DATA_DIRS "/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
 fish_add_path $HOME/.emacs.d/bin
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
