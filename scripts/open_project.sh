@@ -28,7 +28,7 @@ exec_cmd=$(printf "$rofi_prompt" | rofi -dmenu -i -p "Project:")
 projectIndex=(${exec_cmd//: / })
 tmpVar=${projectIndex[0]}
 tmpArray=(${projects[$(($tmpVar - 1))]//,/ })
-if [ "$edit" != "code " ]; then
+if [ "$edit" != "code" ]; then
 	echo "cd ${tmpArray[1]} && $edit ${tmpArray[2]}"
 	cd ${tmpArray[1]} && $edit ${tmpArray[2]}
 else
