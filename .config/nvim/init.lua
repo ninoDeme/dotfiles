@@ -85,7 +85,22 @@ cmp.setup.cmdline(':', {
 --}}}
 -- require("dapui").setup()
 
-require 'nvim-tree'.setup()
+require 'nvim-tree'.setup({
+  view = {
+    mappings = {
+      list = {
+        { key = "h", action = "dir_up"},
+        { key = "l", action = "edit"},
+        { key = "<C-l>", action = "preview"},
+      }
+    }
+  },
+  actions = {
+    open_file = {
+      quit_on_open = true
+    }  
+  }
+})
 
 require('lualine').setup {
   options = {

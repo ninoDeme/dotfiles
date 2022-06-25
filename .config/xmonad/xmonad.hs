@@ -130,7 +130,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-c", addName "Launch Vscode" $ spawn "code")
 
     -- launch emacs
-    , ("M-C-c", addName "Launch editor in config dir" $ spawn ("code " ++ xmonadDir))
+    , ("M-C-c", addName "Launch editor in config dir" $ spawn "sh -c './$HOME/scripts/open_project.sh'")
 
     -- print screen
     , ("<Print>", addName "Print Screen" $ spawn "flameshot gui")

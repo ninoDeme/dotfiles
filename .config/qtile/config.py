@@ -66,6 +66,8 @@ keys = [
     Key([mod, "shift"], "s", lazy.spawn("firefox"), desc="Launch lutris"),
     Key([mod], "d", lazy.spawn("flatpak run com.discordapp.Discord"), desc="Launch discord"),
     Key([mod], "b", lazy.spawn("firefox"), desc="Launch firefox"),
+    Key([mod], "c", lazy.spawn("code"), desc="Launch firefox"),
+    Key([mod, "control"], "c", lazy.spawn(scripts + "open_project.sh"), desc="Launch firefox"),
 
 
     # Toggle between different layouts as defined below
@@ -156,7 +158,21 @@ screens = [
                     rounded = False),
                 widget.Prompt(foreground = theme.fg),
                 widget.CurrentLayout(foreground = theme.fgalt, background = theme.bgalt, padding = 6),
-                widget.WindowName(foreground = theme.fg, padding = 6),
+                # widget.WindowName(foreground = theme.fg, padding = 6),
+                widget.TaskList(
+                    foreground = theme.fg_active,
+                    borderwidth = 0,
+                    margin_x = 3,
+                    margin = 0,
+                    fontsize = 12,
+                    padding = 3,
+                    icon_size = 0,
+                    txt_floating = "🗗",
+                    txt_maximized = "🗖",
+                    txt_minimized = "🗕 ",
+                    highlight_method= 'block',
+                    border = theme.bgalt,
+                    rounded = False),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),
