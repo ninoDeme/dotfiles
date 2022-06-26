@@ -9,10 +9,7 @@
 # Set prompt
 PS1="\[\033[1;33m\][\[\033[1;36m\]\u\[\033[1;37m\]@\[\033[1;32m\]\h\[\033[1;37m\]:\[\033[1;31m\]\w\[\033[1;33m\]]\[\033[1;37m\]>\[\033[0m\] "
 
-## Use the up and down arrow keys for finding a command in history
-## (you can write some initial letters of the command first).
-bind '"\e[A":history-search-backward'
-bind '"\e[B":history-search-forward'
+export TERM="xterm-256color"                      # getting proper colors
 
 _open_files_for_editing() {
     # Open any given document file(s) for editing (or just viewing).
@@ -48,7 +45,6 @@ then
 fi
 
 alias ef='_open_files_for_editing'     # 'ef' opens given file(s) for editing
-
 alias emt='emacsclient -nw -a=\"\"'
 alias cp='cp -i'
 alias rm='rm -i'

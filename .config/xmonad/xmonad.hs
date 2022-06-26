@@ -130,7 +130,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-c", addName "Launch Vscode" $ spawn "code")
 
     -- launch emacs
-    , ("M-C-c", addName "Launch editor in config dir" $ spawn "sh -c './$HOME/scripts/open_project.sh'")
+    , ("M-C-c", addName "Launch projects" $ spawn "sh $HOME/scripts/open_project.sh")
 
     -- print screen
     , ("<Print>", addName "Print Screen" $ spawn "flameshot gui")
@@ -200,7 +200,8 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-S-b", addName "Toggle docks" $ sendMessage ToggleStruts)
 
     -- Quit xmonad
-    , ("M-S-q", addName "LogOut" $ io exitSuccess)
+    , ("M-C-q", addName "LogOut" $ io exitSuccess)
+    , ("M-S-q", addName "Power menu" $ spawn "sh -c ./scripts/rofi-power.sh")
 
     -- Restart xmonad
     , ("M-S-r", addName "Restart Xmonad" $ spawn "xmonad --recompile; killall xmobar ; xmonad --restart")

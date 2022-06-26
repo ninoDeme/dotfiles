@@ -1,36 +1,10 @@
-env:
-  TERM: "xterm-256color"
 url:
     modifiers: Control
     launcher: xdg-open
 
-colors:
-  primary:
-    background: '0x272a34'
-    foreground: '0xFFFFFF'
-
-  normal:
-    black:   '0x1F2229'
-    red:     '0xEC0101'
-    green:   '0x47D4B9'
-    yellow:  '0xFF8A18'
-    blue:    '0x277FFF'
-    magenta: '0xD71655'
-    cyan:    '0x05A1F7'
-    white:   '0xFFFFFF'
-
-
-  bright:
-    black:   '0x1F2229'
-    red:     '0xD41919'
-    green:   '0x5EBDAB'
-    yellow:  '0xFEA44C'
-    blue:    '0x367bf0'
-    magenta: '0xBF2E5D'
-    cyan:    '0x49AEE6'
-    white:   '0xFFFFFF'
-
-background_opacity: 0.95
+window:
+  opacity: 0.98
+  dynamic_title: true
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
@@ -44,4 +18,33 @@ font:
         italic:
                 family: NotoMono Nerd Font
                 style: Italic
-        size: 10
+        size: 11
+
+# Colors (Terminal.app)
+colors:
+  # Default colors
+  primary:
+    background: '#000000'
+    foreground: '#d0d0d0'
+
+  # Normal colors
+  normal:
+    black:   '#000000'
+    red:     '#990000'
+    green:   '#00a600'
+    yellow:  '#999900'
+    blue:    '#106BBE'
+    magenta: '#b240b2'
+    cyan:    '#00a6b2'
+    white:   '#bfbfbf'
+
+  # Bright colors
+  bright:
+    black:   '#666666'
+    red:     '#e50000'
+    green:   '#00d900'
+    yellow:  '#e5e500'
+    blue:    '#1B85EB'
+    magenta: '#e550e5'
+    cyan:    '#00e5e5'
+    white:   '#e5e5e5'

@@ -14,9 +14,9 @@ from pygments import highlight
 from themes import gruvbox, arc
 
 theme = arc
-
+with open(os.path.expanduser("~/.config/DefaultTerm")) as f:
+    terminal = f.read()
 mod = "mod4"
-terminal = "kitty"
 scripts = os.path.expanduser("~/scripts/")
 
 @hook.subscribe.startup_once
@@ -81,7 +81,8 @@ keys = [
     Key([mod, "shift"], "c", lazy.window.kill(), desc="Kill focused window"),
 
     Key([mod, "shift"], "r", lazy.restart(), desc="Reload the config"),
-    Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod, "shift"], "q", lazy.spawn(scripts + "rofi-power.sh") , desc="Power menu"),
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -109,7 +110,18 @@ for i in groups:
             #     desc="move focused window to group {}".format(i.name)),
         ]
     )
-
+floating_layout = layout.Floating(
+    float_rules=[
+        # Run the utility of `xprop` to see the wm class and name of an X client.
+        *layout.Floating.default_float_rules,
+        Match(wm_class="confirmreset"),  # gitk
+        Match(wm_class="makebranch"),  # gitk
+        Match(wm_class="maketag"),  # gitk
+        Match(wm_class="ssh-askpass"),  # ssh-askpass
+        Match(title="branchdialog"),  # gitk
+        Match(title="pinentry"),  # GPG key password entry
+    ]
+)
 layouts = [
 #    layout.Columns(),
     layout.MonadTall(
@@ -208,18 +220,7 @@ dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
-floating_layout = layout.Floating(
-    float_rules=[
-        # Run the utility of `xprop` to see the wm class and name of an X client.
-        *layout.Floating.default_float_rules,
-        Match(wm_class="confirmreset"),  # gitk
-        Match(wm_class="makebranch"),  # gitk
-        Match(wm_class="maketag"),  # gitk
-        Match(wm_class="ssh-askpass"),  # ssh-askpass
-        Match(title="branchdialog"),  # gitk
-        Match(title="pinentry"),  # GPG key password entry
-    ]
-)
+
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True

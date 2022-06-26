@@ -28,8 +28,8 @@
 
 (setq modus-themes-headings
       '((1 . (rainbow variable-pitch 1.5))
-        (2 . (rainbow variable-pitch 1.3))
-        (3 . (rainbow variable-pitch 1.1))
+	(2 . (rainbow variable-pitch 1.3))
+	(3 . (rainbow variable-pitch 1.1))
         (t . (rainbow variable-pitch ))))
 ;; (setq modus-themes-org-blocks '(grayscale))
 (setq modus-themes-mixed-fonts t)
@@ -107,7 +107,14 @@
 ;; Install and configure packages ===============================================================
 
 (use-package undo-fu
-  :defer 1) ;; better redo functionality for evil mode
+  :demand t) ;; better redo functionality for evil mode
+
+(use-package undo-fu-session  ;; save history between sessions
+  :after undo-fu
+  :config
+  (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
+  (global-undo-fu-session-mode 1))
+
 ;; Vim mode
 (use-package evil
   :demand t
@@ -116,12 +123,13 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   :bind (:map evil-insert-state-map ;; Alt + Movement keys to exit insert mode
-		("M-h" . 'evil-normal-state)
+	      ("M-h" . 'evil-normal-state)
 	      ("M-j" . (lambda () (interactive) (evil-normal-state) (evil-next-line)))
 	      ("M-k" . (lambda () (interactive) (evil-normal-state) (evil-previous-line)))
 	      ("M-l" . (lambda () (interactive) (evil-normal-state) (evil-forward-char 2)))
 	      ("C-h" . 'evil-delete-backward-char-and-join)
-	      ("TAB" . 'tab-to-tab-stop))
+	      ;; ("TAB" . 'indent-rigidly-right)
+	      )
   :config (evil-mode 1))
 
 (use-package evil-collection
@@ -181,10 +189,23 @@
   :commands (magit-status)
   :defer 1)
 
-;; ivy stuff 
+(use-package ace-popup-menu
+  :config (ace-popup-menu-mode 1))
+
+(use-package dimmer
+  :config
+  (dimmer-configure-which-key)
+  (dimmer-configure-magit)
+  (dimmer-configure-company-box)
+  (dimmer-mode 1))
+
+;; ivy stuff
 (use-package swiper
   :commands (swiper)
 )
+
+(use-package highlight-indent-guides
+  :hook (prog-mode . highlight-indent-guides-mode))
 (use-package counsel
   :config (counsel-mode 1)
   (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
@@ -193,7 +214,7 @@
   :after (projectile counsel)
   :config (counsel-projectile-mode 1))
 
-(use-package ivy 
+(use-package ivy
   :diminish
   :bind (:map ivy-minibuffer-map
 	      ("C-l" . ivy-alt-done)
@@ -243,6 +264,12 @@
   :config (setq doom-modeline-indent-info t)
   (setq doom-modeline-icon t)
   (setq doom-modeline-buffer-file-name-style 'truncate-upto-project))
+
+(use-package editorconfig
+  :ensure t
+  :defer 0
+  :config
+  (editorconfig-mode 1))
 
 ;; Themes
 ;; (use-package doom-themes
@@ -377,7 +404,7 @@
  '(custom-safe-themes
    '("1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
  '(package-selected-packages
-   '(flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
+   '(undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
