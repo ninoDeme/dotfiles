@@ -17,7 +17,8 @@ return {
     delayed_screenshot = 'flameshot screen -p ~/Pictures -d 5000',
     browser = 'firefox',
     editor = 'code', -- gui text editor
-    discord = 'flatpak run com.discordapp.Discord',
+    -- discord = 'flatpak run com.discordapp.Discord',
+    discord = 'chromium --profile-directory=Default --app-id=nebbmpibgobljecgkdipmcfonkkmcggn',
 --    game = rofi_command,
     files = 'thunar',
 --    music = rofi_command 

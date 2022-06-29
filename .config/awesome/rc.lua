@@ -386,7 +386,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "c", function() awful.spawn(apps.default.editor) end,
         { description = "Open editor", group = "Applications" }),
 
-    awful.key({ modkey, "Control" }, "c", function() awful.spawn("~/scripts/open_project.sh") end,
+    awful.key({ modkey, "Control" }, "c", function() awful.spawn("sh -c '$HOME/scripts/open_project.sh'") end,
         { description = "Edit awesome config", group = "Applications" }),
 
     awful.key({ modkey }, "a", function() awful.spawn("emacs ~/.emacs.d/init.el") end,
@@ -607,6 +607,8 @@ awful.rules.rules = {
     { rule = { class = "discord" },
         properties = { tag = "ﭮ" } },
 
+    { rule = { class = "Chromium" },
+        properties = { floating = false,  tag = "ﭮ" } },
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
@@ -695,7 +697,8 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 
 --awful.spawn.single_instance("flatpak run com.discordapp.Discord", {})
-findProgram("discord", "flatpak run com.discordapp.Discord")
+-- findProgram("discord", apps.default.discord)
+findWindow("Discord", function() awful.spawn(apps.default.discord, {tag = "ﭮ" }) end)
 --run_once("flatpak run com.discordapp.Discord")
 
 for _, app in ipairs(apps.run_on_start_up) do

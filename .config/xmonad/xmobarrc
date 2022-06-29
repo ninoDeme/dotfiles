@@ -2,7 +2,7 @@
 Config { font = "xft:NotoMono Nerd Font:weight=bold:pixelsize=11:antialias=true:hinting=true"
        , additionalFonts = []
        , borderColor = "black"
-       , border = TopB
+       -- , border = TopB 3
        , bgColor = "#222"
        , fgColor = "grey"
        , alpha = 255
@@ -17,17 +17,29 @@ Config { font = "xft:NotoMono Nerd Font:weight=bold:pixelsize=11:antialias=true:
        , allDesktops = True
        , overrideRedirect = True
 --       , textOutputFormat = Ansi
-       , commands = [ Run Cpu ["-L","3","-H","50",
-                               "--normal","green","--high","red"] 10
-                    , Run Memory ["-t","Mem: <usedratio>%"] 10
-                    , Run Swap [] 10
-                    , Run Com "uname" ["-s","-r"] "" 36000
+       , commands = [ Run Cpu 
+       			["-L","3"
+       			,"-H","50"
+			,"--normal","green"
+			,"--high","red"] 10
+	            , Run MultiCoreTemp 
+			["-t", "Temp: <avg>°C"
+		        ,"-L", "60", "-H", "80"
+		        ,"-l", "green", "-n", "yellow", "-h", "red"
+			] 10
+                    , Run Memory 
+		    	["-t","Mem: <usedratio>%"
+		    	, "--normal", "green"
+			, "--high", "red"] 10
+                    , Run Com "uname" 
+		    	["-s","-r"] "" 36000
                     , Run Date "%a, %b %_d %Y" "date" 10
                     , Run Date "%H:%M:%S" "time" 10
+		    , Run Volume "default" "Master" [] 10
                     , Run UnsafeStdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
        , template = "%UnsafeStdinReader% }\
-                    \{ %cpu% | %memory% | <fc=#ee9a00>%date%</fc> | <fc=#ee9a00>%time%</fc> "
+                    \{ %default:Master%<fc=#5b6268>|</fc> %multicoretemp% <fc=#5b6268>|</fc> %cpu% <fc=#5b6268>|</fc> %memory% <fc=#5b6268>|</fc> <fc=#ee9a00>%date%</fc> <fc=#5b6268>|</fc> <fc=#ee9a00>%time%</fc> "
        }

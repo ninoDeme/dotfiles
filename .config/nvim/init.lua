@@ -1,9 +1,12 @@
 require('plugins')
 -- ~/.config/nvim/lua/plugins.lua use <gf> to go to file
 
--- plugin setup
+-- Plugin Setup {{{
+
 local luasnip = require 'luasnip'
+
 local lspconfig = require('lspconfig')
+
 local lsp_installer = require("nvim-lsp-installer") --{{{
 
 -- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
@@ -21,7 +24,9 @@ lsp_installer.on_server_ready(function(server)
   -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
   server:setup(opts)
 end) --}}}
+
 local lspkind = require('lspkind')
+
 local cmp = require 'cmp' --{{{
 local cmp_map = cmp.mapping.preset.insert({
   ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -74,8 +79,58 @@ cmp.setup {
   }
 }
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+local misc = require('cmp.utils.misc')
+local command_line_map = cmp.mapping.preset.cmdline({ 
+  ['<Tab>'] = {
+    c = function()
+      local cmp = require('cmp')
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        feedkeys.call(keymap.t('<C-z>'), 'n')
+      end
+    end,
+  },
+  ['<S-Tab>'] = {
+    c = function()
+      local cmp = require('cmp')
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        feedkeys.call(keymap.t('<C-z>'), 'n')
+      end
+    end,
+  },
+  ['<C-j>'] = {
+    c = function(fallback)
+      local cmp = require('cmp')
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end,
+  },
+  ['<C-k>'] = {
+    c = function(fallback)
+      local cmp = require('cmp')
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end,
+  },
+  ['<CR>'] = cmp.mapping.confirm {
+    behavior = cmp.ConfirmBehavior.Replace,
+    select = true,
+  },
+  ['<C-e>'] = {
+    c = cmp.mapping.close(),
+  },
+})
 cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
+  mapping = command_line_map,
   sources = cmp.config.sources({
     { name = 'path' }
   }, {
@@ -83,8 +138,8 @@ cmp.setup.cmdline(':', {
   })
 })
 --}}}
--- require("dapui").setup()
 
+-- Nvim-Tree {{{
 require 'nvim-tree'.setup({
   view = {
     mappings = {
@@ -101,7 +156,9 @@ require 'nvim-tree'.setup({
     }  
   }
 })
+-- }}}
 
+-- Lualine {{{
 require('lualine').setup {
   options = {
     theme = 'codedark',
@@ -109,13 +166,9 @@ require('lualine').setup {
     component_separators = '│'
   }
 }
+-- }}}
 
---[[ require ('colorizer').setup {
-  'css';
-  'javascript';
-  'html'
-}  ]]
-
+-- Prettier {{{
 local prettier = require("prettier")
 
 prettier.setup({
@@ -153,12 +206,15 @@ prettier.setup({
   use_tabs = false,
   vue_indent_script_and_style = false,
 })
+--- }}}
 
+--- Git Singns {{{
 require('gitsigns').setup {
   signcolumn = true,
   numhl = true,
   current_line_blame = true,
 }
+--- }}}
 
 require("bufferline").setup {}
 
@@ -166,6 +222,7 @@ require('kommentary.config').use_extended_mappings()
 
 require 'qf_helper'.setup()
 
+-- TreeSitter {{{
 require 'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
@@ -177,31 +234,16 @@ require 'nvim-treesitter.configs'.setup {
     enable = true,
   }
 }
+-- }}}
+
 require 'treesitter-context'.setup { enable = true, throttle = true, }
 
-
 require 'nvim-web-devicons'.setup()
+-- }}}
 
-vim.cmd([[
-set notimeout
-
-filetype plugin indent on
-
-autocmd FileType org setlocal iskeyword+=:,#,+
-autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
-
-set termguicolors
-
-if has('mouse')
-	set mouse=a
-endif
-]])
-
+-- Vim settings {{{
 -- map leader to space
 vim.g.mapleader = " "
-
--- plugin options
-vim.fn.sign_define('DapBreakpoint', { text = '🛑', texthl = '', linehl = '', numhl = '' })
 
 -- set coloscheme
 vim.opt.termguicolors = true
@@ -230,8 +272,26 @@ vim.opt.relativenumber = true
 
 -- save undo history
 vim.opt.undofile = true
+-- }}}
 
+-- Vimscript {{{
 vim.cmd([[
+
+set notimeout
+
+filetype plugin indent on
+
+autocmd FileType org setlocal iskeyword+=:,#,+
+autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
+
+set termguicolors
+
+if has('mouse')
+	set mouse=a
+endif
+
+" Keybindings {{{
+
 " Press ESC to clear search
 nnoremap <silent> <ESC> :nohlsearch<CR><ESC>
 
@@ -258,9 +318,9 @@ noremap <Leader>p "+p
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " DAP mode bindings
-noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
-noremap <silent> <F5> :lua require'dap'.continue()<CR>
-noremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
+" noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
+" noremap <silent> <F5> :lua require'dap'.continue()<CR>
+" noremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
 
 " qf_helper bindings
 nnoremap <silent> <C-N> <cmd>QNext<CR>
@@ -272,19 +332,22 @@ nnoremap <silent> <leader>l <cmd>LLToggle!<CR>
 " Go to next buffer (alt-tab equivalent)
 noremap <silent> <leader><Tab> :BufferLineCycleNext<CR>
 
+" Open buffer list
+noremap <leader>b :buffer 
+
 " close current buffer
 nnoremap <silent> <Leader>qq :lua require("nvim-smartbufs").close_current_buffer()<CR>
 
 " open numbered terminals
-nnoremap <Leader>t1 :lua require("nvim-smartbufs").goto_terminal(1)<CR>
-nnoremap <Leader>t2 :lua require("nvim-smartbufs").goto_terminal(2)<CR>
-nnoremap <Leader>t3 :lua require("nvim-smartbufs").goto_terminal(3)<CR>
-nnoremap <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
+nnoremap <silent> <Leader>t1 :lua require("nvim-smartbufs").goto_terminal(1)<CR>
+nnoremap <silent> <Leader>t2 :lua require("nvim-smartbufs").goto_terminal(2)<CR>
+nnoremap <silent> <Leader>t3 :lua require("nvim-smartbufs").goto_terminal(3)<CR>
+nnoremap <silent> <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
 
 " esc to exit terminal mode
 tnoremap <Esc> <C-\><C-n>
 
-" use CTRL+ALT+movement keys to navigate windows in all modes {{{
+" use CTRL+ALT+movement keys to navigate windows in all modes 
 tnoremap <silent><C-A-h> <C-\><C-N><C-w>h
 tnoremap <silent><C-A-j> <C-\><C-N><C-w>j
 tnoremap <silent><C-A-k> <C-\><C-N><C-w>k
@@ -297,6 +360,6 @@ nnoremap <silent><C-A-h> <C-w>h
 nnoremap <silent><C-A-j> <C-w>j
 nnoremap <silent><C-A-k> <C-w>k
 nnoremap <silent><C-A-l> <C-w>l
-" }}}
 ]])
+-- }}} }}}
 -- vim: ts=2 sts=2 sw=2 et

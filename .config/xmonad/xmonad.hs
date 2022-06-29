@@ -18,6 +18,8 @@ import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
 import XMonad.Hooks.WorkspaceHistory
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -40,6 +42,7 @@ myClickJustFocuses = False
 useXmobar :: Bool
 useXmobar = False
 -- useXmobar = True
+
 -- Width of the window border in pixels.
 --
 myBorderWidth   :: Dimension
@@ -82,6 +85,9 @@ myNormalBorderColor  :: [Char]
 myFocusedBorderColor :: [Char]
 myNormalBorderColor  = "#535d6c"
 myFocusedBorderColor = "#5294e2"
+
+myButLast (x : _ : []) = x  -- base case
+myButLast (_ : xs)     = myButLast xs
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -140,7 +146,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
 --    , ("M-S-m", addName "Launch Terminal-based Task Manager" $ runInTerm "" "htop")
 
     -- close focused window
-    , ("M-S-c", addName "Close Focused Window" kill)
+    , ("M-S-c", addName "Close Focused Window" kill1)
 
      -- Rotate through the available layout algorithms
     , ("M-<Tab>", addName "Cycle Through Available Layouts" $ sendMessage NextLayout)
@@ -327,44 +333,25 @@ myManageHook = composeAll
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
-colorBack = "#282c34"
-colorFore = "#bbc2cf"
-
-color01 = "#1c1f24"
-color02 = "#ff6c6b"
-color03 = "#98be65"
-color04 = "#da8548"
-color05 = "#51afef"
-color06 = "#c678dd"
-color07 = "#5699af"
-color08 = "#202328"
-color09 = "#5b6268"
-color10 = "#da8548"
-color11 = "#4db5bd"
-color12 = "#ecbe7b"
-color13 = "#3071db"
-color14 = "#a9a1e1"
-color15 = "#46d9ff"
-color16 = "#dfdfdf"
-
-myLogHook h True = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP 
+myLogHook h True = dynamicLogWithPP . filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP 
               { ppOutput = hPutStrLn h 
                 -- Current workspace
-              , ppCurrent = xmobarColor color06 "" . wrap
-                            ("<box type=Bottom width=2 mb=2 color=" ++ color06 ++ ">") "</box>"
+              , ppCurrent = xmobarColor "#c678dd" "" . wrap
+                            ("<box type=Bottom width=2 mb=2 color=" ++ "#c678dd" ++ ">") "</box>"
                 -- Visible but not current workspace
-              , ppVisible = xmobarColor color06 "" . clickable
+              , ppVisible = xmobarColor "#c678dd" "" . clickable
+              , ppVisibleNoWindows = Just $ xmobarColor "#c678dd" "" . clickable
                 -- Hidden workspace with windows
-              , ppHidden = xmobarColor color05 "" . wrap
-                           ("<box type=Bottom width=2 mt=2 color=" ++ color05 ++ ">") "</box>" . clickable
+              , ppHidden = xmobarColor "#51afef" "" . wrap
+                           ("<box type=Bottom width=2 mt=2 color=" ++ "#51afef" ++ ">") "</box>" . clickable
                 -- Hidden workspaces (no windows)
-              , ppHiddenNoWindows = xmobarColor color05 ""  . clickable
+              , ppHiddenNoWindows = clickable
                 -- Title of active window
-              , ppTitle = xmobarColor color16 "" . shorten 120
+              , ppTitle = shorten 120
                 -- Separator character
-              , ppSep =  "<fc=" ++ color09 ++ "> <fn=1>|</fn> </fc>"
+              , ppSep =  "<fc=" ++ "#5b6268" ++ "> <fn=1>|</fn> </fc>"
                 -- Urgent workspace
-              , ppUrgent = xmobarColor color02 "" . wrap "!" "!"
+              , ppUrgent = xmobarColor "#ff6c6b" "" . wrap "!" "!"
                 -- Adding # of windows on current workspace to the bar
               , ppExtras  = [windowCount]
                 -- order of things in xmobar
@@ -439,5 +426,5 @@ defaults xmproc = def {
         handleEventHook    = handleEventHook def,
         startupHook        = myStartupHook,
       -- 
-        logHook            = workspaceHistory >> myLogHook xmproc useXmobar
+        logHook            = workspaceHistoryHookExclude [scratchpadWorkspaceTag] >> myLogHook xmproc useXmobar
     }

@@ -63,7 +63,7 @@ keys = [
     ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "s", lazy.spawn("steam"), desc="Launch steam"),
-    Key([mod, "shift"], "s", lazy.spawn("firefox"), desc="Launch lutris"),
+    Key([mod, "shift"], "s", lazy.spawn("lutris"), desc="Launch lutris"),
     Key([mod], "d", lazy.spawn("flatpak run com.discordapp.Discord"), desc="Launch discord"),
     Key([mod], "b", lazy.spawn("firefox"), desc="Launch firefox"),
     Key([mod], "c", lazy.spawn("code"), desc="Launch firefox"),
