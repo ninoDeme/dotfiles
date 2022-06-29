@@ -1,12 +1,15 @@
 #! /bin/bash
 
+DTERM="kitty" #Set default terminal
+
 # Chose editor
-chosen=$(printf "Emacs\nVSCode\nNeovim" | rofi -dmenu -i -p "Editor:")
+chosen=$(printf "Emacs\nVSCode\nNeovim\nTerminal" | rofi -dmenu -i -p "Editor:")
 
 case "$chosen" in
     "Emacs") edit="emacs" ;;
     "VSCode") edit="code" ;;
-    "Neovim") edit="kitty -e nvim" ;;
+    "Neovim") [ -t 1 ] && edit="nvim" || edit="$DTERM -e nvim" ;;
+    "Terminal") edit="$DTERM -d" ;;
     *) exit 1 ;;
 esac
 
@@ -28,10 +31,9 @@ exec_cmd=$(printf "$rofi_prompt" | rofi -dmenu -i -p "Project:")
 projectIndex=(${exec_cmd//: / })
 tmpVar=${projectIndex[0]}
 tmpArray=(${projects[$(($tmpVar - 1))]//,/ })
-if [ "$edit" != "code" ]; then
-	echo "cd ${tmpArray[1]} && $edit ${tmpArray[2]}"
-	cd ${tmpArray[1]} && $edit ${tmpArray[2]}
-else
-	cd ${tmpArray[1]} && $edit ${tmpArray[2]} .
-fi
+case "$chosen" in 
+	"VSCode") cd ${tmpArray[1]} && $edit ${tmpArray[2]} . ;;
+	"Terminal") $edit ${tmpArray[1]} ;;
+	*) cd ${tmpArray[1]} && $edit ${tmpArray[2]} ;;
+esac
 
