@@ -6,6 +6,7 @@
 ;;; Commentary:
 
 ;;; Code:
+
 ;; The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 50 1000 1000))
 
@@ -91,18 +92,19 @@
   :demand t
   :config (general-evil-setup t)
   (general-create-definer leader-key
-    :keymaps '(normal visual emacs insert treemacs)
-    :prefix "SPC"
+  :keymaps '(normal visual emacs insert treemacs)
+  :prefix "SPC"
   :non-normal-prefix "C-SPC"
-    :prefix-map 'leader-key-map
-    :prefix-command 'leader-key-cmd
-    :global-prefix "C-SPC")
+  :prefix-map 'leader-key-map
+  :prefix-command 'leader-key-cmd
+  :global-prefix "C-SPC")
   (leader-key
     "e" 'counsel-find-file
     "E" 'dired-jump
-    "RET" 'vterm
+    "RET" 'eshell
     "g" 'magit-status
-    "SPC" 'treemacs))
+    "SPC" 'treemacs
+    "l" 'lsp-command-map))
 
 ;; Install and configure packages ===============================================================
 
@@ -205,7 +207,9 @@
 )
 
 (use-package highlight-indent-guides
-  :hook (prog-mode . highlight-indent-guides-mode))
+  :hook (prog-mode . highlight-indent-guides-mode)
+  :config (setq highlight-indent-guides-method 'bitmap))
+
 (use-package counsel
   :config (counsel-mode 1)
   (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
@@ -373,15 +377,21 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
+(use-package exec-path-from-shell
+  :demand t
+  :config (when (memq window-system '(mac ns x))
+	    (exec-path-from-shell-initialize))
+  (when (daemonp)
+    (exec-path-from-shell-initialize)))
+
 ;; LSP mode config
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :init
-  (setq lsp-keymap-prefix "C-l")
+  (setq lsp-keymap-prefix "C-x C-l")
   (add-hook 'c-mode-hook 'lsp)
   (add-hook 'c++-mode-hook 'lsp)
   :config
-  (message "LOADING LSP =======================")
   (lsp-enable-which-key-integration t))
 
 (use-package lsp-ui
@@ -392,6 +402,12 @@
 (use-package lsp-pyright
   :ensure t
   :hook (python-mode . lsp))  ; or lsp-deferred
+
+(use-package haskell-mode
+  :ensure t)
+
+(use-package lsp-haskell
+  :hook (haskell-mode . lsp))
 
 (setq gc-cons-threshold (* 2 1000 1000))
 
@@ -404,7 +420,7 @@
  '(custom-safe-themes
    '("1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
  '(package-selected-packages
-   '(undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
+   '(exec-path-from-shell lsp-haskell undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -20,6 +20,9 @@ import XMonad.Util.SpawnOnce
 import XMonad.Hooks.WorkspaceHistory
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
+import XMonad.Actions.WindowGo
+import XMonad.Hooks.ManageHelpers
+import XMonad.Layout.Tabbed
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -115,10 +118,11 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-S-e", addName "Launch visual file manager" $ spawn "xdg-open $HOME")
 
     -- launch firefox
-    , ("M-b", addName "Launch Firefox" $ spawn "firefox")
+    , ("M-b", addName "Launch Firefox" $ runOrRaise "firefox" (className =? "firefox"))
+    , ("M-C-b", addName "Launch Firefox" $ runOrCopy "firefox" (className =? "firefox"))
 
     -- launch discord
-    , ("M-d", addName "Launch Discord" $ spawn "flatpak run com.discordapp.Discord")
+    , ("M-d", addName "Launch Discord" $ raiseMaybe (spawn "flatpak run com.discordapp.Discord") ( title ~? "Discord" ))
 
     -- kill polybar
     , ("M-f", addName "Hide Polybar" $ spawn "killall polybar")
@@ -168,6 +172,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
 
     -- Swap the focused window and the master window
     , ("M-S-<Return>", addName "Make focused window the master window" $ windows W.swapMaster)
+    , ("M-S-h", addName "Make focused window the master window" $ windows W.swapMaster)
 
     -- Swap the focused window with the next window
     , ("M-S-j", addName "Swap the focused window with the next window" $ windows W.swapDown)
@@ -200,7 +205,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-v", addName "Make focussed window always visible" $ windows copyToAll)
 
     -- Toggle window state back
-    , ("M-S-v", addName "Make window only vissible in one workspace" killAllOtherCopies)
+    , ("M-C-v", addName "Make window only vissible in one workspace" killAllOtherCopies)
 
     -- Toggle the status bar gap
     , ("M-S-b", addName "Toggle docks" $ sendMessage ToggleStruts)
@@ -266,16 +271,8 @@ scratchpads = [
               ]
 ------------------------------------------------------------------------
 -- Layouts:
-
--- You can specify and transform your layouts by modifying these values.
--- If you change layout bindings be sure to use 'mod-shift-space' after
--- restarting (with 'mod-q') to reset your layout state to the new
--- defaults, as xmonad preserves your old layout settings by default.
 --
--- The available layouts.  Note that each layout is separated by |||,
--- which denotes layout choice.
---
-myLayout = spacingRaw True (Border 0 5 5 5) True (Border 5 5 5 5) True  (avoidStruts (smartBorders ( tiled ||| (Mirror tiled))))  ||| smartBorders Full
+myLayout = spacingRaw True (Border 0 5 5 5) True (Border 5 5 5 5) True  (avoidStruts (smartBorders ( tiled ||| (Mirror tiled))))  ||| smartBorders Full ||| avoidStruts simpleTabbed
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
