@@ -1,6 +1,6 @@
 # Dotfiles
 
-Mostly for personal use
+Mostly for personal use WSL2 BRANCH
 
 # Dependencies
 ## Git bare repository setup
