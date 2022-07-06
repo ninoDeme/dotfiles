@@ -356,7 +356,7 @@ nnoremap <silent> <Leader>t2 :lua require("nvim-smartbufs").goto_terminal(2)<CR>
 nnoremap <silent> <Leader>t3 :lua require("nvim-smartbufs").goto_terminal(3)<CR>
 nnoremap <silent> <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
 
-nnoremap <silent> <Leader><return> :!kitty &<CR>
+nnoremap <silent> <Leader><return> :!alacritty &<CR>
 
 " esc to exit terminal mode
 tnoremap <Esc> <C-\><C-n>
