@@ -1,56 +1,54 @@
-local beautiful = require("beautiful")
-local lain = require("lain")
-local awful = require("awful")
-local wibox = require("wibox")
-local gears = require("gears")
-local naughty = require("naughty")
-local nconf = naughty.config
-local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
-
-
+local beautiful  = require("beautiful")
+local lain       = require("lain")
+local awful      = require("awful")
+local wibox      = require("wibox")
+local gears      = require("gears")
+local naughty    = require("naughty")
 local xresources = require("beautiful.xresources")
 
-local dpi = xresources.apply_dpi
-
-local markup = lain.util.markup
+local nconf      = naughty.config
+local my_table   = awful.util.table or gears.table -- 4.{0,1} compatibility
+local dpi        = xresources.apply_dpi
+local markup     = lain.util.markup
 
 
 -- Separators
 local separatorempty = wibox.widget.textbox(" ")
-local separatorbar = wibox.widget.textbox("|")
-separatorbar = wibox.container.margin(separatorbar,1,1,0,2)
---separatorbar = wibox.widget.textbox("")
+local separatorbar   = wibox.widget.textbox("|")
+separatorbar         = wibox.container.margin(separatorbar,1,1,0,2)
+--separatorbar       = wibox.widget.textbox("")
 
 local mysystray = wibox.widget.systray()
-mysystray.base_size = 19
-mysystray = wibox.container.margin(mysystray,0,1,1,0)
+mysystray:set_base_size(16)
+mysystray = wibox.container.margin(mysystray,0,1,2,-1)
 
 local mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- Create a textclock widget
 local clockicon = wibox.widget{
     markup = markup.fg.color(beautiful.fg_icon ," "),
-    font = beautiful.nosfont .."11.5 ",
+    font   = beautiful.nosfont .."11.5 ",
     widget = wibox.widget.textbox
 }
 local dateicon = wibox.widget{
     markup = markup.fg.color(beautiful.fg_icon ," "),
-    font = beautiful.nosfont .."10 ",
+    font   = beautiful.nosfont .."10 ",
     widget = wibox.widget.textbox
 }
 local myclock = wibox.widget {
-    font = beautiful.font,
+    font   = beautiful.font,
     format = "%H:%M ",
     widget = wibox.widget.textclock
 }
 local mydate = wibox.widget {
-    font = beautiful.font,
+    font   = beautiful.font,
     format = " %A, %d de %B de %Y ",
     widget = wibox.widget.textclock
 }
 local clock =  wibox.layout.fixed.horizontal(clockicon, myclock)
 local containerclock = wibox.container.background(clock)
 containerclock.fg = beautiful.fg_focus
+
 local date =  wibox.layout.fixed.horizontal(dateicon , mydate)
 local containerdate = wibox.container.background(date)
 containerdate.fg = beautiful.fg_focus
@@ -58,11 +56,11 @@ containerdate.fg = beautiful.fg_focus
 local cal = lain.widget.cal({
     attach_to = { containerdate },
     notification_preset = {
-        shape = gears.shape.infobubble,
-        fg   = beautiful.fg_focus,
-        bg   = nconf.defaults.bg,
-        font = beautiful.font_mono,
-        margin = dpi(20),
+        shape     = gears.shape.infobubble,
+        fg        = beautiful.fg_focus,
+        bg        = nconf.defaults.bg,
+        font      = beautiful.font_mono,
+        margin    = dpi(20),
         icon_size = 128
     },
 

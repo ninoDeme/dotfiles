@@ -27,19 +27,20 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
-(setq modus-themes-headings
-      '((1 . (rainbow variable-pitch 1.5))
-	(2 . (rainbow variable-pitch 1.3))
-	(3 . (rainbow variable-pitch 1.1))
-        (t . (rainbow variable-pitch ))))
-;; (setq modus-themes-org-blocks '(grayscale))
-(setq modus-themes-mixed-fonts t)
-(setq modus-themes-variable-pitch-ui t)
-(setq modus-themes-region '(bg-only no-extend))
-(setq modus-themes-subtle-line-numbers t)
-(setq modus-themes-mode-line '(borderless ))
-(setq modus-themes-syntax '(yellow-comments))
-(load-theme 'modus-vivendi t)
+
+;; (setq modus-themes-headings
+;;       '((1 . (rainbow variable-pitch 1.5))
+;; 	(2 . (rainbow variable-pitch 1.3))
+;; 	(3 . (rainbow variable-pitch 1.1))
+;;         (t . (rainbow variable-pitch ))))
+;; ;; (setq modus-themes-org-blocks '(grayscale))
+;; (setq modus-themes-mixed-fonts t)
+;; (setq modus-themes-variable-pitch-ui t)
+;; (setq modus-themes-region '(bg-only no-extend))
+;; (setq modus-themes-subtle-line-numbers t)
+;; (setq modus-themes-mode-line '(borderless ))
+;; (setq modus-themes-syntax '(yellow-comments))
+;; (load-theme 'modus-vivendi t)
 
 ;; Change font
 (set-face-attribute 'default nil :font "NotoMono Nerd Font" :height 110)
@@ -58,8 +59,8 @@
 ;; Kill buffers witout prompt
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 
-(set-frame-parameter (selected-frame) 'alpha '(90 . 90))
-(add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+;; (set-frame-parameter (selected-frame) 'alpha '(98 . 98))
+;; (add-to-list 'default-frame-alist '(alpha . (98 . 98)))
 
 ;; Packages  ======================================================================================
 
@@ -86,24 +87,32 @@
 (use-package bug-hunter
   :commands (bug-hunter-file bug-hunter-init-file))
 
+(defun run-terminal-here ()
+  (interactive "@")
+  (shell-command (concat "kitty -d "
+            (file-name-directory (or load-file-name buffer-file-name))
+              " > /dev/null 2>&1 & disown") nil nil))
+
 ;; Define keymaps  ================================================================================
 
 (use-package general
   :demand t
   :config (general-evil-setup t)
-  (general-create-definer leader-key
+  (general-create-definer leader-key-def
   :keymaps '(normal visual emacs insert treemacs)
   :prefix "SPC"
   :non-normal-prefix "C-SPC"
   :prefix-map 'leader-key-map
   :prefix-command 'leader-key-cmd
   :global-prefix "C-SPC")
-  (leader-key
+  (leader-key-def
     "e" 'counsel-find-file
     "E" 'dired-jump
     "RET" 'eshell
+    "C-<return>" 'run-terminal-here
     "g" 'magit-status
     "SPC" 'treemacs
+    "c" 'flycheck-list-errors
     "l" 'lsp-command-map))
 
 ;; Install and configure packages ===============================================================
@@ -128,7 +137,7 @@
 	      ("M-h" . 'evil-normal-state)
 	      ("M-j" . (lambda () (interactive) (evil-normal-state) (evil-next-line)))
 	      ("M-k" . (lambda () (interactive) (evil-normal-state) (evil-previous-line)))
-	      ("M-l" . (lambda () (interactive) (evil-normal-state) (evil-forward-char 2)))
+	      ("M-l" . (lambda () (interactive) (evil-normal-state) (evil-forward-char)))
 	      ("C-h" . 'evil-delete-backward-char-and-join)
 	      ;; ("TAB" . 'indent-rigidly-right)
 	      )
@@ -150,13 +159,31 @@
   :config
   (global-evil-surround-mode 1))
 
+(use-package evil-snipe
+  :defer 0
+  :config (evil-snipe-mode +1)
+          (setq evil-snipe-scope 'buffer))
+
+;; (use-package multiple-cursors)
+(use-package evil-mc
+  :config (global-evil-mc-mode 1)
+  :defer 0
+  :bind (("C-<down>" . evil-mc-make-cursor-move-next-line)
+	 ("C-<up>" . evil-mc-make-cursor-move-prev-line)
+	 :map evil-normal-state-map (
+	 ("C-M-N" . evil-mc-skip-and-goto-prev-match)
+	 ("C-M-n" . evil-mc-skip-and-goto-next-match)
+	 ("C-N" . evil-mc-make-and-goto-prev-match)
+	 ("C-n" . evil-mc-make-and-goto-next-match))))
+
 (use-package treemacs
   :commands treemacs)
 (use-package treemacs-evil
   :after (treemacs evil)
   :ensure t
   :config (evil-define-key 'treemacs treemacs-mode-map (kbd "SPC") 'leader-key-cmd)
-	(evil-define-key 'treemacs treemacs-mode-map (kbd "C-SPC") 'leader-key-cmd)
+	  (evil-define-key 'treemacs treemacs-mode-map (kbd "C-SPC") 'leader-key-cmd)
+	  (evil-define-key 'treemacs treemacs-mode-map (kbd "C-SPC") 'leader-key-cmd)
   )
 
 (use-package treemacs-projectile
@@ -235,7 +262,7 @@
 	      ("C-k" . ivy-previous-line)
 	      ("C-d" . ivy-reverse-i-search-kill))
   :config
-  (leader-key
+  (leader-key-def
     "s" 'swiper
     "b" 'counsel-switch-buffer)
   (ivy-mode 1)
@@ -276,12 +303,15 @@
   (editorconfig-mode 1))
 
 ;; Themes
-;; (use-package doom-themes
-;;   :config 
-;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-;; 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;;   (load-theme 'doom-tomorrow-night t)
-;;   (doom-themes-org-config))
+(use-package doom-themes
+  :demand t
+  :config
+  (setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
+  (doom-themes-treemacs-config)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-ayu-dark t)
+  (doom-themes-org-config))
 
 (use-package vterm
   :ensure t
@@ -291,7 +321,7 @@
   :diminish projectile-mode
   :defer 0
   :config 
-  (leader-key
+  (leader-key-def
     "p" 'projectile-command-map)) ; Leader (SPC) + p to open projectile map
 
 ;; Rainbow delimiters
@@ -326,28 +356,28 @@
   (font-lock-add-keywords 'org-mode
                           '(("^ *\\([-]\\) "
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-  ;; (dolist (face '((org-level-1 . 1.2)
-  ;;                 (org-level-2 . 1.1)
-  ;;                 (org-level-3 . 1.05)
-  ;;                 (org-level-4 . 1.0)
-  ;;                 (org-level-5 . 1.1)
-  ;;                 (org-level-6 . 1.1)
-  ;;                 (org-level-7 . 1.1)
-  ;;                 (org-level-8 . 1.1)))
-  ;;   (set-face-attribute (car face) nil :font "NotoSans Nerd Font" :weight 'regular :height (cdr face)))
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.0)
+                  (org-level-6 . 1.0)
+                  (org-level-7 . 1.0)
+                  (org-level-8 . 1.0)))
+    (set-face-attribute (car face) nil :font "NotoSans Nerd Font" :weight 'regular :height (cdr face)))
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  ;; (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
-  ;; (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
-  ;; (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-  ;; (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
-  ;; (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
-  ;; (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-  ;; (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  ;; (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  ;; (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
-  ;; (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
-  ;; (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
+  (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch)
 )
 (use-package org
   :hook (org-mode . org-mode-setup)
@@ -364,8 +394,14 @@
 (use-package visual-fill-column
   :hook (org-mode . org-mode-visual-fill))
 
+(use-package elfeed
+  :config (setq elfeed-feeds
+		'("https://archlinux.org/feeds/news/"))
+  :commands elfeed)
+
 (use-package flycheck
   :hook (prog-mode . flycheck-mode))
+
 (use-package company
   :defer 0
   :bind (:map company-active-map
@@ -376,28 +412,6 @@
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
-
-(use-package exec-path-from-shell
-  :demand t
-  :config (when (memq window-system '(mac ns x))
-	    (exec-path-from-shell-initialize))
-  (when (daemonp)
-    (exec-path-from-shell-initialize)))
-
-;; LSP mode config
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-x C-l")
-  (add-hook 'c-mode-hook 'lsp)
-  (add-hook 'c++-mode-hook 'lsp)
-  :config
-  (lsp-enable-which-key-integration t))
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom))
 
 (use-package lsp-pyright
   :ensure t
@@ -418,9 +432,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
+   '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
  '(package-selected-packages
-   '(exec-path-from-shell lsp-haskell undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
+   '(elfeed evil-snipe evil-cm multiple-cursors exec-path-from-shell lsp-haskell undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

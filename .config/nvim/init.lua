@@ -247,7 +247,12 @@ vim.g.mapleader = " "
 
 -- set coloscheme
 vim.opt.termguicolors = true
-vim.cmd [[colorscheme modus-vivendi]]
+-- vim.cmd [[colorscheme modus-vivendi]]
+vim.cmd [[
+let ayucolor="dark"
+colorscheme ayu
+hi Normal guibg=NONE ctermbg=NONE
+]]
 
 vim.opt.wildmenu = true
 
@@ -315,7 +320,17 @@ noremap <Leader>y "+y
 noremap <Leader>p "+p
 
 " reload config
-nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>r :source $MYVIMRC<CR>
+
+" Telescope bindings
+nnoremap <leader>ss <cmd>Telescope live_grep<cr>
+nnoremap <leader>sb <cmd>Telescope buffers<cr>
+
+" Easy align keybindings
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 " DAP mode bindings
 " noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
@@ -332,9 +347,6 @@ nnoremap <silent> <leader>l <cmd>LLToggle!<CR>
 " Go to next buffer (alt-tab equivalent)
 noremap <silent> <leader><Tab> :BufferLineCycleNext<CR>
 
-" Open buffer list
-noremap <leader>b :buffer 
-
 " close current buffer
 nnoremap <silent> <Leader>qq :lua require("nvim-smartbufs").close_current_buffer()<CR>
 
@@ -343,6 +355,8 @@ nnoremap <silent> <Leader>t1 :lua require("nvim-smartbufs").goto_terminal(1)<CR>
 nnoremap <silent> <Leader>t2 :lua require("nvim-smartbufs").goto_terminal(2)<CR>
 nnoremap <silent> <Leader>t3 :lua require("nvim-smartbufs").goto_terminal(3)<CR>
 nnoremap <silent> <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
+
+nnoremap <silent> <Leader><return> :!kitty &<CR>
 
 " esc to exit terminal mode
 tnoremap <Esc> <C-\><C-n>

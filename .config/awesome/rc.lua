@@ -1,31 +1,33 @@
+
+-------------------------------------------------------------------
+--               Awesome config file by ninoDeme                 --
+-- Rest of my configs: https://www.github.com/ninoDeme/dotfiles  --
+-------------------------------------------------------------------
+
+-- Imports {{{
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
 os.setlocale(os.getenv("LC_TIME"))
 
--- Standard awesome library
-local gears = require("gears")
-local awful = require("awful")
-local lain = require("lain")
+local gears               = require("gears")
+local awful               = require("awful") -- Standard awesome library
+local wibox               = require("wibox") -- Widget and layout library
+local beautiful           = require("beautiful") -- Theme handling library
+local naughty             = require("naughty") -- Notification library
+local menubar             = require("menubar")
+local hotkeys_popup       = require("awful.hotkeys_popup")
+local lain                = require("lain") -- External widgets
+local icons               = require('icons') -- Icons
+local apps                = require("configuration.apps")
+local clickable_container = require("clickable-container")
 require("awful.autofocus")
--- Widget and layout library
-local wibox = require("wibox")
-
--- Theme handling library
-local beautiful = require("beautiful")
--- Notification library
-local naughty = require("naughty")
-local menubar = require("menubar")
-local hotkeys_popup = require("awful.hotkeys_popup")
-local hotkeys_popup_sized = hotkeys_popup.widget.new({ width = 700, height = 780 });
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 --require("awful.hotkeys_popup.keys")
-local icons = require('icons')
-local apps = require("configuration.apps")
-local clickable_container = require("clickable-container")
+-- }}}
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -57,6 +59,8 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 local exit_screen_show = require("exit_screen")
 
 -- }}}
+
+-- Function declarations {{{
 local function findProgram(programName, cmd)
     awful.spawn.easy_async(
         "pgrep -i " .. programName,
@@ -89,6 +93,7 @@ local function findWindow(windowName, ifSucces)
             end
         end)
 end
+--- }}}
 
 -- {{{ Variable definitions
 
@@ -128,9 +133,16 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
 }
--- }}}
+
+mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+    menu = mymainmenu })
+
+-- Menubar configuration
+menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 
 -- beautiful.init(gears.filesystem.get_themes_dir() .. "gtk/theme.lua")
+
+local hotkeys_popup_sized = hotkeys_popup.widget.new({ width = 700, height = 780 });
 
 mymainmenu = awful.menu({ items = {
     { "hotkeys", function() hotkeys_popup_sized:show_help(nil, awful.screen.focused()) end },
@@ -141,6 +153,10 @@ mymainmenu = awful.menu({ items = {
     { "quit", function() exit_screen_show() end },
 }
 })
+
+-- }}}
+
+-- Signals {{{
 
 mymainmenu.wibox:connect_signal("mouse::leave", function()
     if not mymainmenu.active_child or
@@ -156,15 +172,6 @@ mymainmenu.wibox:connect_signal("mouse::leave", function()
             end)
     end
 end)
-
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-    menu = mymainmenu })
-
-
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
-
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", function(s)
@@ -201,7 +208,6 @@ local browserTag = awful.tag.find_by_name(awful.screen.focused(), "")
 require("panel")
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
 
-
 -- Add titlebars on floating layout
 tag.connect_signal("property::layout", function(t)
     for _ , c in ipairs(t.screen.all_clients) do
@@ -225,9 +231,6 @@ client.connect_signal("property::floating", function(c)
         awful.titlebar.hide(c)
     end
 end)
-
-
-
 
 -- Clients aren't urgent when spawned
 client.disconnect_signal("request::activate", awful.ewmh.activate)
@@ -257,7 +260,28 @@ screen.connect_signal("arrange", function(s)
     end
 end)
 
+-- Signal function to execute when a new client appears.
+client.connect_signal("manage", function(c)
+    -- Set the windows at the slave,
+    -- i.e. put it at the end of others instead of setting it master.
+    -- if not awesome.startup then awful.client.setslave(c) end
 
+    if awesome.startup
+        and not c.size_hints.user_position
+        and not c.size_hints.program_position then
+        -- Prevent clients from being unreachable after screen count changes.
+        awful.placement.no_offscreen(c)
+    end
+end)
+
+-- Enable sloppy focus, so that focus follows mouse.
+client.connect_signal("mouse::enter", function(c)
+    c:emit_signal("request::activate", "mouse_enter", { raise = false })
+end)
+
+client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- }}}
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
@@ -615,20 +639,7 @@ awful.rules.rules = {
 }
 -- }}}
 
--- {{{ Signals
--- Signal function to execute when a new client appears.
-client.connect_signal("manage", function(c)
-    -- Set the windows at the slave,
-    -- i.e. put it at the end of others instead of setting it master.
-    -- if not awesome.startup then awful.client.setslave(c) end
-
-    if awesome.startup
-        and not c.size_hints.user_position
-        and not c.size_hints.program_position then
-        -- Prevent clients from being unreachable after screen count changes.
-        awful.placement.no_offscreen(c)
-    end
-end)
+-- Titlebar {{{ 
 
 local function clickable_container_circle(cr)
     return {
@@ -682,19 +693,9 @@ client.connect_signal("request::titlebars", function(c)
     widget = wibox.container.margin
     }
 end)
-
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", { raise = false })
-end)
-
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
--- Autostart
--- Autorun programs
-
+-- Autostart {{{
 
 --awful.spawn.single_instance("flatpak run com.discordapp.Discord", {})
 -- findProgram("discord", apps.default.discord)
@@ -704,3 +705,4 @@ findWindow("Discord", function() awful.spawn(apps.default.discord, {tag = "ﭮ" 
 for _, app in ipairs(apps.run_on_start_up) do
     run_once(app)
 end
+-- }}}

@@ -1,64 +1,62 @@
 
 
 local theme_assets = require("beautiful.theme_assets")
-local xresources = require("beautiful.xresources")
-local dpi = xresources.apply_dpi
-local lain = require("lain")
-local awful = require("awful")
-local wibox = require("wibox")
-local gears = require("gears")
-local naughty = require("naughty")
-local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
+local xresources   = require("beautiful.xresources")
+local dpi          = xresources.apply_dpi
+local lain         = require("lain")
+local awful        = require("awful")
+local wibox        = require("wibox")
+local gears        = require("gears")
+local naughty      = require("naughty")
+local my_table     = awful.util.table or gears.table -- 4.{0,1} compatibility
+local gfs          = require("gears.filesystem")
+local themes_path  = gfs.get_themes_dir()
+local apps         = require("configuration.apps")
 
-local gfs = require("gears.filesystem")
-local themes_path = gfs.get_themes_dir()
-
-local apps = require("configuration.apps")
-
-local theme = {}
-local nconf = naughty.config
-
+local theme  = {}
+local nconf  = naughty.config
 local markup = lain.util.markup
 
-theme.dir         = os.getenv("HOME") .. "/.config/awesome/theme.lua"
+theme.dir                  = os.getenv("HOME") .. "/.config/awesome/theme.lua"
 
-theme.font = "NotoSans Nerd Font 10"
-theme.font_mono = "NotoMono Nerd Font 10"
-theme.nosfont = "NotoSans Nerd Font "
-theme.nosfont_mono = "NotoMono Nerd Font "
+theme.font                 = "NotoSans Nerd Font 10"
+theme.font_mono            = "NotoMono Nerd Font 10"
+theme.nosfont              = "NotoSans Nerd Font "
+theme.nosfont_mono         = "NotoMono Nerd Font "
 
-theme.bg_normal   = "#383c4a"
-theme.bg_focus    = "#5294e2"
-theme.bg_urgent   = "#ff0000"
-theme.bg_minimize = "#4b5162"
-theme.bg_systray  = theme.bg_normal
+theme.bg_normal            = "#0D1017"
+theme.bg_focus             = "#2f3439"
+theme.bg_urgent            = "#ff0000"
+theme.bg_minimize          = "#4b5162"
+theme.bg_systray           = theme.bg_normal
 
-theme.fg_normal   = "#aaaaaa"
-theme.fg_focus    = "#eeeeee"
-theme.fg_urgent   = "#ffffff"
-theme.fg_minimize = "#eeeeee"
-theme.fg_icon = "#6894FF"
+theme.fg_normal            = "#aaaaaa"
+theme.fg_focus             = "#eeeeee"
+theme.fg_urgent            = "#ffffff"
+theme.fg_minimize          = "#eeeeee"
+-- theme.fg_icon              = "#E6B450"
+theme.fg_icon              = "#E6B450"
 theme.hotkeys_modifiers_fg = theme.fg_focus
 
-theme.useless_gap   = dpi(2)
-theme.border_width  = dpi(2)
-theme.border_normal = "#535d6c"
-theme.border_focus  = "#5294e2"
-theme.border_marked = "#91231c"
+-- theme.useless_gap          = dpi(2)
+theme.border_width         = dpi(2)
+theme.border_normal        = "#535d6c"
+theme.border_focus         = "#5294e2"
+theme.border_marked        = "#91231c"
 
-theme.tasklist_bg_focus = theme.bg_normal
+theme.tasklist_bg_focus    = theme.bg_normal
 
-theme.taglist_fg_occupied = theme.fg_minimize
-theme.taglist_fg_empty = theme.fg_normal
+theme.taglist_fg_occupied  = theme.fg_minimize
+theme.taglist_fg_empty     = theme.fg_normal
 
 theme.systray_icon_spacing = dpi(1)
 
-nconf.defaults.icon_size = dpi(64)
-nconf.defaults.bg = theme.bg_normal .. "80"
+nconf.defaults.icon_size   = dpi(64)
+nconf.defaults.bg          = theme.bg_normal .. "80"
 
-theme.gap_single_client = false
+theme.gap_single_client    = false
 
-theme.titlebar_bg_focus = theme.bg_normal
+theme.titlebar_bg_focus    = theme.bg_normal
 
 -- defined, the sets are:
 -- taglist_[bg|fg]_[focus|urgent|occupied|empty|volatile]
@@ -100,18 +98,18 @@ theme.titlebar_close_button_focus  = gears.color.recolor_image(theme.icon_theme 
 
 --theme.titlebar_minimize_button_normal = themes_path .. "default/titlebar/minimize_normal.png"
 --theme.titlebar_minimize_button_focus  = themes_path .. "default/titlebar/minimize_focus.png"
-theme.titlebar_minimize_button_normal = theme.icon_theme .. "actions/symbolic/window-minimize-symbolic.svg"
-theme.titlebar_minimize_button_focus  = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-minimize-symbolic.svg", theme.fg_focus)
+theme.titlebar_minimize_button_normal          = theme.icon_theme .. "actions/symbolic/window-minimize-symbolic.svg"
+theme.titlebar_minimize_button_focus           = gears.color.recolor_image(theme.icon_theme .. "actions/symbolic/window-minimize-symbolic.svg", theme.fg_focus)
 
-theme.titlebar_ontop_button_normal_inactive = themes_path .. "default/titlebar/ontop_normal_inactive.png"
-theme.titlebar_ontop_button_focus_inactive  = themes_path .. "default/titlebar/ontop_focus_inactive.png"
-theme.titlebar_ontop_button_normal_active   = themes_path .. "default/titlebar/ontop_normal_active.png"
-theme.titlebar_ontop_button_focus_active    = themes_path .. "default/titlebar/ontop_focus_active.png"
+theme.titlebar_ontop_button_normal_inactive    = themes_path .. "default/titlebar/ontop_normal_inactive.png"
+theme.titlebar_ontop_button_focus_inactive     = themes_path .. "default/titlebar/ontop_focus_inactive.png"
+theme.titlebar_ontop_button_normal_active      = themes_path .. "default/titlebar/ontop_normal_active.png"
+theme.titlebar_ontop_button_focus_active       = themes_path .. "default/titlebar/ontop_focus_active.png"
 
-theme.titlebar_sticky_button_normal_inactive = themes_path .. "default/titlebar/sticky_normal_inactive.png"
-theme.titlebar_sticky_button_focus_inactive  = themes_path .. "default/titlebar/sticky_focus_inactive.png"
-theme.titlebar_sticky_button_normal_active   = themes_path .. "default/titlebar/sticky_normal_active.png"
-theme.titlebar_sticky_button_focus_active    = themes_path .. "default/titlebar/sticky_focus_active.png"
+theme.titlebar_sticky_button_normal_inactive   = themes_path .. "default/titlebar/sticky_normal_inactive.png"
+theme.titlebar_sticky_button_focus_inactive    = themes_path .. "default/titlebar/sticky_focus_inactive.png"
+theme.titlebar_sticky_button_normal_active     = themes_path .. "default/titlebar/sticky_normal_active.png"
+theme.titlebar_sticky_button_focus_active      = themes_path .. "default/titlebar/sticky_focus_active.png"
 
 theme.titlebar_floating_button_normal_inactive = themes_path .. "default/titlebar/floating_normal_inactive.png"
 theme.titlebar_floating_button_focus_inactive  = themes_path .. "default/titlebar/floating_focus_inactive.png"

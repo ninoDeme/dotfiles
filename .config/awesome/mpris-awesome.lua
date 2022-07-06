@@ -5,12 +5,12 @@
 -- requires - playerctl
 -- @copyright 2020
 -------------------------------------------------
-local awful = require("awful")
+local awful     = require("awful")
 local beautiful = require("beautiful")
-local watch = require("awful.widget.watch")
-local wibox = require("wibox")
-local gears = require("gears")
-local markup = require("lain.util.markup")
+local watch     = require("awful.widget.watch")
+local wibox     = require("wibox")
+local gears     = require("gears")
+local markup    = require("lain.util.markup")
 
 
 --local GET_MPD_CMD = "playerctl -f '{{status}};{{xesam:artist}};{{xesam:title}}' metadata"
@@ -18,21 +18,21 @@ local GET_MPD_CMD1 = "playerctl -p "
 local GET_MPD_CMD2 = ' -f "{{status}};{{xesam:artist}};{{xesam:title}}" metadata'
 --local GET_MPD_CMD = "playerctl -p %s -f '{{status}};{{xesam:artist}};{{xesam:title}}' metadata"
 
+local icon_color = beautiful.fg_icon
 
-local TOGGLE_MPD_CMD = "playerctl play-pause -p '"
-local NEXT_MPD_CMD = "playerctl next -p '"
-local PREV_MPD_CMD = "playerctl previous -p '"
+local TOGGLE_MPD_CMD   = "playerctl play-pause -p '"
+local NEXT_MPD_CMD     = "playerctl next -p '"
+local PREV_MPD_CMD     = "playerctl previous -p '"
 local LIST_PLAYERS_CMD = "playerctl -l"
 
-local PATH_TO_ICONS = "/usr/share/icons/Arc"
-local PAUSE_ICON_NAME = gears.color.recolor_image(PATH_TO_ICONS .. "/actions/24/player_pause.png", "#78A4FF")
-local PLAY_ICON_NAME = gears.color.recolor_image(PATH_TO_ICONS .. "/actions/24/player_play.png", "#78A4FF")
-local STOP_ICON_NAME = gears.color.recolor_image(PATH_TO_ICONS .. "/actions/24/player_stop.png", "#78A4FF")
-local LIBRARY_ICON_NAME = gears.color.recolor_image(PATH_TO_ICONS .. "/actions/24/music-library.png", "#78A4FF")
+local PATH_TO_ICONS     = "/usr/share/icons/Arc"
+local PAUSE_ICON_NAME   = gears.color.recolor_image(PATH_TO_ICONS .. "/actions/24/player_pause.png", icon_color)
+local PLAY_ICON_NAME    = gears.color.recolor_image(PATH_TO_ICONS .. "/actions/24/player_play.png", icon_color)
+local STOP_ICON_NAME    = gears.color.recolor_image(PATH_TO_ICONS .. "/actions/24/player_stop.png", icon_color)
+local LIBRARY_ICON_NAME = gears.color.recolor_image(PATH_TO_ICONS .. "/actions/24/music-library.png", icon_color)
 
 Default_player = ''
-awful.spawn('bash -c "echo \'\'' .. ' > ~/.config/awesome/mpris-defaultplayer"')
-local substituted = 0
+awful.spawn('bash -c "echo \'\' > ~/.config/awesome/mpris-defaultplayer"')
 
 local icon = wibox.widget {
     id = "icon",
@@ -41,6 +41,7 @@ local icon = wibox.widget {
 }
 
 local mpris_widget = wibox.widget {
+
     {
         icon,
         top = 3,
@@ -65,15 +66,15 @@ local mpris_widget = wibox.widget {
 local rows = { layout = wibox.layout.fixed.vertical }
 
 local popup = awful.popup {
-    bg = beautiful.bg_normal,
-    ontop = true,
-    visible = false,
-    shape = gears.shape.rounded_rect,
-    border_width = 1,
-    border_color = beautiful.bg_focus,
+    bg            = beautiful.bg_normal,
+    ontop         = true,
+    visible       = false,
+    shape         = gears.shape.rounded_rect,
+    border_width  = 1,
+    border_color  = beautiful.bg_focus,
     maximum_width = 400,
-    offset = { y = 5 },
-    widget = {}
+    offset        = { y = 5 },
+    widget        = {}
 }
 
 -- retrieve song info
@@ -191,3 +192,4 @@ mpris_widget:buttons(
 )
 rebuild_popup()
 return mprisW
+

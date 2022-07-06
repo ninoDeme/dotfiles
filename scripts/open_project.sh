@@ -1,11 +1,13 @@
 #! /bin/bash
 
-[ -z "$DEFAULTTERM" ] && DEFAULTTERM="kitty" #Set default terminal
+set -e
+[ -z "$DEFAULTTERM" ] && DEFAULTTERM="alacritty" #Set default terminal
 
 # Chose editor
-chosen=$(printf "Emacs\nVSCode\nNeovim\nTerminal" | rofi -dmenu -i -p "Editor:")
+chosen=$(printf "Emacs\nEmacs Client\nVSCode\nNeovim\nTerminal" | rofi -dmenu -i -p "Editor:")
 
 case "$chosen" in
+    "Emacs Client") edit="emacsclient -c -a=''" ;;
     "Emacs") edit="emacs" ;;
     "VSCode") edit="code" ;;
     "Neovim") [ -t 1 ] && edit="nvim" || edit="$DEFAULTTERM -e nvim" ;;
@@ -29,6 +31,8 @@ exec_cmd=$(printf "$rofi_prompt" | rofi -dmenu -i -p "Project:")
 # if Default is chosen, just open edit
 if [ "$exec_cmd" == "Default" ]; then
 	$edit
+elif [ "$exec_cmd" == "" ]; then
+    exit 1
 else
 	# Run project in editor chosen in prompt 
 	projectIndex=(${exec_cmd//: / })
