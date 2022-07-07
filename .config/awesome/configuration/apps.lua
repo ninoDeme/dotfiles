@@ -16,7 +16,8 @@ return {
     region_screenshot = 'flameshot gui -p ~/Pictures',
     delayed_screenshot = 'flameshot screen -p ~/Pictures -d 5000',
     browser = 'firefox',
-    editor = 'code', -- gui text editor
+    editor = 'emacs', -- gui text editor
+    termeditor = 'nvim', -- gui text editor
     -- discord = 'flatpak run com.discordapp.Discord',
     discord = 'chromium --profile-directory=Default --app-id=nebbmpibgobljecgkdipmcfonkkmcggn',
 --    game = rofi_command,
@@ -34,7 +35,7 @@ return {
     '/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)', -- credential manager
     'xfce4-power-manager', -- Power manager
     'flameshot',
-    'kdeconnect-indicator',
+    -- 'kdeconnect-indicator',
     'steam -silent',
   }
 }

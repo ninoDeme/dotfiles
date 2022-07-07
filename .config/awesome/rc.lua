@@ -103,7 +103,7 @@ beautiful.gap_single_client = false
 -- This is used later as the default terminal and editor to run.
 local terminal = apps.default.terminal
 local browser = apps.default.browser
-local editor = os.getenv("EDITOR") or "nvim"
+local editor = apps.default.termeditor
 local editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -407,14 +407,11 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "s", function() awful.spawn("lutris") end,
         { description = "Open lutris", group = "Applications" }),
 
-    awful.key({ modkey }, "c", function() awful.spawn(apps.default.editor) end,
-        { description = "Open editor", group = "Applications" }),
+    -- awful.key({ modkey }, "c", function() awful.spawn(apps.default.editor) end,
+        -- { description = "Open editor", group = "Applications" }),
 
     awful.key({ modkey, "Control" }, "c", function() awful.spawn("sh -c '$HOME/scripts/open_project.sh'") end,
         { description = "Edit awesome config", group = "Applications" }),
-
-    awful.key({ modkey }, "a", function() awful.spawn("emacs ~/.emacs.d/init.el") end,
-        { description = "Open editor", group = "Applications" }),
 
     awful.key({}, "Print", function() awful.spawn("flameshot gui") end),
 

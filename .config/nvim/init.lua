@@ -43,8 +43,8 @@ local cmp_map = cmp.mapping.preset.insert({
   ['<C-j>'] = cmp.mapping(function(fallback)
     if cmp.visible() then
       cmp.select_next_item()
-   elseif luasnip.expand_or_jumpable() then
-     luasnip.expand_or_jump()
+    elseif luasnip.expand_or_jumpable() then
+      luasnip.expand_or_jump()
     else
       fallback()
     end
@@ -134,8 +134,8 @@ cmp.setup.cmdline(':', {
   sources = cmp.config.sources({
     { name = 'path' }
   }, {
-    { name = 'cmdline' }
-  })
+      { name = 'cmdline' }
+    })
 })
 --}}}
 
@@ -167,46 +167,6 @@ require('lualine').setup {
   }
 }
 -- }}}
-
--- Prettier {{{
-local prettier = require("prettier")
-
-prettier.setup({
-  bin = 'prettier', -- or `prettierd`
-  filetypes = {
-    "css",
-    "graphql",
-    "html",
-    "javascript",
-    "javascriptreact",
-    "json",
-    "less",
-    "markdown",
-    "scss",
-    "typescript",
-    "typescriptreact",
-    "yaml",
-  },
-
-  -- prettier format options (you can use config files too. ex: `.prettierrc`)
-  arrow_parens = "always",
-  bracket_spacing = true,
-  embedded_language_formatting = "auto",
-  end_of_line = "lf",
-  html_whitespace_sensitivity = "css",
-  jsx_bracket_same_line = false,
-  jsx_single_quote = false,
-  print_width = 80,
-  prose_wrap = "preserve",
-  quote_props = "as-needed",
-  semi = true,
-  single_quote = false,
-  tab_width = 2,
-  trailing_comma = "es5",
-  use_tabs = false,
-  vue_indent_script_and_style = false,
-})
---- }}}
 
 --- Git Singns {{{
 require('gitsigns').setup {
@@ -242,6 +202,7 @@ require 'nvim-web-devicons'.setup()
 -- }}}
 
 -- Vim settings {{{
+
 -- map leader to space
 vim.g.mapleader = " "
 
@@ -254,29 +215,42 @@ colorscheme ayu
 hi Normal guibg=NONE ctermbg=NONE
 ]]
 
-vim.opt.wildmenu = true
+vim.opt.wildmenu       = true
 
 -- Set highlight on search
-vim.opt.hlsearch = true
+vim.opt.hlsearch       = true
 
 -- deal with case sensitivity on search
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+vim.opt.ignorecase     = true
+vim.opt.smartcase      = true
 
-vim.opt.hidden = true
-vim.opt.ruler = true
-vim.opt.laststatus = 2
-vim.opt.confirm = true
-vim.opt.visualbell = true
+vim.opt.hidden         = true
+vim.opt.ruler          = true
+vim.opt.laststatus     = 2
+vim.opt.confirm        = true
+vim.opt.visualbell     = true
 
 -- add manual folding
-vim.opt.foldmethod = 'marker'
-vim.opt.cmdheight = 2
-vim.opt.number = true
+vim.opt.foldmethod     = 'marker'
+
+vim.opt.cmdheight      = 2
+vim.opt.number         = true
 vim.opt.relativenumber = true
 
+vim.opt.linebreak      = true
 -- save undo history
-vim.opt.undofile = true
+vim.opt.undofile       = true
+
+-- fix vim screen geometry on alacritty -e nvim
+if (os.getenv("TERM") == "alacritty") then
+  vim.api.nvim_create_autocmd({"VimEnter"}, {
+    callback = function()
+      local pid, WINCH = vim.fn.getpid(), vim.loop.constants.SIGWINCH
+      vim.defer_fn(function() vim.loop.kill(pid, WINCH) end, 10)
+    end
+  })
+end
+
 -- }}}
 
 -- Vimscript {{{
@@ -292,7 +266,7 @@ autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
 set termguicolors
 
 if has('mouse')
-	set mouse=a
+  set mouse=a
 endif
 
 " Keybindings {{{
@@ -312,12 +286,22 @@ set shortmess+=c
 
 noremap <leader><leader> :NvimTreeToggle<CR>
 
-nnoremap <silent><buffer> <Leader>f :lua vim.lsp.buf.format( async == true )<CR>
 " copy and paste from system clipboard
 noremap <Leader>Y "*y
 noremap <Leader>P "*p
 noremap <Leader>y "+y
 noremap <Leader>p "+p
+
+" Delete without copying
+nnoremap <leader>d "_d
+xnoremap <leader>d "_d
+nnoremap <leader>D "_D
+xnoremap <leader>D "_D
+
+" Create directory for current file
+noremap <leader>w <Cmd>:call mkdir(expand("%:p:h"),"p")<CR>
+
+vnoremap <C-X> <Esc>`.``gvP``P
 
 " reload config
 nnoremap <leader>r :source $MYVIMRC<CR>
@@ -325,12 +309,6 @@ nnoremap <leader>r :source $MYVIMRC<CR>
 " Telescope bindings
 nnoremap <leader>ss <cmd>Telescope live_grep<cr>
 nnoremap <leader>sb <cmd>Telescope buffers<cr>
-
-" Easy align keybindings
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
 
 " DAP mode bindings
 " noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
@@ -358,6 +336,15 @@ nnoremap <silent> <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
 
 nnoremap <silent> <Leader><return> :!alacritty &<CR>
 
+" Use fold as text object for motions
+" xnoremap iz :<C-U>silent!normal![zV]z<CR>
+" onoremap iz :normal viz<CR>
+
+xnoremap iz :<C-U>silent!normal![zjV]zk<CR>
+onoremap iz :normal Viz<CR>
+xnoremap az :<C-U>silent!normal![zV]z<CR>
+onoremap az :normal Vaz<CR>
+
 " esc to exit terminal mode
 tnoremap <Esc> <C-\><C-n>
 
@@ -374,6 +361,7 @@ nnoremap <silent><C-A-h> <C-w>h
 nnoremap <silent><C-A-j> <C-w>j
 nnoremap <silent><C-A-k> <C-w>k
 nnoremap <silent><C-A-l> <C-w>l
+
 ]])
 -- }}} }}}
 -- vim: ts=2 sts=2 sw=2 et

@@ -19,6 +19,10 @@ picom, lain, i3lock, flameshot, xfce4-power-manager, network-manager-applet
 
 Rofi, nitrogen, picom, network-manager-applet, xfce4-power-manager, flameshot, dmenu, xfce4-notifyd
 
+## neovim
+
+Packer package manager
+
 # Installation
 ## Using install script
 
@@ -27,6 +31,7 @@ Cloning repository as a bare repository:
 ```sh
 curl -Lks https://raw.githubusercontent.com/ninoDeme/dotfiles/main/scripts/Bare.sh | sh
 ```
+
 
 ## Manual Installation
 

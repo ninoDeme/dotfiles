@@ -8,7 +8,7 @@ return require('packer').startup(function(use)
 	-- use 'chrisbra/Colorizer'
 	use 'kyazdani42/nvim-tree.lua' -- project browser, use <space><space> to toggle
 	use 'kosayoda/nvim-lightbulb'
-	-- use 'LoricAndre/OneTerm.nvim' --
+	-- use 'LoricAndre/OneTerm.nvim' 
 	use 'gennaro-tedesco/nvim-peekup' -- See all yank registers use ""
 	use 'nvim-lua/plenary.nvim' -- Telescope dependency
 	use 'nvim-telescope/telescope.nvim' -- Fuzzy finder over lists
@@ -27,9 +27,13 @@ return require('packer').startup(function(use)
 	use 'justinmk/vim-sneak' -- Go to next ocurrence of two caracters s{char}{char}
 	use 'L3MON4D3/LuaSnip' -- Snippets plugin
 	use 'mg979/vim-visual-multi' -- Multiple cursors (use Ctrl+n to select word and Ctrl+Down/Up)
-	use 'junegunn/vim-easy-align'
+	-- use 'junegunn/vim-easy-align' -- Use ga<text> to align
+	use 'tommcdo/vim-exchange' -- use gl<text> to align
+	use 'michaeljsmith/vim-indent-object' -- add indent text object for motions ii ai 
+	use 'tommcdo/vim-exchange' -- mark with cx<motion> and substitute with cx<motion>
+	use 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
 
--- Lsp and DAP
+	-- Lsp and DAP =======================
 	use 'neovim/nvim-lspconfig' -- Common lsp configurations
 	use 'nvim-lua/lsp-status.nvim' -- lsp status
 	use 'nvim-lua/lsp_extensions.nvim'
@@ -40,9 +44,8 @@ return require('packer').startup(function(use)
 	use 'ojroques/nvim-lspfuzzy'
 	use 'onsails/lspkind.nvim'
 	use 'williamboman/nvim-lsp-installer'
-	use'MunifTanjim/prettier.nvim'
 
--- Autocompletion
+	-- Autocompletion =======================
 	use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
 	use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
 	use 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
@@ -51,9 +54,10 @@ return require('packer').startup(function(use)
 	use 'hrsh7th/cmp-cmdline'
 	use 'ray-x/cmp-treesitter'
 
--- Color schemes
+	-- Color schemes =======================
 	use 'tjdevries/colorbuddy.nvim'
 	use 'ishan9299/modus-theme-vim'
 	use 'ayu-theme/ayu-vim'
 	use 'norcalli/nvim-colorizer.lua'
 end)
+-- vim: nowrap

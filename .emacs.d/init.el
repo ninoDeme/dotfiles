@@ -148,6 +148,10 @@
   :after evil
   :config (evil-collection-init))
 
+(use-package evil-exchange
+  :config
+  (evil-exchange-install))
+
 (use-package evil-commentary ;; Evil comment support
   :after evil
   :defer 0
@@ -163,6 +167,14 @@
   :defer 0
   :config (evil-snipe-mode +1)
           (setq evil-snipe-scope 'buffer))
+
+(use-package evil-lion
+  :ensure t
+  :config
+  (evil-lion-mode))
+
+(use-package evil-indent-plus
+  :config (evil-indent-plus-default-bindings))
 
 ;; (use-package multiple-cursors)
 (use-package evil-mc
@@ -417,11 +429,16 @@
   :ensure t
   :hook (python-mode . lsp))  ; or lsp-deferred
 
+(use-package lsp-haskell
+  :hook (haskell-mode . lsp))
+
 (use-package haskell-mode
   :ensure t)
 
-(use-package lsp-haskell
-  :hook (haskell-mode . lsp))
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "pandoc"))
 
 (setq gc-cons-threshold (* 2 1000 1000))
 
@@ -434,7 +451,7 @@
  '(custom-safe-themes
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
  '(package-selected-packages
-   '(elfeed evil-snipe evil-cm multiple-cursors exec-path-from-shell lsp-haskell undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
+   '(evil-indent-plus evil-lion evil-exchange elfeed evil-snipe evil-cm multiple-cursors exec-path-from-shell lsp-haskell undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
