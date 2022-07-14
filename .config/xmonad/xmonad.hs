@@ -17,7 +17,6 @@ import XMonad.Util.NamedActions
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
-import XMonad.Hooks.WorkspaceHistory
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Actions.WindowGo
@@ -43,8 +42,8 @@ myClickJustFocuses = False
 
 -- Use xmobar?
 useXmobar :: Bool
-useXmobar = False
--- useXmobar = True
+-- useXmobar = False
+useXmobar = True
 
 -- Width of the window border in pixels.
 --
@@ -215,7 +214,7 @@ customKeys c = (subtitle "Custom Keys":) $ mkNamedKeymap c
     , ("M-S-q", addName "Power menu" $ spawn "sh -c ./scripts/rofi-power.sh")
 
     -- Restart xmonad
-    , ("M-S-r", addName "Restart Xmonad" $ spawn "xmonad --recompile; killall xmobar ; xmonad --restart")
+    , ("M-S-r", addName "Restart Xmonad" $ spawn "xmonad --recompile ; killall xmobar ; xmonad --restart")
 
     --
     -- Super-1..9, Switch to workspace N
@@ -270,9 +269,10 @@ scratchpads = [
            NS "quakeTerm" (myTerminal ++ " -T=quakeTerminal") (title =? "quakeTerminal") (customFloating $ W.RationalRect 0 0 1 (1/2))
               ]
 ------------------------------------------------------------------------
+ssize = 0
 -- Layouts:
 --
-myLayout = spacingRaw True (Border 0 5 5 5) True (Border 5 5 5 5) True  (avoidStruts (smartBorders ( tiled ||| (Mirror tiled))))  ||| smartBorders Full ||| avoidStruts simpleTabbed
+myLayout = spacingRaw True (Border 0 ssize ssize ssize) True (Border ssize ssize ssize ssize) True  (avoidStruts (smartBorders ( tiled ||| (Mirror tiled))))  ||| smartBorders Full ||| avoidStruts simpleTabbed
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -394,7 +394,7 @@ main = do
   -- start xmonad
   xmproc <- spawnXmobar useXmobar
 --  xmproc <- spawnPipe "xmobar $HOME/.xmonad/xmobarrc"
-  xmonad $  ewmh . docks $ addDescrKeys' ((mod4Mask, xK_F1), xMessage) myKeys (defaults xmproc)
+  xmonad $ ewmh . docks $ addDescrKeys' ((mod4Mask, xK_F1), xMessage) myKeys (defaults xmproc)
   xmonad desktopConfig
 
 -- A structure containing your configuration settings, overriding
@@ -423,5 +423,5 @@ defaults xmproc = def {
         handleEventHook    = handleEventHook def,
         startupHook        = myStartupHook,
       -- 
-        logHook            = workspaceHistoryHookExclude [scratchpadWorkspaceTag] >> myLogHook xmproc useXmobar
+        logHook            = myLogHook xmproc useXmobar
     }

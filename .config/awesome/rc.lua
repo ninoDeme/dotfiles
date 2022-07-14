@@ -117,13 +117,13 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile,
-    awful.layout.suit.floating,
-    -- wful.layout.suit.tile.left,
+    -- awful.layout.suit.floating,
+    -- awful.layout.suit.tile.left,
     -- awful.layout.suit.tile.bottom,
     -- awful.layout.suit.tile.top,
     -- awful.layout.suit.fair,
     -- awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
+    -- awful.layout.suit.spiral,
     -- awful.layout.suit.spiral.dwindle,
     -- awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
@@ -213,7 +213,7 @@ tag.connect_signal("property::layout", function(t)
     for _ , c in ipairs(t.screen.all_clients) do
         if c.requests_no_titlebar == false and t.layout == awful.layout.suit.floating then
             awful.titlebar.show(c)
-        elseif c.floating == false then
+        else
             awful.titlebar.hide(c)
         end
     end
@@ -223,12 +223,8 @@ end)
 client.connect_signal("property::floating", function(c)
     if c.floating then
         c.ontop = true
-        if c.requests_no_titlebar == false then
-            awful.titlebar.show(c)
-        end
     else
         c.ontop = false
-        awful.titlebar.hide(c)
     end
 end)
 
@@ -361,6 +357,13 @@ globalkeys = gears.table.join(
         { description = "decrease the number of columns", group = "layout" }),
     awful.key({ modkey, }, "Tab", function() awful.layout.inc(1) end,
         { description = "select next", group = "layout" }),
+    awful.key({ modkey, "Control" }, "t", function() 
+        if awful.layout.get() == awful.layout.suit.floating
+            then awful.layout.set( awful.layout.suit.tile )
+            else awful.layout.set( awful.layout.suit.floating )
+        end
+    end,
+        { description = "select next", group = "layout" }),
     awful.key({ modkey, "Shift" }, "space", function() awful.layout.inc(-1) end,
         { description = "select previous", group = "layout" }),
 
@@ -407,8 +410,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "s", function() awful.spawn("lutris") end,
         { description = "Open lutris", group = "Applications" }),
 
-    -- awful.key({ modkey }, "c", function() awful.spawn(apps.default.editor) end,
-        -- { description = "Open editor", group = "Applications" }),
+    awful.key({ modkey }, "c", function() awful.spawn(apps.default.editor) end,
+        { description = "Open editor", group = "Applications" }),
 
     awful.key({ modkey, "Control" }, "c", function() awful.spawn("sh -c '$HOME/scripts/open_project.sh'") end,
         { description = "Edit awesome config", group = "Applications" }),

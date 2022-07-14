@@ -37,11 +37,11 @@ function vterm_printf; #emacs vterm integration
     end
 end
 
-if test -n "$DESKTOP_SESSION"
-    for env_var in (gnome-keyring-daemon --start)
-        set -x (echo $env_var | string split "=")
-    end
-end
+# if test -n "$DESKTOP_SESSION"
+#     for env_var in (gnome-keyring-daemon --start)
+#         set -x (echo $env_var | string split "=")
+#     end
+# end
 set --global --export FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=90% --preview-window=wrap'
 fish_default_key_bindings
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'

@@ -8,7 +8,6 @@ return require('packer').startup(function(use)
 	-- use 'chrisbra/Colorizer'
 	use 'kyazdani42/nvim-tree.lua' -- project browser, use <space><space> to toggle
 	use 'kosayoda/nvim-lightbulb'
-	-- use 'LoricAndre/OneTerm.nvim' 
 	use 'gennaro-tedesco/nvim-peekup' -- See all yank registers use ""
 	use 'nvim-lua/plenary.nvim' -- Telescope dependency
 	use 'nvim-telescope/telescope.nvim' -- Fuzzy finder over lists
@@ -27,11 +26,11 @@ return require('packer').startup(function(use)
 	use 'justinmk/vim-sneak' -- Go to next ocurrence of two caracters s{char}{char}
 	use 'L3MON4D3/LuaSnip' -- Snippets plugin
 	use 'mg979/vim-visual-multi' -- Multiple cursors (use Ctrl+n to select word and Ctrl+Down/Up)
-	-- use 'junegunn/vim-easy-align' -- Use ga<text> to align
-	use 'tommcdo/vim-exchange' -- use gl<text> to align
+	use 'tommcdo/vim-lion' -- use gl<text> to align
 	use 'michaeljsmith/vim-indent-object' -- add indent text object for motions ii ai 
 	use 'tommcdo/vim-exchange' -- mark with cx<motion> and substitute with cx<motion>
 	use 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
+	use 'folke/which-key.nvim'
 
 	-- Lsp and DAP =======================
 	use 'neovim/nvim-lspconfig' -- Common lsp configurations

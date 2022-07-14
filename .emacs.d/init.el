@@ -27,7 +27,11 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
+(defun close-all-buffers ()
+(interactive)
+  (mapc 'kill-buffer (buffer-list)))
 
+(add-hook 'delete-frame-functions 'close-all-buffers)
 ;; (setq modus-themes-headings
 ;;       '((1 . (rainbow variable-pitch 1.5))
 ;; 	(2 . (rainbow variable-pitch 1.3))
@@ -80,8 +84,8 @@
 (eval-when-compile
   (require 'use-package))
 (setq use-package-always-ensure t)
-(setq use-package-always-defer t)
-(setq use-package-verbose t)
+;; (setq use-package-always-defer t)
+;; (setq use-package-verbose t)
 
 (use-package no-littering) ;; Avoid clutering .emacs.d
 (use-package bug-hunter
@@ -424,6 +428,29 @@
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
+
+(use-package exec-path-from-shell
+  :demand t
+  :config (when (memq window-system '(mac ns x))
+	    (exec-path-from-shell-initialize))
+  (when (daemonp)
+    (exec-path-from-shell-initialize)))
+
+;; LSP mode config
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-x C-l")
+  (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
+  :config
+  (setq lsp-keep-workspace-alive nil)
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
 
 (use-package lsp-pyright
   :ensure t

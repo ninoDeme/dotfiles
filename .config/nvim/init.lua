@@ -3,7 +3,8 @@ require('plugins')
 
 -- Plugin Setup {{{
 
-local luasnip = require 'luasnip'
+
+local luasnip = require('luasnip')
 
 local lspconfig = require('lspconfig')
 
@@ -146,6 +147,7 @@ require 'nvim-tree'.setup({
       list = {
         { key = "h", action = "dir_up"},
         { key = "l", action = "edit"},
+        { key = "L", action = "cd"},
         { key = "<C-l>", action = "preview"},
       }
     }
@@ -176,11 +178,29 @@ require('gitsigns').setup {
 }
 --- }}}
 
-require("bufferline").setup {}
+require("bufferline").setup{}
 
 require('kommentary.config').use_extended_mappings()
 
-require 'qf_helper'.setup()
+require('qf_helper').setup()
+
+require("which-key").setup {}
+local wk = require("which-key")
+wk.register({
+  ["<leader>t"]  = { name = "Open numbered terminals" },
+  ["<leader>t1"] = { name = "Terminal 1" },
+  ["<leader>t2"] = { name = "Terminal 2" },
+  ["<leader>t3"] = { name = "Terminal 3" },
+  ["<leader>t4"] = { name = "Terminal 4" },
+  ["<leader>s"]  = { name = "Telescope" },
+  ["<leader>sb"] = { name = "Buffers" },
+  ["<leader>ss"] = { name = "Grep" },
+  ["gl"]  = { name = "Align text at (right)" },
+  ["gL"]  = { name = "Align text at (left)" },
+  ["s"]  = { name = "Vim sneak" },
+  ["S"]  = { name = "Vim sneak" },
+  ["W"]  = { name = "Create dir to current file" },
+  })
 
 -- TreeSitter {{{
 require 'nvim-treesitter.configs'.setup {
@@ -256,7 +276,6 @@ end
 -- Vimscript {{{
 vim.cmd([[
 
-set notimeout
 
 filetype plugin indent on
 
@@ -299,7 +318,7 @@ nnoremap <leader>D "_D
 xnoremap <leader>D "_D
 
 " Create directory for current file
-noremap <leader>w <Cmd>:call mkdir(expand("%:p:h"),"p")<CR>
+noremap <leader>W <Cmd>:call mkdir(expand("%:p:h"),"p")<CR>
 
 vnoremap <C-X> <Esc>`.``gvP``P
 
@@ -326,7 +345,7 @@ nnoremap <silent> <leader>l <cmd>LLToggle!<CR>
 noremap <silent> <leader><Tab> :BufferLineCycleNext<CR>
 
 " close current buffer
-nnoremap <silent> <Leader>qq :lua require("nvim-smartbufs").close_current_buffer()<CR>
+nnoremap <silent> <Leader>wq :lua require("nvim-smartbufs").close_current_buffer()<CR>
 
 " open numbered terminals
 nnoremap <silent> <Leader>t1 :lua require("nvim-smartbufs").goto_terminal(1)<CR>
@@ -364,4 +383,5 @@ nnoremap <silent><C-A-l> <C-w>l
 
 ]])
 -- }}} }}}
+
 -- vim: ts=2 sts=2 sw=2 et
