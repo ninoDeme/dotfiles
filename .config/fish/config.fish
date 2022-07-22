@@ -42,23 +42,27 @@ end
 #         set -x (echo $env_var | string split "=")
 #     end
 # end
-set --global --export FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=90% --preview-window=wrap'
 fish_default_key_bindings
+
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-# set EDITOR "emacsclient -t -a ''"                 # $EDITOR use Emacs in terminal
-# set VISUAL "devour emacsclient -c -a emacs"              # $VISUAL use Emacs in GUI mode
+
 if test -e $HOME/.config/fish/gtk_nocsd.fish
 	source $HOME/.config/fish/gtk_nocsd.fish
 end
 if test -e $HOME/.config/fish/bitwarden.fish
 	source $HOME/.config/fish/bitwarden.fish
 end
+
 set EDITOR "nvim"
 set TERMINAL "kitty"
+# set EDITOR "emacsclient -t -a ''"                 # $EDITOR use Emacs in terminal
+set VISUAL "emacsclient -c -a emacs"              # $VISUAL use Emacs in GUI mode
 # set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
 set -x MANPAGER 'nvim -c MANPAGER -'
 set -x XDG_DATA_DIRS "/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
+set --global --export FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=90% --preview-window=wrap'
+
 fish_add_path $HOME/.emacs.d/bin
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin

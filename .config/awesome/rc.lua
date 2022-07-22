@@ -61,15 +61,13 @@ local exit_screen_show = require("exit_screen")
 -- }}}
 
 -- Function declarations {{{
-local function findProgram(programName, cmd)
+local function findProgram(programName, ifSucces)
     awful.spawn.easy_async(
         "pgrep -i " .. programName,
         function(stdout, stderr, reason, exitcode)
-            if exitcode ~= 0 then
-                if cmd ~= nil then awful.spawn(cmd) end
-                return true
-            else
-                return false
+          if exitcode ~= 0 then
+                if ifSucces ~= nil then ifSucces() 
+                else awful.spawn(programName) end
             end
         end
     )
@@ -401,9 +399,17 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Control" }, "space", function() awful.spawn("rofi -show combi") end,
         { description = "show rofi", group = "launcher" }),
 
+    -- bwmenu
+    awful.key({ modkey, "Control" }, "r", function() awful.spawn("bwmenu") end,
+        { description = "show bitwarden menu", group = "launcher" }),
+
     -- Aplications
-    awful.key({ modkey }, "e", function() awful.spawn(apps.default.files) end,
+    awful.key({ modkey, "Shift" }, "e", function() awful.spawn(apps.default.files) end,
         { description = "Open file manager", group = "Applications" }),
+
+    -- Aplications
+    awful.key({ modkey }, "e", function() awful.spawn(terminal .. " -e " .. apps.default.termfiles) end,
+        { description = "Open terminal file manager", group = "Applications" }),
 
     awful.key({ modkey }, "s", function() awful.spawn("steam") end,
         { description = "Open steam", group = "Applications" }),
@@ -430,12 +436,12 @@ globalkeys = gears.table.join(
         { description = "Toggle discord", group = "Applications" }),
 
     awful.key({ modkey }, "b", function()
-        findWindow(browser, function() awful.spawn(browser, {tag = browserTag }) end)
+        findProgram(browser, function() awful.spawn(browser, {tag = browserTag }) end)
         browserTag:view_only()
     end,
         { description = "Spawn browser", group = "Applications" }),
     awful.key({ modkey, "Control" }, "b", function()
-        findWindow(browser, function() awful.spawn(browser, {tag = browserTag }) end)
+        findProgram(browser, function() awful.spawn(browser, {tag = browserTag }) end)
         awful.tag.viewtoggle(browserTag)
     end,
         { description = "Toggle browser", group = "Applications" })

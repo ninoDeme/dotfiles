@@ -12,10 +12,10 @@
 
 (defun display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
-           (format "%.2f seconds"
-                   (float-time
-                     (time-subtract after-init-time before-init-time)))
-           gcs-done))
+	   (format "%.2f seconds"
+		   (float-time
+		    (time-subtract after-init-time before-init-time)))
+	   gcs-done))
 
 (add-hook 'emacs-startup-hook #'display-startup-time)
 
@@ -91,33 +91,29 @@
 (use-package bug-hunter
   :commands (bug-hunter-file bug-hunter-init-file))
 
-(defun run-terminal-here ()
-  (interactive "@")
-  (shell-command (concat "kitty -d "
-            (file-name-directory (or load-file-name buffer-file-name))
-              " > /dev/null 2>&1 & disown") nil nil))
-
 ;; Define keymaps  ================================================================================
 
 (use-package general
+  :after evil
   :demand t
   :config (general-evil-setup t)
   (general-create-definer leader-key-def
   :keymaps '(normal visual emacs insert treemacs)
+  :keymaps 'override
   :prefix "SPC"
   :non-normal-prefix "C-SPC"
   :prefix-map 'leader-key-map
   :prefix-command 'leader-key-cmd
   :global-prefix "C-SPC")
+  (leader-key-def "" nil)
   (leader-key-def
-    "e" 'counsel-find-file
+    "e" 'find-file
     "E" 'dired-jump
     "RET" 'eshell
-    "C-<return>" 'run-terminal-here
     "g" 'magit-status
     "SPC" 'treemacs
-    "c" 'flycheck-list-errors
-    "l" 'lsp-command-map))
+    "h" 'counsel-recentf
+    "c" 'flycheck-list-errors))
 
 ;; Install and configure packages ===============================================================
 
@@ -214,7 +210,7 @@
 
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :hook (counsel-find-file . treemacs-icons-dired-enable-once)
+  :hook (find-file . treemacs-icons-dired-enable-once)
   :ensure t)
 
 (use-package dired
@@ -293,6 +289,14 @@
   :ensure t
   :init (all-the-icons-ivy-rich-mode 1))
 
+(use-package prescient
+  :config (prescient-persist-mode 1))
+(use-package ivy-prescient
+  :after (counsel)
+  :config (ivy-prescient-mode 1))
+(use-package company-prescient
+  :config (company-prescient-mode 1))
+
 (use-package which-key
   :defer 0
   :diminish which-key-mode
@@ -336,7 +340,7 @@
 (use-package projectile ; Project manager
   :diminish projectile-mode
   :defer 0
-  :config 
+  :config
   (leader-key-def
     "p" 'projectile-command-map)) ; Leader (SPC) + p to open projectile map
 
@@ -440,8 +444,10 @@
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :init
-  (setq lsp-keymap-prefix "C-x C-l")
+  (setq lsp-keymap-prefix "C-SPC l")
   (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'gdscript-mode-hook 'lsp)
+  (add-hook 'lua-mode-hook 'lsp)
   (add-hook 'c++-mode-hook 'lsp)
   :config
   (setq lsp-keep-workspace-alive nil)
@@ -467,6 +473,10 @@
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command "pandoc"))
 
+(use-package gdscript-mode)
+
+(use-package lua-mode)
+
 (setq gc-cons-threshold (* 2 1000 1000))
 
 ;; Automaticaly created stuff {{{
@@ -478,7 +488,8 @@
  '(custom-safe-themes
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
  '(package-selected-packages
-   '(evil-indent-plus evil-lion evil-exchange elfeed evil-snipe evil-cm multiple-cursors exec-path-from-shell lsp-haskell undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil)))
+   '(lua-mode company-prescient ivy-prescient prescient gdscript-mode evil-indent-plus evil-lion evil-exchange elfeed evil-snipe evil-cm multiple-cursors exec-path-from-shell lsp-haskell undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil))
+ '(warning-suppress-types '((lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

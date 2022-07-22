@@ -2,7 +2,6 @@ return require('packer').startup(function(use)
 
 	use 'wbthomason/packer.nvim'
 	use 'lambdalisue/vim-manpager' -- Use vim as a manpager
-	use 'vifm/vifm.vim' -- vifm integratio
 	use 'dag/vim-fish' -- Fish integration
 	use 'lambdalisue/vim-pager' -- Use vim as a pager
 	-- use 'chrisbra/Colorizer'
