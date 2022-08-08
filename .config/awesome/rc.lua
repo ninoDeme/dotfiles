@@ -91,6 +91,16 @@ local function findWindow(windowName, ifSucces)
             end
         end)
 end
+
+local function findWindowScreen(windowName, ifSucces, s, t)
+    local condit = true
+    for _, c in ipairs(client.get(s)) do
+        if string.match(c.class, windowName) and (t == nil or c.first_tag == t) then
+            condit = false
+        end
+    end
+    if condit then ifSucces() end
+end
 --- }}}
 
 -- {{{ Variable definitions
@@ -156,6 +166,7 @@ mymainmenu = awful.menu({ items = {
 
 -- Signals {{{
 
+-- Close menu on mouse leave
 mymainmenu.wibox:connect_signal("mouse::leave", function()
     if not mymainmenu.active_child or
         (mymainmenu.wibox ~= mouse.current_wibox and
@@ -184,7 +195,11 @@ screen.connect_signal("property::geometry", function(s)
     end
 end)
 
--- Create a wibox for each screen and add it
+local discordTags = {}
+local browserTags = {}
+
+require("panel")
+
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     local wallpaper = beautiful.wallpaper
@@ -193,9 +208,13 @@ awful.screen.connect_for_each_screen(function(s)
     end
     gears.wallpaper.maximized(wallpaper, s, true)
 
-
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "", "ﭮ" }, s, awful.layout.layouts[1])
+
+    table.insert(discordTags, awful.tag.find_by_name(s, "ﭮ"))
+    table.insert(browserTags, awful.tag.find_by_name(s, ""))
+
+    beautiful.at_screen_connect(s) 
 
 end)
 
@@ -203,8 +222,6 @@ end)
 local discordTag = awful.tag.find_by_name(awful.screen.focused(), "ﭮ")
 local browserTag = awful.tag.find_by_name(awful.screen.focused(), "")
 
-require("panel")
-awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
 
 -- Add titlebars on floating layout
 tag.connect_signal("property::layout", function(t)
@@ -427,27 +444,73 @@ globalkeys = gears.table.join(
     awful.key({}, "Print", function() awful.spawn("flameshot gui") end),
 
     awful.key({ modkey }, "d", function()
-        findWindow("Discord", function() awful.spawn(apps.default.discord, {tag = "ﭮ" }) end)
-        discordTag:view_only()
+        findWindow("Discord", function() awful.spawn(apps.default.discord, {tag = discordTags }) end)
+        discordTags[1]:view_only()
+        for _, c in ipairs(client.get(s)) do
+            if string.match(c.name, "Discord") then
+                c:move_to_tag(discordTags[1])
+            end
+        end
     end,
         { description = "Spawn discord", group = "Applications" }),
     awful.key({ modkey, "Control" }, "d", function()
-        findWindow("Discord", function() awful.spawn(apps.default.discord, {tag = "ﭮ" }) end)
-        awful.tag.viewtoggle(discordTag)
+        findWindow("Discord", function() awful.spawn(apps.default.discord, {tag = discordTags }) end)
+        for i in pairs(discordTags) do
+            awful.tag.viewtoggle(i)
+        end
+        -- awful.tag.viewtoggle(discordTag)
     end,
         { description = "Toggle discord", group = "Applications" }),
+    awful.key({ modkey, "Mod1" }, "d", function()
+        findWindow("Discord", function() awful.spawn(apps.default.discord, {tag = discordTags }) end)
+        discordTags[#discordTags]:view_only()
+        for _, c in ipairs(client.get(s)) do
+            if string.match(c.name, "Discord") then
+                c:move_to_tag(discordTags[#discordTags])
+            end
+        end
+    end,
+        { description = "Spawn discord", group = "Applications" }),
 
     awful.key({ modkey }, "b", function()
-        findProgram(browser, function() awful.spawn(browser, {tag = browserTag }) end)
-        browserTag:view_only()
+        findWindowScreen(browser,
+            function()
+                awful.spawn(browser, { tag = awful.tag.find_by_name(awful.screen.focused(), "") })
+            end,
+            awful.screen.focused(),
+            awful.tag.find_by_name(awful.screen.focused(), ""))
+        awful.tag.find_by_name(awful.screen.focused(), ""):view_only()
     end,
         { description = "Spawn browser", group = "Applications" }),
+    awful.key({ modkey, "Shift" }, "b",
+        function()
+            if client.focus then
+                client.focus:move_to_tag(awful.tag.find_by_name(awful.screen.focused(), ""))
+            end
+        end,
+    { description = "move focused client to browser tag" , group = "Applications" }),
     awful.key({ modkey, "Control" }, "b", function()
         findProgram(browser, function() awful.spawn(browser, {tag = browserTag }) end)
-        awful.tag.viewtoggle(browserTag)
+        awful.tag.viewtoggle(awful.tag.find_by_name(awful.screen.focused(), ""))
     end,
-        { description = "Toggle browser", group = "Applications" })
-
+        { description = "Toggle browser", group = "Applications" }),
+    awful.key({ modkey, "Mod1" }, "b", function()
+        findWindowScreen(browser,
+            function()
+                awful.spawn(browser, { tag = browserTags[#browserTags] })
+            end,
+            browserTags[#browserTags].screen,
+            browserTags[#browserTags])
+        browserTags[#browserTags]:view_only()
+    end,
+        { description = "Spawn browser in last screen", group = "Applications" }),
+    awful.key({ modkey, "Mod1", "Shift" }, "b",
+        function()
+            if client.focus then
+                client.focus:move_to_tag(browserTags[#browserTags])
+            end
+        end,
+    { description = "move focused client to browser tag" , group = "Applications" })
 )
 
 clientkeys = gears.table.join(
@@ -637,10 +700,10 @@ awful.rules.rules = {
     }, properties = { floating = true } },
 
     { rule = { class = "discord" },
-        properties = { tag = "ﭮ" } },
+        properties = { tag = discordTags[#discordTags] } },
 
     { rule = { class = "Chromium" },
-        properties = { floating = false,  tag = "ﭮ" } },
+        properties = { floating = false,  tag = discordTags[#discordTags] } },
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
