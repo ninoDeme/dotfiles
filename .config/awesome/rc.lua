@@ -197,6 +197,7 @@ end)
 
 local discordTags = {}
 local browserTags = {}
+local gamingTags = {}
 
 require("panel")
 
@@ -209,7 +210,14 @@ awful.screen.connect_for_each_screen(function(s)
     gears.wallpaper.maximized(wallpaper, s, true)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "", "ﭮ" }, s, awful.layout.layouts[1])
+    awful.tag({ "1", "2", "3", "4", "5", "", "ﭮ"}, s, awful.layout.layouts[1])
+
+    table.insert(gamingTags, awful.tag.add("" , {
+        layout             = awful.layout.suit.max.fullscreen,
+        layouts = awful.layout.layouts,
+        gap                = 0,
+        screen             = s,
+    }))
 
     table.insert(discordTags, awful.tag.find_by_name(s, "ﭮ"))
     table.insert(browserTags, awful.tag.find_by_name(s, ""))
@@ -510,7 +518,31 @@ globalkeys = gears.table.join(
                 client.focus:move_to_tag(browserTags[#browserTags])
             end
         end,
-    { description = "move focused client to browser tag" , group = "Applications" })
+    { description = "move focused client to browser tag" , group = "Applications" }),
+
+    awful.key({ modkey }, "g",
+        function()
+            gamingTags[1]:view_only()
+        end,
+    { description = "open gaming tag" , group = "Gaming" }),
+    awful.key({ modkey, "Shift" }, "g",
+        function()
+            if client.focus then
+                client.focus:move_to_tag(gamingTags[1])
+            end
+        end,
+    { description = "move focused client to gaming tag" , group = "Gaming" }),
+
+    awful.key({ modkey, "Mod1" }, "g",
+        function()
+            awful.spawn("killall picom")
+        end,
+    { description = "Kill compositor" , group = "Gaming" }),
+    awful.key({ modkey, "Mod1", "Control" }, "g",
+        function()
+            awful.spawn('picom --experimental-backends --config ' .. gears.filesystem.get_configuration_dir() .. '/configuration/picom.conf')
+        end,
+    { description = "open compositor" , group = "Gaming" })
 )
 
 clientkeys = gears.table.join(
