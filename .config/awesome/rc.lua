@@ -95,8 +95,10 @@ end
 local function findWindowScreen(windowName, ifSucces, s, t)
     local condit = true
     for _, c in ipairs(client.get(s)) do
-        if string.match(c.class, windowName) and (t == nil or c.first_tag == t) then
-            condit = false
+        if not (c.class == nil) then
+            if string.match(c.class, windowName) and (t == nil or c.first_tag == t) then
+                condit = false
+            end
         end
     end
     if condit then ifSucces() end
@@ -262,6 +264,14 @@ end
 
 client.connect_signal("request::activate", awful.ewmh.activate)
 
+client.connect_signal("request::activate", function(c)
+    cond = true
+    if c.first_tag == gamingTags[1] then
+        awful.spawn("killall picom")
+    else
+        run_once('picom --experimental-backends --config ' .. gears.filesystem.get_configuration_dir() .. '/configuration/picom.conf')
+    end
+end)
 --client.connect_signal("manage", function (c)
 --    c.shape = function(cr,w,h)
 --        gears.shape.rounded_rect(cr,w,h,15)
@@ -529,6 +539,7 @@ globalkeys = gears.table.join(
         function()
             if client.focus then
                 client.focus:move_to_tag(gamingTags[1])
+                gamingTags[1]:view_only()
             end
         end,
     { description = "move focused client to gaming tag" , group = "Gaming" }),
@@ -631,6 +642,7 @@ for i = 1, 9 do
                     local tag = client.focus.screen.tags[i]
                     if tag then
                         client.focus:move_to_tag(tag)
+                        tag:view_only()
                     end
                 end
             end),

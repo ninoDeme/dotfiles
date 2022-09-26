@@ -13,7 +13,8 @@ return {
     screenshot = 'flameshot screen -p ~/Pictures',
     region_screenshot = 'flameshot gui -p ~/Pictures',
     delayed_screenshot = 'flameshot screen -p ~/Pictures -d 5000',
-    browser = 'qutebrowser',
+    -- browser = 'qutebrowser',
+    browser = 'firefox',
     editor = 'emacsclient -c -a=""', -- gui text editor
     termeditor = 'nvim', -- gui text editor
     -- discord = 'flatpak run com.discordapp.Discord',
