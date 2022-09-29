@@ -70,7 +70,7 @@ poweroff:connect_signal(
 btntooltip:add_to_object(poweroff)
 poweroff:connect_signal(
   'mouse::enter', function()
-    btntooltip.text = "Shutdown"
+    btntooltip.text = "Poweroff"
   end
 )
 
@@ -84,7 +84,7 @@ reboot:connect_signal(
 btntooltip:add_to_object(reboot)
 reboot:connect_signal(
   'mouse::enter', function()
-    btntooltip.text = "Restart"
+    btntooltip.text = "Reboot"
   end
 )
 
@@ -112,7 +112,7 @@ exit:connect_signal(
 btntooltip:add_to_object(exit)
 exit:connect_signal(
   'mouse::enter', function()
-    btntooltip.text = "Logout"
+    btntooltip.text = "Exit"
   end
 )
 

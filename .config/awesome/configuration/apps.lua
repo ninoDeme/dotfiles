@@ -18,7 +18,8 @@ return {
     editor = 'emacsclient -c -a=""', -- gui text editor
     termeditor = 'nvim', -- gui text editor
     -- discord = 'flatpak run com.discordapp.Discord',
-    discord = 'chromium --profile-directory=Default --app-id=nebbmpibgobljecgkdipmcfonkkmcggn',
+    -- discord = 'chromium --profile-directory=Default --app-id=nebbmpibgobljecgkdipmcfonkkmcggn',
+    discord = 'flatpak run de.shorsh.discord-screenaudio',
     -- discord = 'qutebrowser --target "window" -s "window.title_format" "{current_title}{title_sep}Discord" discord.com/app',
     files = 'thunar',
     termfiles = 'ranger',
