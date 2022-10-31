@@ -26,7 +26,7 @@ return {
   },
   -- List of apps to start once on start-up
   run_on_start_up = {
-    'picom --experimental-backends --config ' .. filesystem.get_configuration_dir() .. '/configuration/picom.conf',
+    'picom --experimental-backends',
 --    'pnmixer', -- shows an audiocontrol applet in systray when installed.
     'numlockx on', -- enable numlock
     'nm-applet --indicator',

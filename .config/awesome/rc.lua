@@ -264,14 +264,14 @@ end
 
 client.connect_signal("request::activate", awful.ewmh.activate)
 
-client.connect_signal("request::activate", function(c)
+--[[ client.connect_signal("request::activate", function(c)
     cond = true
     if c.first_tag == gamingTags[1] then
         awful.spawn("killall picom")
     else
         run_once('picom --experimental-backends --config ' .. gears.filesystem.get_configuration_dir() .. '/configuration/picom.conf')
     end
-end)
+end) ]]
 --client.connect_signal("manage", function (c)
 --    c.shape = function(cr,w,h)
 --        gears.shape.rounded_rect(cr,w,h,15)
@@ -551,7 +551,7 @@ globalkeys = gears.table.join(
     { description = "Kill compositor" , group = "Gaming" }),
     awful.key({ modkey, "Mod1", "Control" }, "g",
         function()
-            awful.spawn('picom --experimental-backends --config ' .. gears.filesystem.get_configuration_dir() .. '/configuration/picom.conf')
+            awful.spawn('picom --experimental-backends')
         end,
     { description = "open compositor" , group = "Gaming" })
 )
