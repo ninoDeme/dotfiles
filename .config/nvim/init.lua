@@ -204,7 +204,7 @@ if not vim.g.vscode then
 
   let ayucolor="dark"
   colorscheme ayu
-  hi Normal guibg=NONE ctermbg=NONE
+  " hi Normal guibg=NONE ctermbg=NONE
 
 
   ]]
