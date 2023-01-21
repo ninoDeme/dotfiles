@@ -3,237 +3,213 @@ require('plugins')
 
 -- Plugin Setup {{{
 
+if not vim.g.vscode then
 
-local luasnip = require('luasnip')
+  local luasnip = require('luasnip')
 
-local lspconfig = require('lspconfig')
+  local lspconfig = require('lspconfig')
 
-local lsp_installer = require("nvim-lsp-installer") --{{{
+  local lsp_installer = require("nvim-lsp-installer") --{{{
 
--- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
--- or if the server is already installed).
-lsp_installer.on_server_ready(function(server)
-  local opts = {}
+  -- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
+  -- or if the server is already installed).
+  lsp_installer.on_server_ready(function(server)
+    local opts = {}
 
-  -- (optional) Customize the options passed to the server
-  -- if server.name == "tsserver" then
-  --     opts.root_dir = function() ... end
-  -- end
+    -- (optional) Customize the options passed to the server
+    -- if server.name == "tsserver" then
+    --     opts.root_dir = function() ... end
+    -- end
 
-  -- This setup() function will take the provided server configuration and decorate it with the necessary properties
-  -- before passing it onwards to lspconfig.
-  -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-  server:setup(opts)
-end) --}}}
+    -- This setup() function will take the provided server configuration and decorate it with the necessary properties
+    -- before passing it onwards to lspconfig.
+    -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+    server:setup(opts)
+  end) --}}}
 
-local lspkind = require('lspkind')
+  local lspkind = require('lspkind')
 
-local cmp = require 'cmp' --{{{
-local cmp_map = cmp.mapping.preset.insert({
-  ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-  ['<C-f>'] = cmp.mapping.scroll_docs(4),
-  ['<C-Space>'] = cmp.mapping.complete(),
-  ['<CR>'] = cmp.mapping.confirm {
-    behavior = cmp.ConfirmBehavior.Replace,
-    select = true,
-  },
-  ['<C-l>'] = cmp.mapping.confirm {
-    behavior = cmp.ConfirmBehavior.Replace,
-    select = true,
-  },
-  ['<C-j>'] = cmp.mapping(function(fallback)
-    if cmp.visible() then
-      cmp.select_next_item()
-    elseif luasnip.expand_or_jumpable() then
-      luasnip.expand_or_jump()
-    else
-      fallback()
-    end
-  end, { 'i', 's' }),
-  ['<C-k>'] = cmp.mapping(function(fallback)
-    if cmp.visible() then
-      cmp.select_prev_item()
-    elseif luasnip.jumpable(-1) then
-      luasnip.jump(-1)
-    else
-      fallback()
-    end
-  end, { 'i', 's' }),
-})
-cmp.setup { 
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  mapping = cmp_map,
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-    { name = 'path' },
-    { name = 'treesitter' },
-  },
-  formatting = {
-    format = lspkind.cmp_format({
-      mode = 'symbol_text', -- show only symbol annotations
-    })
-  }
-}
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-local misc = require('cmp.utils.misc')
-local command_line_map = cmp.mapping.preset.cmdline({ 
-  ['<Tab>'] = {
-    c = function()
-      local cmp = require('cmp')
+  local cmp = require 'cmp' --{{{
+  local cmp_map = cmp.mapping.preset.insert({
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<C-l>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<C-j>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      else
-        feedkeys.call(keymap.t('<C-z>'), 'n')
-      end
-    end,
-  },
-  ['<S-Tab>'] = {
-    c = function()
-      local cmp = require('cmp')
-      if cmp.visible() then
-        cmp.select_prev_item()
-      else
-        feedkeys.call(keymap.t('<C-z>'), 'n')
-      end
-    end,
-  },
-  ['<C-j>'] = {
-    c = function(fallback)
-      local cmp = require('cmp')
-      if cmp.visible() then
-        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
       else
         fallback()
       end
-    end,
-  },
-  ['<C-k>'] = {
-    c = function(fallback)
-      local cmp = require('cmp')
+    end, { 'i', 's' }),
+    ['<C-k>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
       else
         fallback()
       end
-    end,
-  },
-  ['<CR>'] = cmp.mapping.confirm {
-    behavior = cmp.ConfirmBehavior.Replace,
-    select = true,
-  },
-  ['<C-e>'] = {
-    c = cmp.mapping.close(),
-  },
-})
-cmp.setup.cmdline(':', {
-  mapping = command_line_map,
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-      { name = 'cmdline' }
-    })
-})
---}}}
-
--- Nvim-Tree {{{
-require 'nvim-tree'.setup({
-  view = {
-    mappings = {
-      list = {
-        { key = "h", action = "dir_up"},
-        { key = "l", action = "edit"},
-        { key = "L", action = "cd"},
-        { key = "<C-l>", action = "preview"},
-      }
-    }
-  },
-  actions = {
-    open_file = {
-      quit_on_open = true
-    }  
-  }
-})
--- }}}
-
--- Lualine {{{
-require('lualine').setup {
-  options = {
-    theme = 'codedark',
-    section_separators = '',
-    component_separators = '│'
-  }
-}
--- }}}
-
---- Git Singns {{{
-require('gitsigns').setup {
-  signcolumn = true,
-  numhl = true,
-  current_line_blame = true,
-}
---- }}}
-
-require("bufferline").setup{}
-
-require('kommentary.config').use_extended_mappings()
-
-require('qf_helper').setup()
-
-require("which-key").setup {}
-local wk = require("which-key")
-wk.register({
-  ["<leader>t"]  = { name = "Open numbered terminals" },
-  ["<leader>t1"] = { name = "Terminal 1" },
-  ["<leader>t2"] = { name = "Terminal 2" },
-  ["<leader>t3"] = { name = "Terminal 3" },
-  ["<leader>t4"] = { name = "Terminal 4" },
-  ["<leader>s"]  = { name = "Telescope" },
-  ["<leader>sb"] = { name = "Buffers" },
-  ["<leader>ss"] = { name = "Grep" },
-  ["gl"]  = { name = "Align text at (right)" },
-  ["gL"]  = { name = "Align text at (left)" },
-  ["s"]  = { name = "Vim sneak" },
-  ["S"]  = { name = "Vim sneak" },
-  ["W"]  = { name = "Create dir to current file" },
+    end, { 'i', 's' }),
   })
-
--- TreeSitter {{{
-require 'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-  },
-  rainbow = {
-    enable = true
-  },
-  indent = {
-    enable = true,
+  cmp.setup { 
+    snippet = {
+      expand = function(args)
+        luasnip.lsp_expand(args.body)
+      end,
+    },
+    mapping = cmp_map,
+    sources = {
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+      { name = 'path' },
+      { name = 'treesitter' },
+    },
+    formatting = {
+      format = lspkind.cmp_format({
+        mode = 'symbol_text', -- show only symbol annotations
+      })
+    }
   }
-}
--- }}}
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  local misc = require('cmp.utils.misc')
+  cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+        { name = 'cmdline' }
+      })
+  })
+  --}}}
 
-require 'treesitter-context'.setup { enable = true, throttle = true, }
+  -- Nvim-Tree {{{
+  require 'nvim-tree'.setup({
+    view = {
+      mappings = {
+        list = {
+          { key = "h", action = "dir_up"},
+          { key = "l", action = "edit"},
+          { key = "L", action = "cd"},
+          { key = "<C-l>", action = "preview"},
+        }
+      }
+    },
+    actions = {
+      open_file = {
+        quit_on_open = true
+      }  
+    }
+  })
+  -- }}}
 
-require 'nvim-web-devicons'.setup()
--- }}}
+  -- Lualine {{{
+  require('lualine').setup {
+    options = {
+      theme = 'codedark',
+      section_separators = '',
+      component_separators = '│'
+    }
+  }
+  -- }}}
+
+  --- Git Singns {{{
+  require('gitsigns').setup {
+    signcolumn = true,
+    numhl = true,
+    current_line_blame = true,
+  }
+  --- }}}
+
+  require("bufferline").setup{}
+
+  require('qf_helper').setup()
+
+  -- TreeSitter {{{
+  require 'nvim-treesitter.configs'.setup {
+    highlight = {
+      enable = true,
+    },
+    rainbow = {
+      enable = true
+    },
+    indent = {
+      enable = true,
+    }
+  }
+  -- }}}
+
+  require 'treesitter-context'.setup { enable = true, throttle = true, }
+
+  require 'nvim-web-devicons'.setup()
+  -- }}}
+
+
+  require('kommentary.config').use_extended_mappings()
+
+  require("which-key").setup {}
+  local wk = require("which-key")
+  wk.register({
+    ["<leader>t"]  = { name = "Open numbered terminals" },
+    ["<leader>t1"] = { name = "Terminal 1" },
+    ["<leader>t2"] = { name = "Terminal 2" },
+    ["<leader>t3"] = { name = "Terminal 3" },
+    ["<leader>t4"] = { name = "Terminal 4" },
+    ["<leader>s"]  = { name = "Telescope" },
+    ["<leader>sb"] = { name = "Buffers" },
+    ["<leader>ss"] = { name = "Grep" },
+    ["gl"]  = { name = "Align text at (right)" },
+    ["gL"]  = { name = "Align text at (left)" },
+    ["s"]  = { name = "Vim sneak" },
+    ["S"]  = { name = "Vim sneak" },
+    ["W"]  = { name = "Create dir to current file" },
+    })
+
+end
+
+vim.keymap.set("n", "gr", "<cmd>lua require('substitute').operator()<cr>", { noremap = true })
+vim.keymap.set("n", "grr", "<cmd>lua require('substitute').line()<cr>", { noremap = true })
+vim.keymap.set("n", "gR", "<cmd>lua require('substitute').eol()<cr>", { noremap = true })
+vim.keymap.set("x", "gr", "<cmd>lua require('substitute').visual()<cr>", { noremap = true })
+
+
+vim.keymap.set("n", "cx", "<cmd>lua require('substitute.exchange').operator()<cr>", { noremap = true })
+vim.keymap.set("n", "cxx", "<cmd>lua require('substitute.exchange').line()<cr>", { noremap = true })
+vim.keymap.set("x", "cx", "<cmd>lua require('substitute.exchange').visual()<cr>", { noremap = true })
+vim.keymap.set("n", "cxc", "<cmd>lua require('substitute.exchange').cancel()<cr>", { noremap = true })
 
 -- Vim settings {{{
 
 -- map leader to space
 vim.g.mapleader = " "
 
--- set coloscheme
-vim.opt.termguicolors = true
--- vim.cmd [[colorscheme modus-vivendi]]
-vim.cmd [[
-let ayucolor="dark"
-colorscheme ayu
-hi Normal guibg=NONE ctermbg=NONE
-]]
+-- use system clipboard
+vim.api.nvim_set_option("clipboard","unnamedplus")
+
+if not vim.g.vscode then
+
+  -- set coloscheme
+  vim.opt.termguicolors = true
+  -- vim.cmd [[colorscheme modus-vivendi]]
+  vim.cmd [[
+
+  let ayucolor="dark"
+  colorscheme ayu
+  hi Normal guibg=NONE ctermbg=NONE
+
+
+  ]]
+
+end
 
 vim.opt.wildmenu       = true
 
@@ -276,11 +252,9 @@ end
 -- Vimscript {{{
 vim.cmd([[
 
+au TextYankPost * silent! lua vim.highlight.on_yank()
 
 filetype plugin indent on
-
-autocmd FileType org setlocal iskeyword+=:,#,+
-autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
 
 set termguicolors
 
@@ -293,17 +267,11 @@ endif
 " Press ESC to clear search
 nnoremap <silent> <ESC> :nohlsearch<CR><ESC>
 
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
 " Set completeopt to have a better completion experience
 set completeopt=menu,menuone,noselect
 
 " Avoid showing message extra message when using completion
 set shortmess+=c
-
-noremap <leader><leader> :NvimTreeToggle<CR>
 
 " copy and paste from system clipboard
 noremap <Leader>Y "*y
@@ -320,40 +288,8 @@ xnoremap <leader>D "_D
 " Create directory for current file
 noremap <leader>W <Cmd>:call mkdir(expand("%:p:h"),"p")<CR>
 
-vnoremap <C-X> <Esc>`.``gvP``P
-
 " reload config
 nnoremap <leader>r :source $MYVIMRC<CR>
-
-" Telescope bindings
-nnoremap <leader>ss <cmd>Telescope live_grep<cr>
-nnoremap <leader>sb <cmd>Telescope buffers<cr>
-
-" DAP mode bindings
-" noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
-" noremap <silent> <F5> :lua require'dap'.continue()<CR>
-" noremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
-
-" qf_helper bindings
-nnoremap <silent> <C-N> <cmd>QNext<CR>
-nnoremap <silent> <C-P> <cmd>QPrev<CR>
-" toggle the quickfix open/closed without jumping to it
-nnoremap <silent> <leader>q <cmd>QFToggle!<CR>
-nnoremap <silent> <leader>l <cmd>LLToggle!<CR>
-
-" Go to next buffer (alt-tab equivalent)
-noremap <silent> <leader><Tab> :BufferLineCycleNext<CR>
-
-" close current buffer
-nnoremap <silent> <Leader>wq :lua require("nvim-smartbufs").close_current_buffer()<CR>
-
-" open numbered terminals
-nnoremap <silent> <Leader>t1 :lua require("nvim-smartbufs").goto_terminal(1)<CR>
-nnoremap <silent> <Leader>t2 :lua require("nvim-smartbufs").goto_terminal(2)<CR>
-nnoremap <silent> <Leader>t3 :lua require("nvim-smartbufs").goto_terminal(3)<CR>
-nnoremap <silent> <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
-
-nnoremap <silent> <Leader><return> :!alacritty &<CR>
 
 " Use fold as text object for motions
 " xnoremap iz :<C-U>silent!normal![zV]z<CR>
@@ -367,19 +303,46 @@ onoremap az :normal Vaz<CR>
 " esc to exit terminal mode
 tnoremap <Esc> <C-\><C-n>
 
-" use CTRL+ALT+movement keys to navigate windows in all modes 
-tnoremap <silent><C-A-h> <C-\><C-N><C-w>h
-tnoremap <silent><C-A-j> <C-\><C-N><C-w>j
-tnoremap <silent><C-A-k> <C-\><C-N><C-w>k
-tnoremap <silent><C-A-l> <C-\><C-N><C-W>l
-inoremap <silent><C-A-h> <C-\><C-N><C-w>h
-inoremap <silent><C-A-j> <C-\><C-N><C-w>j
-inoremap <silent><C-A-k> <C-\><C-N><C-w>k
-inoremap <silent><C-A-l> <C-\><C-N><C-w>l
-nnoremap <silent><C-A-h> <C-w>h
-nnoremap <silent><C-A-j> <C-w>j
-nnoremap <silent><C-A-k> <C-w>k
-nnoremap <silent><C-A-l> <C-w>l
+if !exists('g:vscode')
+
+  " Use <Tab> and <S-Tab> to navigate through popup menu
+  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+  noremap <leader><leader> :NvimTreeToggle<CR>
+
+  " Telescope bindings
+  nnoremap <leader>ss <cmd>Telescope live_grep<cr>
+  nnoremap <leader>sb <cmd>Telescope buffers<cr>
+
+  " DAP mode bindings
+  " noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
+  " noremap <silent> <F5> :lua require'dap'.continue()<CR>
+  " noremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
+
+  " qf_helper bindings
+  nnoremap <silent> <C-N> <cmd>QNext<CR>
+  nnoremap <silent> <C-P> <cmd>QPrev<CR>
+  " toggle the quickfix open/closed without jumping to it
+  nnoremap <silent> <leader>q <cmd>QFToggle!<CR>
+  nnoremap <silent> <leader>l <cmd>LLToggle!<CR>
+
+  " Go to next buffer (alt-tab equivalent)
+  noremap <silent> <leader><Tab> :BufferLineCycleNext<CR>
+
+  " close current buffer
+  nnoremap <silent> <Leader>wq :lua require("nvim-smartbufs").close_current_buffer()<CR>
+
+  " open numbered terminals
+  nnoremap <silent> <Leader>t1 :lua require("nvim-smartbufs").goto_terminal(1)<CR>
+  nnoremap <silent> <Leader>t2 :lua require("nvim-smartbufs").goto_terminal(2)<CR>
+  nnoremap <silent> <Leader>t3 :lua require("nvim-smartbufs").goto_terminal(3)<CR>
+  nnoremap <silent> <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
+
+  nnoremap <silent> <Leader><return> :!alacritty &<CR>
+
+  
+endif
 
 ]])
 -- }}} }}}

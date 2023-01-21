@@ -1,5 +1,3 @@
-
-
 filetype plugin indent on
 
 set termguicolors
@@ -50,21 +48,5 @@ noremap <Leader>p "+p
 " reload config
 nnoremap <leader>r :source $MYVIMRC<CR>
 
-nnoremap <silent> <Leader><return> :!alacritty &<CR>
-
 " esc to exit terminal mode
 tnoremap <Esc> <C-\><C-n>
-
-" use CTRL+ALT+movement keys to navigate windows in all modes 
-tnoremap <silent><C-A-h> <C-\><C-N><C-w>h
-tnoremap <silent><C-A-j> <C-\><C-N><C-w>j
-tnoremap <silent><C-A-k> <C-\><C-N><C-w>k
-tnoremap <silent><C-A-l> <C-\><C-N><C-W>l
-inoremap <silent><C-A-h> <C-\><C-N><C-w>h
-inoremap <silent><C-A-j> <C-\><C-N><C-w>j
-inoremap <silent><C-A-k> <C-\><C-N><C-w>k
-inoremap <silent><C-A-l> <C-\><C-N><C-w>l
-nnoremap <silent><C-A-h> <C-w>h
-nnoremap <silent><C-A-j> <C-w>j
-nnoremap <silent><C-A-k> <C-w>k
-nnoremap <silent><C-A-l> <C-w>l
