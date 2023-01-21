@@ -3,3 +3,4 @@
 	name = ninodemeterko
 [credential]
 	helper = libsecret
+	credentialStore = secretservice
