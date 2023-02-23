@@ -21,7 +21,7 @@ return require('packer').startup(function(use)
 	     'kosayoda/nvim-lightbulb',
 	     'gennaro-tedesco/nvim-peekup', -- See all yank registers use ""
 	     'nvim-lua/plenary.nvim', -- Telescope dependency
-	     'nvim-telescope/telescope.nvim', -- Fuzzy finder over lists
+	     {'nvim-telescope/telescope.nvim', requires = 'plenary.nvim'}, -- Fuzzy finder over lists
 	     'kyazdani42/nvim-web-devicons', -- Add icons to plugins
 	     'nvim-treesitter/nvim-treesitter', -- Parsesr and highlighter for a lot of languages
 	     {'romgrk/barbar.nvim', requires = 'nvim-web-devicons'}, -- tabline
@@ -31,13 +31,13 @@ return require('packer').startup(function(use)
 	     'b3nj5m1n/kommentary', -- Use gc<motion> to make comment
 	     'stevearc/qf_helper.nvim', -- Quickfix helper use :QF{command}
 	     'p00f/nvim-ts-rainbow',
-	     'romgrk/nvim-treesitter-context', -- Shows the context (current function or method)
+	     {'romgrk/nvim-treesitter-context', requires = 'nvim-treesitter'}, -- Shows the context (current function or method)
 	     'L3MON4D3/LuaSnip', -- Snippets plugin
 	     'mg979/vim-visual-multi', -- Multiple cursors (use Ctrl+n to select word and Ctrl+Down/Up)
 	     'folke/which-key.nvim', disable = vim.g.vscode}
 	use 'tommcdo/vim-lion' -- use gl<text> to align
 	use 'michaeljsmith/vim-indent-object' -- add indent text object for motions ii ai 
-  use 'kana/vim-textobj-entire'
+  	use 'kana/vim-textobj-entire'
 	use 'tpope/vim-surround' -- change surrounding of text object (use ys<motion> to add surround and cs<motion> to change surrounding
 	use 'editorconfig/editorconfig-vim' -- Editor config support
 	use 'justinmk/vim-sneak' -- Go to next ocurrence of two caracters s{char}{char}
@@ -57,12 +57,12 @@ return require('packer').startup(function(use)
 	use {'neovim/nvim-lspconfig', -- Common lsp configurations
 	     'nvim-lua/lsp-status.nvim', -- lsp status
 	     'nvim-lua/lsp_extensions.nvim',
-       'RishabhRD/nvim-lsputils',
+         'RishabhRD/nvim-lsputils',
 	     'folke/lsp-colors.nvim',
 	     'ojroques/nvim-lspfuzzy',
 	     'onsails/lspkind.nvim',
-       'jose-elias-alvarez/null-ls.nvim',
-       'jay-babu/mason-null-ls.nvim',
+         'jose-elias-alvarez/null-ls.nvim',
+         'jay-babu/mason-null-ls.nvim',
 	     'williamboman/mason-lspconfig.nvim', disable = vim.g.vscode}
 	--[[ use 'mfussenegger/nvim-dap'
 	use 'rcarriga/nvim-dap-ui' ]]
@@ -74,14 +74,14 @@ return require('packer').startup(function(use)
 	     'hrsh7th/cmp-path',
 	     'hrsh7th/cmp-buffer',
 	     'hrsh7th/cmp-cmdline',
-       'hrsh7th/cmp-nvim-lsp-signature-help',
+         'hrsh7th/cmp-nvim-lsp-signature-help',
 	     'ray-x/cmp-treesitter', disable = vim.g.vscode}
 
 	-- Color schemes =======================
 	use {'tjdevries/colorbuddy.nvim',
 	     'ishan9299/modus-theme-vim',
 	     'ayu-theme/ayu-vim',
-       'joshdick/onedark.vim',
+         'joshdick/onedark.vim',
 	     'norcalli/nvim-colorizer.lua', disable = vim.g.vscode}
 end)
 -- vim: ts=2 sts=2 sw=2 et nowrap
