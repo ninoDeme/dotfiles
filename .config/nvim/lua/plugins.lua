@@ -37,7 +37,7 @@ return require('packer').startup(function(use)
 	     'folke/which-key.nvim', disable = vim.g.vscode}
 	use 'tommcdo/vim-lion' -- use gl<text> to align
 	use 'michaeljsmith/vim-indent-object' -- add indent text object for motions ii ai 
-  	use 'kana/vim-textobj-entire'
+	use 'kana/vim-textobj-entire'
 	use 'tpope/vim-surround' -- change surrounding of text object (use ys<motion> to add surround and cs<motion> to change surrounding
 	use 'editorconfig/editorconfig-vim' -- Editor config support
 	use 'justinmk/vim-sneak' -- Go to next ocurrence of two caracters s{char}{char}
@@ -55,14 +55,27 @@ return require('packer').startup(function(use)
 
 	-- Lsp and DAP =======================
 	use {'neovim/nvim-lspconfig', -- Common lsp configurations
+      {
+        'glepnir/lspsaga.nvim',
+        requires = {
+            {'nvim-tree/nvim-web-devicons'},
+            {'nvim-treesitter/nvim-treesitter'} --Please make sure you install markdown and markdown_inline parser
+        }
+       },
 	     'nvim-lua/lsp-status.nvim', -- lsp status
-	     'nvim-lua/lsp_extensions.nvim',
-         'RishabhRD/nvim-lsputils',
+       -- 'RishabhRD/nvim-lsputils',
 	     'folke/lsp-colors.nvim',
-	     'ojroques/nvim-lspfuzzy',
+	     'ojroques/nvim-lspfuzzy', -- lembrar de configurar
 	     'onsails/lspkind.nvim',
-         'jose-elias-alvarez/null-ls.nvim',
-         'jay-babu/mason-null-ls.nvim',
+       'jose-elias-alvarez/null-ls.nvim',
+       'jay-babu/mason-null-ls.nvim',
+        {
+            "ThePrimeagen/refactoring.nvim",
+            requires = {
+                {"nvim-lua/plenary.nvim"},
+                {"nvim-treesitter/nvim-treesitter"}
+            },
+        },
 	     'williamboman/mason-lspconfig.nvim', disable = vim.g.vscode}
 	--[[ use 'mfussenegger/nvim-dap'
 	use 'rcarriga/nvim-dap-ui' ]]
@@ -74,14 +87,14 @@ return require('packer').startup(function(use)
 	     'hrsh7th/cmp-path',
 	     'hrsh7th/cmp-buffer',
 	     'hrsh7th/cmp-cmdline',
-         'hrsh7th/cmp-nvim-lsp-signature-help',
+       'hrsh7th/cmp-nvim-lsp-signature-help',
 	     'ray-x/cmp-treesitter', disable = vim.g.vscode}
 
 	-- Color schemes =======================
 	use {'tjdevries/colorbuddy.nvim',
 	     'ishan9299/modus-theme-vim',
 	     'ayu-theme/ayu-vim',
-         'joshdick/onedark.vim',
+       'joshdick/onedark.vim',
 	     'norcalli/nvim-colorizer.lua', disable = vim.g.vscode}
 end)
 -- vim: ts=2 sts=2 sw=2 et nowrap

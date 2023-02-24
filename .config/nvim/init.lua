@@ -7,6 +7,14 @@ if not vim.g.vscode then
 
   require 'nvim-web-devicons'.setup()
 
+  require("lspsaga").setup({
+    lightbulb = {
+      enable = false,
+    },
+  })
+
+  require('refactoring').setup({})
+
   local whichkey= require("which-key")
   whichkey.setup {}
 
@@ -21,6 +29,13 @@ if not vim.g.vscode then
     ['<C-Space>'] = cmp.mapping.complete(),
   })
   cmp.setup {
+    window = {
+      completion = {
+        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+        col_offset = -3,
+        side_padding = 0,
+      },
+    },
     snippet = {
       expand = function(args)
         luasnip.lsp_expand(args.body)
@@ -36,13 +51,18 @@ if not vim.g.vscode then
     },
       { name = 'buffer' }),
     formatting = {
-      format = lspkind.cmp_format({
-        mode = 'symbol_text', -- show only symbol annotations
-      })
+      fields = { "kind", "abbr", "menu" },
+      format = function(entry, vim_item)
+        local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+        local strings = vim.split(kind.kind, "%s", { trimempty = true })
+        kind.kind = " " .. (strings[1] or "") .. " "
+        kind.menu = "    (" .. (strings[2] or "") .. ")"
+        return kind
+    end,
     }
   }
   -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  local misc = require('cmp.utils.misc')
+  -- local misc = require('cmp.utils.misc')
   cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
@@ -52,7 +72,7 @@ if not vim.g.vscode then
       })
   })
   --}}}
-  
+
   --- Git Singns {{{
   require('gitsigns').setup {
     signcolumn = true,
@@ -60,7 +80,7 @@ if not vim.g.vscode then
     current_line_blame = true,
   }
   --- }}}
-  
+
   require("mason").setup()
 
   require("mason-lspconfig").setup({
@@ -81,7 +101,7 @@ if not vim.g.vscode then
 
   local temEslint = {
     condition = function(utils)
-      return utils.root_has_file({".eslintrc.*"})
+      return utils.root_has_file({".eslintrc.json", ".eslintrc.js"})
     end,
   }
   local null_ls = require("null-ls")
@@ -89,47 +109,57 @@ if not vim.g.vscode then
     sources = {
       null_ls.builtins.code_actions.gitrebase,
       null_ls.builtins.code_actions.gitsigns,
+      null_ls.builtins.code_actions.refactoring,
       null_ls.builtins.diagnostics.tsc,
-      null_ls.builtins.diagnostics.eslint_d.with(temEslint)
+      null_ls.builtins.diagnostics.eslint_d.with(temEslint),
+      null_ls.builtins.formatting.eslint_d.with(temEslint),
+      null_ls.builtins.code_actions.eslint_d.with(temEslint)
     }
   })
 
-  require 'mason-null-ls'.setup_handlers()
-
   local lspconfig = require('lspconfig')
+
 
   -- lsp setup functions {{{
   local function keymappings(client, bufnr)
     local opts = { noremap = true, silent = true }
 
-    -- Key mappings
-    vim.api.nvim_set_keymap("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+    -- lsp Key mappings
+    -- vim.api.nvim_set_keymap("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+
+    vim.api.nvim_set_keymap("n", "gh", "<cmd>Lspsaga hover_doc<CR>", opts)
+
     vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
     vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
     vim.api.nvim_set_keymap("n", "[e", "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
     vim.api.nvim_set_keymap("n", "]e", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
 
+    vim.api.nvim_set_keymap("n", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", opts)
 
     -- Whichkey
     local keymap_l = {
       l = {
         name = "Code",
-        r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
-        a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
-        d = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Line Diagnostics" },
+        -- r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
+        r = { "<cmd>Lspsaga rename<CR>", "Rename" },
+        R = { "<cmd>Lspsaga rename ++project<CR>", "Rename for entire project" },
+        -- a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
+        a = { "<cmd>Lspsaga code_action<CR>", "Code Action" },
+        d = { "<cmd>Lspsaga show_line_diagnostics<CR>", "Diagnostics" },
         i = { "<cmd>LspInfo<CR>", "Lsp Info" },
+        f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format Document" }
       },
     }
 
-    keymap_l.l.f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format Document" }
-
       local keymap_g = {
         name = "Goto",
-        d = { "<Cmd>lua vim.lsp.buf.definition()<CR>", "Definition" },
-        D = { "<Cmd>lua vim.lsp.buf.declaration()<CR>", "Declaration" },
+        d = { "<Cmd>Lspsaga goto_definition<CR>", "Goto Definition" },
+        D = { "<Cmd>Lspsaga peek_definition<CR>", "Peek Definition" },
+        ['c-d'] = { "<Cmd>Lspsaga goto__type_definition<CR>", "Goto Definition" },
+        ['c-D'] = { "<Cmd>Lspsaga peek_type_definition<CR>", "Peek Definition" },
+        H = { "<Cmd>Lspsaga lsp_finder<CR>", "Peek Definition" },
         s = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help" },
         I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation" },
-        t = { "<cmd>lua vim.lsp.buf.type_definition()<CR>", "Goto Type Definition" },
       }
       whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>" })
       whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
@@ -141,7 +171,7 @@ if not vim.g.vscode then
       -- Use LSP as the handler for formatexpr.
       -- See `:help formatexpr` for more information. 'gq'
       vim.api.nvim_buf_set_option(0, "formatexpr", "v:lua.vim.lsp.formatexpr()")
-  
+
       -- Configure key mappings
       keymappings(client, bufnr)
 
@@ -151,9 +181,40 @@ if not vim.g.vscode then
   }
   -- }}}
 
-  lspconfig.lua_ls.setup(opts)
+  lspconfig.lua_ls.setup{
+    settings = {
+      Lua = {
+        runtime = {
+          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+          version = 'LuaJIT',
+        },
+        diagnostics = {
+          -- Get the language server to recognize the `vim` global
+          globals = {'vim'},
+        },
+        workspace = {
+          -- Make the server aware of Neovim runtime files
+          library = vim.api.nvim_get_runtime_file("", true),
+          checkThirdParty = false,
+        },
+        -- Do not send telemetry data containing a randomized but unique identifier
+        telemetry = {
+          enable = false,
+        },
+      },
+    },
+    on_attach = opts.on_attach,
+    capabilities = opts.capabilities
+  }
+
   lspconfig.angularls.setup(opts)
   lspconfig.tsserver.setup(opts)
+
+  local signs = { Error = "", Warning = "", Hint = "", Information = "" }
+  for type, icon in pairs(signs) do
+      local hl = "DiagnosticSign" .. type
+      vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
+  end
 
   -- require("bufferline").setup{}
 
@@ -172,28 +233,10 @@ if not vim.g.vscode then
     actions = {
       open_file = {
         quit_on_open = false
-      }  
+      }
     }
   })
 
-  local nvim_tree_events = require('nvim-tree.events')
-  local bufferline_api = require('bufferline.api')
-
-  local function get_tree_size()
-    return require'nvim-tree.view'.View.width
-  end
-
-  nvim_tree_events.subscribe('TreeOpen', function()
-    bufferline_api.set_offset(get_tree_size())
-  end)
-
-  nvim_tree_events.subscribe('Resize', function()
-    bufferline_api.set_offset(get_tree_size())
-  end)
-
-  nvim_tree_events.subscribe('TreeClose', function()
-    bufferline_api.set_offset(0)
-  end) 
   -- }}}
 
   -- Lualine {{{
@@ -215,7 +258,8 @@ if not vim.g.vscode then
       disable = {
         'typescript',
         'javascript',
-        'html'
+        'html',
+        'lua'
       }
     },
     rainbow = {
@@ -225,27 +269,33 @@ if not vim.g.vscode then
       enable = true,
     }
   }
-  -- }}}
 
   require 'treesitter-context'.setup { enable = true, throttle = true, }
+
+  require 'nvim-treesitter.install'.compilers = { "clang", "gcc" }
+  require 'nvim-treesitter.install'.prefer_git = false
+
+  -- }}}
+
 
   require('kommentary.config').use_extended_mappings()
 
   whichkey.register({
-    ["<leader>t"]  = { name = "Open numbered terminals" },
-    ["<leader>t1"] = { name = "Terminal 1" },
-    ["<leader>t2"] = { name = "Terminal 2" },
-    ["<leader>t3"] = { name = "Terminal 3" },
-    ["<leader>t4"] = { name = "Terminal 4" },
-    ["<leader>s"]  = { name = "Telescope" },
-    ["<leader>sb"] = { name = "Buffers" },
-    ["<leader>ss"] = { name = "Grep" },
-    ["gl"]  = { name = "Align text at (right)" },
-    ["gL"]  = { name = "Align text at (left)" },
-    ["s"]  = { name = "Vim sneak" },
-    ["S"]  = { name = "Vim sneak" },
-    ["<leader>W"]  = { name = "Create dir to current file" },
-    })
+    ['<leader>t']  = { name = 'Open numbered terminals' },
+    ['<leader>t1'] = { name = 'Terminal 1' },
+    ['<leader>t2'] = { name = 'Terminal 2' },
+    ['<leader>t3'] = { name = 'Terminal 3' },
+    ['<leader>t4'] = { name = 'Terminal 4' },
+    ['<leader>tt'] = { name = 'Toggle terminal (lsp)' },
+    ['<leader>s']  = { name = 'Telescope' },
+    ['<leader>sb'] = { name = 'Buffers' },
+    ['<leader>ss'] = { name = 'Grep' },
+    ['gl']         = { name = 'Align text at (right)' },
+    ['gL']         = { name = 'Align text at (left)' },
+    ['s']          = { name = 'Vim sneak' },
+    ['S']          = { name = 'Vim sneak' },
+    ['<leader>W']  = { name = 'Create dir to current file' },
+  })
 
 end
 
