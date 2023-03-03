@@ -13,6 +13,7 @@ if not vim.g.vscode then
     },
   })
 
+  
   require('refactoring').setup({})
 
   local whichkey= require("which-key")
@@ -30,11 +31,11 @@ if not vim.g.vscode then
   })
   cmp.setup {
     window = {
-      completion = {
-        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+      completion = cmp.config.window.bordered({
         col_offset = -3,
         side_padding = 0,
-      },
+      }),
+      documentation = cmp.config.window.bordered()
     },
     snippet = {
       expand = function(args)
@@ -58,7 +59,10 @@ if not vim.g.vscode then
         kind.kind = " " .. (strings[1] or "") .. " "
         kind.menu = "    (" .. (strings[2] or "") .. ")"
         return kind
-    end,
+      end,
+    },
+    experimental = {
+      ghost_text = true
     }
   }
   -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
@@ -336,11 +340,12 @@ if not vim.g.vscode then
   vim.cmd [[
 
     let ayucolor="dark"
-    colorscheme onedark
+    colorscheme ayu
     " hi Normal guibg=NONE ctermbg=NONE
 
    ]]
 
+  require('colors')
 end
 
 vim.opt.wildmenu       = true
