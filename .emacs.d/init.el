@@ -8,7 +8,9 @@
 ;;; Code:
 
 ;; The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 50 1000 1000))
+;; (setq gc-cons-threshold (* 50 1000 1000))
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 (defun display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
@@ -101,10 +103,10 @@
   :keymaps '(normal visual emacs insert treemacs)
   :keymaps 'override
   :prefix "SPC"
-  :non-normal-prefix "C-SPC"
+  :non-normal-prefix "M-SPC"
   :prefix-map 'leader-key-map
   :prefix-command 'leader-key-cmd
-  :global-prefix "C-SPC")
+  :global-prefix "M-SPC")
   (leader-key-def "" nil)
   (leader-key-def
     "e" 'find-file
@@ -181,12 +183,7 @@
   :config (global-evil-mc-mode 1)
   :defer 0
   :bind (("C-<down>" . evil-mc-make-cursor-move-next-line)
-	 ("C-<up>" . evil-mc-make-cursor-move-prev-line)
-	 :map evil-normal-state-map (
-	 ("C-M-N" . evil-mc-skip-and-goto-prev-match)
-	 ("C-M-n" . evil-mc-skip-and-goto-next-match)
-	 ("C-N" . evil-mc-make-and-goto-prev-match)
-	 ("C-n" . evil-mc-make-and-goto-next-match))))
+	 ("C-<up>" . evil-mc-make-cursor-move-prev-line)))
 
 (use-package treemacs
   :commands treemacs)
@@ -194,8 +191,7 @@
   :after (treemacs evil)
   :ensure t
   :config (evil-define-key 'treemacs treemacs-mode-map (kbd "SPC") 'leader-key-cmd)
-	  (evil-define-key 'treemacs treemacs-mode-map (kbd "C-SPC") 'leader-key-cmd)
-	  (evil-define-key 'treemacs treemacs-mode-map (kbd "C-SPC") 'leader-key-cmd)
+	  (evil-define-key 'treemacs treemacs-mode-map (kbd "M-SPC") 'leader-key-cmd)
   )
 
 (use-package treemacs-projectile
@@ -205,6 +201,7 @@
 (use-package treemacs-magit
   :after (treemacs magit)
   :ensure t)
+
 (use-package lsp-treemacs
   :after (lsp treemacs))
 
@@ -261,17 +258,13 @@
   :diminish
   :bind (:map ivy-minibuffer-map
 	      ("C-l" . ivy-alt-done)
-	      ("C-j" . ivy-next-line)
-	      ("<tab>" . ivy-next-line)
+	      ;; ("<tab>" . ivy-next-line)
 	      ("<up>" . ivy-previous-history-element)
 	      ("<down>" . ivy-next-history-element)
-	      ("C-k" . ivy-previous-line)
 	      :map ivy-switch-buffer-map
-	      ("C-k" . ivy-previous-line)
 	      ("C-l" . ivy-done)
 	      ("C-d" . ivy-switch-buffer-kill)
 	      :map ivy-reverse-i-search-map
-	      ("C-k" . ivy-previous-line)
 	      ("C-d" . ivy-reverse-i-search-kill))
   :config
   (leader-key-def
@@ -291,9 +284,11 @@
 
 (use-package prescient
   :config (prescient-persist-mode 1))
+
 (use-package ivy-prescient
   :after (counsel)
   :config (ivy-prescient-mode 1))
+
 (use-package company-prescient
   :config (company-prescient-mode 1))
 
@@ -425,10 +420,9 @@
 (use-package company
   :defer 0
   :bind (:map company-active-map
-	      ("C-j" . company-select-next)
-	      ("C-k" . company-select-previous)
 	      ("C-l" . company-complete-selection))
-  :config (global-company-mode 1))
+  :config (setq company-minimum-prefix-length 1
+		 company-idle-delay 0.0)) ;; default is 0.2(global-company-mode 1)))
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
@@ -444,7 +438,7 @@
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :init
-  (setq lsp-keymap-prefix "C-SPC l")
+  (setq lsp-keymap-prefix "SPC l")
   (add-hook 'c-mode-hook 'lsp)
   (add-hook 'gdscript-mode-hook 'lsp)
   (add-hook 'lua-mode-hook 'lsp)
@@ -465,8 +459,13 @@
 (use-package lsp-haskell
   :hook (haskell-mode . lsp))
 
+(use-package tree-sitter)
+(use-package tree-sitter-langs)
+
 (use-package haskell-mode
   :ensure t)
+
+(use-package typescript-mode)
 
 (use-package markdown-mode
   :ensure t
@@ -488,7 +487,7 @@
  '(custom-safe-themes
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" "3319c893ff355a88b86ef630a74fad7f1211f006d54ce451aab91d35d018158f" default))
  '(package-selected-packages
-   '(lua-mode company-prescient ivy-prescient prescient gdscript-mode evil-indent-plus evil-lion evil-exchange elfeed evil-snipe evil-cm multiple-cursors exec-path-from-shell lsp-haskell undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil))
+   '(typescript-mode tree-sitter-langs tree-sitter lua-mode company-prescient ivy-prescient prescient gdscript-mode evil-indent-plus evil-lion evil-exchange elfeed evil-snipe evil-cm multiple-cursors exec-path-from-shell lsp-haskell undo-fu-session highlight-indent-guides dimmer ace-popup-menu editorconfig flycheck vterm all-the-icons-ivy lsp-pyright lsp-mode org-bullets evil-magit magit evil-surround counsel-projectile counsel-projecttile projectile hydra evil-collection general doom-themes all-the-icons ivy-rich counsel doom-modeline evil-commentary swiper ivy use-package evil))
  '(warning-suppress-types '((lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

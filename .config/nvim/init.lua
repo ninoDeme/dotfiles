@@ -213,6 +213,7 @@ if not vim.g.vscode then
 
   lspconfig.angularls.setup(opts)
   lspconfig.tsserver.setup(opts)
+  lspconfig.clangd.setup(opts)
 
   local signs = { Error = "", Warning = "", Hint = "", Information = "" }
   for type, icon in pairs(signs) do
@@ -327,7 +328,7 @@ vim.api.nvim_set_option("clipboard","unnamedplus")
 
 if vim.g.neovide then
 
-  vim.opt.guifont =  "JetBrains Mono:h10" 
+  vim.opt.guifont =  "JetBrains Mono:h10"
   vim.g.onedark_terminal_italics = 1
 
 end
