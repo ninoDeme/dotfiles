@@ -214,6 +214,7 @@ if not vim.g.vscode then
   lspconfig.angularls.setup(opts)
   lspconfig.tsserver.setup(opts)
   lspconfig.clangd.setup(opts)
+  lspconfig.hls.setup(opts)
 
   local signs = { Error = "", Warning = "", Hint = "", Information = "" }
   for type, icon in pairs(signs) do
