@@ -1,0 +1,6 @@
+super + q ; {q,r,R}
+ i3-msg {exit,reload,restart}
+super + q ; {s,K}
+ systemctl {suspend,poweroff}
+super + q ; {l}
+ i3lock

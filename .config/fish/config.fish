@@ -6,7 +6,7 @@ if status is-interactive
 	alias l='exa -l --group-directories-first'
 	alias le='exa --group-directories-first'
 	alias lt='exa -aT --group-directories-first'
-	if test $XDG_SESSION_TYPE = 'x11'
+	if test "$XDG_SESSION_TYPE" = 'x11'
 		alias em='devour emacsclient -c -a=\"\"'
 	else
 		alias em='emacsclient -c -a=\"\"'

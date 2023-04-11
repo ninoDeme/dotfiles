@@ -42,6 +42,7 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
+;; esse e um teste em portugues
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -79,9 +80,23 @@
 (map! :leader :desc "Open refactor menu" :n "c R" #'emr-show-refactor-menu)
 (map! :leader :desc "Open refactor menu" :v "c R" #'emr-show-refactor-menu)
 
-(setq lsp-headerline-breadcrumb-enable '(path-up-to-project file symbols))
-
 (setq company-minimum-prefix-length 1
       company-idle-delay 0.0) ;; default is 0.2
 
-(company-box-icons-functions)
+;; (setq ispell-program-name "hunspell")
+;; (setenv "LANG" "en_US.UTF-8")
+;; (setq ispell-dictionary "en_US,pt_BR")
+;; (ispell-set-spellchecker-params)
+;; (ispell-hunspell-add-multi-dic "en_US,pt_BR")
+
+(add-to-list 'auto-mode-alist `(,(rx "sxhkdrc" string-end) . sxhkd-mode))
+
+(setq evil-kill-on-visual-paste nil)
+
+
+(dimmer-configure-which-key)
+(dimmer-configure-company-box)
+(dimmer-configure-magit)
+(setq dimmer-adjustment-mode :foreground)
+
+(dimmer-mode t)

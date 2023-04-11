@@ -37,6 +37,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id picom --experimental-backends
 
+exec --no-startup-id sxhkd -c ~/.config/i3/sxhkdrc
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
@@ -56,7 +57,7 @@ bindsym $mod+Return exec kitty
 bindsym $mod+d exec flatpak run com.discordapp.Discord
 bindsym $mod+Control+s exec steam
 bindsym $mod+Shift+s exec lutris
-bindsym $mod+b exec firefox
+bindsym $mod+b exec qutebrowser
 bindsym $mod+c exec emacsclient -c -a=''
 
 # kill focused window
@@ -165,7 +166,6 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 bindsym $mod+Control+r reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
 # bindsym $mod+Control+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 bindsym $mod+Control+q exec i3-msg exit
 

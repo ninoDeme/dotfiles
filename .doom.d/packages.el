@@ -49,3 +49,9 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 (package! emr)
+
+
+(package! sxhkd-mode
+  :recipe (:host github :repo "xFA25E/sxhkd-mode"))
+
+(package! dimmer)
