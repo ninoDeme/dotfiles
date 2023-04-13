@@ -3,7 +3,34 @@ require('plugins')
 
 -- Plugin Setup {{{
 
-if not vim.g.vscode then
+if vim.g.neovide then
+
+  vim.opt.guifont =  "JetBrains Mono:h10"
+  vim.g.onedark_terminal_italics = 1
+
+end
+
+if vim.g.vscode then
+
+  vim.keymap.set('n', 'gzd', "<Cmd>call VSCodeNotify('eitor.action.addSelectionToNextFindMatch')<CR>", {noremap = true})
+  vim.keymap.set('n', 'gzD', "<Cmd>call VSCodeNotify('editor.action.addSelectionToPreviousFindMatch')<CR>", {noremap = true})
+  vim.keymap.set('n', 'gzj', "<Cmd>call VSCodeNotify('editor.action.insertCursorBelow')<CR>", {noremap = true})
+  vim.keymap.set('n', 'gzk', "<Cmd>call VSCodeNotify('editor.action.insertCursorAbove')<CR>", {noremap = true})
+  vim.keymap.set('n', 'gzm', "<Cmd>call VSCodeNotify('addCursorsAtSearchResults')<CR>", {noremap = true})
+  vim.keymap.set('n', 'gzm', "<Cmd>call VSCodeNotify('cursorUndo')<CR>", {noremap = true})
+
+else
+
+  -- set coloscheme
+  vim.opt.termguicolors = true
+  -- vim.cmd [[colorscheme modus-vivendi]]
+  vim.cmd [[
+
+    let ayucolor="dark"
+    colorscheme ayu
+    " hi Normal guibg=NONE ctermbg=NONE
+
+   ]]
 
   require 'nvim-web-devicons'.setup()
 
@@ -11,9 +38,12 @@ if not vim.g.vscode then
     lightbulb = {
       enable = false,
     },
+    ui = {
+      border = 'solid',
+      title = true,
+    }
   })
 
-  
   require('refactoring').setup({})
 
   local whichkey= require("which-key")
@@ -25,9 +55,10 @@ if not vim.g.vscode then
 
   local cmp = require 'cmp' --{{{
   local cmp_map = cmp.mapping.preset.insert({
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-u>'] = cmp.mapping.scroll_docs(4),
+    ['<C-d>'] = cmp.mapping.scroll_docs(4),
+    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
     ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-l>'] = cmp.mapping.confirm(),
   })
   cmp.setup {
     window = {
@@ -131,14 +162,14 @@ if not vim.g.vscode then
     -- lsp Key mappings
     -- vim.api.nvim_set_keymap("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 
-    vim.api.nvim_set_keymap("n", "gh", "<cmd>Lspsaga hover_doc<CR>", opts)
+    vim.keymap.set("n", "gh", "<cmd>Lspsaga hover_doc<CR>", opts)
 
-    vim.api.nvim_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-    vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-    vim.api.nvim_set_keymap("n", "[e", "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
-    vim.api.nvim_set_keymap("n", "]e", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
+    vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+    vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+    vim.keymap.set("n", "[e", "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
+    vim.keymap.set("n", "]e", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
 
-    vim.api.nvim_set_keymap("n", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", opts)
+    vim.keymap.set("n", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", opts)
 
     -- Whichkey
     local keymap_l = {
@@ -213,8 +244,6 @@ if not vim.g.vscode then
 
   lspconfig.angularls.setup(opts)
   lspconfig.tsserver.setup(opts)
-  lspconfig.clangd.setup(opts)
-  lspconfig.hls.setup(opts)
 
   local signs = { Error = "", Warning = "", Hint = "", Information = "" }
   for type, icon in pairs(signs) do
@@ -326,29 +355,7 @@ vim.g.mapleader = " "
 -- use system clipboard
 vim.api.nvim_set_option("clipboard","unnamedplus")
 
-
-if vim.g.neovide then
-
-  vim.opt.guifont =  "JetBrains Mono:h10"
-  vim.g.onedark_terminal_italics = 1
-
-end
-
-if not vim.g.vscode then
-
-  -- set coloscheme
-  vim.opt.termguicolors = true
-  -- vim.cmd [[colorscheme modus-vivendi]]
-  vim.cmd [[
-
-    let ayucolor="dark"
-    colorscheme ayu
-    " hi Normal guibg=NONE ctermbg=NONE
-
-   ]]
-
-  require('colors')
-end
+require('colors')
 
 vim.opt.wildmenu       = true
 
