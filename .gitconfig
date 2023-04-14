@@ -3,3 +3,5 @@
 	name = ninodemeterko
 [credential]
 	credentialStore = secretservice
+[core]
+	autocrlf = input

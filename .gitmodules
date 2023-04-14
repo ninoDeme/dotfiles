@@ -1,0 +1,25 @@
+[submodule ".vim/pack/editorconfig/start/editorconfig-vim"]
+	path = .vim/pack/editorconfig/start/editorconfig-vim
+	url = https://github.com/editorconfig/editorconfig-vim
+[submodule ".vim/pack/polyglot/start/vim-polyglot"]
+	path = .vim/pack/polyglot/start/vim-polyglot
+	url = https://github.com/sheerun/vim-polyglot
+[submodule ".vim/pack/tpope/start/commentary"]
+	path = .vim/pack/tpope/start/commentary
+	url = https://github.com/tpope/commentary.vim
+[submodule ".vim/pack/tpope/start/repeat"]
+	path = .vim/pack/tpope/start/repeat
+	url = https://github.com/tpope/repeat.vim
+[submodule ".vim/pack/tpope/start/surround"]
+	path = .vim/pack/tpope/start/surround
+	url = https://github.com/tpope/vim-surround
+[submodule "https://github.com/tpope/vim-commentary"]
+	url = .vim/pack/tpope/start/commentary/
+[submodule "https://github.com/tpope/vim-repeat"]
+	url = .vim/pack/tpope/start/repeat/
+[submodule ".vim/pack/tpope/start/unimpaired"]
+	path = .vim/pack/tpope/start/unimpaired
+	url = https://github.com/tpope/vim-unimpaired
+[submodule ".vim/pack/themes/opt/onedark.vim"]
+	path = .vim/pack/themes/opt/onedark.vim
+	url = https://github.com/joshdick/onedark.vim

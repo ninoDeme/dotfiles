@@ -1,0 +1,86 @@
+filetype plugin indent on
+
+syntax on
+
+packadd! onedark.vim
+packadd! matchit
+
+
+set nocompatible
+set termguicolors
+
+colorscheme onedark
+let mapleader = " "
+
+if has('mouse')
+	set mouse=a
+endif
+
+set wildmenu
+
+" Set highlight on search
+set hlsearch
+
+" deal with case sensitivity on search
+set ignorecase
+set smartcase
+set incsearch
+
+set hidden
+set ruler
+set laststatus=2
+set confirm
+
+set ttyfast
+set backspace   =indent,eol,start  " Make backspace work as you would expect.
+
+" add manual folding
+set foldmethod=marker
+set cmdheight=2
+set number
+set relativenumber
+
+" save undo history
+set undofile
+
+set ttimeout
+set ttimeoutlen=100
+
+" Set completeopt to have a better completion experience
+set completeopt=menu,menuone,noselect
+
+" Avoid showing message extra message when using completion
+set shortmess+=c
+
+" Saving options in session and view files causes more problems than it
+" solves, so disable it.
+set sessionoptions-=options
+set viewoptions-=options
+
+" Disable a legacy behavior that can break plugin maps.
+set nolangremap
+
+" copy and paste from system clipboard 
+noremap <Leader>Y "*y
+noremap <Leader>P "*p
+noremap <Leader>y "+y
+noremap <Leader>p "+p
+
+" reload config
+nnoremap <leader>r :source $MYVIMRC<CR>
+
+" esc to exit terminal mode
+tnoremap <Esc> <C-\><C-n>
+
+" Press ESC to clear search
+" noremap <silent> <ESC> :noh<CR><ESC>
+"
+" The fish shell is not very compatible to other shells and unexpectedly
+" breaks things that use 'shell'.
+if &shell =~# 'fish$'
+  set shell=/bin/bash
+endif
+
+" Yank from current cursor position to the end of the line (make it
+" consistent with the behavior of D, C)
+nnoremap Y y$
