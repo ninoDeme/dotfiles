@@ -50,6 +50,7 @@
 ;(unpin! t)
 (package! emr)
 
+(package! whitespace)
 
 (package! sxhkd-mode
   :recipe (:host github :repo "xFA25E/sxhkd-mode"))

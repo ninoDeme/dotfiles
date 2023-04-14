@@ -93,6 +93,9 @@
 
 (setq evil-kill-on-visual-paste nil)
 
+(setq! whitespace-style '(face spaces empty tabs trailing space-mark tab-mark))
+(global-whitespace-mode +1)
+
 
 (dimmer-configure-which-key)
 (dimmer-configure-company-box)
@@ -100,3 +103,4 @@
 (setq dimmer-adjustment-mode :foreground)
 
 (dimmer-mode t)
+
