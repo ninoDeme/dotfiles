@@ -22,7 +22,7 @@
 ;; accept. For example:
 ;;
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'regular)
-     doom-variable-pitch-font (font-spec :family "Cantarell" :size 13))
+      doom-variable-pitch-font (font-spec :family "Cantarell" :size 13))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -76,12 +76,13 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(map! :desc "Glance documentation of symbol at point" :n "gh" #'lsp-ui-doc-glance)
-(map! :leader :desc "Open refactor menu" :n "c R" #'emr-show-refactor-menu)
-(map! :leader :desc "Open refactor menu" :v "c R" #'emr-show-refactor-menu)
+(after! emr
+  (map! :leader :desc "Open refactor menu" :n "c R" #'emr-show-refactor-menu)
+  (map! :leader :desc "Open refactor menu" :v "c R" #'emr-show-refactor-menu))
 
-(setq company-minimum-prefix-length 1
-      company-idle-delay 0.0) ;; default is 0.2
+(after! company
+  (setq company-minimum-prefix-length 1
+        company-idle-delay 0.0)) ;; default is 0.2
 
 ;; (setq ispell-program-name "hunspell")
 ;; (setenv "LANG" "en_US.UTF-8")
@@ -89,18 +90,60 @@
 ;; (ispell-set-spellchecker-params)
 ;; (ispell-hunspell-add-multi-dic "en_US,pt_BR")
 
-(add-to-list 'auto-mode-alist `(,(rx "sxhkdrc" string-end) . sxhkd-mode))
+(after! sxhkdrc
+  (add-to-list 'auto-mode-alist `(,(rx "sxhkdrc" string-end) . sxhkd-mode)))
 
-(setq evil-kill-on-visual-paste nil)
+(after! whitespace
+  (setq! whitespace-style '(face spaces empty tabs trailing space-mark tab-mark))
+  (global-whitespace-mode +1))
 
-(setq! whitespace-style '(face spaces empty tabs trailing space-mark tab-mark))
-(global-whitespace-mode +1)
+(after! dimmer
+  (dimmer-configure-which-key)
+  (dimmer-configure-company-box)
+  (dimmer-configure-magit)
+  (setq dimmer-adjustment-mode :foreground)
 
+  (dimmer-mode t))
 
-(dimmer-configure-which-key)
-(dimmer-configure-company-box)
-(dimmer-configure-magit)
-(setq dimmer-adjustment-mode :foreground)
+(after! lsp-clangd
+  (setq lsp-clients-clangd-args
+        '("-j=3"
+          "--background-index"
+          "--clang-tidy"
+          "--completion-style=detailed"
+          "--header-insertion=never"
+          "--header-insertion-decorators=0"))
+  (set-lsp-priority! 'clangd 2))
 
-(dimmer-mode t)
+(after! dap-mode
+  (setq dap-python-debugger 'debugpy)
+  (map! :map dap-mode-map
+        :leader
+        :prefix ("d" . "dap")
+        ;; basics
+        :desc "dap next"          "n" #'dap-next
+        :desc "dap step in"       "i" #'dap-step-in
+        :desc "dap step out"      "o" #'dap-step-out
+        :desc "dap continue"      "c" #'dap-continue
+        :desc "dap hydra"         "h" #'dap-hydra
+        :desc "dap debug restart" "r" #'dap-debug-restart
+        :desc "dap debug"         "s" #'dap-debug
 
+        ;; debug
+        :prefix ("dd" . "Debug")
+        :desc "dap debug recent"  "r" #'dap-debug-recent
+        :desc "dap debug last"    "l" #'dap-debug-last
+
+        ;; eval
+        :prefix ("de" . "Eval")
+        :desc "eval"                "e" #'dap-eval
+        :desc "eval region"         "r" #'dap-eval-region
+        :desc "eval thing at point" "s" #'dap-eval-thing-at-point
+        :desc "add expression"      "a" #'dap-ui-expressions-add
+        :desc "remove expression"   "d" #'dap-ui-expressions-remove
+
+        :prefix ("db" . "Breakpoint")
+        :desc "dap breakpoint toggle"      "b" #'dap-breakpoint-toggle
+        :desc "dap breakpoint condition"   "c" #'dap-breakpoint-condition
+        :desc "dap breakpoint hit count"   "h" #'dap-breakpoint-hit-condition
+        :desc "dap breakpoint log message" "l" #'dap-breakpoint-log-message))

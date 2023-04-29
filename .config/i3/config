@@ -37,6 +37,10 @@ exec --no-startup-id nm-applet
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id picom --experimental-backends
 
+exec --no-startup-id setxkbmap -layout us -variant intl
+
+exec --no-startup-id dunst
+
 exec --no-startup-id sxhkd -c ~/.config/i3/sxhkdrc
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
