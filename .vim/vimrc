@@ -2,14 +2,11 @@ filetype plugin indent on
 
 syntax on
 
-packadd! onedark.vim
 packadd! matchit
-
 
 set nocompatible
 set termguicolors
 
-colorscheme onedark
 let mapleader = " "
 
 if has('mouse')
