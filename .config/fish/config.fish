@@ -1,28 +1,28 @@
 if status is-interactive
-	function fish_greeting
-	end
-	alias ls='exa -al --group-directories-first'
-	alias la='exa -a --group-directories-first'
-	alias l='exa -l --group-directories-first'
-	alias le='exa --group-directories-first'
-	alias lt='exa -aT --group-directories-first'
-	if test "$XDG_SESSION_TYPE" = 'x11'
-		alias em='devour emacsclient -c -a=\"\"'
-	else
-		alias em='emacsclient -c -a=\"\"'
-	end
-	alias emt='emacsclient -nw -a=\"\"'
-	alias cp='cp -i'
-	alias rm='rm -i'
-	alias mv='mv -i'
-	function fconf
-	    command nvim $HOME/.config/fish/config.fish
-	end
-	function nvimconf
-	    pushd $HOME/.config/nvim/
-	    command nvim init.lua
-	    popd
-	end
+    function fish_greeting
+    end
+    alias ls='exa -al --group-directories-first'
+    alias la='exa -a --group-directories-first'
+    alias l='exa -l --group-directories-first'
+    alias le='exa --group-directories-first'
+    alias lt='exa -aT --group-directories-first'
+    if test "$XDG_SESSION_TYPE" = 'x11'
+        alias em='devour emacsclient -c -a=\"\"'
+    else
+        alias em='emacsclient -c -a=\"\"'
+    end
+    alias emt='emacsclient -nw -a=\"\"'
+    alias cp='cp -i'
+    alias rm='rm -i'
+    alias mv='mv -i'
+    function fconf
+        command nvim $HOME/.config/fish/config.fish
+    end
+    function nvimconf
+        pushd $HOME/.config/nvim/
+        command nvim init.lua
+        popd
+    end
 end
 
 function vterm_printf; #emacs vterm integration
@@ -45,13 +45,13 @@ end
 fish_default_key_bindings
 
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
-alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 if test -e $HOME/.config/fish/gtk_nocsd.fish
-	source $HOME/.config/fish/gtk_nocsd.fish
+    source $HOME/.config/fish/gtk_nocsd.fish
 end
 if test -e $HOME/.config/fish/bitwarden.fish
-	source $HOME/.config/fish/bitwarden.fish
+    source $HOME/.config/fish/bitwarden.fish
 end
 
 set EDITOR "nvim"
@@ -67,5 +67,3 @@ fish_add_path $HOME/.emacs.d/bin
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/.npm-global/bin
-
-set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME ; set -gx PATH $HOME/.cabal/bin $PATH /home/nino/.ghcup/bin # ghcup-env
