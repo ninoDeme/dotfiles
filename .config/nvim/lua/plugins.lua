@@ -50,6 +50,7 @@ return require('packer').startup(function(use)
 	-- use 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
 	use 'wellle/targets.vim'
 	use 'kana/vim-textobj-user'
+  use 'christoomey/vim-tmux-navigator'
 
   use 'williamboman/mason.nvim'
 
@@ -94,7 +95,8 @@ return require('packer').startup(function(use)
 	use {'tjdevries/colorbuddy.nvim',
 	     'ishan9299/modus-theme-vim',
 	     'ayu-theme/ayu-vim',
-       'joshdick/onedark.vim',
+       'navarasu/onedark.nvim',
+       -- 'joshdick/onedark.vim',
 	     'norcalli/nvim-colorizer.lua', disable = vim.g.vscode}
 end)
 -- vim: ts=2 sts=2 sw=2 et nowrap

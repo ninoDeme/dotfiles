@@ -2,12 +2,11 @@ local colors = {
   PmenuSel = { bg = "#282C34", fg = "NONE" },
   Pmenu = { fg = "#C5CDD9", bg = "#22252A" },
 
-
-  FloatBorder = { link = "Normal" },
+  -- FloatBorder = { link = "Normal" },
   CmpItemAbbrDeprecated = { fg = "#7E8294", bg = "NONE", strikethrough = true },
   CmpItemAbbrMatch = { fg = "#82AAFF", bg = "NONE", bold = true },
   CmpItemAbbrMatchFuzzy = { fg = "#82AAFF", bg = "NONE", bold = true },
-  CmpItemMenu = { fg = "#C792EA", bg = "NONE", italic = true },
+  --[[ CmpItemMenu = { fg = "#C792EA", bg = "NONE", italic = true },
 
   CmpItemKindField = { fg = "#EED8DA", bg = "#B5585F" },
   CmpItemKindProperty = { fg = "#EED8DA", bg = "#B5585F" },
@@ -40,7 +39,7 @@ local colors = {
 
   CmpItemKindInterface = { fg = "#D8EEEB", bg = "#58B5A8" },
   CmpItemKindColor = { fg = "#D8EEEB", bg = "#58B5A8" },
-  CmpItemKindTypeParameter = { fg = "#D8EEEB", bg = "#58B5A8" },
+  CmpItemKindTypeParameter = { fg = "#D8EEEB", bg = "#58B5A8" }, ]]
 }
 for k, v in pairs(colors) do
   vim.api.nvim_set_hl(0, k, v)

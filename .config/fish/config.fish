@@ -57,7 +57,7 @@ fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/.npm-global/bin
 
-function vterm_printf; #emacs vterm integration
+function vterm_printf; # emacs vterm integration
     if begin; [  -n "$TMUX" ]  ; and  string match -q -r "screen|tmux" "$TERM"; end 
         # tell tmux to pass the escape sequences through
         printf "\ePtmux;\e\e]%s\007\e\\" "$argv"
@@ -70,9 +70,7 @@ function vterm_printf; #emacs vterm integration
 end
 
 if test -e $HOME/.nvm/nvm.sh
-    function nvm
-        bass source $HOME/.nvm/nvm.sh --no-use ';' nvm $argv
-    end
+    alias nvm="bass source $HOME/.nvm/nvm.sh --no-use ';' nvm"
     set -x NVM_DIR "$HOME/.nvm"
     bass source $HOME/.nvm/nvm.sh
 end

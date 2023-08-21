@@ -23,7 +23,6 @@ else
 
   -- set coloscheme
   vim.opt.termguicolors = true
-  -- vim.cmd [[colorscheme modus-vivendi]]
   vim.cmd [[
 
     let ayucolor="dark"
@@ -32,6 +31,16 @@ else
 
    ]]
 
+  require('onedark').setup {
+    style = 'darker',
+    toggle_style_key = ' ts',
+    toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
+
+  }
+  require('onedark').load()
+
+  require('colors')
+
   require 'nvim-web-devicons'.setup()
 
   require("lspsaga").setup({
@@ -39,7 +48,7 @@ else
       enable = false,
     },
     ui = {
-      border = 'solid',
+      border = 'none',
       title = true,
     }
   })
@@ -51,22 +60,24 @@ else
 
   local luasnip = require('luasnip')
 
-  local lspkind = require('lspkind')
+  vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#282C34", fg = "NONE" })
+  vim.api.nvim_set_hl(0, "Pmenu", { fg = "#C5CDD9", bg = "#22252A" })
 
   local cmp = require 'cmp' --{{{
   local cmp_map = cmp.mapping.preset.insert({
-    ['<C-d>'] = cmp.mapping.scroll_docs(4),
-    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-d>'] = cmp.mapping.scroll_docs(5),
+    ['<C-u>'] = cmp.mapping.scroll_docs(-5),
+    ['<C-y>'] = cmp.mapping.scroll_docs(1),
+    ['<C-e>'] = cmp.mapping.scroll_docs(-1),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-l>'] = cmp.mapping.confirm(),
   })
+  -- Configure key mappings
   cmp.setup {
     window = {
-      completion = cmp.config.window.bordered({
-        col_offset = -3,
-        side_padding = 0,
-      }),
-      documentation = cmp.config.window.bordered()
+      completion = {
+        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+      }
     },
     snippet = {
       expand = function(args)
@@ -82,16 +93,6 @@ else
       { name = 'nvim_lsp_signature_help' }
     },
       { name = 'buffer' }),
-    formatting = {
-      fields = { "kind", "abbr", "menu" },
-      format = function(entry, vim_item)
-        local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
-        local strings = vim.split(kind.kind, "%s", { trimempty = true })
-        kind.kind = " " .. (strings[1] or "") .. " "
-        kind.menu = "    (" .. (strings[2] or "") .. ")"
-        return kind
-      end,
-    },
     experimental = {
       ghost_text = true
     }
@@ -169,7 +170,7 @@ else
     vim.keymap.set("n", "[e", "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
     vim.keymap.set("n", "]e", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
 
-    vim.keymap.set("n", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", opts)
+    -- vim.keymap.set("n", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", opts)
 
     -- Whichkey
     local keymap_l = {
@@ -245,7 +246,7 @@ else
   lspconfig.angularls.setup(opts)
   lspconfig.tsserver.setup(opts)
 
-  local signs = { Error = "", Warning = "", Hint = "", Information = "" }
+  local signs = { Error = "", Warning = "", Hint = "", Information = "" }
   for type, icon in pairs(signs) do
       local hl = "DiagnosticSign" .. type
       vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
@@ -344,8 +345,6 @@ vim.g.mapleader = " "
 
 -- use system clipboard
 vim.api.nvim_set_option("clipboard","unnamedplus")
-
-require('colors')
 
 vim.opt.wildmenu       = true
 
