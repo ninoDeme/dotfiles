@@ -69,3 +69,17 @@ function vterm_printf; #emacs vterm integration
     end
 end
 
+if test -e $HOME/.nvm/nvm.sh
+    function nvm
+        bass source $HOME/.nvm/nvm.sh --no-use ';' nvm $argv
+    end
+    set -x NVM_DIR "$HOME/.nvm"
+    bass source $HOME/.nvm/nvm.sh
+end
+
+# pnpm
+set -gx PNPM_HOME "/home/limber502/.local/share/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end
