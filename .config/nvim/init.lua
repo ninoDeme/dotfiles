@@ -31,27 +31,12 @@ else
 
    ]]
 
-  require('onedark').setup {
-    style = 'darker',
-    toggle_style_key = ' ts',
-    toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
-
-  }
+  require('onedark').setup { style = 'darker' }
   require('onedark').load()
 
   require('colors')
 
   require 'nvim-web-devicons'.setup()
-
-  require("lspsaga").setup({
-    lightbulb = {
-      enable = false,
-    },
-    ui = {
-      border = 'none',
-      title = true,
-    }
-  })
 
   require('refactoring').setup({})
 
@@ -63,6 +48,44 @@ else
   vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#282C34", fg = "NONE" })
   vim.api.nvim_set_hl(0, "Pmenu", { fg = "#C5CDD9", bg = "#22252A" })
 
+  vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#7E8294", bg = "NONE", strikethrough = true })
+  vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#82AAFF", bg = "NONE", bold = true })
+  vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { fg = "#82AAFF", bg = "NONE", bold = true })
+  vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#C792EA", bg = "NONE", italic = true })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindField", { fg = "#EED8DA", bg = "#B5585F" })
+  vim.api.nvim_set_hl(0, "CmpItemKindProperty", { fg = "#EED8DA", bg = "#B5585F" })
+  vim.api.nvim_set_hl(0, "CmpItemKindEvent", { fg = "#EED8DA", bg = "#B5585F" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindText", { fg = "#f3ffeD", bg = "#7F9D63" })
+  vim.api.nvim_set_hl(0, "CmpItemKindEnum", { fg = "#f3ffeD", bg = "#7F9D63" })
+  vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = "#f3ffeD", bg = "#7F9D63" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindConstant", { fg = "#FFE592", bg = "#D4BB6C" })
+  vim.api.nvim_set_hl(0, "CmpItemKindConstructor", { fg = "#FFE592", bg = "#D4BB6C" })
+  vim.api.nvim_set_hl(0, "CmpItemKindReference", { fg = "#FFE592", bg = "#D4BB6C" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#EADFF0", bg = "#A377BF" })
+  vim.api.nvim_set_hl(0, "CmpItemKindStruct", { fg = "#EADFF0", bg = "#A377BF" })
+  vim.api.nvim_set_hl(0, "CmpItemKindClass", { fg = "#EADFF0", bg = "#A377BF" })
+  vim.api.nvim_set_hl(0, "CmpItemKindModule", { fg = "#EADFF0", bg = "#A377BF" })
+  vim.api.nvim_set_hl(0, "CmpItemKindOperator", { fg = "#EADFF0", bg = "#A377BF" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = "#C5CDD9", bg = "#7E8294" })
+  vim.api.nvim_set_hl(0, "CmpItemKindFile", { fg = "#C5CDD9", bg = "#7E8294" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindUnit", { fg = "#F5EBD9", bg = "#D4A959" })
+  vim.api.nvim_set_hl(0, "CmpItemKindSnippet", { fg = "#F5EBD9", bg = "#D4A959" })
+  vim.api.nvim_set_hl(0, "CmpItemKindFolder", { fg = "#F5EBD9", bg = "#D4A959" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindMethod", { fg = "#DDE5F5", bg = "#6C8ED4" })
+  vim.api.nvim_set_hl(0, "CmpItemKindValue", { fg = "#DDE5F5", bg = "#6C8ED4" })
+  vim.api.nvim_set_hl(0, "CmpItemKindEnumMember", { fg = "#DDE5F5", bg = "#6C8ED4" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindInterface", { fg = "#D8EEEB", bg = "#58B5A8" })
+  vim.api.nvim_set_hl(0, "CmpItemKindColor", { fg = "#D8EEEB", bg = "#58B5A8" })
+  vim.api.nvim_set_hl(0, "CmpItemKindTypeParameter", { fg = "#D8EEEB", bg = "#58B5A8" })
+
   local cmp = require 'cmp' --{{{
   local cmp_map = cmp.mapping.preset.insert({
     ['<C-d>'] = cmp.mapping.scroll_docs(5),
@@ -73,10 +96,16 @@ else
     ['<C-l>'] = cmp.mapping.confirm(),
   })
   -- Configure key mappings
+  --
+  require('lspkind').init({
+    preset = "codicons"
+  })
   cmp.setup {
     window = {
       completion = {
         winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+        col_offset = -3,
+        side_padding = 0,
       }
     },
     snippet = {
@@ -94,8 +123,18 @@ else
     },
       { name = 'buffer' }),
     experimental = {
-      ghost_text = true
-    }
+      -- ghost_text = true
+    },
+    formatting = {
+      fields = { "kind", "abbr", "menu" },
+      format = function(entry, vim_item)
+        local kind = require("lspkind").cmp_format({ mode = "text_symbol", maxwidth = 50 })(entry, vim_item)
+        local strings = vim.split(kind.kind, "%s", { trimempty = true })
+        kind.kind = " " .. (strings[2] or "") .. " "
+        kind.menu = "    (" .. (strings[1] or "") .. ")"
+        return kind
+      end,
+    },
   }
   -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
   -- local misc = require('cmp.utils.misc')
@@ -165,27 +204,17 @@ else
     local opts = { noremap = true, silent = true }
 
     -- lsp Key mappings
-    -- vim.api.nvim_set_keymap("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-
-    vim.keymap.set("n", "gh", "<cmd>Lspsaga hover_doc<CR>", opts)
-
     vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
     vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
     vim.keymap.set("n", "[e", "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
     vim.keymap.set("n", "]e", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
 
-    -- vim.keymap.set("n", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", opts)
-
     -- Whichkey
     local keymap_l = {
       l = {
         name = "Code",
-        -- r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
-        r = { "<cmd>Lspsaga rename<CR>", "Rename" },
-        R = { "<cmd>Lspsaga rename ++project<CR>", "Rename for entire project" },
-        -- a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
-        a = { "<cmd>Lspsaga code_action<CR>", "Code Action" },
-        d = { "<cmd>Lspsaga show_line_diagnostics<CR>", "Diagnostics" },
+        r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
+        a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
         i = { "<cmd>LspInfo<CR>", "Lsp Info" },
         f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format Document" }
       },
@@ -193,11 +222,8 @@ else
 
       local keymap_g = {
         name = "Goto",
-        d = { "<Cmd>Lspsaga goto_definition<CR>", "Goto Definition" },
-        D = { "<Cmd>Lspsaga peek_definition<CR>", "Peek Definition" },
-        ['c-d'] = { "<Cmd>Lspsaga goto__type_definition<CR>", "Goto Definition" },
-        ['c-D'] = { "<Cmd>Lspsaga peek_type_definition<CR>", "Peek Definition" },
-        H = { "<Cmd>Lspsaga lsp_finder<CR>", "Peek Definition" },
+        d = { "<cmd>Telescope lsp_definitions<CR>", "Definitions"},
+        D = { "<cmd>Telescope lsp_references<CR>", "References"},
         s = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help" },
         I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation" },
       }
@@ -250,13 +276,11 @@ else
   lspconfig.angularls.setup(lsp_opts)
   lspconfig.tsserver.setup(lsp_opts)
 
-  local signs = { Error = "", Warning = "", Hint = "", Information = "" }
+  local signs = { Error = "", Warn = "", Hint = "", Info = "" }
   for type, icon in pairs(signs) do
       local hl = "DiagnosticSign" .. type
       vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
   end
-
-  -- require("bufferline").setup{}
 
   -- Nvim-Tree {{{
   require 'nvim-tree'.setup({
@@ -332,6 +356,13 @@ else
   }
   -- }}}
 
+  vim.g.barbar_auto_setup = false -- disable auto-setup
+  require'barbar'.setup({
+    sidebar_filetypes = {
+      NvimTree = true,
+    }
+  })
+
   require('qf_helper').setup()
 
   -- TreeSitter {{{
@@ -382,18 +413,33 @@ else
 
   whichkey.register({
     t  = {
-      name = 'Open numbered terminals',
-      ['1'] = {function() require("nvim-smartbufs").goto_terminal(1) end, 'Terminal 1' },
-      ['2'] = {function() require("nvim-smartbufs").goto_terminal(2) end, 'Terminal 2' },
-      ['3'] = {function() require("nvim-smartbufs").goto_terminal(3) end, 'Terminal 3' },
-      ['4'] = {function() require("nvim-smartbufs").goto_terminal(4) end, 'Terminal 4' },
-      t = { 'Toggle terminal (lsp)' },
+      name = '+Toggle Numbered Terminals',
+      ['1'] = {'<cmd>ToggleTerm 1<CR>', 'Toggle Term 1'},
+      ['2'] = {'<cmd>ToggleTerm 2<CR>', 'Toggle Term 2'},
+      ['3'] = {'<cmd>ToggleTerm 3<CR>', 'Toggle Term 3'},
+      ['4'] = {'<cmd>ToggleTerm 4<CR>', 'Toggle Term 4'},
+      ['5'] = {'<cmd>ToggleTerm 5<CR>', 'Toggle Term 5'},
+      ['6'] = {'<cmd>ToggleTerm 6<CR>', 'Toggle Term 6'},
+      ['7'] = {'<cmd>ToggleTerm 7<CR>', 'Toggle Term 7'},
+      ['8'] = {'<cmd>ToggleTerm 8<CR>', 'Toggle Term 8'},
+      ['9'] = {'<cmd>ToggleTerm 9<CR>', 'Toggle Term 9'},
     },
     s  = {
       name = 'Telescope',
       s = {"<cmd>Telescope live_grep<cr>", 'Grep' },
       b = {"<cmd>Telescope buffers<cr>", 'Buffers' },
       f = {"<cmd>Telescope find_files<cr>", 'Find Files' },
+    },
+    b = {
+      name = '+Buffers',
+      x = {'<cmd>BufferClose<CR>', 'Close Current Buffer'},
+      b = {'<cmd>BufferPick<CR>', 'Pick Buffer...'},
+      q = {'<cmd>BufferPickDelete<CR>', 'Close Buffer...'},
+      p = {'<cmd>BufferPin<CR>', 'Pin Current Buffer'},
+      ['>'] = {'<cmd>BufferMoveNext<CR>', 'Move Buffer Forwards'},
+      ['<'] = {'<cmd>BufferMovePrevious<CR>', 'Move Buffer Backwards'},
+      ['.'] = {'<cmd>BufferNext<CR>', 'Next Buffer'},
+      [','] = {'<cmd>BufferPrevious<CR>', 'Previous Buffer'},
     },
     g = {require("neogit").open, 'Open NeoGit' },
     W = { 'Create dir to current file' },
@@ -564,8 +610,6 @@ if !exists('g:vscode')
   nnoremap <silent>    <A-9> <Cmd>BufferGoto 9<CR>
   nnoremap <silent>    <A-0> <Cmd>BufferLast<CR>
 
-  " close current buffer
-  nnoremap <silent> <Leader>wq :lua require("nvim-smartbufs").close_current_buffer()<CR>
 
   nnoremap <silent> <Leader><return> :!alacritty &<CR>
   
