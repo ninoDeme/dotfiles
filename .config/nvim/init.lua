@@ -205,7 +205,7 @@ else
       whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
     end
 
-  local opts = {
+  local lsp_opts = {
     on_attach = function(client, bufnr)
 
       -- Use LSP as the handler for formatexpr.
@@ -243,12 +243,12 @@ else
         },
       },
     },
-    on_attach = opts.on_attach,
-    capabilities = opts.capabilities
+    on_attach = lsp_opts.on_attach,
+    capabilities = lsp_opts.capabilities
   }
 
-  lspconfig.angularls.setup(opts)
-  lspconfig.tsserver.setup(opts)
+  lspconfig.angularls.setup(lsp_opts)
+  lspconfig.tsserver.setup(lsp_opts)
 
   local signs = { Error = "", Warning = "", Hint = "", Information = "" }
   for type, icon in pairs(signs) do
@@ -269,6 +269,55 @@ else
     update_focused_file = {
       enable = true,
     },
+    on_attach = function(bufnr)
+      local api = require("nvim-tree.api")
+
+      local function opts(desc)
+        return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+      end
+
+      local function edit_or_open()
+        local node = api.tree.get_node_under_cursor()
+
+        if node.nodes ~= nil then
+          -- expand or collapse folder
+          api.node.open.edit()
+        else
+          -- open file
+          api.node.open.edit()
+          -- Close the tree if file was opened
+          api.tree.close()
+        end
+      end
+
+      vim.keymap.set('n', 'x',     api.fs.cut,                        opts('Cut'))
+      vim.keymap.set('n', 'p',     api.fs.paste,                      opts('Paste'))
+      vim.keymap.set('n', 'a',     api.fs.create,                     opts('Create'))
+      vim.keymap.set('n', '<C-]>', api.tree.change_root_to_node,      opts('CD'))
+      vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer, opts('Open: In Place'))
+      vim.keymap.set('n', 'K',     api.node.show_info_popup,          opts('Info'))
+      vim.keymap.set('n', '<C-r>', api.fs.rename_sub,                 opts('Rename: Omit Filename'))
+      vim.keymap.set('n', '<C-t>', api.node.open.tab,                 opts('Open: New Tab'))
+      vim.keymap.set('n', '<C-v>', api.node.open.vertical,            opts('Open: Vertical Split'))
+      vim.keymap.set('n', '<C-s>', api.node.open.horizontal,          opts('Open: Horizontal Split'))
+      vim.keymap.set('n', '.',     api.node.run.cmd,                  opts('Run Command'))
+      vim.keymap.set('n', 'c',     api.fs.copy.node,                  opts('Copy'))
+      vim.keymap.set('n', 'y',     api.fs.copy.filename,              opts('Copy Name'))
+      vim.keymap.set('n', 'Y',     api.fs.copy.relative_path,         opts('Copy Relative Path'))
+      vim.keymap.set('n', 'd',     api.fs.remove,                     opts('Delete'))
+      vim.keymap.set('n', 'D',     api.fs.trash,                      opts('Trash'))
+      vim.keymap.set('n', '?',     api.tree.toggle_help,              opts('Help'))
+      vim.keymap.set('n', 'q',     api.tree.close,                    opts('Close'))
+      vim.keymap.set('n', 'r',     api.fs.rename,                     opts('Rename'))
+      vim.keymap.set('n', 'R',     api.tree.reload,                   opts('Refresh'))
+      vim.keymap.set('n', 's',     api.node.run.system,               opts('Run System'))
+      vim.keymap.set('n', 'S',     api.tree.search_node,              opts('Search'))
+      vim.keymap.set("n", "l",     edit_or_open,                      opts("Edit Or Open"))
+      vim.keymap.set('n', '<CR>',  api.node.open.edit,                opts('Edit'))
+      vim.keymap.set("n", "L",     api.node.open.preview,             opts("Vsplit Preview"))
+      vim.keymap.set("n", "h",     api.tree.close,                    opts("Close"))
+      vim.keymap.set("n", "H",     api.tree.collapse_all,             opts("Collapse All"))
+    end
   })
 
   -- }}}
@@ -334,10 +383,10 @@ else
   whichkey.register({
     t  = {
       name = 'Open numbered terminals',
-      ['1'] = { 'Terminal 1' },
-      ['2'] = { 'Terminal 2' },
-      ['3'] = { 'Terminal 3' },
-      ['4'] = { 'Terminal 4' },
+      ['1'] = {function() require("nvim-smartbufs").goto_terminal(1) end, 'Terminal 1' },
+      ['2'] = {function() require("nvim-smartbufs").goto_terminal(2) end, 'Terminal 2' },
+      ['3'] = {function() require("nvim-smartbufs").goto_terminal(3) end, 'Terminal 3' },
+      ['4'] = {function() require("nvim-smartbufs").goto_terminal(4) end, 'Terminal 4' },
       t = { 'Toggle terminal (lsp)' },
     },
     s  = {
@@ -348,17 +397,18 @@ else
     },
     g = {require("neogit").open, 'Open NeoGit' },
     W = { 'Create dir to current file' },
+    ['<leader>'] = {'<cmd>NvimTreeToggle<CR>', 'Toggle NvimTree'},
+    e = {'<cmd>NvimTreeFocus<CR>', 'Focus NvimTree'}
   }, {prefix = '<leader>'})
 
   whichkey.register({
     s = { 'Vim sneak' },
     S = { 'Vim sneak' },
+    g = {
+      l = { 'Align text at (right)' },
+      L = { 'Align text at (left)' },
+    }
   })
-
-  whichkey.register({
-    l = { 'Align text at (right)' },
-    L = { 'Align text at (left)' },
-  }, {prefix = "g"})
 
 end
 
@@ -486,9 +536,6 @@ if !exists('g:vscode')
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-  noremap <leader><leader> :NvimTreeToggle<CR>
-  noremap <leader>e :NvimTreeFocus<CR>
-
   " DAP mode bindings
   " noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
   " noremap <silent> <F5> :lua require'dap'.continue()<CR>
@@ -520,14 +567,7 @@ if !exists('g:vscode')
   " close current buffer
   nnoremap <silent> <Leader>wq :lua require("nvim-smartbufs").close_current_buffer()<CR>
 
-  " open numbered terminals
-  nnoremap <silent> <Leader>t1 :lua require("nvim-smartbufs").goto_terminal(1)<CR>
-  nnoremap <silent> <Leader>t2 :lua require("nvim-smartbufs").goto_terminal(2)<CR>
-  nnoremap <silent> <Leader>t3 :lua require("nvim-smartbufs").goto_terminal(3)<CR>
-  nnoremap <silent> <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
-
   nnoremap <silent> <Leader><return> :!alacritty &<CR>
-
   
 endif
 
