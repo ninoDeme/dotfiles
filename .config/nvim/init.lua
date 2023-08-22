@@ -56,7 +56,7 @@ else
   require('refactoring').setup({})
 
   local whichkey= require("which-key")
-  whichkey.setup {}
+  -- whichkey.setup {}
 
   local luasnip = require('luasnip')
 
@@ -116,6 +116,10 @@ else
     current_line_blame = true,
   }
   --- }}}
+
+  local neogit = require("neogit")
+
+  neogit.setup({})
 
   require("mason").setup()
 
@@ -256,11 +260,15 @@ else
 
   -- Nvim-Tree {{{
   require 'nvim-tree'.setup({
+    sync_root_with_cwd = true,
     actions = {
       open_file = {
         quit_on_open = false
       }
-    }
+    },
+    update_focused_file = {
+      enable = true,
+    },
   })
 
   -- }}}
@@ -306,22 +314,51 @@ else
 
   require('kommentary.config').use_extended_mappings()
 
-  whichkey.register({
-    ['<leader>t']  = { name = 'Open numbered terminals' },
-    ['<leader>t1'] = { name = 'Terminal 1' },
-    ['<leader>t2'] = { name = 'Terminal 2' },
-    ['<leader>t3'] = { name = 'Terminal 3' },
-    ['<leader>t4'] = { name = 'Terminal 4' },
-    ['<leader>tt'] = { name = 'Toggle terminal (lsp)' },
-    ['<leader>s']  = { name = 'Telescope' },
-    ['<leader>sb'] = { name = 'Buffers' },
-    ['<leader>ss'] = { name = 'Grep' },
-    ['gl']         = { name = 'Align text at (right)' },
-    ['gL']         = { name = 'Align text at (left)' },
-    ['s']          = { name = 'Vim sneak' },
-    ['S']          = { name = 'Vim sneak' },
-    ['<leader>W']  = { name = 'Create dir to current file' },
+  local telescope = require("telescope")
+  telescope.load_extension("zf-native")
+
+  telescope.setup({
+    pickers = {
+      find_files = {
+        theme = 'ivy'
+      },
+      grep = {
+        theme = 'ivy'
+      },
+        buffers = {
+        theme = 'ivy'
+      }
+    }
   })
+
+  whichkey.register({
+    t  = {
+      name = 'Open numbered terminals',
+      ['1'] = { 'Terminal 1' },
+      ['2'] = { 'Terminal 2' },
+      ['3'] = { 'Terminal 3' },
+      ['4'] = { 'Terminal 4' },
+      t = { 'Toggle terminal (lsp)' },
+    },
+    s  = {
+      name = 'Telescope',
+      s = {"<cmd>Telescope live_grep<cr>", 'Grep' },
+      b = {"<cmd>Telescope buffers<cr>", 'Buffers' },
+      f = {"<cmd>Telescope find_files<cr>", 'Find Files' },
+    },
+    g = {require("neogit").open, 'Open NeoGit' },
+    W = { 'Create dir to current file' },
+  }, {prefix = '<leader>'})
+
+  whichkey.register({
+    s = { 'Vim sneak' },
+    S = { 'Vim sneak' },
+  })
+
+  whichkey.register({
+    l = { 'Align text at (right)' },
+    L = { 'Align text at (left)' },
+  }, {prefix = "g"})
 
 end
 
@@ -368,6 +405,9 @@ vim.opt.cmdheight      = 1
 vim.opt.number         = true
 vim.opt.relativenumber = true
 
+-- vim.opt.timeout = false
+-- vim.opt.timeoutlen = 300
+
 vim.opt.linebreak      = true
 -- save undo history
 vim.opt.undofile       = true
@@ -386,6 +426,8 @@ end
 
 -- Vimscript {{{
 vim.cmd([[
+
+let g:VM_theme = 'iceblue'
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
@@ -446,10 +488,6 @@ if !exists('g:vscode')
 
   noremap <leader><leader> :NvimTreeToggle<CR>
   noremap <leader>e :NvimTreeFocus<CR>
-
-  " Telescope bindings
-  nnoremap <leader>ss <cmd>Telescope live_grep<cr>
-  nnoremap <leader>sb <cmd>Telescope buffers<cr>
 
   " DAP mode bindings
   " noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>

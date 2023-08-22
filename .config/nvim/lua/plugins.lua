@@ -1,12 +1,12 @@
 local ensure_packer = function()
-	local fn = vim.fn
-	local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-	if fn.empty(fn.glob(install_path)) > 0 then
-		fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-		vim.cmd [[packadd packer.nvim]]
-		return true
-	end
-	return false
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
 
 local packer_bootstrap = ensure_packer()
@@ -22,7 +22,8 @@ return require('packer').startup(function(use)
 	     'gennaro-tedesco/nvim-peekup', -- See all yank registers use ""
 	     'nvim-lua/plenary.nvim', -- Telescope dependency
 	     {'nvim-telescope/telescope.nvim', requires = 'plenary.nvim'}, -- Fuzzy finder over lists
-	     'kyazdani42/nvim-web-devicons', -- Add icons to plugins
+       {'natecraddock/telescope-zf-native.nvim', requires = 'nvim-telescope/telescope.nvim'},
+       'kyazdani42/nvim-web-devicons', -- Add icons to plugins
 	     'nvim-treesitter/nvim-treesitter', -- Parsesr and highlighter for a lot of languages
 	     {'romgrk/barbar.nvim', requires = 'nvim-web-devicons'}, -- tabline
 	     'johann2357/nvim-smartbufs', -- Smart buffers
@@ -53,6 +54,15 @@ return require('packer').startup(function(use)
   use 'christoomey/vim-tmux-navigator'
 
   use 'williamboman/mason.nvim'
+
+  use {
+    "NeogitOrg/neogit",
+    requires = {
+      "nvim-lua/plenary.nvim",         -- required
+      "nvim-telescope/telescope.nvim", -- optional
+      "sindrets/diffview.nvim",        -- optional
+    }
+  }
 
 	-- Lsp and DAP =======================
 	use {'neovim/nvim-lspconfig', -- Common lsp configurations
