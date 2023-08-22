@@ -23,7 +23,6 @@ else
 
   -- set coloscheme
   vim.opt.termguicolors = true
-  -- vim.cmd [[colorscheme modus-vivendi]]
   vim.cmd [[
 
     let ayucolor="dark"
@@ -32,41 +31,82 @@ else
 
    ]]
 
-  require 'nvim-web-devicons'.setup()
+  require('onedark').setup { style = 'darker' }
+  require('onedark').load()
 
-  require("lspsaga").setup({
-    lightbulb = {
-      enable = false,
-    },
-    ui = {
-      border = 'solid',
-      title = true,
-    }
-  })
+  require('colors')
+
+  require 'nvim-web-devicons'.setup()
 
   require('refactoring').setup({})
 
   local whichkey= require("which-key")
-  whichkey.setup {}
+  -- whichkey.setup {}
 
   local luasnip = require('luasnip')
 
-  local lspkind = require('lspkind')
+  vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#282C34", fg = "NONE" })
+  vim.api.nvim_set_hl(0, "Pmenu", { fg = "#C5CDD9", bg = "#22252A" })
+
+  vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#7E8294", bg = "NONE", strikethrough = true })
+  vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#82AAFF", bg = "NONE", bold = true })
+  vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { fg = "#82AAFF", bg = "NONE", bold = true })
+  vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#C792EA", bg = "NONE", italic = true })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindField", { fg = "#EED8DA", bg = "#B5585F" })
+  vim.api.nvim_set_hl(0, "CmpItemKindProperty", { fg = "#EED8DA", bg = "#B5585F" })
+  vim.api.nvim_set_hl(0, "CmpItemKindEvent", { fg = "#EED8DA", bg = "#B5585F" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindText", { fg = "#f3ffeD", bg = "#7F9D63" })
+  vim.api.nvim_set_hl(0, "CmpItemKindEnum", { fg = "#f3ffeD", bg = "#7F9D63" })
+  vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = "#f3ffeD", bg = "#7F9D63" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindConstant", { fg = "#FFE592", bg = "#D4BB6C" })
+  vim.api.nvim_set_hl(0, "CmpItemKindConstructor", { fg = "#FFE592", bg = "#D4BB6C" })
+  vim.api.nvim_set_hl(0, "CmpItemKindReference", { fg = "#FFE592", bg = "#D4BB6C" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#EADFF0", bg = "#A377BF" })
+  vim.api.nvim_set_hl(0, "CmpItemKindStruct", { fg = "#EADFF0", bg = "#A377BF" })
+  vim.api.nvim_set_hl(0, "CmpItemKindClass", { fg = "#EADFF0", bg = "#A377BF" })
+  vim.api.nvim_set_hl(0, "CmpItemKindModule", { fg = "#EADFF0", bg = "#A377BF" })
+  vim.api.nvim_set_hl(0, "CmpItemKindOperator", { fg = "#EADFF0", bg = "#A377BF" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = "#C5CDD9", bg = "#7E8294" })
+  vim.api.nvim_set_hl(0, "CmpItemKindFile", { fg = "#C5CDD9", bg = "#7E8294" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindUnit", { fg = "#F5EBD9", bg = "#D4A959" })
+  vim.api.nvim_set_hl(0, "CmpItemKindSnippet", { fg = "#F5EBD9", bg = "#D4A959" })
+  vim.api.nvim_set_hl(0, "CmpItemKindFolder", { fg = "#F5EBD9", bg = "#D4A959" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindMethod", { fg = "#DDE5F5", bg = "#6C8ED4" })
+  vim.api.nvim_set_hl(0, "CmpItemKindValue", { fg = "#DDE5F5", bg = "#6C8ED4" })
+  vim.api.nvim_set_hl(0, "CmpItemKindEnumMember", { fg = "#DDE5F5", bg = "#6C8ED4" })
+
+  vim.api.nvim_set_hl(0, "CmpItemKindInterface", { fg = "#D8EEEB", bg = "#58B5A8" })
+  vim.api.nvim_set_hl(0, "CmpItemKindColor", { fg = "#D8EEEB", bg = "#58B5A8" })
+  vim.api.nvim_set_hl(0, "CmpItemKindTypeParameter", { fg = "#D8EEEB", bg = "#58B5A8" })
 
   local cmp = require 'cmp' --{{{
   local cmp_map = cmp.mapping.preset.insert({
-    ['<C-d>'] = cmp.mapping.scroll_docs(4),
-    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-d>'] = cmp.mapping.scroll_docs(5),
+    ['<C-u>'] = cmp.mapping.scroll_docs(-5),
+    ['<C-y>'] = cmp.mapping.scroll_docs(1),
+    ['<C-e>'] = cmp.mapping.scroll_docs(-1),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-l>'] = cmp.mapping.confirm(),
   })
+  -- Configure key mappings
+  --
+  require('lspkind').init({
+    preset = "codicons"
+  })
   cmp.setup {
     window = {
-      completion = cmp.config.window.bordered({
+      completion = {
+        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
         col_offset = -3,
         side_padding = 0,
-      }),
-      documentation = cmp.config.window.bordered()
+      }
     },
     snippet = {
       expand = function(args)
@@ -82,19 +122,19 @@ else
       { name = 'nvim_lsp_signature_help' }
     },
       { name = 'buffer' }),
+    experimental = {
+      -- ghost_text = true
+    },
     formatting = {
       fields = { "kind", "abbr", "menu" },
       format = function(entry, vim_item)
-        local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+        local kind = require("lspkind").cmp_format({ mode = "text_symbol", maxwidth = 50 })(entry, vim_item)
         local strings = vim.split(kind.kind, "%s", { trimempty = true })
-        kind.kind = " " .. (strings[1] or "") .. " "
-        kind.menu = "    (" .. (strings[2] or "") .. ")"
+        kind.kind = " " .. (strings[2] or "") .. " "
+        kind.menu = "    (" .. (strings[1] or "") .. ")"
         return kind
       end,
     },
-    experimental = {
-      ghost_text = true
-    }
   }
   -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
   -- local misc = require('cmp.utils.misc')
@@ -115,6 +155,10 @@ else
     current_line_blame = true,
   }
   --- }}}
+
+  local neogit = require("neogit")
+
+  neogit.setup({})
 
   require("mason").setup()
 
@@ -160,27 +204,17 @@ else
     local opts = { noremap = true, silent = true }
 
     -- lsp Key mappings
-    -- vim.api.nvim_set_keymap("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-
-    vim.keymap.set("n", "gh", "<cmd>Lspsaga hover_doc<CR>", opts)
-
     vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
     vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
     vim.keymap.set("n", "[e", "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
     vim.keymap.set("n", "]e", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
 
-    vim.keymap.set("n", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", opts)
-
     -- Whichkey
     local keymap_l = {
       l = {
         name = "Code",
-        -- r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
-        r = { "<cmd>Lspsaga rename<CR>", "Rename" },
-        R = { "<cmd>Lspsaga rename ++project<CR>", "Rename for entire project" },
-        -- a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
-        a = { "<cmd>Lspsaga code_action<CR>", "Code Action" },
-        d = { "<cmd>Lspsaga show_line_diagnostics<CR>", "Diagnostics" },
+        r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
+        a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
         i = { "<cmd>LspInfo<CR>", "Lsp Info" },
         f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format Document" }
       },
@@ -188,11 +222,8 @@ else
 
       local keymap_g = {
         name = "Goto",
-        d = { "<Cmd>Lspsaga goto_definition<CR>", "Goto Definition" },
-        D = { "<Cmd>Lspsaga peek_definition<CR>", "Peek Definition" },
-        ['c-d'] = { "<Cmd>Lspsaga goto__type_definition<CR>", "Goto Definition" },
-        ['c-D'] = { "<Cmd>Lspsaga peek_type_definition<CR>", "Peek Definition" },
-        H = { "<Cmd>Lspsaga lsp_finder<CR>", "Peek Definition" },
+        d = { "<cmd>Telescope lsp_definitions<CR>", "Definitions"},
+        D = { "<cmd>Telescope lsp_references<CR>", "References"},
         s = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help" },
         I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation" },
       }
@@ -200,7 +231,7 @@ else
       whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
     end
 
-  local opts = {
+  local lsp_opts = {
     on_attach = function(client, bufnr)
 
       -- Use LSP as the handler for formatexpr.
@@ -238,38 +269,79 @@ else
         },
       },
     },
-    on_attach = opts.on_attach,
-    capabilities = opts.capabilities
+    on_attach = lsp_opts.on_attach,
+    capabilities = lsp_opts.capabilities
   }
 
-  lspconfig.angularls.setup(opts)
-  lspconfig.tsserver.setup(opts)
+  lspconfig.angularls.setup(lsp_opts)
+  lspconfig.tsserver.setup(lsp_opts)
 
-  local signs = { Error = "", Warning = "", Hint = "", Information = "" }
+  local signs = { Error = "", Warn = "", Hint = "", Info = "" }
   for type, icon in pairs(signs) do
       local hl = "DiagnosticSign" .. type
       vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
   end
 
-  -- require("bufferline").setup{}
-
   -- Nvim-Tree {{{
   require 'nvim-tree'.setup({
-    view = {
-      mappings = {
-        list = {
-          { key = "h", action = "dir_up"},
-          { key = "l", action = "edit"},
-          { key = "L", action = "cd"},
-          { key = "<C-l>", action = "preview"},
-        }
-      }
-    },
+    sync_root_with_cwd = true,
     actions = {
       open_file = {
         quit_on_open = false
       }
-    }
+    },
+    update_focused_file = {
+      enable = true,
+    },
+    on_attach = function(bufnr)
+      local api = require("nvim-tree.api")
+
+      local function opts(desc)
+        return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+      end
+
+      local function edit_or_open()
+        local node = api.tree.get_node_under_cursor()
+
+        if node.nodes ~= nil then
+          -- expand or collapse folder
+          api.node.open.edit()
+        else
+          -- open file
+          api.node.open.edit()
+          -- Close the tree if file was opened
+          api.tree.close()
+        end
+      end
+
+      vim.keymap.set('n', 'x',     api.fs.cut,                        opts('Cut'))
+      vim.keymap.set('n', 'p',     api.fs.paste,                      opts('Paste'))
+      vim.keymap.set('n', 'a',     api.fs.create,                     opts('Create'))
+      vim.keymap.set('n', '<C-]>', api.tree.change_root_to_node,      opts('CD'))
+      vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer, opts('Open: In Place'))
+      vim.keymap.set('n', 'K',     api.node.show_info_popup,          opts('Info'))
+      vim.keymap.set('n', '<C-r>', api.fs.rename_sub,                 opts('Rename: Omit Filename'))
+      vim.keymap.set('n', '<C-t>', api.node.open.tab,                 opts('Open: New Tab'))
+      vim.keymap.set('n', '<C-v>', api.node.open.vertical,            opts('Open: Vertical Split'))
+      vim.keymap.set('n', '<C-s>', api.node.open.horizontal,          opts('Open: Horizontal Split'))
+      vim.keymap.set('n', '.',     api.node.run.cmd,                  opts('Run Command'))
+      vim.keymap.set('n', 'c',     api.fs.copy.node,                  opts('Copy'))
+      vim.keymap.set('n', 'y',     api.fs.copy.filename,              opts('Copy Name'))
+      vim.keymap.set('n', 'Y',     api.fs.copy.relative_path,         opts('Copy Relative Path'))
+      vim.keymap.set('n', 'd',     api.fs.remove,                     opts('Delete'))
+      vim.keymap.set('n', 'D',     api.fs.trash,                      opts('Trash'))
+      vim.keymap.set('n', '?',     api.tree.toggle_help,              opts('Help'))
+      vim.keymap.set('n', 'q',     api.tree.close,                    opts('Close'))
+      vim.keymap.set('n', 'r',     api.fs.rename,                     opts('Rename'))
+      vim.keymap.set('n', 'R',     api.tree.reload,                   opts('Refresh'))
+      vim.keymap.set('n', 's',     api.node.run.system,               opts('Run System'))
+      vim.keymap.set('n', 'S',     api.tree.search_node,              opts('Search'))
+      vim.keymap.set("n", "l",     edit_or_open,                      opts("Edit Or Open"))
+      vim.keymap.set('n', '<CR>',  api.node.open.edit,                opts('Edit'))
+      vim.keymap.set("n", "L",     api.node.open.preview,             opts("Vsplit Preview"))
+      vim.keymap.set("n", "h",     api.tree.close,                    opts("Close"))
+      vim.keymap.set("n", "H",     api.tree.collapse_all,             opts("Collapse All"))
+    end
   })
 
   -- }}}
@@ -283,6 +355,13 @@ else
     }
   }
   -- }}}
+
+  vim.g.barbar_auto_setup = false -- disable auto-setup
+  require'barbar'.setup({
+    sidebar_filetypes = {
+      NvimTree = true,
+    }
+  })
 
   require('qf_helper').setup()
 
@@ -315,21 +394,66 @@ else
 
   require('kommentary.config').use_extended_mappings()
 
+  local telescope = require("telescope")
+  telescope.load_extension("zf-native")
+
+  telescope.setup({
+    pickers = {
+      find_files = {
+        theme = 'ivy'
+      },
+      grep = {
+        theme = 'ivy'
+      },
+        buffers = {
+        theme = 'ivy'
+      }
+    }
+  })
+
   whichkey.register({
-    ['<leader>t']  = { name = 'Open numbered terminals' },
-    ['<leader>t1'] = { name = 'Terminal 1' },
-    ['<leader>t2'] = { name = 'Terminal 2' },
-    ['<leader>t3'] = { name = 'Terminal 3' },
-    ['<leader>t4'] = { name = 'Terminal 4' },
-    ['<leader>tt'] = { name = 'Toggle terminal (lsp)' },
-    ['<leader>s']  = { name = 'Telescope' },
-    ['<leader>sb'] = { name = 'Buffers' },
-    ['<leader>ss'] = { name = 'Grep' },
-    ['gl']         = { name = 'Align text at (right)' },
-    ['gL']         = { name = 'Align text at (left)' },
-    ['s']          = { name = 'Vim sneak' },
-    ['S']          = { name = 'Vim sneak' },
-    ['<leader>W']  = { name = 'Create dir to current file' },
+    t  = {
+      name = '+Toggle Numbered Terminals',
+      ['1'] = {'<cmd>ToggleTerm 1<CR>', 'Toggle Term 1'},
+      ['2'] = {'<cmd>ToggleTerm 2<CR>', 'Toggle Term 2'},
+      ['3'] = {'<cmd>ToggleTerm 3<CR>', 'Toggle Term 3'},
+      ['4'] = {'<cmd>ToggleTerm 4<CR>', 'Toggle Term 4'},
+      ['5'] = {'<cmd>ToggleTerm 5<CR>', 'Toggle Term 5'},
+      ['6'] = {'<cmd>ToggleTerm 6<CR>', 'Toggle Term 6'},
+      ['7'] = {'<cmd>ToggleTerm 7<CR>', 'Toggle Term 7'},
+      ['8'] = {'<cmd>ToggleTerm 8<CR>', 'Toggle Term 8'},
+      ['9'] = {'<cmd>ToggleTerm 9<CR>', 'Toggle Term 9'},
+    },
+    s  = {
+      name = 'Telescope',
+      s = {"<cmd>Telescope live_grep<cr>", 'Grep' },
+      b = {"<cmd>Telescope buffers<cr>", 'Buffers' },
+      f = {"<cmd>Telescope find_files<cr>", 'Find Files' },
+    },
+    b = {
+      name = '+Buffers',
+      x = {'<cmd>BufferClose<CR>', 'Close Current Buffer'},
+      b = {'<cmd>BufferPick<CR>', 'Pick Buffer...'},
+      q = {'<cmd>BufferPickDelete<CR>', 'Close Buffer...'},
+      p = {'<cmd>BufferPin<CR>', 'Pin Current Buffer'},
+      ['>'] = {'<cmd>BufferMoveNext<CR>', 'Move Buffer Forwards'},
+      ['<'] = {'<cmd>BufferMovePrevious<CR>', 'Move Buffer Backwards'},
+      ['.'] = {'<cmd>BufferNext<CR>', 'Next Buffer'},
+      [','] = {'<cmd>BufferPrevious<CR>', 'Previous Buffer'},
+    },
+    g = {require("neogit").open, 'Open NeoGit' },
+    W = { 'Create dir to current file' },
+    ['<leader>'] = {'<cmd>NvimTreeToggle<CR>', 'Toggle NvimTree'},
+    e = {'<cmd>NvimTreeFocus<CR>', 'Focus NvimTree'}
+  }, {prefix = '<leader>'})
+
+  whichkey.register({
+    s = { 'Vim sneak' },
+    S = { 'Vim sneak' },
+    g = {
+      l = { 'Align text at (right)' },
+      L = { 'Align text at (left)' },
+    }
   })
 
 end
@@ -355,8 +479,6 @@ vim.g.mapleader = " "
 -- use system clipboard
 vim.api.nvim_set_option("clipboard","unnamedplus")
 
-require('colors')
-
 vim.opt.wildmenu       = true
 
 -- Set highlight on search
@@ -379,6 +501,9 @@ vim.opt.cmdheight      = 1
 vim.opt.number         = true
 vim.opt.relativenumber = true
 
+-- vim.opt.timeout = false
+-- vim.opt.timeoutlen = 300
+
 vim.opt.linebreak      = true
 -- save undo history
 vim.opt.undofile       = true
@@ -397,6 +522,8 @@ end
 
 -- Vimscript {{{
 vim.cmd([[
+
+let g:VM_theme = 'iceblue'
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
@@ -455,13 +582,6 @@ if !exists('g:vscode')
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-  noremap <leader><leader> :NvimTreeToggle<CR>
-  noremap <leader>e :NvimTreeFocus<CR>
-
-  " Telescope bindings
-  nnoremap <leader>ss <cmd>Telescope live_grep<cr>
-  nnoremap <leader>sb <cmd>Telescope buffers<cr>
-
   " DAP mode bindings
   " noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
   " noremap <silent> <F5> :lua require'dap'.continue()<CR>
@@ -490,17 +610,8 @@ if !exists('g:vscode')
   nnoremap <silent>    <A-9> <Cmd>BufferGoto 9<CR>
   nnoremap <silent>    <A-0> <Cmd>BufferLast<CR>
 
-  " close current buffer
-  nnoremap <silent> <Leader>wq :lua require("nvim-smartbufs").close_current_buffer()<CR>
-
-  " open numbered terminals
-  nnoremap <silent> <Leader>t1 :lua require("nvim-smartbufs").goto_terminal(1)<CR>
-  nnoremap <silent> <Leader>t2 :lua require("nvim-smartbufs").goto_terminal(2)<CR>
-  nnoremap <silent> <Leader>t3 :lua require("nvim-smartbufs").goto_terminal(3)<CR>
-  nnoremap <silent> <Leader>t4 :lua require("nvim-smartbufs").goto_terminal(4)<CR>
 
   nnoremap <silent> <Leader><return> :!alacritty &<CR>
-
   
 endif
 

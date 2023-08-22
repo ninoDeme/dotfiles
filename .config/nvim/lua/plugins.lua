@@ -1,12 +1,12 @@
 local ensure_packer = function()
-	local fn = vim.fn
-	local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-	if fn.empty(fn.glob(install_path)) > 0 then
-		fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-		vim.cmd [[packadd packer.nvim]]
-		return true
-	end
-	return false
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
 
 local packer_bootstrap = ensure_packer()
@@ -14,27 +14,53 @@ local packer_bootstrap = ensure_packer()
 return require('packer').startup(function(use)
 
 	use 'wbthomason/packer.nvim'
-	use {'lambdalisue/vim-manpager', -- Use vim as a manpager
-	     'dag/vim-fish', -- Fish integration
-	     'lambdalisue/vim-pager', -- Use vim as a pager
-	     'kyazdani42/nvim-tree.lua', -- project browser, use <space><space> to toggle
-	     'kosayoda/nvim-lightbulb',
-	     'gennaro-tedesco/nvim-peekup', -- See all yank registers use ""
-	     'nvim-lua/plenary.nvim', -- Telescope dependency
-	     {'nvim-telescope/telescope.nvim', requires = 'plenary.nvim'}, -- Fuzzy finder over lists
-	     'kyazdani42/nvim-web-devicons', -- Add icons to plugins
-	     'nvim-treesitter/nvim-treesitter', -- Parsesr and highlighter for a lot of languages
-	     {'romgrk/barbar.nvim', requires = 'nvim-web-devicons'}, -- tabline
-	     'johann2357/nvim-smartbufs', -- Smart buffers
-	     'hoob3rt/lualine.nvim', -- Vim mode line
-	     'lewis6991/gitsigns.nvim', -- Git stuff
-	     'b3nj5m1n/kommentary', -- Use gc<motion> to make comment
-	     'stevearc/qf_helper.nvim', -- Quickfix helper use :QF{command}
-	     'p00f/nvim-ts-rainbow',
-	     {'romgrk/nvim-treesitter-context', requires = 'nvim-treesitter'}, -- Shows the context (current function or method)
-	     'L3MON4D3/LuaSnip', -- Snippets plugin
-	     'mg979/vim-visual-multi', -- Multiple cursors (use Ctrl+n to select word and Ctrl+Down/Up)
-	     'folke/which-key.nvim', disable = vim.g.vscode}
+  use {
+    'lambdalisue/vim-manpager', -- Use vim as a manpager
+    'dag/vim-fish', -- Fish integration
+    'lambdalisue/vim-pager', -- Use vim as a pager
+    'kyazdani42/nvim-tree.lua', -- project browser, use <space><space> to toggle
+    'kosayoda/nvim-lightbulb',
+    'gennaro-tedesco/nvim-peekup', -- See all yank registers use ""
+    'nvim-lua/plenary.nvim', -- Telescope dependency
+    {'nvim-telescope/telescope.nvim', requires = 'plenary.nvim'}, -- Fuzzy finder over lists
+    {'natecraddock/telescope-zf-native.nvim', requires = 'nvim-telescope/telescope.nvim'},
+    'kyazdani42/nvim-web-devicons', -- Add icons to plugins
+    'nvim-treesitter/nvim-treesitter', -- Parsesr and highlighter for a lot of languages
+    {'romgrk/barbar.nvim', requires = 'nvim-web-devicons'}, -- tabline
+    'hoob3rt/lualine.nvim', -- Vim mode line
+    'lewis6991/gitsigns.nvim', -- Git stuff
+    'b3nj5m1n/kommentary', -- Use gc<motion> to make comment
+    'stevearc/qf_helper.nvim', -- Quickfix helper use :QF{command}
+    'p00f/nvim-ts-rainbow',
+    {'romgrk/nvim-treesitter-context', requires = 'nvim-treesitter'}, -- Shows the context (current function or method)
+    'L3MON4D3/LuaSnip', -- Snippets plugin
+    'mg979/vim-visual-multi', -- Multiple cursors (use Ctrl+n to select word and Ctrl+Down/Up)
+    {
+        "lewis6991/hover.nvim",
+        config = function()
+            require("hover").setup {
+                init = function()
+                    require("hover.providers.lsp")
+                    require('hover.providers.man')
+                end,
+                preview_opts = {
+                  border = 'single'
+                },
+                -- Whether the contents of a currently open hover window should be moved
+                -- to a :h preview-window when pressing the hover keymap.
+                preview_window = true,
+                title = true
+            }
+            -- Setup keymaps
+            vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
+            vim.keymap.set("n", "gh", require("hover").hover_select, {desc = "hover.nvim (select)"})
+        end
+    },
+    {'akinsho/toggleterm.nvim', config = function()
+      require('toggleterm').setup()
+    end},
+    'folke/which-key.nvim', disable = vim.g.vscode
+  }
 	use 'tommcdo/vim-lion' -- use gl<text> to align
 	use 'michaeljsmith/vim-indent-object' -- add indent text object for motions ii ai 
 	use 'kana/vim-textobj-entire'
@@ -50,18 +76,21 @@ return require('packer').startup(function(use)
 	-- use 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
 	use 'wellle/targets.vim'
 	use 'kana/vim-textobj-user'
+  use 'christoomey/vim-tmux-navigator'
 
   use 'williamboman/mason.nvim'
 
+  use {
+    "NeogitOrg/neogit",
+    requires = {
+      "nvim-lua/plenary.nvim",         -- required
+      "nvim-telescope/telescope.nvim", -- optional
+      "sindrets/diffview.nvim",        -- optional
+    }
+  }
+
 	-- Lsp and DAP =======================
 	use {'neovim/nvim-lspconfig', -- Common lsp configurations
-      {
-        'glepnir/lspsaga.nvim',
-        requires = {
-            {'nvim-tree/nvim-web-devicons'},
-            {'nvim-treesitter/nvim-treesitter'} --Please make sure you install markdown and markdown_inline parser
-        }
-       },
 	     'nvim-lua/lsp-status.nvim', -- lsp status
        -- 'RishabhRD/nvim-lsputils',
 	     'folke/lsp-colors.nvim',
@@ -94,7 +123,8 @@ return require('packer').startup(function(use)
 	use {'tjdevries/colorbuddy.nvim',
 	     'ishan9299/modus-theme-vim',
 	     'ayu-theme/ayu-vim',
-       'joshdick/onedark.vim',
+       'navarasu/onedark.nvim',
+       -- 'joshdick/onedark.vim',
 	     'norcalli/nvim-colorizer.lua', disable = vim.g.vscode}
 end)
 -- vim: ts=2 sts=2 sw=2 et nowrap
