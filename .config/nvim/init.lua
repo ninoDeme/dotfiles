@@ -1,6 +1,10 @@
 -- map leader to space
 vim.g.mapleader = " "
 
+function NOT_VSCODE()
+  return not vim.g.vscode
+end
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
@@ -132,24 +136,6 @@ else
 
   neogit.setup({})
 
-  require("mason").setup()
-
-  require("mason-lspconfig").setup({
-    ensure_installed = {
-      'lua_ls',
-      'tsserver',
-      'html'
-    }
-  })
-
-  require("mason-null-ls").setup({
-      ensure_installed = {
-        'eslint_d',
-      },
-      automatic_installation = false,
-      automatic_setup = false, -- Recommended, but optional
-  })
-
   local temEslint = {
     condition = function(utils)
       return utils.root_has_file({".eslintrc.json", ".eslintrc.js"})
@@ -168,157 +154,6 @@ else
     }
   })
 
-  local lspconfig = require('lspconfig')
-
-
-  -- lsp setup functions {{{
-  local function keymappings(client, bufnr)
-    local opts = { noremap = true, silent = true }
-
-    -- lsp Key mappings
-    vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-    vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-    vim.keymap.set("n", "[e", "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
-    vim.keymap.set("n", "]e", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>", opts)
-
-    -- Whichkey
-    local keymap_l = {
-      l = {
-        name = "Code",
-        r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
-        -- a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
-        i = { "<cmd>LspInfo<CR>", "Lsp Info" },
-        f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format Document" }
-      },
-    }
-
-      local keymap_g = {
-        name = "Goto",
-        --[[ d = { "<cmd>Telescope lsp_definitions<CR>", "Definitions"},
-        D = { "<cmd>Telescope lsp_references<CR>", "References"}, ]]
-        d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Definition"},
-        D = { "<cmd>lua vim.lsp.buf.refetences()<CR>", "References"},
-        s = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help" },
-        I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation" },
-      }
-      whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>" })
-      whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
-    end
-
-  local lsp_opts = {
-    on_attach = function(client, bufnr)
-
-      -- Use LSP as the handler for formatexpr.
-      -- See `:help formatexpr` for more information. 'gq'
-      vim.api.nvim_buf_set_option(0, "formatexpr", "v:lua.vim.lsp.formatexpr()")
-
-      -- Configure key mappings
-      keymappings(client, bufnr)
-
-    end,
-
-    capabilities = require('cmp_nvim_lsp').default_capabilities()
-  }
-  -- }}}
-
-  lspconfig.lua_ls.setup{
-    settings = {
-      Lua = {
-        runtime = {
-          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-          version = 'LuaJIT',
-        },
-        diagnostics = {
-          -- Get the language server to recognize the `vim` global
-          globals = {'vim'},
-        },
-        workspace = {
-          -- Make the server aware of Neovim runtime files
-          library = vim.api.nvim_get_runtime_file("", true),
-          checkThirdParty = false,
-        },
-        -- Do not send telemetry data containing a randomized but unique identifier
-        telemetry = {
-          enable = false,
-        },
-      },
-    },
-    on_attach = lsp_opts.on_attach,
-    capabilities = lsp_opts.capabilities
-  }
-
-  lspconfig.angularls.setup(lsp_opts)
-  lspconfig.tsserver.setup(lsp_opts)
-
-  local signs = { Error = "", Warn = "", Hint = "", Info = "" }
-  for type, icon in pairs(signs) do
-      local hl = "DiagnosticSign" .. type
-      vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = hl})
-  end
-
-  -- Nvim-Tree {{{
-  require 'nvim-tree'.setup({
-    sync_root_with_cwd = true,
-    actions = {
-      open_file = {
-        quit_on_open = false
-      }
-    },
-    update_focused_file = {
-      enable = true,
-    },
-    on_attach = function(bufnr)
-      local api = require("nvim-tree.api")
-
-      local function opts(desc)
-        return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-      end
-
-      local function edit_or_open()
-        local node = api.tree.get_node_under_cursor()
-
-        if node.nodes ~= nil then
-          -- expand or collapse folder
-          api.node.open.edit()
-        else
-          -- open file
-          api.node.open.edit()
-          -- Close the tree if file was opened
-          api.tree.close()
-        end
-      end
-
-      vim.keymap.set('n', 'x',     api.fs.cut,                        opts('Cut'))
-      vim.keymap.set('n', 'p',     api.fs.paste,                      opts('Paste'))
-      vim.keymap.set('n', 'a',     api.fs.create,                     opts('Create'))
-      vim.keymap.set('n', '<C-]>', api.tree.change_root_to_node,      opts('CD'))
-      vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer, opts('Open: In Place'))
-      vim.keymap.set('n', 'K',     api.node.show_info_popup,          opts('Info'))
-      vim.keymap.set('n', '<C-r>', api.fs.rename_sub,                 opts('Rename: Omit Filename'))
-      vim.keymap.set('n', '<C-t>', api.node.open.tab,                 opts('Open: New Tab'))
-      vim.keymap.set('n', '<C-v>', api.node.open.vertical,            opts('Open: Vertical Split'))
-      vim.keymap.set('n', '<C-s>', api.node.open.horizontal,          opts('Open: Horizontal Split'))
-      vim.keymap.set('n', '.',     api.node.run.cmd,                  opts('Run Command'))
-      vim.keymap.set('n', 'c',     api.fs.copy.node,                  opts('Copy'))
-      vim.keymap.set('n', 'y',     api.fs.copy.filename,              opts('Copy Name'))
-      vim.keymap.set('n', 'Y',     api.fs.copy.relative_path,         opts('Copy Relative Path'))
-      vim.keymap.set('n', 'd',     api.fs.remove,                     opts('Delete'))
-      vim.keymap.set('n', 'D',     api.fs.trash,                      opts('Trash'))
-      vim.keymap.set('n', '?',     api.tree.toggle_help,              opts('Help'))
-      vim.keymap.set('n', 'q',     api.tree.close,                    opts('Close'))
-      vim.keymap.set('n', 'r',     api.fs.rename,                     opts('Rename'))
-      vim.keymap.set('n', 'R',     api.tree.reload,                   opts('Refresh'))
-      vim.keymap.set('n', 's',     api.node.run.system,               opts('Run System'))
-      vim.keymap.set('n', 'S',     api.tree.search_node,              opts('Search'))
-      vim.keymap.set("n", "l",     edit_or_open,                      opts("Edit Or Open"))
-      vim.keymap.set('n', '<CR>',  api.node.open.edit,                opts('Edit'))
-      vim.keymap.set("n", "L",     api.node.open.preview,             opts("Vsplit Preview"))
-      vim.keymap.set("n", "h",     api.tree.close,                    opts("Close"))
-      vim.keymap.set("n", "H",     api.tree.collapse_all,             opts("Collapse All"))
-    end
-  })
-
-  -- }}}
 
   -- Lualine {{{
   require('lualine').setup {
@@ -471,6 +306,11 @@ vim.opt.foldmethod     = 'marker'
 vim.opt.cmdheight      = 1
 vim.opt.number         = true
 vim.opt.relativenumber = true
+
+vim.opt.tabstop        = 2
+vim.opt.shiftwidth     = 2
+vim.opt.softtabstop    = 2
+vim.opt.expandtab      = true
 
 vim.opt.wrap = false
 -- vim.opt.timeout = false
