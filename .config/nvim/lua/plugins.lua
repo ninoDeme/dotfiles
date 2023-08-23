@@ -1,130 +1,165 @@
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+local function not_vscode()
+  return not vim.g.vscode
 end
 
-local packer_bootstrap = ensure_packer()
-
-return require('packer').startup(function(use)
-
-	use 'wbthomason/packer.nvim'
-  use {
-    'lambdalisue/vim-manpager', -- Use vim as a manpager
-    'dag/vim-fish', -- Fish integration
-    'lambdalisue/vim-pager', -- Use vim as a pager
-    'kyazdani42/nvim-tree.lua', -- project browser, use <space><space> to toggle
-    'kosayoda/nvim-lightbulb',
-    'gennaro-tedesco/nvim-peekup', -- See all yank registers use ""
-    'nvim-lua/plenary.nvim', -- Telescope dependency
-    {'nvim-telescope/telescope.nvim', requires = 'plenary.nvim'}, -- Fuzzy finder over lists
-    {'natecraddock/telescope-zf-native.nvim', requires = 'nvim-telescope/telescope.nvim'},
-    'kyazdani42/nvim-web-devicons', -- Add icons to plugins
-    'nvim-treesitter/nvim-treesitter', -- Parsesr and highlighter for a lot of languages
-    {'romgrk/barbar.nvim', requires = 'nvim-web-devicons'}, -- tabline
-    'hoob3rt/lualine.nvim', -- Vim mode line
-    'lewis6991/gitsigns.nvim', -- Git stuff
-    'b3nj5m1n/kommentary', -- Use gc<motion> to make comment
-    'stevearc/qf_helper.nvim', -- Quickfix helper use :QF{command}
-    'p00f/nvim-ts-rainbow',
-    {'romgrk/nvim-treesitter-context', requires = 'nvim-treesitter'}, -- Shows the context (current function or method)
-    'L3MON4D3/LuaSnip', -- Snippets plugin
-    'mg979/vim-visual-multi', -- Multiple cursors (use Ctrl+n to select word and Ctrl+Down/Up)
-    {
-        "lewis6991/hover.nvim",
-        config = function()
-            require("hover").setup {
-                init = function()
-                    require("hover.providers.lsp")
-                    require('hover.providers.man')
-                end,
-                preview_opts = {
-                  border = 'single'
-                },
-                -- Whether the contents of a currently open hover window should be moved
-                -- to a :h preview-window when pressing the hover keymap.
-                preview_window = true,
-                title = true
-            }
-            -- Setup keymaps
-            vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
-            vim.keymap.set("n", "gh", require("hover").hover_select, {desc = "hover.nvim (select)"})
-        end
-    },
-    {'akinsho/toggleterm.nvim', config = function()
+return {
+  {'lambdalisue/vim-manpager', cond = not_vscode}, -- Use vim as a manpager
+  {'lambdalisue/vim-pager', cond = not_vscode}, -- Use vim as a pager
+  {'kyazdani42/nvim-tree.lua', cond = not_vscode}, -- project browser, <space><space> to toggle
+  {'nvim-lua/plenary.nvim', cond = not_vscode}, -- Telescope dependency
+  {
+    'nvim-telescope/telescope.nvim', -- Fuzzy finder over lists
+    dependencies = 'nvim-lua/plenary.nvim',
+    cond = not_vscode
+  },
+  {
+    'natecraddock/telescope-zf-native.nvim',
+    dependencies = 'nvim-telescope/telescope.nvim',
+    cond = not_vscode
+  },
+  {'kyazdani42/nvim-web-devicons', cond = not_vscode}, -- Add icons to plugins
+  {
+    'akinsho/toggleterm.nvim',
+    config = function()
       require('toggleterm').setup()
-    end},
-    'folke/which-key.nvim', disable = vim.g.vscode
-  }
-	use 'tommcdo/vim-lion' -- use gl<text> to align
-	use 'michaeljsmith/vim-indent-object' -- add indent text object for motions ii ai 
-	use 'kana/vim-textobj-entire'
-	use 'tpope/vim-surround' -- change surrounding of text object (use ys<motion> to add surround and cs<motion> to change surrounding
-	use 'editorconfig/editorconfig-vim' -- Editor config support
-	use 'justinmk/vim-sneak' -- Go to next ocurrence of two caracters s{char}{char}
-	use ({
-		"gbprod/substitute.nvim",
-		config = function()
-			require("substitute").setup({})
-		end
-	})
-	-- use 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
-	use 'wellle/targets.vim'
-	use 'kana/vim-textobj-user'
-  use 'christoomey/vim-tmux-navigator'
+    end,
+    cond = not_vscode
+  },
+  'christoomey/vim-tmux-navigator',
+  {
+    'romgrk/barbar.nvim', -- tabline and buffer management
+    dependencies = 'nvim-web-devicons',
+    cond = not_vscode
+  },
+  {'hoob3rt/lualine.nvim', cond = not_vscode}, -- Vim mode line
+  {'stevearc/qf_helper.nvim', cond = not_vscode}, -- Quickfix helper :QF{command}
+  {
+    "lewis6991/hover.nvim",
+    config = function()
+      require("hover").setup {
+        init = function()
+          require("hover.providers.lsp")
+          require('hover.providers.man')
+        end,
+        preview_opts = {
+          border = 'single'
+        },
+        -- Whether the contents of a currently open hover window should be moved
+        -- to a :h preview-window when pressing the hover keymap.
+        preview_window = true,
+        title = true
+      }
+      -- Setup keymaps
+      vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
+      vim.keymap.set("n", "gh", require("hover").hover_select, {desc = "hover.nvim (select)"})
+    end,
+    cond = not_vscode
+  },
+	'editorconfig/editorconfig-vim', -- Editor config support
 
-  use 'williamboman/mason.nvim'
+  {
+    "gbprod/substitute.nvim",
+    config = function()
+      require("substitute").setup({})
+    end
+  },
+	'tpope/vim-surround', -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
+  {'folke/which-key.nvim', cond = not_vscode },
+  {'b3nj5m1n/kommentary', cond = not_vscode}, -- Use gc<motion> to make comment
+	'tommcdo/vim-lion', -- gl<text> to align
+  {'mg979/vim-visual-multi', cond = not_vscode}, -- Multiple cursors (Ctrl+n to select word and Ctrl+Down/Up)
+  {
+    'ggandor/leap.nvim',
+    dependencies = {'tpope/vim-repeat'},
+    config = function()
+      require('leap').add_default_mappings()
+    end,
+  },
 
-  use {
+	-- 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
+	'wellle/targets.vim',
+	{'kana/vim-textobj-user'},
+	'michaeljsmith/vim-indent-object', -- add indent text object for motions ii ai 
+	'kana/vim-textobj-entire',
+
+  {
     "NeogitOrg/neogit",
-    requires = {
+    dependencies = {
       "nvim-lua/plenary.nvim",         -- required
       "nvim-telescope/telescope.nvim", -- optional
       "sindrets/diffview.nvim",        -- optional
-    }
-  }
+    },
+    cond = not_vscode
+  },
+  {'lewis6991/gitsigns.nvim', cond = not_vscode}, -- Git stuff
+
+  'williamboman/mason.nvim',
+
+  {'nvim-treesitter/nvim-treesitter', cond = not_vscode}, -- Parsesr and highlighter for a lot of languages
+  {
+    'romgrk/nvim-treesitter-context', -- Shows the context (current function or method)
+    dependencies = 'nvim-treesitter',
+    cond = not_vscode
+  },
+  {'p00f/nvim-ts-rainbow', cond = not_vscode},
+
+  {
+    'L3MON4D3/LuaSnip',
+    cond = not_vscode,
+    build = 'make install_jsregexp'
+  }, -- Snippets plugin
 
 	-- Lsp and DAP =======================
-	use {'neovim/nvim-lspconfig', -- Common lsp configurations
-	     'nvim-lua/lsp-status.nvim', -- lsp status
-       -- 'RishabhRD/nvim-lsputils',
-	     'folke/lsp-colors.nvim',
-	     'ojroques/nvim-lspfuzzy', -- lembrar de configurar
-	     'onsails/lspkind.nvim',
-       'jose-elias-alvarez/null-ls.nvim',
-       'jay-babu/mason-null-ls.nvim',
-        {
-            "ThePrimeagen/refactoring.nvim",
-            requires = {
-                {"nvim-lua/plenary.nvim"},
-                {"nvim-treesitter/nvim-treesitter"}
-            },
-        },
-	     'williamboman/mason-lspconfig.nvim', disable = vim.g.vscode}
-	--[[ use 'mfussenegger/nvim-dap'
-	use 'rcarriga/nvim-dap-ui' ]]
+
+  {'neovim/nvim-lspconfig', cond = not_vscode}, -- Common lsp configurations
+  {'nvim-lua/lsp-status.nvim', cond = not_vscode}, -- lsp status
+  -- 'RishabhRD/nvim-lsputils',
+  {'folke/lsp-colors.nvim', cond = not_vscode},
+  {'ojroques/nvim-lspfuzzy', cond = not_vscode}, -- lembrar de configurar
+  {'onsails/lspkind.nvim', cond = not_vscode},
+  {'jose-elias-alvarez/null-ls.nvim', cond = not_vscode},
+  {'jay-babu/mason-null-ls.nvim', cond = not_vscode},
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      {"nvim-lua/plenary.nvim"},
+      {"nvim-treesitter/nvim-treesitter"}
+    },
+    cond = not_vscode
+  },
+  {
+    "aznhe21/actions-preview.nvim",
+    config = function()
+      require("actions-preview").setup {
+        telescope = vim.tbl_extend( "force", require("telescope.themes").get_ivy(), {make_value = nil, make_make_display = nil})
+      }
+      vim.keymap.set({ "v", "n" }, "<leader>la", require("actions-preview").code_actions, {desc = 'Code Actions'})
+    end,
+    cond = not_vscode
+  },
+  {'williamboman/mason-lspconfig.nvim', cond = not_vscode},
+
+	--[[ 'mfussenegger/nvim-dap'
+	'rcarriga/nvim-dap-ui' ]]
 
 	-- Autocompletion =======================
-	use {'hrsh7th/nvim-cmp', -- Autocompletion plugin
-	     'hrsh7th/cmp-nvim-lsp', -- LSP source for nvim-cmp
-	     'saadparwaiz1/cmp_luasnip', -- Snippets source for nvim-cmp
-	     'hrsh7th/cmp-path',
-	     'hrsh7th/cmp-buffer',
-	     'hrsh7th/cmp-cmdline',
-       'hrsh7th/cmp-nvim-lsp-signature-help',
-	     'ray-x/cmp-treesitter', disable = vim.g.vscode}
 
-	-- Color schemes =======================
-	use {'tjdevries/colorbuddy.nvim',
-	     'ishan9299/modus-theme-vim',
-	     'ayu-theme/ayu-vim',
-       'navarasu/onedark.nvim',
-       -- 'joshdick/onedark.vim',
-	     'norcalli/nvim-colorizer.lua', disable = vim.g.vscode}
-end)
+  {'hrsh7th/nvim-cmp', cond = not_vscode}, -- Autocompletion plugin
+  {'hrsh7th/cmp-nvim-lsp', cond = not_vscode}, -- LSP source for nvim-cmp
+  {'saadparwaiz1/cmp_luasnip', cond = not_vscode}, -- Snippets source for nvim-cmp
+  {'hrsh7th/cmp-path', cond = not_vscode},
+  {'hrsh7th/cmp-buffer', cond = not_vscode},
+  {'hrsh7th/cmp-cmdline', cond = not_vscode},
+  {'hrsh7th/cmp-nvim-lsp-signature-help', cond = not_vscode},
+  {'ray-x/cmp-treesitter', cond = not_vscode},
+
+  -- Color schemes =======================
+  {'tjdevries/colorbuddy.nvim', cond = not_vscode},
+  {'ishan9299/modus-theme-vim', cond = not_vscode},
+  {'ayu-theme/ayu-vim', cond = not_vscode},
+  {'navarasu/onedark.nvim', cond = not_vscode},
+  -- 'joshdick/onedark.vim',
+  {'norcalli/nvim-colorizer.lua', cond = not_vscode},
+
+}
 -- vim: ts=2 sts=2 sw=2 et nowrap
