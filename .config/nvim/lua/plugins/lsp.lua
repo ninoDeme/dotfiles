@@ -10,32 +10,34 @@ return {
         local opts = { noremap = true, silent = true }
 
         -- lsp Key mappings
-        vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-        vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-        vim.keymap.set("n", "[e", "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>",
+        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
+        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
+        vim.keymap.set("n", "[e", function() vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR}) end,
         opts)
-        vim.keymap.set("n", "]e", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>",
+        vim.keymap.set("n", "]e", function() vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR}) end,
         opts)
 
         -- Whichkey
         local keymap_l = {
           l = {
             name = "Code",
-            r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
-            -- a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
+            r = { function() vim.lsp.buf.rename() end, "Rename" },
+            a = { function() require("actions-preview").code_actions() end, 'Code Actions'},
+            -- a = { function() vim.lsp.buf.code_action() end, "Code Action" },
             i = { "<cmd>LspInfo<CR>", "Lsp Info" },
-            f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format Document" }
+            f = { function() vim.lsp.buf.formatting() end, "Format Document" }
           },
         }
 
         local keymap_g = {
           name = "Goto",
-          d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Definition" },
-          D = { "<cmd>lua vim.lsp.buf.refetences()<CR>", "References" },
-          s = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help" },
-          I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation" },
+          d = { function() vim.lsp.buf.definition() end, "View Definition" },
+          D = { function() vim.lsp.buf.references() end, "View References" },
+          s = { function() vim.lsp.buf.signature_help() end, "Signature Help" },
+          I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
         }
-        whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>" })
+        local whichkey = require('which-key')
+        whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>", mode = {'n', 'v'}})
         whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
       end
 
@@ -116,9 +118,10 @@ return {
       }
     end,
     dependencies = { 'nvim-telescope/telescope.nvim' },
-    keys = {
-      { "<leader>la", function() require("actions-preview").code_actions() end, desc = 'Code Actions', mode = { "v", "n" } }
-    },
+    --[[ keys = {
+    --
+      { "<leader>la", desc = 'Code Actions', mode = { "v", "n" } }
+    }, ]]
     cond = NOT_VSCODE
   },
 

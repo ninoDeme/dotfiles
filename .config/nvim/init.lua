@@ -178,19 +178,20 @@ else
   require 'nvim-treesitter.configs'.setup {
     highlight = {
       enable = true,
-      disable = {
-        'typescript',
+      --[[ disable = {
+        -- 'typescript',
         'javascript',
         'html',
         'lua'
-      }
+      } ]]
     },
     rainbow = {
       enable = true
     },
     indent = {
       enable = true,
-    }
+    },
+    ensure_installed = { 'typescript', 'lua'}
   }
 
   require 'treesitter-context'.setup { enable = true, throttle = true, }
@@ -221,18 +222,7 @@ else
   })
 
   whichkey.register({
-    t  = {
-      name = '+Toggle Numbered Terminals',
-      ['1'] = {'<cmd>ToggleTerm 1<CR>', 'Toggle Term 1'},
-      ['2'] = {'<cmd>ToggleTerm 2<CR>', 'Toggle Term 2'},
-      ['3'] = {'<cmd>ToggleTerm 3<CR>', 'Toggle Term 3'},
-      ['4'] = {'<cmd>ToggleTerm 4<CR>', 'Toggle Term 4'},
-      ['5'] = {'<cmd>ToggleTerm 5<CR>', 'Toggle Term 5'},
-      ['6'] = {'<cmd>ToggleTerm 6<CR>', 'Toggle Term 6'},
-      ['7'] = {'<cmd>ToggleTerm 7<CR>', 'Toggle Term 7'},
-      ['8'] = {'<cmd>ToggleTerm 8<CR>', 'Toggle Term 8'},
-      ['9'] = {'<cmd>ToggleTerm 9<CR>', 'Toggle Term 9'},
-    },
+    t  = { name = '+Toggle Numbered Terminals', },
     s  = {
       name = 'Telescope',
       s = {"<cmd>Telescope live_grep<cr>", 'Grep' },
@@ -252,8 +242,6 @@ else
     },
     g = {require("neogit").open, 'Open NeoGit' },
     W = { 'Create dir to current file' },
-    ['<leader>'] = {'<cmd>NvimTreeToggle<CR>', 'Toggle NvimTree'},
-    e = {'<cmd>NvimTreeFocus<CR>', 'Focus NvimTree'}
   }, {prefix = '<leader>'})
 
   whichkey.register({

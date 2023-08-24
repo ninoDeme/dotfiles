@@ -1,7 +1,8 @@
 return {
   {
     'kyazdani42/nvim-tree.lua',
-    cond = NOT_VSCODE,                             -- project browser, <space><space> to toggle
+    cond = NOT_VSCODE,
+    lazy = false,
     config = function()
       -- Nvim-Tree {{{
       require 'nvim-tree'.setup({
@@ -19,20 +20,6 @@ return {
 
           local function opts(desc)
             return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-          end
-
-          local function edit_or_open()
-            local node = api.tree.get_node_under_cursor()
-
-            if node.nodes ~= nil then
-              -- expand or collapse folder
-              api.node.open.edit()
-            else
-              -- open file
-              api.node.open.edit()
-              -- Close the tree if file was opened
-              api.tree.close()
-            end
           end
 
           vim.keymap.set('n', 'x', api.fs.cut, opts('Cut'))
@@ -57,7 +44,7 @@ return {
           vim.keymap.set('n', 'R', api.tree.reload, opts('Refresh'))
           vim.keymap.set('n', 's', api.node.run.system, opts('Run System'))
           vim.keymap.set('n', 'S', api.tree.search_node, opts('Search'))
-          vim.keymap.set("n", "l", edit_or_open, opts("Edit Or Open"))
+          vim.keymap.set("n", "l", api.node.open.edit, opts("Edit Or Open"))
           vim.keymap.set('n', '<CR>', api.node.open.edit, opts('Edit'))
           vim.keymap.set("n", "L", api.node.open.preview, opts("Vsplit Preview"))
           vim.keymap.set("n", "h", api.tree.close, opts("Close"))
@@ -65,6 +52,10 @@ return {
         end
       })
       -- }}}
-    end
+    end,
+    keys = {
+      {'<leader><leader>', '<cmd>NvimTreeToggle<CR>', desc = 'Toggle NvimTree'},
+      {'<leader>e', '<cmd>NvimTreeFocus<CR>', desc = 'Focus NvimTree'}
+    }
   }
 }

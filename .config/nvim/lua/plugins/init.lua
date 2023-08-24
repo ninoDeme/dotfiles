@@ -13,13 +13,6 @@ return {
         cond = NOT_VSCODE
     },
     {'kyazdani42/nvim-web-devicons', cond = NOT_VSCODE}, -- Add icons to plugins
-    {
-        'akinsho/toggleterm.nvim',
-        config = function()
-            require('toggleterm').setup()
-        end,
-        cond = NOT_VSCODE
-    },
     'christoomey/vim-tmux-navigator',
     {
         'romgrk/barbar.nvim', -- tabline and buffer management
@@ -28,6 +21,7 @@ return {
     },
     {'hoob3rt/lualine.nvim', cond = NOT_VSCODE}, -- Vim mode line
     {'stevearc/qf_helper.nvim', cond = NOT_VSCODE}, -- Quickfix helper :QF{command}
+    {'sedm0784/vim-resize-mode'},
     {
         "lewis6991/hover.nvim",
         config = function()
@@ -59,7 +53,10 @@ return {
         end
     },
     'tpope/vim-surround', -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
-    {'folke/which-key.nvim', cond = NOT_VSCODE },
+    {
+        'folke/which-key.nvim',
+        cond = NOT_VSCODE
+    },
     {'b3nj5m1n/kommentary', cond = NOT_VSCODE}, -- Use gc<motion> to make comment
     'tommcdo/vim-lion', -- gl<text> to align
     {'mg979/vim-visual-multi', cond = NOT_VSCODE}, -- Multiple cursors (Ctrl+n to select word and Ctrl+Down/Up)
