@@ -50,7 +50,7 @@ alias emt='emacsclient -nw -a=\"\"'
 alias cp='cp -i'
 alias rm='rm -i'
 alias mv='mv -i'
-alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 export EDITOR="nvim"
 # set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
 export MANPAGER="nvim -c MANPAGER -"
