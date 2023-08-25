@@ -21,7 +21,7 @@ return {
     },
     {'hoob3rt/lualine.nvim', cond = NOT_VSCODE}, -- Vim mode line
     {'stevearc/qf_helper.nvim', cond = NOT_VSCODE}, -- Quickfix helper :QF{command}
-    {'sedm0784/vim-resize-mode'},
+    {'sedm0784/vim-resize-mode', cond = NOT_VSCODE},
     {
         "lewis6991/hover.nvim",
         config = function()
