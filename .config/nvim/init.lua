@@ -229,7 +229,7 @@ vim.keymap.set("n", "cxc", "<cmd>lua require('substitute.exchange').cancel()<cr>
 -- Vim settings {{{
 
 -- use system clipboard
-vim.api.nvim_set_option("clipboard","unnamedplus")
+-- vim.api.nvim_set_option("clipboard","unnamedplus")
 
 vim.opt.wildmenu       = true
 
