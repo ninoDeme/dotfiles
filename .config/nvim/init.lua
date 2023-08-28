@@ -218,6 +218,10 @@ vim.keymap.set("n", "grr", "<cmd>lua require('substitute').line()<cr>", { norema
 vim.keymap.set("n", "gR", "<cmd>lua require('substitute').eol()<cr>", { noremap = true })
 vim.keymap.set("x", "gr", "<cmd>lua require('substitute').visual()<cr>", { noremap = true })
 
+vim.keymap.set("n", "<leader>r", '"+<cmd>lua require("substitute").operator()<cr>', { noremap = true })
+vim.keymap.set("n", "<leader>rr", '"+<cmd>lua require("substitute").line()<cr>', { noremap = true })
+vim.keymap.set("n", "<leader>R", '"+<cmd>lua require("substitute").eol()<cr>', { noremap = true })
+vim.keymap.set("x", "<leader>r", '"+<cmd>lua require("substitute").visual()<cr>', { noremap = true })
 
 vim.keymap.set("n", "cx", "<cmd>lua require('substitute.exchange').operator()<cr>", { noremap = true })
 vim.keymap.set("n", "cxx", "<cmd>lua require('substitute.exchange').line()<cr>", { noremap = true })
@@ -317,7 +321,7 @@ xnoremap <leader>D "_D
 noremap <leader>W <Cmd>:call mkdir(expand("%:p:h"),"p")<CR>
 
 " reload config
-nnoremap <leader>r :source $MYVIMRC<CR>
+" nnoremap <leader>r :source $MYVIMRC<CR>
 
 " Use fold as text object for motions
 " xnoremap iz :<C-U>silent!normal![zV]z<CR>
@@ -364,9 +368,6 @@ if !exists('g:vscode')
   nnoremap <silent>    <A-8> <Cmd>BufferGoto 8<CR>
   nnoremap <silent>    <A-9> <Cmd>BufferGoto 9<CR>
   nnoremap <silent>    <A-0> <Cmd>BufferLast<CR>
-
-
-  nnoremap <silent> <Leader><return> :!alacritty &<CR>
   
 endif
 
