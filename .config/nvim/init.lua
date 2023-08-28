@@ -1,3 +1,6 @@
+vim.cmd([[
+  autocmd VimEnter * if argc() > 0 && isdirectory(argv()[0]) | execute 'cd' fnameescape(argv()[0]) | endif
+]])
 -- map leader to space
 vim.g.mapleader = " "
 
@@ -155,52 +158,7 @@ else
   })
 
 
-  -- Lualine {{{
-  require('lualine').setup {
-    options = {
-      theme = 'onedark',
-      section_separators = '',
-      component_separators = '│'
-    }
-  }
-  -- }}}
-
-  vim.g.barbar_auto_setup = false -- disable auto-setup
-  require'barbar'.setup({
-    sidebar_filetypes = {
-      NvimTree = true,
-    }
-  })
-
   require('qf_helper').setup()
-
-  -- TreeSitter {{{
-  require 'nvim-treesitter.configs'.setup {
-    highlight = {
-      enable = true,
-      --[[ disable = {
-        -- 'typescript',
-        'javascript',
-        'html',
-        'lua'
-      } ]]
-    },
-    rainbow = {
-      enable = true
-    },
-    indent = {
-      enable = true,
-    },
-    ensure_installed = { 'typescript', 'lua'}
-  }
-
-  require 'treesitter-context'.setup { enable = true, throttle = true, }
-
-  require 'nvim-treesitter.install'.compilers = { "clang", "gcc" }
-  require 'nvim-treesitter.install'.prefer_git = false
-
-  -- }}}
-
 
   require('kommentary.config').use_extended_mappings()
 

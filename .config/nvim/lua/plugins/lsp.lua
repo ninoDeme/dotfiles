@@ -83,6 +83,9 @@ return {
       } -- }}}
 
       lspconfig.angularls.setup(lsp_opts)
+      lspconfig.html.setup(lsp_opts)
+      lspconfig.cssls.setup(lsp_opts)
+      lspconfig.tailwindcss.setup(lsp_opts)
       lspconfig.tsserver.setup(lsp_opts)
 
       local signs = { Error = "", Warn = "", Hint = "", Info = "" }
@@ -94,7 +97,14 @@ return {
   },
 
   { 'nvim-lua/lsp-status.nvim', cond = NOT_VSCODE }, -- lsp status
-
+  {
+    'linrongbin16/lsp-progress.nvim',
+    cond = NOT_VSCODE,
+    requires = {'nvim-tree/nvim-web-devicons'},
+    config = function()
+      require('lsp-progress').setup()
+    end
+  },
   { 'folke/lsp-colors.nvim',    cond = NOT_VSCODE },
   -- { 'ojroques/nvim-lspfuzzy',   cond = NOT_VSCODE }, -- lembrar de configurar
 
@@ -154,7 +164,9 @@ return {
         ensure_installed = {
           'lua_ls',
           'tsserver',
-          'html'
+          'html',
+          'cssls',
+          'tailwindcss'
         }
       })
     end
