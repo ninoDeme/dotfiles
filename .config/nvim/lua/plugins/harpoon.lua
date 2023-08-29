@@ -1,32 +1,5 @@
 return {
   'ThePrimeagen/harpoon',
-  init = function()
-    local create_drawer = function(term, win)
-      if not win then
-        vim.cmd[[botright split]]
-        vim.cmd.resize("10")
-      else
-        vim.api.nvim_set_current_win(win)
-      end
-      require("harpoon.term").gotoTerminal(term)
-      return vim.api.nvim_get_current_win()
-    end
-
-    local currTerm = nil
-    local currBuffr = nil
-
-    local function create_terminal()
-      if currTerm and not vim.api.nvim_win_is_valid(currTerm) then
-        currTerm = nil
-      end
-      currTerm = create_drawer(0, currTerm)
-      if not currBuffr or not vim.api.nvim_buf_is_loaded(currBuffr) then
-        require("harpoon.term").sendCommand(0, "tmux new-session -A -s '" .. vim.uv.cwd() .. "'\n")
-      end
-      currBuffr = vim.api.nvim_win_get_buf(0)
-    end
-    vim.keymap.set("n", "<leader>tp", create_terminal, {desc = "Create terminal drawer"})
-  end,
   lazy = true,
   keys = {
     {'<leader>t1', function() require("harpoon.term").gotoTerminal(1) end, desc = 'Open Terminal 1'},

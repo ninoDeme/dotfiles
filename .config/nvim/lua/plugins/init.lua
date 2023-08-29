@@ -164,4 +164,12 @@ return {
   -- 'joshdick/onedark.vim',
   {'norcalli/nvim-colorizer.lua', cond = NOT_VSCODE},
 
+  {
+    -- 'ninoDeme/tmux-term.nvim',
+    cond = NOT_VSCODE,
+    dir = "~/projects/tmux-term.nvim",
+    keys = {
+      {"<leader>tp", function() require("tmux-term").create_or_open() end, desc = "Create terminal drawer"}
+    }
+  }
 }

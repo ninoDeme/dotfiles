@@ -2,7 +2,7 @@ return {
   {   -- Nvim-Tree {{{
     'kyazdani42/nvim-tree.lua',
     cond = NOT_VSCODE,
-    enabled = false,
+    -- enabled = false,
     lazy = false,
     config = function()
       require 'nvim-tree'.setup({
@@ -153,7 +153,7 @@ return {
   {
     "theblob42/drex.nvim",
     cond = NOT_VSCODE,
-    -- enabled = false,
+    enabled = false,
     lazy = false,
     config = function() 
       require("drex.config").configure({
