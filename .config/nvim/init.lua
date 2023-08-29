@@ -74,8 +74,8 @@ else
   local cmp_map = cmp.mapping.preset.insert({
     ['<C-d>'] = cmp.mapping.scroll_docs(5),
     ['<C-u>'] = cmp.mapping.scroll_docs(-5),
-    ['<C-y>'] = cmp.mapping.scroll_docs(1),
-    ['<C-e>'] = cmp.mapping.scroll_docs(-1),
+    ['<C-e>'] = cmp.mapping.scroll_docs(1),
+    ['<C-y>'] = cmp.mapping.scroll_docs(-1),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-l>'] = cmp.mapping.confirm(),
   })

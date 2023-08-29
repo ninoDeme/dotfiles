@@ -116,7 +116,10 @@ return {
   'wellle/targets.vim',
   {'kana/vim-textobj-user'},
   'michaeljsmith/vim-indent-object', -- add indent text object for motions ii ai 
-  'kana/vim-textobj-entire',
+  {
+    'kana/vim-textobj-entire',
+    dependencies ={'kana/vim-textobj-user'}
+  },
 
   {
     "NeogitOrg/neogit",
