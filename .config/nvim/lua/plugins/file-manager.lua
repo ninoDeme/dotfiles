@@ -2,7 +2,7 @@ return {
   {   -- Nvim-Tree {{{
     'kyazdani42/nvim-tree.lua',
     cond = NOT_VSCODE,
-    -- enabled = false,
+    enabled = false,
     lazy = false,
     config = function()
       require 'nvim-tree'.setup({
@@ -169,14 +169,21 @@ return {
     }
   },
   {
-    'SidOfc/carbon.nvim',
-    opts = {},
+    'luukvbaal/nnn.nvim',
     cond = NOT_VSCODE,
-    enabled = false,
+    -- enabled = false,
     lazy = false,
+    config = function ()
+      require("nnn").setup({
+        replace_netrw = "picker",
+        picker = {
+          cmd = "nnn -doC",
+        },
+      })
+    end,
     keys = {
-      {'<leader>.', "<cmd>LExplore<CR>", desc = "Find File"},
-      {"<leader>e", "<cmd>Carbon<CR>", desc = "Open File Browser"}
+      {'<leader>.', "<cmd>NnnPicker %:p:h<CR>", desc = "Find File"},
+      {"<leader>e", "<cmd>NnnPicker<CR>", desc = "Open File Browser"}
     }
   }
 }
