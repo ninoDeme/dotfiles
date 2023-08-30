@@ -6,7 +6,8 @@ return {
         s  = { name = 'Telescope', }
       }, {prefix = '<leader>'})
     end,
-    lazy = false,
+    lazy = true,
+    event = 'VeryLazy',
     cmd = "Telescope",
     config = function () -- Shamelessly stolen from github.com/NvChad/NvChad 
       local telescope = require("telescope")
@@ -90,7 +91,6 @@ return {
     keys = {
       {"<leader>ss", "<cmd>Telescope live_grep<cr>", desc = 'Grep' },
       {"<leader>sb", "<cmd>Telescope buffers<cr>", desc = 'Buffers' },
-      {"<leader>sf", "<cmd>Telescope find_files<cr>", desc = 'Find Files' },
       {"<leader>sh", "<cmd>Telescope highlights<cr>", desc = 'Highlights' },
     }
   },
@@ -99,12 +99,14 @@ return {
     config = function ()
       require("telescope").load_extension("zf-native")
     end,
+    lazy = true,
     dependencies = 'nvim-telescope/telescope.nvim',
     cond = NOT_VSCODE
   },
   {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+    lazy = false,
     cond = NOT_VSCODE,
     keys = {
       {'<leader>.', '<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>', desc = "File Browser (current dir)"},

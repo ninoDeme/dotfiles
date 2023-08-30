@@ -54,15 +54,6 @@ return {
           close_command = "tabclose! %d",
           diagnostics = "nvim_lsp"
         }
-        -- exclude_ft = {
-        --   "drex",
-        --   "dosini"
-        -- },
-        -- sidebar_filetypes = {
-        --   NvimTree = true,
-        --   drex = true,
-        --   DiffviewFiles = true,
-        -- },
       })
     end,
     lazy = false,
@@ -124,28 +115,5 @@ return {
   },
 
   {'stevearc/qf_helper.nvim', cond = NOT_VSCODE}, -- Quickfix helper :QF{command}
-
-  {
-    "lewis6991/hover.nvim",
-      config = function()
-      require("hover").setup {
-        init = function()
-          require("hover.providers.lsp")
-          require('hover.providers.man')
-        end,
-        preview_opts = {
-          border = 'solid'
-        },
-        -- Whether the contents of a currently open hover window should be moved
-        -- to a :h preview-window when pressing the hover keymap.
-        preview_window = true,
-        -- title = true
-      }
-      -- Setup keymaps
-      vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
-      vim.keymap.set("n", "gh", require("hover").hover_select, {desc = "hover.nvim (select)"})
-    end,
-    cond = NOT_VSCODE
-  }
 }
 

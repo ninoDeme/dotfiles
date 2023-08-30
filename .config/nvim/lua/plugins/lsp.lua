@@ -35,10 +35,12 @@ return {
           D = { function() vim.lsp.buf.references() end, "View References" },
           s = { function() vim.lsp.buf.signature_help() end, "Signature Help" },
           I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
+          h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
         }
         local whichkey = require('which-key')
         whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>", mode = {'n', 'v'}})
         whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
+        whichkey.register({K = { function() vim.lsp.buf.hover() end, "View Hover" }}, { buffer = bufnr })
       end
 
       local lsp_opts = {
@@ -128,10 +130,9 @@ return {
       }
     end,
     dependencies = { 'nvim-telescope/telescope.nvim' },
-    --[[ keys = {
-    --
+    keys = {
       { "<leader>la", desc = 'Code Actions', mode = { "v", "n" } }
-    }, ]]
+    },
     cond = NOT_VSCODE
   },
 

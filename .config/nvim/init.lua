@@ -140,10 +140,6 @@ else
   }
   --- }}}
 
-  local neogit = require("neogit")
-
-  neogit.setup({})
-
   local temEslint = {
     condition = function(utils)
       return utils.root_has_file({".eslintrc.json", ".eslintrc.js"})
@@ -168,7 +164,6 @@ else
   whichkey.register({
     t  = { name = '+Toggle Numbered Terminals', },
     b = { name = '+Buffers', },
-    g = {require("neogit").open, 'Open NeoGit' },
     W = { 'Create dir to current file' },
   }, {prefix = '<leader>'})
 
@@ -182,21 +177,6 @@ else
   })
 
 end
-
-vim.keymap.set("n", "gr", "<cmd>lua require('substitute').operator()<cr>", { noremap = true })
-vim.keymap.set("n", "grr", "<cmd>lua require('substitute').line()<cr>", { noremap = true })
-vim.keymap.set("n", "gR", "<cmd>lua require('substitute').eol()<cr>", { noremap = true })
-vim.keymap.set("x", "gr", "<cmd>lua require('substitute').visual()<cr>", { noremap = true })
-
-vim.keymap.set("n", "<leader>r", '"+<cmd>lua require("substitute").operator()<cr>', { noremap = true })
-vim.keymap.set("n", "<leader>rr", '"+<cmd>lua require("substitute").line()<cr>', { noremap = true })
-vim.keymap.set("n", "<leader>R", '"+<cmd>lua require("substitute").eol()<cr>', { noremap = true })
-vim.keymap.set("x", "<leader>r", '"+<cmd>lua require("substitute").visual()<cr>', { noremap = true })
-
-vim.keymap.set("n", "cx", "<cmd>lua require('substitute.exchange').operator()<cr>", { noremap = true })
-vim.keymap.set("n", "cxx", "<cmd>lua require('substitute.exchange').line()<cr>", { noremap = true })
-vim.keymap.set("x", "cx", "<cmd>lua require('substitute.exchange').visual()<cr>", { noremap = true })
-vim.keymap.set("n", "cxc", "<cmd>lua require('substitute.exchange').cancel()<cr>", { noremap = true })
 
 -- }}}
 

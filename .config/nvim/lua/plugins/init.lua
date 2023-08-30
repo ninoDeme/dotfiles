@@ -9,9 +9,22 @@ return {
 
   {
     "gbprod/substitute.nvim",
-    config = function()
-      require("substitute").setup({})
-    end
+    config = true,
+    keys = {
+      {mode = "n", "gr", function() require('substitute').operator() end,  noremap = true },
+      {mode = "n", "grr", function() require('substitute').line() end,  noremap = true },
+      {mode = "n", "gR", function() require('substitute').eol() end,  noremap = true },
+      {mode = "x", "gr", function() require('substitute').visual() end,  noremap = true },
+      {mode = "n", "<leader>r", '"+<cmd>lua require("substitute").operator()<cr>',  noremap = true },
+      {mode = "n", "<leader>rr", '"+<cmd>lua require("substitute").line()<cr>',  noremap = true },
+      {mode = "n", "<leader>R", '"+<cmd>lua require("substitute").eol()<cr>',  noremap = true },
+      {mode = "x", "<leader>r", '"+<cmd>lua require("substitute").visual()<cr>',  noremap = true },
+      {mode = "n", "cx", function() require('substitute.exchange').operator() end,  noremap = true },
+      {mode = "n", "cxx", function() require('substitute.exchange').line() end,  noremap = true },
+      {mode = "x", "cx", function() require('substitute.exchange').visual() end,  noremap = true },
+      {mode = "n", "cxc", function() require('substitute.exchange').cancel() end,  noremap = true },
+    },
+    opts = {}
   },
   'tpope/vim-surround', -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
   {
@@ -55,10 +68,15 @@ return {
 
   {
     "NeogitOrg/neogit",
+    config = true,
+    opts = {},
     dependencies = {
       "nvim-lua/plenary.nvim",         -- required
       "nvim-telescope/telescope.nvim", -- optional
       "sindrets/diffview.nvim",        -- optional
+    },
+    keys = {
+      {'<leader>g', function() require("neogit").open() end, 'Open NeoGit'}
     },
     cond = NOT_VSCODE
   },
