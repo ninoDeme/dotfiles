@@ -35,8 +35,6 @@ require("lazy").setup("plugins", {
 if vim.g.neovide then
 
   vim.opt.guifont =  "JetBrains Mono:h10"
-  vim.g.onedark_terminal_italics = 1
-
 end
 
 if vim.g.vscode then
@@ -56,7 +54,9 @@ else
 
    ]]
 
-  require('onedark').setup { style = 'darker' }
+  require('onedark').setup {
+    style = 'darker'
+  }
   require('onedark').load()
 
   require('colors')
@@ -165,44 +165,9 @@ else
 
   require('qf_helper').setup()
 
-  require('kommentary.config').use_extended_mappings()
-
-  local telescope = require("telescope")
-  telescope.load_extension("zf-native")
-
-  telescope.setup({
-    pickers = {
-      find_files = {
-        theme = 'ivy'
-      },
-      grep = {
-        theme = 'ivy'
-      },
-        buffers = {
-        theme = 'ivy'
-      }
-    }
-  })
-
   whichkey.register({
     t  = { name = '+Toggle Numbered Terminals', },
-    s  = {
-      name = 'Telescope',
-      s = {"<cmd>Telescope live_grep<cr>", 'Grep' },
-      b = {"<cmd>Telescope buffers<cr>", 'Buffers' },
-      f = {"<cmd>Telescope find_files<cr>", 'Find Files' },
-    },
-    b = {
-      name = '+Buffers',
-      x = {'<cmd>BufferClose<CR>', 'Close Current Buffer'},
-      b = {'<cmd>BufferPick<CR>', 'Pick Buffer...'},
-      q = {'<cmd>BufferPickDelete<CR>', 'Close Buffer...'},
-      p = {'<cmd>BufferPin<CR>', 'Pin Current Buffer'},
-      ['>'] = {'<cmd>BufferMoveNext<CR>', 'Move Buffer Forwards'},
-      ['<'] = {'<cmd>BufferMovePrevious<CR>', 'Move Buffer Backwards'},
-      ['.'] = {'<cmd>BufferNext<CR>', 'Next Buffer'},
-      [','] = {'<cmd>BufferPrevious<CR>', 'Previous Buffer'},
-    },
+    b = { name = '+Buffers', },
     g = {require("neogit").open, 'Open NeoGit' },
     W = { 'Create dir to current file' },
   }, {prefix = '<leader>'})
@@ -359,20 +324,6 @@ if !exists('g:vscode')
   nnoremap <silent> <leader>q <cmd>QFToggle!<CR>
   nnoremap <silent> <leader>L <cmd>LLToggle!<CR>
 
-  " Go to next buffer (alt-tab equivalent)
-  noremap <silent> gt :BufferNext<CR>
-  noremap <silent> gT :BufferPrev<CR>
-
-  nnoremap <silent>    <A-1> <Cmd>BufferGoto 1<CR>
-  nnoremap <silent>    <A-2> <Cmd>BufferGoto 2<CR>
-  nnoremap <silent>    <A-3> <Cmd>BufferGoto 3<CR>
-  nnoremap <silent>    <A-4> <Cmd>BufferGoto 4<CR>
-  nnoremap <silent>    <A-5> <Cmd>BufferGoto 5<CR>
-  nnoremap <silent>    <A-6> <Cmd>BufferGoto 6<CR>
-  nnoremap <silent>    <A-7> <Cmd>BufferGoto 7<CR>
-  nnoremap <silent>    <A-8> <Cmd>BufferGoto 8<CR>
-  nnoremap <silent>    <A-9> <Cmd>BufferGoto 9<CR>
-  nnoremap <silent>    <A-0> <Cmd>BufferLast<CR>
   
 endif
 

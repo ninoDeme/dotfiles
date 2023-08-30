@@ -109,6 +109,7 @@ return {
       show_hidden_files = true,
       devicons = {
         enable = true,
+        highlight_dirname = true
       },
       float = {
         curdir_window = {
@@ -116,12 +117,12 @@ return {
         },
         win_opts = function ()
           return  {
-            border = "none",
+            border = "solid",
           }
         end,
       },
       mappings = {
-        ['l']     = function () require('lir.actions').edit() end,
+        ['l']     = function () require('lir.actions').edit({}) end,
         ['<C-s>'] = function () require('lir.actions').split() end,
         ['<C-v>'] = function () require('lir.actions').vsplit() end,
         ['<C-t>'] = function () require('lir.actions').tabedit() end,
@@ -136,7 +137,7 @@ return {
         ['d']     = function () require('lir.actions').delete() end,
 
         ['J'] = function()
-          require('lir.mark.actions').toggle_mark()
+          require('lir.mark.actions').toggle_mark('n')
           vim.cmd('normal! j')
         end,
         ['y'] = function () require('lir.clipboard.actions').copy() end,
@@ -171,7 +172,7 @@ return {
   {
     'luukvbaal/nnn.nvim',
     cond = NOT_VSCODE,
-    -- enabled = false,
+    enabled = false,
     lazy = false,
     config = function ()
       require("nnn").setup({
