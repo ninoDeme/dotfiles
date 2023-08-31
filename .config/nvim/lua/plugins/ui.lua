@@ -87,8 +87,41 @@ return {
   },
   {
     'hoob3rt/lualine.nvim', -- Vim mode line
+    lazy = false,
     config = function()
+      local function lsp_progress()
+        return require("lsp-progress").progress({
+          format = function(messages)
+            local active_clients = vim.lsp.get_active_clients()
+            local client_count = #active_clients
+            if #messages > 0 then
+              return " LSP:"
+                .. client_count
+                .. " "
+                .. table.concat(messages, " ")
+            end
+            if #active_clients <= 0 then
+              return " "
+            else
+              local client_names = {}
+              for _, client in ipairs(active_clients) do
+                if client and client.name ~= "" then
+                  table.insert(client_names, "[" .. client.name .. "]")
+                end
+              end
+              return " LSP:"
+                .. client_count
+                .. " "
+                .. table.concat(client_names, " ")
+            end
+          end,
+        })
+      end
       require('lualine').setup {
+        extensions = {
+          "toggleterm",
+          "lazy"
+        },
         options = {
           theme = 'onedark',
           section_separators = '',
@@ -96,7 +129,20 @@ return {
         },
         sections = {
           lualine_c = {
-            "require('lsp-progress').progress()"
+            {
+              'filename',
+              path = 1,
+              color = function(section)
+                 return { fg = vim.bo.modified and 'FileModified' or 'FileLine' }
+              end,
+              symbols = {
+                modified = '',      -- Text to show when the file is modified.
+                readonly = '',      -- Text to show when the file is non-modifiable or readonly.
+                unnamed = '*', -- Text to show for unnamed buffers.
+                newfile = '',     -- Text to show for newly created file before first write
+              },
+            },
+            lsp_progress
           }
         }
       }
@@ -114,6 +160,6 @@ return {
     cond = NOT_VSCODE
   },
 
-  {'stevearc/qf_helper.nvim', cond = NOT_VSCODE}, -- Quickfix helper :QF{command}
+  -- {'stevearc/qf_helper.nvim', cond = NOT_VSCODE}, -- Quickfix helper :QF{command}
 }
 

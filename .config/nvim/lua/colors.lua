@@ -50,6 +50,9 @@ local colors = {
   LirFloatBorder = { bg = c.bg_d },
   LirFloatCurdirWindowNormal = { fg = c.blue, bg = c.bg_d },
 
+  FileModified = { fg = c.yellow },
+  FileLine = { link = "lualine_c_normal" },
+
   -- Credit  https://astronvim.com/recipes/telescope_theme
   TelescopeBorder = { fg = c.bg_alt, bg = c.bg_d },
   TelescopeNormal = { bg = c.bg_d },

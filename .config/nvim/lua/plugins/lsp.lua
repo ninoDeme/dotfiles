@@ -2,6 +2,7 @@ return {
   {
     'neovim/nvim-lspconfig',
     cond = NOT_VSCODE,
+    event = "VeryLazy",
     config = function()
       local lspconfig = require('lspconfig')
 
@@ -31,11 +32,15 @@ return {
 
         local keymap_g = {
           name = "Goto",
-          d = { function() vim.lsp.buf.definition() end, "View Definition" },
-          D = { function() vim.lsp.buf.references() end, "View References" },
           s = { function() vim.lsp.buf.signature_help() end, "Signature Help" },
-          I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
-          h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
+          -- d = { function() vim.lsp.buf.definition() end, "View Definition" },
+          -- D = { function() vim.lsp.buf.references() end, "View References" },
+          -- I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
+          -- h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
+          d = { function() require("telescope.builtin").lsp_definitions() end, "View Definition" },
+          D = { function() require("telescope.builtin").lsp_references() end, "View References" },
+          I = { function() require("telescope.builtin").lsp_implementations() end, "Goto Implementation" },
+          h = { function() require("telescope.builtin").lsp_type_definitions() end, "View Type Signature" }
         }
         local whichkey = require('which-key')
         whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>", mode = {'n', 'v'}})
@@ -102,15 +107,21 @@ return {
   {
     'linrongbin16/lsp-progress.nvim',
     cond = NOT_VSCODE,
-    requires = {'nvim-tree/nvim-web-devicons'},
+    dependencies = {'nvim-web-devicons'},
     config = function()
       require('lsp-progress').setup()
     end
   },
-  { 'folke/lsp-colors.nvim',    cond = NOT_VSCODE },
-  -- { 'ojroques/nvim-lspfuzzy',   cond = NOT_VSCODE }, -- lembrar de configurar
 
-  { 'onsails/lspkind.nvim',     cond = NOT_VSCODE },
+  {
+    'onsails/lspkind.nvim',
+    config = function ()
+      require('lspkind').init({
+        preset = "codicons"
+      })
+    end,
+    cond = NOT_VSCODE
+  },
 
   {
     "ThePrimeagen/refactoring.nvim",
@@ -118,6 +129,9 @@ return {
       { "nvim-lua/plenary.nvim" },
       { "nvim-treesitter/nvim-treesitter" }
     },
+    config = true,
+    opts = {},
+    event = "VeryLazy",
     cond = NOT_VSCODE
   },
 
@@ -138,6 +152,27 @@ return {
 
   {
     'jose-elias-alvarez/null-ls.nvim',
+    event = "VeryLazy",
+    dependencies = "ThePrimeagen/refactoring.nvim",
+    config = function ()
+      local temEslint = {
+        condition = function(utils)
+          return utils.root_has_file({".eslintrc.json", ".eslintrc.js"})
+        end,
+      }
+      local null_ls = require("null-ls")
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.code_actions.gitrebase,
+          null_ls.builtins.code_actions.gitsigns,
+          null_ls.builtins.code_actions.refactoring,
+          null_ls.builtins.diagnostics.tsc,
+          null_ls.builtins.diagnostics.eslint_d.with(temEslint),
+          null_ls.builtins.formatting.eslint_d.with(temEslint),
+          null_ls.builtins.code_actions.eslint_d.with(temEslint)
+        }
+      })
+    end,
     cond = NOT_VSCODE
   },
 
@@ -152,6 +187,8 @@ return {
         automatic_setup = false, -- Recommended, but optional
       })
     end,
+    lazy = true,
+    event = "VeryLazy",
     dependencies = { 'williamboman/mason.nvim' },
     cond = NOT_VSCODE
   },
@@ -159,6 +196,8 @@ return {
   {
     'williamboman/mason-lspconfig.nvim',
     cond = NOT_VSCODE,
+    lazy = true,
+    event = "VeryLazy",
     dependencies = { 'williamboman/mason.nvim' },
     config = function()
       require("mason-lspconfig").setup({

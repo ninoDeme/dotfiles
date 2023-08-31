@@ -1,13 +1,7 @@
 return {
   {
     'nvim-telescope/telescope.nvim', -- Fuzzy finder over lists
-    init = function ()
-      require('which-key').register({
-        s  = { name = 'Telescope', }
-      }, {prefix = '<leader>'})
-    end,
     lazy = true,
-    event = 'VeryLazy',
     cmd = "Telescope",
     config = function () -- Shamelessly stolen from github.com/NvChad/NvChad 
       local telescope = require("telescope")
@@ -31,24 +25,24 @@ return {
             vertical = {
               mirror = false,
             },
+            bottom_pane ={
+              height = 25,
+            },
+            cursor = {
+              width = 150,
+              height = 15
+            },
             width = 0.87,
             height = 0.80,
             preview_cutoff = 120,
           },
-          -- file_sorter = require("telescope.sorters").get_fuzzy_file,
           file_ignore_patterns = { "node_modules" },
-          generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
           path_display = { "truncate" },
           winblend = 0,
           border = {},
           borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
           color_devicons = true,
           set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
-          file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-          grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-          qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
-          -- Developer configurations: Not meant for general override
-          buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
           mappings = {
             n = {
               ["q"] = telescope_actions.close,
@@ -89,9 +83,12 @@ return {
     dependencies = 'nvim-lua/plenary.nvim',
     cond = NOT_VSCODE,
     keys = {
-      {"<leader>ss", "<cmd>Telescope live_grep<cr>", desc = 'Grep' },
-      {"<leader>sb", "<cmd>Telescope buffers<cr>", desc = 'Buffers' },
-      {"<leader>sh", "<cmd>Telescope highlights<cr>", desc = 'Highlights' },
+        {"<leader>ss", "<cmd>Telescope live_grep<cr>", desc = 'Grep' },
+        {"<leader>sb", "<cmd>Telescope buffers<cr>", desc = 'Buffers' },
+        {"<leader>sh", "<cmd>Telescope highlights<cr>", desc = 'Highlights' },
+        {"<leader>sr", "<cmd>Telescope oldfiles<cr>", desc = 'Recent Files' },
+        {"<leader>sd", function() require("telescope.builtin").diagnostics({severity_limit = vim.diagnostic.severity.HINT}) end, desc = 'Diagnostics' },
+        {"<leader>sD", function() require("telescope.builtin").diagnostics({severity_limit = vim.diagnostic.severity.ERROR}) end, desc = 'Errors' },
     }
   },
   {
@@ -99,6 +96,10 @@ return {
     config = function ()
       require("telescope").load_extension("zf-native")
     end,
+    after = {'nvim-telescope/telescope.nvim'},
+    keys = {
+      {"<leader>sf", "<cmd>Telescope find_files<cr>", desc = 'Find Files' },
+    },
     lazy = true,
     dependencies = 'nvim-telescope/telescope.nvim',
     cond = NOT_VSCODE
@@ -106,7 +107,8 @@ return {
   {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
-    lazy = false,
+    lazy = true,
+    event = "VeryLazy",
     cond = NOT_VSCODE,
     keys = {
       {'<leader>.', '<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>', desc = "File Browser (current dir)"},
