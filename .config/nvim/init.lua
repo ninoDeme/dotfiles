@@ -34,10 +34,7 @@ require("lazy").setup("plugins", {
   }
 })
 
-if vim.g.neovide then
-
-  vim.opt.guifont =  "JetBrains Mono:h10"
-end
+vim.opt.guifont =  "JetBrainsMono Nerd Font:h10"
 
 if vim.g.vscode then
 

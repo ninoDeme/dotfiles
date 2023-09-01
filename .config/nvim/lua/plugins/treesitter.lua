@@ -4,16 +4,9 @@ return {
     lazy = true,
     event = 'VeryLazy',
     config = function()
-      -- TreeSitter {{{
       require 'nvim-treesitter.configs'.setup {
         highlight = {
           enable = true,
-          --[[ disable = {
-        -- 'typescript',
-        'javascript',
-        'html',
-        'lua'
-      } ]]
         },
         rainbow = {
           enable = true
@@ -24,15 +17,13 @@ return {
         autotag = {
           enable = true
         },
-        ensure_installed = { 'typescript', 'lua'}
+        ensure_installed = { 'typescript', 'lua', 'markdown', 'markdown_inline', 'json', 'jsdoc', 'javascript', 'sql', 'vim', 'html', 'css', 'scss'}
       }
 
       require 'treesitter-context'.setup { enable = true, throttle = true, }
 
       require 'nvim-treesitter.install'.compilers = { "clang", "gcc" }
       require 'nvim-treesitter.install'.prefer_git = false
-
-      -- }}}
     end,
     dependencies = {
       'romgrk/nvim-treesitter-context',
@@ -47,6 +38,10 @@ return {
   },
   {'p00f/nvim-ts-rainbow', cond = NOT_VSCODE},
 
+  {
+    "nvim-treesitter/nvim-treesitter-angular",
+    event = 'VeryLazy'
+  },
   {
     "windwp/nvim-ts-autotag",
     cond = NOT_VSCODE

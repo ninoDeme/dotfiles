@@ -6,7 +6,25 @@ return {
     config = function()
       local lspconfig = require('lspconfig')
 
-      -- lsp setup functions {{{
+    -- lsp setup functions {{{
+      --
+      local border = {
+        {" ", "FloatBorder"},
+        {" ", "FloatBorder"},
+        {" ", "FloatBorder"},
+        {" ", "FloatBorder"},
+        {" ", "FloatBorder"},
+        {" ", "FloatBorder"},
+        {" ", "FloatBorder"},
+        {" ", "FloatBorder"},
+      }
+
+      -- LSP settings (for overriding per client)
+      local handlers =  {
+        ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border, silent = true}),
+        ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border , silent = true}),
+      }
+
       local function keymappings(client, bufnr)
         local opts = { noremap = true, silent = true }
 
@@ -58,6 +76,7 @@ return {
           keymappings(client, bufnr)
         end,
 
+        handlers = handlers,
         capabilities = require('cmp_nvim_lsp').default_capabilities()
       }
       -- }}}
@@ -85,6 +104,7 @@ return {
             },
           },
         },
+        handlers = handlers,
         on_attach = lsp_opts.on_attach,
         capabilities = lsp_opts.capabilities
       } -- }}}
@@ -100,16 +120,6 @@ return {
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
       end
-    end
-  },
-
-  { 'nvim-lua/lsp-status.nvim', cond = NOT_VSCODE }, -- lsp status
-  {
-    'linrongbin16/lsp-progress.nvim',
-    cond = NOT_VSCODE,
-    dependencies = {'nvim-web-devicons'},
-    config = function()
-      require('lsp-progress').setup()
     end
   },
 
@@ -211,6 +221,14 @@ return {
       })
     end
   },
+
+  -- {
+  --   'mrded/nvim-lsp-notify',
+  --   config = function()
+  --     require('lsp-notify').setup({})
+  --   end,
+  --   event = "VeryLazy"
+  -- }
 }
 
 -- vim: ts=2 sts=2 sw=2 et

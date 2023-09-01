@@ -89,33 +89,21 @@ return {
     'hoob3rt/lualine.nvim', -- Vim mode line
     lazy = false,
     config = function()
-      local function lsp_progress()
-        return require("lsp-progress").progress({
-          format = function(messages)
-            local active_clients = vim.lsp.get_active_clients()
-            local client_count = #active_clients
-            if #messages > 0 then
-              return " LSP:"
-                .. client_count
-                .. " "
-                .. table.concat(messages, " ")
-            end
-            if #active_clients <= 0 then
-              return " "
-            else
-              local client_names = {}
-              for _, client in ipairs(active_clients) do
-                if client and client.name ~= "" then
-                  table.insert(client_names, "[" .. client.name .. "]")
-                end
-              end
-              return " LSP:"
-                .. client_count
-                .. " "
-                .. table.concat(client_names, " ")
-            end
-          end,
-        })
+      local lsp_progress = function()
+        local active_clients = vim.lsp.get_active_clients()
+        local ignore = 0
+        for _, v in ipairs(active_clients) do
+          if (v.name == "null-ls") then
+            ignore = ignore + 1
+            break
+          end
+        end
+        local client_count = #active_clients
+        if client_count > 0 then
+          return " LSP: " .. client_count
+        else
+          return ""
+        end
       end
       require('lualine').setup {
         extensions = {
@@ -128,38 +116,68 @@ return {
           component_separators = '│'
         },
         sections = {
+          lualine_b = {
+            {
+              'branch',
+              ---@param str string
+              fmt = function (str)
+                if str:len() > 40 then
+                  str = str:sub(0, 37) .. '...'
+                end
+                return str
+              end
+            },
+            'diff',
+            'diagnostics'
+          },
           lualine_c = {
             {
               'filename',
-              path = 1,
+              path = 4,
               color = function(section)
-                 return { fg = vim.bo.modified and 'FileModified' or 'FileLine' }
+                return { fg = vim.bo.modified and '#e2b86b' or 'FileLine' }
               end,
               symbols = {
                 modified = '',      -- Text to show when the file is modified.
                 readonly = '',      -- Text to show when the file is non-modifiable or readonly.
-                unnamed = '*', -- Text to show for unnamed buffers.
+                unnamed = '[*]', -- Text to show for unnamed buffers.
                 newfile = '',     -- Text to show for newly created file before first write
               },
             },
-            lsp_progress
+          },
+          lualine_x = {
+            lsp_progress,
+            'encoding',
+            'fileformat',
+            'filetype'
           }
         }
       }
       vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
-      vim.api.nvim_create_autocmd("User LspProgressStatusUpdated", {
+      vim.api.nvim_create_autocmd("User LspAttach LspDetach", {
         group = "lualine_augroup",
         callback = require("lualine").refresh,
       })
     end,
     dependencies = {
       'nvim-web-devicons',
-      'linrongbin16/lsp-progress.nvim',
       'nvim-lua/lsp-status.nvim'
     },
     cond = NOT_VSCODE
   },
-
+  {
+    "vigoux/notifier.nvim",
+    event = "VeryLazy",
+    config = function()
+      require'notifier'.setup {}
+    end
+  },
+  -- {
+  --   'rcarriga/nvim-notify',
+  --   init = function()
+  --     vim.notify = require("notify")
+  --   end
+  -- }
   -- {'stevearc/qf_helper.nvim', cond = NOT_VSCODE}, -- Quickfix helper :QF{command}
 }
 

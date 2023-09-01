@@ -112,7 +112,7 @@ return {
     cond = NOT_VSCODE,
     keys = {
       {'<leader>.', '<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>', desc = "File Browser (current dir)"},
-      {'<leader>se', '<cmd>Telescope file_browser<CR>', desc = "File Browser (root)"}
+      {'<leader>e', '<cmd>Telescope file_browser<CR>', desc = "File Browser (root)"}
     }
   }
 }

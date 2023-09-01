@@ -53,6 +53,9 @@ local colors = {
   FileModified = { fg = c.yellow },
   FileLine = { link = "lualine_c_normal" },
 
+  FloatNormal = { bg = c.bg1 },
+  FloatBorder = { bg = c.bg1 },
+
   -- Credit  https://astronvim.com/recipes/telescope_theme
   TelescopeBorder = { fg = c.bg_alt, bg = c.bg_d },
   TelescopeNormal = { bg = c.bg_d },

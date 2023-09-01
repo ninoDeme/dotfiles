@@ -34,6 +34,7 @@ return {
       require('which-key').register({
         s  = { name = 'Telescope', },
         t  = { name = '+Toggle Numbered Terminals', },
+        g  = { name = '+Git', },
         b = { name = '+Buffers', },
         W = { 'Create dir to current file' , '<Cmd>:call mkdir(expand("%:p:h"),"p")<CR>'},
       }, {prefix = '<leader>'})
@@ -78,7 +79,7 @@ return {
     'wellle/targets.vim',
     event = 'VeryLazy'
   },
-  
+
   {
     'michaeljsmith/vim-indent-object',
     event = 'VeryLazy'
@@ -101,37 +102,6 @@ return {
       "DiffviewToggleFiles",
     }
   },
-  {
-    "NeogitOrg/neogit",
-    config = true,
-    opts = {},
-    dependencies = {
-      "nvim-lua/plenary.nvim",         -- required
-      "nvim-telescope/telescope.nvim", -- optional
-      "sindrets/diffview.nvim",        -- optional
-    },
-    cmd = {
-      "NeoGit",
-      "NeoGitMessages",
-      "NeoGitResetState"
-    },
-    keys = {
-      {'<leader>g', function() require("neogit").open() end, 'Open NeoGit'}
-    },
-    cond = NOT_VSCODE
-  },
-  {
-    'lewis6991/gitsigns.nvim',
-    config = function ()
-      require('gitsigns').setup {
-        signcolumn = true,
-        numhl = true,
-        current_line_blame = true,
-      }
-    end,
-    event = 'VeryLazy',
-    cond = NOT_VSCODE
-  }, -- Git stuff
 
   {
     'williamboman/mason.nvim',
