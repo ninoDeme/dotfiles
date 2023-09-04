@@ -127,10 +127,11 @@
         :desc "dap continue"      "c" #'dap-continue
         :desc "dap hydra"         "h" #'dap-hydra
         :desc "dap debug restart" "r" #'dap-debug-restart
-        :desc "dap debug"         "s" #'dap-debug
+        :desc "dap debug"         "d" #'dap-debug
+        :desc "dap disconnect"         "d" #'dap-disconnect
 
         ;; debug
-        :prefix ("dd" . "Debug")
+        :prefix ("dD" . "Debug")
         :desc "dap debug recent"  "r" #'dap-debug-recent
         :desc "dap debug last"    "l" #'dap-debug-last
 

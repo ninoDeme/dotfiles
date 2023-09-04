@@ -127,10 +127,10 @@ noremap <Leader>y "+y
 noremap <Leader>p "+p
 
 " Delete without copying
-nnoremap <leader>d "_d
-xnoremap <leader>d "_d
-nnoremap <leader>D "_D
-xnoremap <leader>D "_D
+" nnoremap <leader>d "_d
+" xnoremap <leader>d "_d
+" nnoremap <leader>D "_D
+" xnoremap <leader>D "_D
 
 " reload config
 " nnoremap <leader>r :source $MYVIMRC<CR>

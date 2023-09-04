@@ -46,6 +46,13 @@ local colors = {
   CmpItemKindColor = { fg = "#D8EEEB", bg = "#58B5A8" },
   CmpItemKindTypeParameter = { fg = "#D8EEEB", bg = "#58B5A8" },
 
+  DapBreakpoint = { fg = c.red },
+  DapBreakpointCondition = { fg = c.red },
+  DapLogPoint = { fg = c.red },
+  DapStopped = { fg = c.green },
+  DapStoppedLine = { bg = c.bg2 },
+  DapBreakpointRejected = { fg = c.yellow },
+
   LirFloatNormal = { bg = c.bg_d },
   LirFloatBorder = { bg = c.bg_d },
   LirFloatCurdirWindowNormal = { fg = c.blue, bg = c.bg_d },

@@ -35,6 +35,7 @@ return {
         s  = { name = 'Telescope', },
         t  = { name = '+Toggle Numbered Terminals', },
         g  = { name = '+Git', },
+        d  = { name = '+Debug', },
         b = { name = '+Buffers', },
         W = { 'Create dir to current file' , '<Cmd>:call mkdir(expand("%:p:h"),"p")<CR>'},
       }, {prefix = '<leader>'})
@@ -117,9 +118,6 @@ return {
     event = 'VeryLazy',
     build = 'make install_jsregexp'
   }, -- Snippets plugin
-
-  --[[ 'mfussenegger/nvim-dap'
-    'rcarriga/nvim-dap-ui' ]]
 
   -- Color schemes =======================
   {'ayu-theme/ayu-vim', cond = NOT_VSCODE},

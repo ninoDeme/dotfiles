@@ -14,7 +14,7 @@ return {
       "NeoGitResetState"
     },
     keys = {
-      {'<leader>gg', function() require("neogit").open() end, 'Open NeoGit'}
+      {'<leader>gg', function() require("neogit").open() end, desc = 'Open NeoGit'}
     },
     cond = NOT_VSCODE
   },

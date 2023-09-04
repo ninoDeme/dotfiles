@@ -1,3 +1,78 @@
+-- lsp setup functions {{{
+--
+local border = {
+  {" ", "FloatBorder"},
+  {" ", "FloatBorder"},
+  {" ", "FloatBorder"},
+  {" ", "FloatBorder"},
+  {" ", "FloatBorder"},
+  {" ", "FloatBorder"},
+  {" ", "FloatBorder"},
+  {" ", "FloatBorder"},
+}
+
+-- LSP settings (for overriding per client)
+local handlers =  {
+  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border, silent = true}),
+  ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border , silent = true}),
+}
+
+local function keymappings(client, bufnr)
+  local opts = { noremap = true, silent = true }
+
+  -- lsp Key mappings
+  vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
+  vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
+  vim.keymap.set("n", "[e", function() vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR}) end,
+    opts)
+  vim.keymap.set("n", "]e", function() vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR}) end,
+    opts)
+
+  -- Whichkey
+  local keymap_l = {
+    l = {
+      name = "Code",
+      r = { function() vim.lsp.buf.rename() end, "Rename" },
+      a = { function() require("actions-preview").code_actions() end, 'Code Actions'},
+      -- a = { function() vim.lsp.buf.code_action() end, "Code Action" },
+      i = { "<cmd>LspInfo<CR>", "Lsp Info" },
+      f = { function() vim.lsp.buf.formatting() end, "Format Document" }
+    },
+  }
+
+  local keymap_g = {
+    name = "Goto",
+    s = { function() vim.lsp.buf.signature_help() end, "Signature Help" },
+    -- d = { function() vim.lsp.buf.definition() end, "View Definition" },
+    -- D = { function() vim.lsp.buf.references() end, "View References" },
+    -- I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
+    -- h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
+    d = { function() require("telescope.builtin").lsp_definitions() end, "View Definition" },
+    D = { function() require("telescope.builtin").lsp_references() end, "View References" },
+    I = { function() require("telescope.builtin").lsp_implementations() end, "Goto Implementation" },
+    h = { function() require("telescope.builtin").lsp_type_definitions() end, "View Type Signature" }
+  }
+  local whichkey = require('which-key')
+  whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>", mode = {'n', 'v'}})
+  whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
+  whichkey.register({K = { function() vim.lsp.buf.hover() end, "View Hover" }}, { buffer = bufnr })
+end
+
+local lsp_opts = {
+  on_attach = function(client, bufnr)
+    -- Use LSP as the handler for formatexpr.
+    -- See `:help formatexpr` for more information. 'gq'
+    vim.api.nvim_buf_set_option(0, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+
+    -- Configure key mappings
+    keymappings(client, bufnr)
+  end,
+
+  handlers = handlers,
+  capabilities = require('cmp_nvim_lsp').default_capabilities()
+}
+-- }}}
+
 return {
   {
     'neovim/nvim-lspconfig',
@@ -6,80 +81,6 @@ return {
     config = function()
       local lspconfig = require('lspconfig')
 
-    -- lsp setup functions {{{
-      --
-      local border = {
-        {" ", "FloatBorder"},
-        {" ", "FloatBorder"},
-        {" ", "FloatBorder"},
-        {" ", "FloatBorder"},
-        {" ", "FloatBorder"},
-        {" ", "FloatBorder"},
-        {" ", "FloatBorder"},
-        {" ", "FloatBorder"},
-      }
-
-      -- LSP settings (for overriding per client)
-      local handlers =  {
-        ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border, silent = true}),
-        ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border , silent = true}),
-      }
-
-      local function keymappings(client, bufnr)
-        local opts = { noremap = true, silent = true }
-
-        -- lsp Key mappings
-        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
-        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
-        vim.keymap.set("n", "[e", function() vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR}) end,
-        opts)
-        vim.keymap.set("n", "]e", function() vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR}) end,
-        opts)
-
-        -- Whichkey
-        local keymap_l = {
-          l = {
-            name = "Code",
-            r = { function() vim.lsp.buf.rename() end, "Rename" },
-            a = { function() require("actions-preview").code_actions() end, 'Code Actions'},
-            -- a = { function() vim.lsp.buf.code_action() end, "Code Action" },
-            i = { "<cmd>LspInfo<CR>", "Lsp Info" },
-            f = { function() vim.lsp.buf.formatting() end, "Format Document" }
-          },
-        }
-
-        local keymap_g = {
-          name = "Goto",
-          s = { function() vim.lsp.buf.signature_help() end, "Signature Help" },
-          -- d = { function() vim.lsp.buf.definition() end, "View Definition" },
-          -- D = { function() vim.lsp.buf.references() end, "View References" },
-          -- I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
-          -- h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
-          d = { function() require("telescope.builtin").lsp_definitions() end, "View Definition" },
-          D = { function() require("telescope.builtin").lsp_references() end, "View References" },
-          I = { function() require("telescope.builtin").lsp_implementations() end, "Goto Implementation" },
-          h = { function() require("telescope.builtin").lsp_type_definitions() end, "View Type Signature" }
-        }
-        local whichkey = require('which-key')
-        whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>", mode = {'n', 'v'}})
-        whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
-        whichkey.register({K = { function() vim.lsp.buf.hover() end, "View Hover" }}, { buffer = bufnr })
-      end
-
-      local lsp_opts = {
-        on_attach = function(client, bufnr)
-          -- Use LSP as the handler for formatexpr.
-          -- See `:help formatexpr` for more information. 'gq'
-          vim.api.nvim_buf_set_option(0, "formatexpr", "v:lua.vim.lsp.formatexpr()")
-
-          -- Configure key mappings
-          keymappings(client, bufnr)
-        end,
-
-        handlers = handlers,
-        capabilities = require('cmp_nvim_lsp').default_capabilities()
-      }
-      -- }}}
 
       -- Lua Language Server Config {{{
       lspconfig.lua_ls.setup {
@@ -150,7 +151,7 @@ return {
     config = function()
       require("actions-preview").setup {
         telescope = vim.tbl_extend("force", require("telescope.themes").get_ivy(),
-        { make_value = nil, make_make_display = nil })
+          { make_value = nil, make_make_display = nil })
       }
     end,
     dependencies = { 'nvim-telescope/telescope.nvim' },
@@ -211,17 +212,60 @@ return {
     dependencies = { 'williamboman/mason.nvim' },
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = {
-          'lua_ls',
-          'tsserver',
-          'html',
-          'cssls',
-          'tailwindcss'
-        }
+        automatic_installation = true,
       })
     end
   },
 
+  {
+    'mfussenegger/nvim-jdtls',
+    event = "VeryLazy",
+    dependencies = {
+      'mason.nvim',
+      'nvim-dap',
+    },
+    config = function()
+
+      local function setup_server()
+        local java_opts = vim.tbl_extend("force", lsp_opts, {
+          cmd = { vim.fn.stdpath('data') .. '/mason/bin/jdtls'},
+          root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw', 'pom.xml'}, { upward = true })[1]),
+          init_options = {
+            bundles = {
+              vim.fn.glob( vim.fn.stdpath('data') .. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", true)
+            };
+          }
+        })
+        require('jdtls').start_or_attach(java_opts)
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "java",
+        callback = function()
+
+          local mason_reg = require("mason-registry")
+          if not mason_reg.is_installed("jdtls") then
+            if vim.fn.confirm("Download Language Server (jdtls)?", "&Yes\n&No", 1) == 1 then
+              local pkg = mason_reg.get_package("jdtls")
+
+              vim.notify("Installing jdtls", nil, {title = "Mason Install"})
+              pkg:install()
+
+              pkg:on("install:success", vim.schedule_wrap(function()
+                vim.notify("[mason.nvim] jdtls was successfully installed")
+                setup_server()
+              end))
+              pkg:on("install:failed", vim.schedule_wrap(function()
+                vim.notify( "[mason.nvim] failed to install jdtls. Installation logs are available in :Mason and :MasonLog", vim.log.levels.ERROR)
+              end))
+            end
+          else
+            setup_server()
+          end
+        end
+      })
+    end
+  }
   -- {
   --   'mrded/nvim-lsp-notify',
   --   config = function()
