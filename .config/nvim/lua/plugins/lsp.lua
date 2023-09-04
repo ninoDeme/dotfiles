@@ -36,7 +36,7 @@ local function keymappings(client, bufnr)
       a = { function() require("actions-preview").code_actions() end, 'Code Actions'},
       -- a = { function() vim.lsp.buf.code_action() end, "Code Action" },
       i = { "<cmd>LspInfo<CR>", "Lsp Info" },
-      f = { function() vim.lsp.buf.formatting() end, "Format Document" }
+      f = { function() vim.lsp.buf.format() end, "Format Document" }
     },
   }
 

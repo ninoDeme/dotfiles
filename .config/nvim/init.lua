@@ -34,7 +34,20 @@ require("lazy").setup("plugins", {
   }
 })
 
-vim.opt.guifont =  "JetBrainsMono Nerd Font:h10"
+vim.opt.guifont =  "JetBrainsMono Nerd Font:h9"
+
+if vim.g.neovide then
+  vim.g.neovide_scale_factor = 1.0
+  local change_scale_factor = function(delta)
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+  end
+  vim.keymap.set("n", "<C-=>", function()
+    change_scale_factor(1.05)
+  end)
+  vim.keymap.set("n", "<C-->", function()
+    change_scale_factor(1/1.05)
+  end)
+end
 
 if vim.g.vscode then
 
@@ -109,7 +122,7 @@ filetype plugin indent on
 set termguicolors
 
 if has('mouse')
-  set mouse=a
+set mouse=a
 endif
 
 " Keybindings {{{
@@ -149,14 +162,14 @@ tnoremap <Esc> <C-\><C-n>
 
 if !exists('g:vscode')
 
-  " Use <Tab> and <S-Tab> to navigate through popup menu
-  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-  " DAP mode bindings
-  " noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
-  " noremap <silent> <F5> :lua require'dap'.continue()<CR>
-  " noremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
+" DAP mode bindings
+" noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
+" noremap <silent> <F5> :lua require'dap'.continue()<CR>
+" noremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
 
 endif
 

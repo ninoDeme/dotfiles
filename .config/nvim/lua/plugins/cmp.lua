@@ -38,14 +38,20 @@ return {
           end,
         },
         mapping = cmp_map,
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'path' },
-          { name = 'treesitter' },
-          { name = 'nvim_lsp_signature_help' }
-        },
-          { name = 'buffer' }),
+        sources = cmp.config.sources(
+          {
+            { name = 'path' },
+          },
+          {
+            { name = 'nvim_lsp_signature_help', priority = 2 },
+            { name = 'nvim_lsp', priority = 1, group_index = 1 },
+            { name = 'luasnip', priority = 1 },
+            { name = 'treesitter', priority = 0 , group_index = 2 },
+          },
+          {
+            { name = 'buffer' }
+          }
+        ),
         experimental = {
           -- ghost_text = true
         },

@@ -17,12 +17,16 @@ return {
         autotag = {
           enable = true
         },
+
         ensure_installed = { 'typescript', 'lua', 'markdown', 'markdown_inline', 'json', 'jsdoc', 'javascript', 'sql', 'vim', 'html', 'css', 'scss'}
       }
 
       require 'treesitter-context'.setup { enable = true, throttle = true, }
 
-      require 'nvim-treesitter.install'.compilers = { "clang", "gcc" }
+      if vim.uv.os_uname().sysname == "Windows_NT" then
+         require('nvim-treesitter.install').compilers = { "clang" }
+      end
+
       require 'nvim-treesitter.install'.prefer_git = false
     end,
     dependencies = {
@@ -39,7 +43,9 @@ return {
   {'p00f/nvim-ts-rainbow', cond = NOT_VSCODE},
 
   {
-    "nvim-treesitter/nvim-treesitter-angular",
+    enabled = true,
+    branch = "topic/jsx-fix",
+    "elgiano/nvim-treesitter-angular",
     event = 'VeryLazy'
   },
   {

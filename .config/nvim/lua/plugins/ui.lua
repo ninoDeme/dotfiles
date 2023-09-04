@@ -52,7 +52,8 @@ return {
         options = {
           mode = "tabs",
           close_command = "tabclose! %d",
-          diagnostics = "nvim_lsp"
+          diagnostics = "nvim_lsp",
+          always_show_bufferline = false
         }
       })
     end,
@@ -89,6 +90,7 @@ return {
     'hoob3rt/lualine.nvim', -- Vim mode line
     lazy = false,
     config = function()
+      vim.opt.laststatus = 3
       local lsp_progress = function()
         local active_clients = vim.lsp.get_active_clients()
         local ignore = 0
@@ -113,7 +115,8 @@ return {
         options = {
           theme = 'onedark',
           section_separators = '',
-          component_separators = '│'
+          component_separators = '│',
+          globalstatus = vim.opt.laststatus == 3
         },
         sections = {
           lualine_b = {
@@ -121,7 +124,7 @@ return {
               'branch',
               ---@param str string
               fmt = function (str)
-                if str:len() > 40 then
+                if vim.opt.laststatus ~= 3 and str:len() > 40 then
                   str = str:sub(0, 37) .. '...'
                 end
                 return str
@@ -133,7 +136,7 @@ return {
           lualine_c = {
             {
               'filename',
-              path = 4,
+              path = 1,
               color = function(section)
                 return { fg = vim.bo.modified and '#e2b86b' or 'FileLine' }
               end,
@@ -172,6 +175,16 @@ return {
       require'notifier'.setup {}
     end
   },
+  {
+    "levouh/tint.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("tint").setup({
+        tint = -20,  -- Darken colors, use a positive value to brighten
+        saturation = 0.8,  -- Darken colors, use a positive value to brighten
+      })
+    end
+  }
   -- {
   --   'rcarriga/nvim-notify',
   --   init = function()
