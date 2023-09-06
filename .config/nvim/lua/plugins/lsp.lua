@@ -47,8 +47,8 @@ local function keymappings(client, bufnr)
     -- D = { function() vim.lsp.buf.references() end, "View References" },
     -- I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
     -- h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
-    d = { function() require("telescope.builtin").lsp_definitions() end, "View Definition" },
-    D = { function() require("telescope.builtin").lsp_references() end, "View References" },
+    d = { function() require("telescope.builtin").lsp_definitions({show_line = false}) end, "View Definition" },
+    D = { function() require("telescope.builtin").lsp_references({show_line = false}) end, "View References" },
     I = { function() require("telescope.builtin").lsp_implementations() end, "Goto Implementation" },
     h = { function() require("telescope.builtin").lsp_type_definitions() end, "View Type Signature" }
   }
@@ -150,8 +150,7 @@ return {
     "aznhe21/actions-preview.nvim",
     config = function()
       require("actions-preview").setup {
-        telescope = vim.tbl_extend("force", require("telescope.themes").get_ivy(),
-          { make_value = nil, make_make_display = nil })
+        telescope = { make_value = nil, make_make_display = nil, layout_strategy = "bottom_pane" }
       }
     end,
     dependencies = { 'nvim-telescope/telescope.nvim' },
@@ -174,13 +173,13 @@ return {
       local null_ls = require("null-ls")
       null_ls.setup({
         sources = {
-          null_ls.builtins.code_actions.gitrebase,
-          null_ls.builtins.code_actions.gitsigns,
-          null_ls.builtins.code_actions.refactoring,
           null_ls.builtins.diagnostics.tsc,
           null_ls.builtins.diagnostics.eslint_d.with(temEslint),
           null_ls.builtins.formatting.eslint_d.with(temEslint),
-          null_ls.builtins.code_actions.eslint_d.with(temEslint)
+          null_ls.builtins.code_actions.eslint_d.with(temEslint),
+          null_ls.builtins.code_actions.refactoring,
+          null_ls.builtins.code_actions.gitrebase,
+          null_ls.builtins.code_actions.gitsigns,
         }
       })
     end,

@@ -37,6 +37,7 @@ return {
         local Terminal = require("toggleterm.terminal").Terminal
         local picker = pickers.new(opts, {
           prompt_title = "Start",
+          layout_strategy = "bottom_pane",
           finder = finders.new_table({
             results = folders
           }),

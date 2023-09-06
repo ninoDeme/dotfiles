@@ -90,7 +90,6 @@ return {
     'hoob3rt/lualine.nvim', -- Vim mode line
     lazy = false,
     config = function()
-      vim.opt.laststatus = 3
       local lsp_progress = function()
         local active_clients = vim.lsp.get_active_clients()
         local ignore = 0
@@ -116,19 +115,19 @@ return {
           theme = 'onedark',
           section_separators = '',
           component_separators = '│',
-          globalstatus = vim.opt.laststatus == 3
+          globalstatus = true
         },
         sections = {
           lualine_b = {
             {
               'branch',
-              ---@param str string
-              fmt = function (str)
-                if vim.opt.laststatus ~= 3 and str:len() > 40 then
-                  str = str:sub(0, 37) .. '...'
-                end
-                return str
-              end
+              -- ---@param str string
+              -- fmt = function (str)
+              --   if str:len() > 40 then
+              --     str = str:sub(0, 37) .. '...'
+              --   end
+              --   return str
+              -- end
             },
             'diff',
             'diagnostics'
@@ -175,16 +174,16 @@ return {
       require'notifier'.setup {}
     end
   },
-  {
-    "levouh/tint.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("tint").setup({
-        tint = -20,  -- Darken colors, use a positive value to brighten
-        saturation = 0.8,  -- Darken colors, use a positive value to brighten
-      })
-    end
-  }
+  -- {
+  --   "levouh/tint.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("tint").setup({
+  --       tint = -20,  -- Darken colors, use a positive value to brighten
+  --       saturation = 0.8,  -- Darken colors, use a positive value to brighten
+  --     })
+  --   end
+  -- }
   -- {
   --   'rcarriga/nvim-notify',
   --   init = function()

@@ -4,6 +4,8 @@ vim.cmd([[
 -- map leader to space
 vim.g.mapleader = " "
 
+vim.opt.laststatus = 3
+
 vim.opt.termguicolors = true
 
 function NOT_VSCODE()
@@ -74,7 +76,6 @@ vim.opt.smartcase      = true
 
 vim.opt.hidden         = true
 vim.opt.ruler          = true
-vim.opt.laststatus     = 2
 vim.opt.confirm        = true
 vim.opt.visualbell     = true
 
@@ -84,6 +85,7 @@ vim.opt.foldmethod     = 'marker'
 vim.opt.cmdheight      = 1
 vim.opt.number         = true
 vim.opt.relativenumber = true
+vim.opt.laststatus = 3
 
 vim.opt.tabstop        = 2
 vim.opt.shiftwidth     = 2
