@@ -3,6 +3,7 @@ return {
   {
     'hrsh7th/nvim-cmp',
     event = "VeryLazy",
+    version = false,
     cond = NOT_VSCODE,
     dependencies = {
       {'hrsh7th/cmp-nvim-lsp'}, -- LSP source for nvim-cmp

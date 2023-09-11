@@ -28,6 +28,13 @@ return {
       {'<leader>ds', function() require("dap.ui.widgets").preview() end, desc = "Preview Widget"},
       {'<leader>df', function() require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames) end, desc = "Frames Widget"},
       {'<leader>ds', function() require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes) end, desc = "Scopes Widget"},
-    }
-  }
+    },
+    dependencies = {
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        opts = {},
+      }
+    },
+    cond = NOT_VSCODE
+  },
 }

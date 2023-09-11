@@ -25,6 +25,9 @@ return {
         signcolumn = true,
         numhl = true,
         current_line_blame = true,
+        signs = {
+
+        }
       }
     end,
     keys = {

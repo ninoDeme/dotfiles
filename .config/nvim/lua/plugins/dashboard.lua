@@ -76,6 +76,7 @@ return {
         vim.g.loaded_netrwSettings = 1
         vim.g.loaded_netrwFileHandlers = 1
       end
-    end
+    end,
+    cond = NOT_VSCODE
   };
 }

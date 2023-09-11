@@ -1,17 +1,48 @@
 local c = require('onedark.colors')
 
-c.bg = c.bg0
-c.bg_alt = c.bg1
--- vim.print(vim.inspect(c))
+---@class colors
+---@field bg '#1f2329',
+---@field bg0 '#1f2329',
+---@field bg1 "#282c34",
+---@field bg2 "#30363f",
+---@field bg3 "#323641",
+---@field bg_alt '#282c34',
+---@field bg_blue "#61afef",
+---@field bg_d "#181b20",
+---@field bg_yellow "#e8c88c",
+---@field black "#0e1013",
+---@field blue "#4fa6ed",
+---@field cyan "#48b0bd",
+---@field dark_cyan "#266269",
+---@field dark_purple "#7e3992",
+---@field dark_red "#8b3434",
+---@field dark_yellow "#835d1a",
+---@field diff_add "#272e23",
+---@field diff_change "#172a3a",
+---@field diff_delete "#2d2223",
+---@field diff_text "#274964",
+---@field fg "#a0a8b7",
+---@field green "#8ebd6b",
+---@field grey "#535965",
+---@field light_grey "#7a818e",
+---@field none "none",
+---@field orange "#cc9057",
+---@field purple "#bf68d9",
+---@field red "#e55561",
+---@field yellow "#e2b86b"
+local colors = c
 
-local colors = {
-  PmenuSel = { bg = "#282C34", fg = "NONE" },
-  Pmenu = { fg = "#C5CDD9", bg = "#22252A" },
+colors.bg = colors.bg0
+colors.bg_alt = colors.bg1
 
-  CmpItemAbbrDeprecated = { fg = "#7E8294", bg = "NONE", strikethrough = true },
-  CmpItemAbbrMatch = { fg = "#82AAFF", bg = "NONE", bold = true },
-  CmpItemAbbrMatchFuzzy = { fg = "#82AAFF", bg = "NONE", bold = true },
-  CmpItemMenu = { fg = "#C792EA", bg = "NONE", italic = true },
+local highlights = {
+  PmenuSel = { bg = colors.bg1 , fg = "NONE" },
+  Pmenu = { fg = colors.fg, bg = colors.bg_d },
+
+  CmpItemAbbrDeprecated = { fg = colors.light_grey, bg = "NONE", strikethrough = true },
+  CmpItemAbbrMatch = { fg = colors.blue, bg = "NONE", bold = true, underline = true },
+  CmpItemAbbrMatchFuzzy = { fg = colors.blue, bg = "NONE", bold = true, underline = true  },
+  CmpItemMenu = { fg = colors.purple, bg = "NONE", italic = true },
 
   CmpItemKindField = { fg = "#EED8DA", bg = "#B5585F" },
   CmpItemKindProperty = { fg = "#EED8DA", bg = "#B5585F" },
@@ -46,69 +77,42 @@ local colors = {
   CmpItemKindColor = { fg = "#D8EEEB", bg = "#58B5A8" },
   CmpItemKindTypeParameter = { fg = "#D8EEEB", bg = "#58B5A8" },
 
-  DapBreakpoint = { fg = c.red },
-  DapBreakpointCondition = { fg = c.red },
-  DapLogPoint = { fg = c.red },
-  DapStopped = { fg = c.green },
-  DapStoppedLine = { bg = c.bg2 },
-  DapBreakpointRejected = { fg = c.yellow },
+  DapBreakpoint = { fg = colors.red },
+  DapBreakpointCondition = { fg = colors.red },
+  DapLogPoint = { fg = colors.red },
+  DapStopped = { fg = colors.green },
+  DapStoppedLine = { bg = colors.bg2 },
+  DapBreakpointRejected = { fg = colors.yellow },
 
-  LirFloatNormal = { bg = c.bg_d },
-  LirFloatBorder = { bg = c.bg_d },
-  LirFloatCurdirWindowNormal = { fg = c.blue, bg = c.bg_d },
+  IndentBlanklineContextStart = { underline = false, bg = colors.bg2 },
 
-  FileModified = { fg = c.yellow },
+  -- LirFloatNormal = { link = 'LirFloatNormal' },
+  -- LirFloatBorder = { bg = colors.bg_d },
+  -- LirFloatCurdirWindowNormal = { fg = colors.blue, bg = colors.bg_d },
+
+  BqfPreviewFloat = { link = "FloatNormal" },
+  FileModified = { fg = colors.yellow },
   FileLine = { link = "lualine_c_normal" },
 
-  FloatNormal = { bg = c.bg1 },
-  FloatBorder = { bg = c.bg1 },
-
   -- Credit  https://astronvim.com/recipes/telescope_theme
-  TelescopeBorder = { fg = c.bg_alt, bg = c.bg_d },
-  TelescopeNormal = { bg = c.bg_d },
-  TelescopePreviewBorder = { fg = c.bg, bg = c.bg_d },
-  TelescopePreviewNormal = { bg = c.bg_d },
-  TelescopePreviewTitle = { fg = c.bg, bg = c.green },
-  TelescopePromptBorder = { fg = c.bg_alt, bg = c.bg_alt },
-  TelescopePromptNormal = { fg = c.fg, bg = c.bg_alt },
-  TelescopePromptPrefix = { fg = c.red, bg = c.bg_alt },
-  TelescopePromptTitle = { fg = c.bg, bg = c.red },
-  TelescopeResultsBorder = { fg = c.bg_d, bg = c.bg_d },
-  TelescopeResultsNormal = { bg = c.bg_d },
-  TelescopeResultsTitle = { fg = c.bg, bg = c.blue },
+  TelescopeBorder = { fg = colors.bg_alt, bg = colors.bg_d },
+  TelescopeNormal = { bg = colors.bg_d },
+  TelescopePreviewBorder = { fg = colors.bg, bg = colors.bg_d },
+  TelescopePreviewNormal = { bg = colors.bg_d },
+  TelescopePreviewTitle = { fg = colors.bg, bg = colors.green },
+  TelescopePromptBorder = { fg = colors.bg_alt, bg = colors.bg_alt },
+  TelescopePromptNormal = { fg = colors.fg, bg = colors.bg_alt },
+  TelescopePromptPrefix = { fg = colors.red, bg = colors.bg_alt },
+  TelescopePromptTitle = { fg = colors.bg, bg = colors.red },
+  TelescopeResultsBorder = { fg = colors.bg_d, bg = colors.bg_d },
+  TelescopeResultsNormal = { bg = colors.bg_d },
+  TelescopeResultsTitle = { fg = colors.bg, bg = colors.blue },
 }
 
-for key, val in pairs(colors) do
+highlights = vim.tbl_extend('force', highlights, require("hover").set_highlights(colors))
+
+for key, val in pairs(highlights) do
   vim.api.nvim_set_hl(0, key, val)
 end
 
---  {
---   bg0 = "#1f2329",
---   bg1 = "#282c34",
---   bg2 = "#30363f",
---   bg3 = "#323641",
---   bg_alt = "#1f2329",
---   bg_blue = "#61afef",
---   bg_d = "#181b20",
---   bg_yellow = "#e8c88c",
---   black = "#0e1013",
---   blue = "#4fa6ed",
---   cyan = "#48b0bd",
---   dark_cyan = "#266269",
---   dark_purple = "#7e3992",
---   dark_red = "#8b3434",
---   dark_yellow = "#835d1a",
---   diff_add = "#272e23",
---   diff_change = "#172a3a",
---   diff_delete = "#2d2223",
---   diff_text = "#274964",
---   fg = "#a0a8b7",
---   green = "#8ebd6b",
---   grey = "#535965",
---   light_grey = "#7a818e",
---   none = "none",
---   orange = "#cc9057",
---   purple = "#bf68d9",
---   red = "#e55561",
---   yellow = "#e2b86b"
--- }
+return colors

@@ -1,21 +1,4 @@
 -- lsp setup functions {{{
---
-local border = {
-  {" ", "FloatBorder"},
-  {" ", "FloatBorder"},
-  {" ", "FloatBorder"},
-  {" ", "FloatBorder"},
-  {" ", "FloatBorder"},
-  {" ", "FloatBorder"},
-  {" ", "FloatBorder"},
-  {" ", "FloatBorder"},
-}
-
--- LSP settings (for overriding per client)
-local handlers =  {
-  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border, silent = true}),
-  ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border , silent = true}),
-}
 
 local function keymappings(client, bufnr)
   local opts = { noremap = true, silent = true }
@@ -68,7 +51,6 @@ local lsp_opts = {
     keymappings(client, bufnr)
   end,
 
-  handlers = handlers,
   capabilities = require('cmp_nvim_lsp').default_capabilities()
 }
 -- }}}
@@ -78,9 +60,37 @@ return {
     'neovim/nvim-lspconfig',
     cond = NOT_VSCODE,
     event = "VeryLazy",
+    init = function()
+      local border = require("hover").border
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = border,
+        silent = true
+      })
+      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+        border = border,
+        focusable = false,
+        relative = "cursor",
+        silent = true
+      })
+
+      local signs = { Error = "", Warn = "", Hint = "", Info = "󰋼" }
+      for type, icon in pairs(signs) do
+        local hl = "DiagnosticSign" .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+      end
+    end,
     config = function()
       local lspconfig = require('lspconfig')
 
+      -- Borders for LspInfo winodw
+      local win = require "lspconfig.ui.windows"
+      local _default_opts = win.default_opts
+
+      win.default_opts = function(options)
+        local opts = _default_opts(options)
+        opts.border = border
+        return opts
+      end
 
       -- Lua Language Server Config {{{
       lspconfig.lua_ls.setup {
@@ -96,7 +106,12 @@ return {
             },
             workspace = {
               -- Make the server aware of Neovim runtime files
-              library = vim.api.nvim_get_runtime_file("", true),
+              -- library = vim.api.nvim_get_runtime_file("", true),
+              library = {
+                [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+                [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
+                [vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy"] = true,
+              },
               checkThirdParty = false,
             },
             -- Do not send telemetry data containing a randomized but unique identifier
@@ -105,7 +120,6 @@ return {
             },
           },
         },
-        handlers = handlers,
         on_attach = lsp_opts.on_attach,
         capabilities = lsp_opts.capabilities
       } -- }}}
@@ -116,11 +130,6 @@ return {
       lspconfig.tailwindcss.setup(lsp_opts)
       lspconfig.tsserver.setup(lsp_opts)
 
-      local signs = { Error = "", Warn = "", Hint = "", Info = "" }
-      for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-      end
     end
   },
 

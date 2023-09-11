@@ -1,6 +1,6 @@
 return {
-  {
-    'romgrk/barbar.nvim', -- tabline and buffer management
+  { -- BARBAR tabline and buffer management {{{
+    'romgrk/barbar.nvim',
     config = function()
       vim.g.barbar_auto_setup = false -- disable auto-setup
 
@@ -44,9 +44,10 @@ return {
       { "<A-9>", "<Cmd>BufferGoto 9<CR>"},
       { "<A-0>", "<Cmd>BufferLast<CR>"}
     }
-  },
-  {
-    'akinsho/bufferline.nvim', -- tabline and buffer management
+  }, --- }}}
+
+  { -- bufferline tabline and buffer management {{{
+    'akinsho/bufferline.nvim',
     config = function()
       require("bufferline").setup({
         options = {
@@ -85,27 +86,31 @@ return {
       { "<A-9>", "<Cmd>BufferLineGoToBuffer 9<CR>"},
     },
     cond = NOT_VSCODE
-  },
-  {
+  }, -- }}}
+
+  { -- LuaLine {{{
     'hoob3rt/lualine.nvim', -- Vim mode line
     lazy = false,
     config = function()
       local lsp_progress = function()
-        local active_clients = vim.lsp.get_active_clients()
-        local ignore = 0
+        local active_clients = vim.lsp.get_clients({bufnr = vim.api.nvim_get_current_buf()})
+        local filtered_clients = {}
         for _, v in ipairs(active_clients) do
-          if (v.name == "null-ls") then
-            ignore = ignore + 1
-            break
+          if (v.name ~= "null-ls") then
+            table.insert(filtered_clients, v)
           end
         end
-        local client_count = #active_clients
-        if client_count > 0 then
-          return " LSP: " .. client_count
+        if #filtered_clients > 0 then
+          local names = ""
+          for _, v in ipairs(filtered_clients) do
+            names = names .. " " .. v.name
+          end
+          return " LSP:" .. names
         else
           return ""
         end
       end
+      local colors = require("colors")
       require('lualine').setup {
         extensions = {
           "toggleterm",
@@ -114,13 +119,62 @@ return {
         options = {
           theme = 'onedark',
           section_separators = '',
-          component_separators = '│',
+          component_separators = '',
           globalstatus = true
         },
         sections = {
           lualine_b = {
             {
-              'branch',
+              'filename',
+              path = 1,
+              color = function(_)
+                return { fg = vim.bo.modified and colors.yellow or nil }
+              end,
+              symbols = {
+                modified = '󰆓',      -- Text to show when the file is modified.
+                readonly = '',      -- Text to show when the file is non-modifiable or readonly.
+                unnamed = '[*]', -- Text to show for unnamed buffers.
+                newfile = '󰈔',     -- Text to show for newly created file before first write
+              },
+            },
+            'location'
+          },
+          lualine_c = {
+            {
+              'diff',
+              symbols = { added = ' ', modified = '󰝤 ', removed = ' ' },
+            },
+            {
+              'diagnostics',
+              symbols = { error = " ", warn = " ", hint = " ", info = "󰋼 " }
+            }
+          },
+          lualine_x = {
+            {
+              lsp_progress,
+              color = { fg = colors.blue }
+            },
+            {
+              'encoding',
+              fmt = string.upper,
+              color = { fg = colors.green }
+            },
+            {
+              'fileformat',
+              fmt = string.upper,
+              icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
+              color = { fg = colors.green }
+            },
+            {
+              'filetype',
+              -- fmt = string.upper,
+              -- color = { fg = colors.orange }
+            },
+          },
+          lualine_y = {
+            {
+              'b:gitsigns_head',
+              icon = ''
               -- ---@param str string
               -- fmt = function (str)
               --   if str:len() > 40 then
@@ -129,29 +183,12 @@ return {
               --   return str
               -- end
             },
-            'diff',
-            'diagnostics'
           },
-          lualine_c = {
+          lualine_z = {
             {
-              'filename',
-              path = 1,
-              color = function(section)
-                return { fg = vim.bo.modified and '#e2b86b' or 'FileLine' }
-              end,
-              symbols = {
-                modified = '',      -- Text to show when the file is modified.
-                readonly = '',      -- Text to show when the file is non-modifiable or readonly.
-                unnamed = '[*]', -- Text to show for unnamed buffers.
-                newfile = '',     -- Text to show for newly created file before first write
-              },
-            },
-          },
-          lualine_x = {
-            lsp_progress,
-            'encoding',
-            'fileformat',
-            'filetype'
+              '" "',
+              padding = 0
+            }
           }
         }
       }
@@ -166,13 +203,54 @@ return {
       'nvim-lua/lsp-status.nvim'
     },
     cond = NOT_VSCODE
-  },
+  }, -- }}}
   {
     "vigoux/notifier.nvim",
     event = "VeryLazy",
     config = function()
       require'notifier'.setup {}
-    end
+    end,
+    cond = NOT_VSCODE
+
+  },
+  {
+    'kevinhwang91/nvim-bqf',
+    config = function()
+      require("bqf").setup({
+        preview = {
+          winblend = 0,
+          border = require("hover").border
+        }
+      })
+      vim.print(require("hover").border)
+    end,
+    ft = 'qf',
+    cond = NOT_VSCODE
+
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    opts = {
+      indentLine_enabled = 1,
+      filetype_exclude = {
+        "help",
+        "terminal",
+        "lazy",
+        "lspinfo",
+        "TelescopePrompt",
+        "TelescopeResults",
+        "mason",
+        "alpha",
+        "",
+      },
+      buftype_exclude = { "terminal" },
+      show_trailing_blankline_indent = false,
+      show_first_indent_level = false,
+      show_current_context = true,
+      show_current_context_start = true,
+    },
+    event = "VeryLazy",
+    cond = NOT_VSCODE
   },
   -- {
   --   "levouh/tint.nvim",

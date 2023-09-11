@@ -56,14 +56,8 @@ return {
     config = function()
       require("Comment").setup()
     end,
+    cond = NOT_VSCODE
   },
-  {
-    'tommcdo/vim-lion',
-    keys = {
-      {'gl' , desc = 'Align text at (right)' },
-      {'gL' , desc = 'Align text at (left)' },
-    }
-  }, -- gl<text> to align
   {'mg979/vim-visual-multi', cond = NOT_VSCODE, event = "VeryLazy"}, -- Multiple cursors (Ctrl+n to select word and Ctrl+Down/Up)
   {'cohama/lexima.vim', cond = NOT_VSCODE, event = "VeryLazy"},
   {
@@ -127,6 +121,7 @@ return {
     'navarasu/onedark.nvim',
     config = function()
       require('onedark').setup {
+        -- toggle_style_key = "<leader>tc", -- keybind to toggle theme style. Leave it nil to disable it, or set it to a string, for example "<leader>ts"
         style = 'darker'
       }
       require('onedark').load()
