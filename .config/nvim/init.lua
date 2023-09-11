@@ -1,42 +1,7 @@
 vim.cmd([[
   autocmd VimEnter * if argc() > 0 && isdirectory(argv()[0]) | execute 'cd' fnameescape(argv()[0]) | endif
 ]])
--- map leader to space
-vim.g.mapleader = " "
 
-vim.opt.laststatus = 3
-
-vim.opt.termguicolors = true
-
-function NOT_VSCODE()
-  return not vim.g.vscode
-end
-
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
-
-require("lazy").setup("plugins", {
-  dev = {
-    path = "~/projects",
-    fallback = true
-  },
-  defaults = {
-    lazy = true
-  }
-})
-
-vim.opt.guifont =  "JetBrainsMono Nerd Font:h9"
 
 if vim.g.neovide then
   vim.g.neovide_scale_factor = 1.0
@@ -51,12 +16,12 @@ if vim.g.neovide then
   end)
 end
 
+require("hover").setup('light')
+
 if vim.g.vscode then
 
   vim.keymap.set({'n', 'v', 'x'}, 'gc', "<Plug>VSCodeCommentary<CR>")
   vim.keymap.set('n', 'gcc', "<Plug>VSCodeCommentaryLine<CR>")
-
-else
 
 end
 
@@ -65,6 +30,10 @@ end
 -- use system clipboard
 -- vim.api.nvim_set_option("clipboard","unnamedplus")
 
+-- map leader to space
+vim.g.mapleader = " "
+vim.opt.termguicolors = true
+vim.opt.guifont =  "JetBrainsMono Nerd Font:h9"
 vim.opt.wildmenu       = true
 
 -- Set highlight on search
@@ -179,5 +148,34 @@ endif
 
 ]])
 -- }}} }}}
+
+
+function NOT_VSCODE()
+  return not vim.g.vscode
+end
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup("plugins", {
+  dev = {
+    path = "~/projects",
+    fallback = true
+  },
+  defaults = {
+    lazy = true
+  },
+})
 
 -- vim: ts=2 sts=2 sw=2 et

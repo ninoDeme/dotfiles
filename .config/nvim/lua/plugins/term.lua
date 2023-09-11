@@ -4,6 +4,7 @@ return {
     config = function()
       require("toggleterm").setup({
         persist_size = false,
+        shade_terminals = false,
         winbar = {
           enabled = true
         }
