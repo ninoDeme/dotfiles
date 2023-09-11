@@ -92,6 +92,8 @@ vim.opt.shiftwidth     = 2
 vim.opt.softtabstop    = 2
 vim.opt.expandtab      = true
 
+vim.opt.scrolloff      = 4
+
 vim.opt.wrap = false
 -- vim.opt.timeout = false
 -- vim.opt.timeoutlen = 300
