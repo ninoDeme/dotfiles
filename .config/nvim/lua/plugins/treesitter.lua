@@ -15,7 +15,7 @@ return {
           enable = true,
         },
         autotag = {
-          enable = true
+          enable = NOT_VSCODE()
         },
 
         ensure_installed = { 'typescript', 'lua', 'markdown', 'markdown_inline', 'json', 'jsdoc', 'javascript', 'sql', 'vim', 'html', 'css', 'scss'}
@@ -46,6 +46,7 @@ return {
     enabled = true,
     branch = "topic/jsx-fix",
     "elgiano/nvim-treesitter-angular",
+    cond = NOT_VSCODE,
     event = 'VeryLazy'
   },
   {

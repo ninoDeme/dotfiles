@@ -61,6 +61,10 @@ vim.opt.shiftwidth     = 2
 vim.opt.softtabstop    = 2
 vim.opt.expandtab      = true
 
+vim.opt.signcolumn     = 'yes'
+
+vim.opt.scrolloff      = 4
+
 vim.opt.wrap = false
 -- vim.opt.timeout = false
 -- vim.opt.timeoutlen = 300
@@ -120,9 +124,6 @@ noremap <Leader>p "+p
 " nnoremap <leader>r :source $MYVIMRC<CR>
 
 " Use fold as text object for motions
-" xnoremap iz :<C-U>silent!normal![zV]z<CR>
-" onoremap iz :normal viz<CR>
-
 xnoremap iz :<C-U>silent!normal![zjV]zk<CR>
 onoremap iz :normal Viz<CR>
 xnoremap az :<C-U>silent!normal![zV]z<CR>
@@ -133,14 +134,9 @@ tnoremap <Esc> <C-\><C-n>
 
 if !exists('g:vscode')
 
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" DAP mode bindings
-" noremap <silent> <leader>dd :lua require("dapui").toggle("sidebar")<CR>
-" noremap <silent> <F5> :lua require'dap'.continue()<CR>
-" noremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
+  " Use <Tab> and <S-Tab> to navigate through popup menu
+  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 endif
 
