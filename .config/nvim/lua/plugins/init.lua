@@ -7,25 +7,6 @@ return {
   {'sedm0784/vim-resize-mode', cond = NOT_VSCODE, keys = {'<C-w>'}},
   {'editorconfig/editorconfig-vim', event = "VeryLazy"}, -- Editor config support
 
-  {
-    "gbprod/substitute.nvim",
-    config = true,
-    keys = {
-      {mode = "n", "gr", function() require('substitute').operator() end,  noremap = true },
-      {mode = "n", "grr", function() require('substitute').line() end,  noremap = true },
-      {mode = "n", "gR", function() require('substitute').eol() end,  noremap = true },
-      {mode = "x", "gr", function() require('substitute').visual() end,  noremap = true },
-      {mode = "n", "<leader>r", '"+<cmd>lua require("substitute").operator()<cr>',  noremap = true },
-      {mode = "n", "<leader>rr", '"+<cmd>lua require("substitute").line()<cr>',  noremap = true },
-      {mode = "n", "<leader>R", '"+<cmd>lua require("substitute").eol()<cr>',  noremap = true },
-      {mode = "x", "<leader>r", '"+<cmd>lua require("substitute").visual()<cr>',  noremap = true },
-      {mode = "n", "cx", function() require('substitute.exchange').operator() end,  noremap = true },
-      {mode = "n", "cxx", function() require('substitute.exchange').line() end,  noremap = true },
-      {mode = "x", "cx", function() require('substitute.exchange').visual() end,  noremap = true },
-      {mode = "n", "cxc", function() require('substitute.exchange').cancel() end,  noremap = true },
-    },
-    opts = {}
-  },
   {'tpope/vim-surround', event = 'VeryLazy'}, -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
   {
     'folke/which-key.nvim',
@@ -43,21 +24,6 @@ return {
     cond = NOT_VSCODE
   },
 
-  {
-    "numToStr/Comment.nvim",
-    keys = {
-      { "gcc", mode = "n", desc = "Comment toggle current line" },
-      { "gc", mode = { "n", "o" }, desc = "Comment toggle linewise" },
-      { "gc", mode = "x", desc = "Comment toggle linewise (visual)" },
-      { "gbc", mode = "n", desc = "Comment toggle current block" },
-      { "gb", mode = { "n", "o" }, desc = "Comment toggle blockwise" },
-      { "gb", mode = "x", desc = "Comment toggle blockwise (visual)" },
-    },
-    config = function()
-      require("Comment").setup()
-    end,
-    cond = NOT_VSCODE
-  },
   {'mg979/vim-visual-multi', cond = NOT_VSCODE, event = "VeryLazy"}, -- Multiple cursors (Ctrl+n to select word and Ctrl+Down/Up)
   {'cohama/lexima.vim', cond = NOT_VSCODE, event = "VeryLazy"},
   {
@@ -69,21 +35,17 @@ return {
     event = 'VeryLazy'
   },
 
-  -- 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
-  {
-    'wellle/targets.vim',
-    event = 'VeryLazy'
-  },
-
-  {
-    'michaeljsmith/vim-indent-object',
-    event = 'VeryLazy'
-  }, -- add indent text object for motions ii ai 
-  {
-    'kana/vim-textobj-entire',
-    event = 'VeryLazy',
-    dependencies ={'kana/vim-textobj-user'}
-  },
+  -- -- 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
+  -- {
+  --   'wellle/targets.vim',
+  --   event = 'VeryLazy'
+  -- },
+  --
+  -- {
+  --   'kana/vim-textobj-entire',
+  --   event = 'VeryLazy',
+  --   dependencies ={'kana/vim-textobj-user'}
+  -- },
 
   {
     "sindrets/diffview.nvim",
@@ -95,7 +57,8 @@ return {
       "DiffviewReference",
       "DiffviewFileHistory",
       "DiffviewToggleFiles",
-    }
+    },
+    cond = NOT_VSCODE,
   },
 
   {
@@ -117,7 +80,7 @@ return {
   {'ayu-theme/ayu-vim', cond = NOT_VSCODE},
   {
     lazy = false,
-    priority = 9999,
+    priority = 1006,
     'navarasu/onedark.nvim',
     config = function()
       require('onedark').setup {
@@ -130,56 +93,111 @@ return {
     end,
     cond = NOT_VSCODE
   },
-  {
-    'norcalli/nvim-colorizer.lua',
-    cond = NOT_VSCODE,
-    cmd = {"ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers"}
-  },
+  -- {'kana/vim-textobj-user', --- {{{
+  --   event = 'VeryLazy',
+  --   config = function()
+  --     vim.cmd[[
+  --     " Regexes
+  --     " Note that all regexes are surrounded by (), use that to your advantage.
+  --
+  --     " Teste usar lookbehind para verificar se não é o nome da tag
+  --     " A word: `attr=value`, with no quotes.
+  --     let s:RE_WORD = '\(\w\+\)'
+  --     " An attribute name: `src`, `data-attr`, `strange_attr`.
+  --     let s:RE_ATTR_NAME = '\([\[\(\#\*]\{0,2}\)\([a-zA-Z0-9\-_:@.]\+\)\([\]\)]\{0,2}\)'
+  --     " A quoted string.
+  --     let s:RE_QUOTED_STR = '\(".\{-}"\)'
+  --     " The value of an attribute: a word with no quotes or a quoted string.
+  --     let s:RE_ATTR_VALUE = '\(' . s:RE_QUOTED_STR . '\|' . s:RE_WORD . '\)'
+  --     " The right-hand side of an XML attr: an optional `=something` or `="str"`.
+  --     let s:RE_ATTR_RHS = '\(=' . s:RE_ATTR_VALUE . '\)\='
+  --
+  --     " The final regex.
+  --     let s:RE_ATTR_I = '\(' . s:RE_ATTR_NAME . s:RE_ATTR_RHS . '\)'
+  --     let s:RE_ATTR_A = '\s\+' . s:RE_ATTR_I
+  --     let s:RE_ATTR_AX = '\s\+' . s:RE_ATTR_NAME
+  --
+  --     call textobj#user#plugin('angularattr', {
+  --     \   'attr-i': {
+  --     \     'pattern': s:RE_ATTR_I,
+  --     \     'select': 'ix',
+  --     \   },
+  --     \   'attr-a': {
+  --     \     'pattern': s:RE_ATTR_A,
+  --     \     'select': 'ax',
+  --     \   },
+  --     \   'attr-iX': {
+  --     \     'pattern': s:RE_ATTR_NAME,
+  --     \     'select': 'iX'
+  --     \   },
+  --     \   'attr-aX': {
+  --     \     'pattern': s:RE_ATTR_AX,
+  --     \     'select': 'aX'
+  --     \   },
+  --     \ })
+  --
+  --     ]]
+  --   end
+  -- }, --- }}}
 
-  {'kana/vim-textobj-user',
+  {
+    'echasnovski/mini.nvim',
     event = 'VeryLazy',
     config = function()
-      vim.cmd[[
-" Regexes
-" Note that all regexes are surrounded by (), use that to your advantage.
+      if NOT_VSCODE() then 
+        require("mini.comment").setup()
+      require("mini.files").setup()
 
-" Teste usar lookbehind para verificar se não é o nome da tag
-" A word: `attr=value`, with no quotes.
-let s:RE_WORD = '\(\w\+\)'
-" An attribute name: `src`, `data-attr`, `strange_attr`.
-let s:RE_ATTR_NAME = '\([\[\(\#\*]\{0,2}\)\([a-zA-Z0-9\-_:@.]\+\)\([\]\)]\{0,2}\)'
-" A quoted string.
-let s:RE_QUOTED_STR = '\(".\{-}"\)'
-" The value of an attribute: a word with no quotes or a quoted string.
-let s:RE_ATTR_VALUE = '\(' . s:RE_QUOTED_STR . '\|' . s:RE_WORD . '\)'
-" The right-hand side of an XML attr: an optional `=something` or `="str"`.
-let s:RE_ATTR_RHS = '\(=' . s:RE_ATTR_VALUE . '\)\='
+      require('mini.cursorword').setup()
+      local hipatterns = require('mini.hipatterns')
+      hipatterns.setup({
+        highlighters = {
+          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+          fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+          hack  = { pattern = '%f[%w]()HACK()%f[%W]',  group = 'MiniHipatternsHack'  },
+          todo  = { pattern = '%f[%w]()TODO()%f[%W]',  group = 'MiniHipatternsTodo'  },
+          note  = { pattern = '%f[%w]()NOTE()%f[%W]',  group = 'MiniHipatternsNote'  },
 
-" The final regex.
-let s:RE_ATTR_I = '\(' . s:RE_ATTR_NAME . s:RE_ATTR_RHS . '\)'
-let s:RE_ATTR_A = '\s\+' . s:RE_ATTR_I
-let s:RE_ATTR_AX = '\s\+' . s:RE_ATTR_NAME
-
-call textobj#user#plugin('angularattr', {
-\   'attr-i': {
-\     'pattern': s:RE_ATTR_I,
-\     'select': 'ix',
-\   },
-\   'attr-a': {
-\     'pattern': s:RE_ATTR_A,
-\     'select': 'ax',
-\   },
-\   'attr-iX': {
-\     'pattern': s:RE_ATTR_NAME,
-\     'select': 'iX'
-\   },
-\   'attr-aX': {
-\     'pattern': s:RE_ATTR_AX,
-\     'select': 'aX'
-\   },
-\ })
-
-      ]]
-    end
-  },
+          -- Highlight hex color strings (`#rrggbb`) using that color
+          hex_color = hipatterns.gen_highlighter.hex_color(),
+        },
+      })
+      end
+      require('mini.bracketed').setup()
+      require('mini.ai').setup({
+        custom_textobjects = {
+          g = function()
+            local from = { line = 1, col = 1 }
+            local to = {
+              line = vim.fn.line('$'),
+              col = math.max(vim.fn.getline('$'):len(), 1)
+            }
+            return { from = from, to = to }
+          end,
+          x = {'()%*?%[?%(?[%w_-]+%)?%]?()=%b""'}
+        },
+      })
+      require('mini.align').setup()
+      require('mini.splitjoin').setup()
+      require('mini.operators').setup({
+        exchange = {
+          prefix = 'cx'
+        },
+      })
+      vim.g.miniindentscope_disable = true
+      require('mini.indentscope').setup({
+        draw = {
+          animation = require('mini.indentscope').gen_animation.none()
+        }
+      })
+    end,
+    keys = {
+      {mode = {"n", "v"}, "<leader>r", '"+gr', remap = true},
+      {mode = "n", "<leader>R", '"+gr$', remap = true},
+      {mode = "n", "gR", 'gr$', remap = true},
+      {mode = "n", "cX", 'cx$', remap = true},
+      {'<leader>m', desc = "+Mini"},
+      {'<leader>me', function() require("mini.files").open() end, desc = "Open Mini Files"}
+    }
+  }
 }

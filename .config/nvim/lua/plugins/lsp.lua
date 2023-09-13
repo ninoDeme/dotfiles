@@ -227,6 +227,7 @@ return {
 
   {
     'mfussenegger/nvim-jdtls',
+    cond = NOT_VSCODE,
     event = "VeryLazy",
     dependencies = {
       'mason.nvim',
