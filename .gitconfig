@@ -5,3 +5,6 @@
 	credentialStore = secretservice
 [core]
 	autocrlf = input
+  editor = nvim
+[diff]
+  tool = nvimdiff

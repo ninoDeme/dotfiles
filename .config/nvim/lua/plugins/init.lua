@@ -1,34 +1,33 @@
 return {
-  {'lambdalisue/vim-manpager', cond = NOT_VSCODE, event = "VeryLazy"}, -- Use vim as a manpager
-  {'lambdalisue/vim-pager', cond = NOT_VSCODE, event = "VeryLazy"}, -- Use vim as a pager
-  {'nvim-lua/plenary.nvim', cond = NOT_VSCODE}, -- Telescope dependency
-  {'kyazdani42/nvim-web-devicons', cond = NOT_VSCODE }, -- Add icons to plugins
-  {'christoomey/vim-tmux-navigator', event = "VeryLazy"},
-  {'sedm0784/vim-resize-mode', cond = NOT_VSCODE, keys = {'<C-w>'}},
-  {'editorconfig/editorconfig-vim', event = "VeryLazy"}, -- Editor config support
+  { 'lambdalisue/vim-manpager',       cond = NOT_VSCODE, event = "VeryLazy" }, -- Use vim as a manpager
+  { 'lambdalisue/vim-pager',          cond = NOT_VSCODE, event = "VeryLazy" }, -- Use vim as a pager
+  { 'nvim-lua/plenary.nvim',          cond = NOT_VSCODE },             -- Telescope dependency
+  { 'kyazdani42/nvim-web-devicons',   cond = NOT_VSCODE },             -- Add icons to plugins
+  { 'christoomey/vim-tmux-navigator', event = "VeryLazy" },
+  { 'sedm0784/vim-resize-mode',       cond = NOT_VSCODE, keys = { '<C-w>' } },
+  { 'editorconfig/editorconfig-vim',  event = "VeryLazy" }, -- Editor config support
 
-  {'tpope/vim-surround', event = 'VeryLazy'}, -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
+  { 'tpope/vim-surround',             event = 'VeryLazy' }, -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
     config = function()
       require('which-key').register({
-        s  = { name = 'Telescope', },
-        t  = { name = '+Toggle Numbered Terminals', },
-        g  = { name = '+Git', },
-        d  = { name = '+Debug', },
+        s = { name = 'Telescope', },
+        t = { name = '+Toggle Numbered Terminals', },
+        g = { name = '+Git', },
+        d = { name = '+Debug', },
         b = { name = '+Buffers', },
-        W = { 'Create dir to current file' , '<Cmd>:call mkdir(expand("%:p:h"),"p")<CR>'},
-      }, {prefix = '<leader>'})
+        W = { 'Create dir to current file', '<Cmd>:call mkdir(expand("%:p:h"),"p")<CR>' },
+      }, { prefix = '<leader>' })
     end,
     cond = NOT_VSCODE
   },
-
-  {'mg979/vim-visual-multi', cond = NOT_VSCODE, event = "VeryLazy"}, -- Multiple cursors (Ctrl+n to select word and Ctrl+Down/Up)
-  {'cohama/lexima.vim', cond = NOT_VSCODE, event = "VeryLazy"},
+  { 'mg979/vim-visual-multi', cond = NOT_VSCODE, event = "VeryLazy" }, -- Multiple cursors (Ctrl+n to select word and Ctrl+Down/Up)
+  { 'cohama/lexima.vim',      cond = NOT_VSCODE, event = "VeryLazy" },
   {
     'ggandor/leap.nvim',
-    dependencies = {'tpope/vim-repeat'},
+    dependencies = { 'tpope/vim-repeat' },
     config = function()
       require('leap').add_default_mappings()
     end,
@@ -46,7 +45,10 @@ return {
   --   event = 'VeryLazy',
   --   dependencies ={'kana/vim-textobj-user'}
   -- },
-
+  {
+    'michaeljsmith/vim-indent-object',
+    event = 'VeryLazy'
+  }, -- add indent text object for motions ii ai 
   {
     "sindrets/diffview.nvim",
     cmd = {
@@ -77,7 +79,7 @@ return {
   }, -- Snippets plugin
 
   -- Color schemes =======================
-  {'ayu-theme/ayu-vim', cond = NOT_VSCODE},
+  { 'ayu-theme/ayu-vim', cond = NOT_VSCODE },
   {
     lazy = false,
     priority = 1006,
@@ -144,24 +146,24 @@ return {
     'echasnovski/mini.nvim',
     event = 'VeryLazy',
     config = function()
-      if NOT_VSCODE() then 
+      if NOT_VSCODE() then
         require("mini.comment").setup()
-      require("mini.files").setup()
+        require("mini.files").setup()
 
-      require('mini.cursorword').setup()
-      local hipatterns = require('mini.hipatterns')
-      hipatterns.setup({
-        highlighters = {
-          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-          fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-          hack  = { pattern = '%f[%w]()HACK()%f[%W]',  group = 'MiniHipatternsHack'  },
-          todo  = { pattern = '%f[%w]()TODO()%f[%W]',  group = 'MiniHipatternsTodo'  },
-          note  = { pattern = '%f[%w]()NOTE()%f[%W]',  group = 'MiniHipatternsNote'  },
+        require('mini.cursorword').setup()
+        local hipatterns = require('mini.hipatterns')
+        hipatterns.setup({
+          highlighters = {
+            -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+            fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+            hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+            todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+            note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
 
-          -- Highlight hex color strings (`#rrggbb`) using that color
-          hex_color = hipatterns.gen_highlighter.hex_color(),
-        },
-      })
+            -- Highlight hex color strings (`#rrggbb`) using that color
+            hex_color = hipatterns.gen_highlighter.hex_color(),
+          },
+        })
       end
       require('mini.bracketed').setup()
       require('mini.ai').setup({
@@ -174,7 +176,12 @@ return {
             }
             return { from = from, to = to }
           end,
-          x = {'()%*?%[?%(?[%w_-]+%)?%]?()=%b""'}
+          x = {  {
+            '%s()%*?%[?%(?[%w_-]+%)?%]?=%b""()',
+            "%s()%*?%[?%(?[%w_-]+%)?%]?=%b''()",
+            '%s()%*?%[?%(?[%w_-]+%)?%]?=%b{}()',
+            '%s()%*?%[?%(?[%w_-]+%)?%]?=[%w_-]+()'
+          } }
         },
       })
       require('mini.align').setup()
@@ -184,20 +191,14 @@ return {
           prefix = 'cx'
         },
       })
-      vim.g.miniindentscope_disable = true
-      require('mini.indentscope').setup({
-        draw = {
-          animation = require('mini.indentscope').gen_animation.none()
-        }
-      })
     end,
     keys = {
-      {mode = {"n", "v"}, "<leader>r", '"+gr', remap = true},
-      {mode = "n", "<leader>R", '"+gr$', remap = true},
-      {mode = "n", "gR", 'gr$', remap = true},
-      {mode = "n", "cX", 'cx$', remap = true},
-      {'<leader>m', desc = "+Mini"},
-      {'<leader>me', function() require("mini.files").open() end, desc = "Open Mini Files"}
+      { mode = { "n", "v" }, "<leader>r",                               '"+gr',                  remap = true },
+      { mode = "n",        "<leader>R",                                 '"+gr$',                 remap = true },
+      { mode = "n",        "gR",                                        'gr$',                   remap = true },
+      { mode = "n",        "cX",                                        'cx$',                   remap = true },
+      { '<leader>m',       desc = "+Mini" },
+      { '<leader>me',      function() require("mini.files").open() end, desc = "Open Mini Files" }
     }
   }
 }
