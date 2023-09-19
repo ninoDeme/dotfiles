@@ -53,6 +53,7 @@ return {
               ["<C-k>"] = telescope_actions.move_selection_previous,
               ["<C-j>"] = telescope_actions.move_selection_next,
               ["<C-l>"] = telescope_actions.select_default,
+              ["l"] = telescope_actions.select_default,
             },
             i = {
               ['<c-x>'] = telescope_actions.delete_buffer,
@@ -67,6 +68,7 @@ return {
         },
         extensions = {
           file_browser  = {
+            hidden = true,
             hijack_netrw = true,
             respect_gitignore = false,
             grouped = true,
@@ -74,7 +76,7 @@ return {
             mappings = {
               n = {
                 ["h"] = fb_actions.goto_parent_dir,
-                ["l"] = telescope_actions.select_default,
+                ["<C-h>"] = fb_actions.goto_parent_dir,
                 ["."] = fb_actions.toggle_hidden
               },
               i = {
