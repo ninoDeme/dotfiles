@@ -41,14 +41,6 @@ return {
     cond = NOT_VSCODE
   },
   {'p00f/nvim-ts-rainbow', cond = NOT_VSCODE},
-
-  {
-    enabled = true,
-    branch = "topic/jsx-fix",
-    "elgiano/nvim-treesitter-angular",
-    cond = NOT_VSCODE,
-    event = 'VeryLazy'
-  },
   {
     "windwp/nvim-ts-autotag",
     cond = NOT_VSCODE
