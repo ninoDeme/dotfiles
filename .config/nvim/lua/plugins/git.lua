@@ -50,4 +50,14 @@ return {
     cond = NOT_VSCODE
   }, -- Git stuff
 
+  {
+    "kdheepak/lazygit.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    keys = {
+      {"<leader>gG", "<cmd>LazyGitCurrentFile<CR>", desc = "LazyGitCurrent"},
+      {"<leader>gG", "<cmd>LazyGitCurrentFile<CR>", desc = "LazyGitCurrent"}
+    }
+  },
 }

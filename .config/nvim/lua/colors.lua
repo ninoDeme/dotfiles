@@ -84,7 +84,7 @@ local highlights = {
   DapStoppedLine = { bg = colors.bg2 },
   DapBreakpointRejected = { fg = colors.yellow },
 
-  IndentBlanklineContextStart = { underline = false, bg = colors.bg2 },
+  IndentBlanklineContextStart = { underline = false, bg = colors.bg1 },
 
   -- LirFloatNormal = { link = 'LirFloatNormal' },
   -- LirFloatBorder = { bg = colors.bg_d },
@@ -93,6 +93,8 @@ local highlights = {
   BqfPreviewFloat = { link = "FloatNormal" },
   FileModified = { fg = colors.yellow },
   FileLine = { link = "lualine_c_normal" },
+
+  TreesitterContext = { bg=colors.bg1 },
 
   -- Credit  https://astronvim.com/recipes/telescope_theme
   TelescopeBorder = { fg = colors.bg_alt, bg = colors.bg_d },
