@@ -35,12 +35,16 @@ return {
       "windwp/nvim-ts-autotag",
     }
   }, -- Parsesr and highlighter for a lot of languages
+  
   {
     'romgrk/nvim-treesitter-context', -- Shows the context (current function or method)
     dependencies = 'nvim-treesitter',
     cond = NOT_VSCODE
   },
-  {'p00f/nvim-ts-rainbow', cond = NOT_VSCODE},
+  {
+    'p00f/nvim-ts-rainbow',
+    cond = NOT_VSCODE
+  },
   {
     "windwp/nvim-ts-autotag",
     cond = NOT_VSCODE

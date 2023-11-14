@@ -16,7 +16,7 @@ if vim.g.neovide then
   end)
 end
 
-require("hover").setup('light')
+require("hover").setup('dark')
 
 if vim.g.vscode then
 

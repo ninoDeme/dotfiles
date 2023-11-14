@@ -47,7 +47,8 @@ set TERMINAL "kitty"
 # set EDITOR "emacsclient -t -a ''"                 # $EDITOR use Emacs in terminal
 set VISUAL "emacsclient -c -a emacs"              # $VISUAL use Emacs in GUI mode
 # set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
-set -x MANPAGER 'nvim -c ASMANPAGER -'
+# set -x MANPAGER 'nvim -c ASMANPAGER -'
+# set -x MANPAGER 'nvim +Man!'
 set -x XDG_DATA_DIRS "/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
 set -x XDG_CONFIG_HOME "$HOME/.config/"
 set --global --export FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=90% --preview-window=wrap'

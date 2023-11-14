@@ -6,7 +6,7 @@ return {
         persist_size = false,
         shade_terminals = false,
         winbar = {
-          enabled = true
+          enabled = true,
         }
       })
       local tmuxTerm
@@ -91,18 +91,18 @@ return {
     end,
     cond = NOT_VSCODE,
     keys = {
-      {'<leader>t1', "<cmd>ToggleTerm 1<CR>", desc = 'Toggle Terminal 1'},
-      {'<leader>t2', "<cmd>ToggleTerm 2<CR>", desc = 'Toggle Terminal 2'},
-      {'<leader>t3', "<cmd>ToggleTerm 3<CR>", desc = 'Toggle Terminal 3'},
-      {'<leader>t4', "<cmd>ToggleTerm 4<CR>", desc = 'Toggle Terminal 4'},
-      {'<leader>t5', "<cmd>ToggleTerm 5<CR>", desc = 'Toggle Terminal 5'},
-      {'<leader>t6', "<cmd>ToggleTerm 6<CR>", desc = 'Toggle Terminal 6'},
-      {'<leader>t7', "<cmd>ToggleTerm 7<CR>", desc = 'Toggle Terminal 7'},
-      {'<leader>t8', "<cmd>ToggleTerm 8<CR>", desc = 'Toggle Terminal 8'},
-      {'<leader>t9', "<cmd>ToggleTerm 9<CR>", desc = 'Toggle Terminal 9'},
+      {'<leader>1', "<cmd>ToggleTerm 1<CR>", desc = 'Toggle Terminal 1'},
+      {'<leader>2', "<cmd>ToggleTerm 2<CR>", desc = 'Toggle Terminal 2'},
+      {'<leader>3', "<cmd>ToggleTerm 3<CR>", desc = 'Toggle Terminal 3'},
+      {'<leader>4', "<cmd>ToggleTerm 4<CR>", desc = 'Toggle Terminal 4'},
+      {'<leader>5', "<cmd>ToggleTerm 5<CR>", desc = 'Toggle Terminal 5'},
+      {'<leader>6', "<cmd>ToggleTerm 6<CR>", desc = 'Toggle Terminal 6'},
+      {'<leader>7', "<cmd>ToggleTerm 7<CR>", desc = 'Toggle Terminal 7'},
+      {'<leader>8', "<cmd>ToggleTerm 8<CR>", desc = 'Toggle Terminal 8'},
+      {'<leader>9', "<cmd>ToggleTerm 9<CR>", desc = 'Toggle Terminal 9'},
       {'<leader>st', "<cmd>TermSelect <CR>", desc = 'Select Terminal'},
       {'<leader>tp', desc = "Toggle Tmux Terminal"},
-      {'<leader>th', desc = "Toggle asd Terminal"},
+      {'<leader>th', desc = "Run Task/Pick Term"},
       -- {'<leader>tP', function() require("harpoon.term").gotoTerminal(0) end, desc = 'Open Drawer Terminal in Current Window'},
       {'<leader>tt', '<cmd>ToggleTerm<CR>', desc = "Toggle Terminal Popup"}
     }

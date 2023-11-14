@@ -128,10 +128,12 @@ return {
       lspconfig.html.setup(lsp_opts)
       lspconfig.cssls.setup(lsp_opts)
       lspconfig.tailwindcss.setup(lsp_opts)
+      lspconfig.rust_analyzer.setup(lsp_opts)
       -- lspconfig.tsserver.setup(lsp_opts)
       lspconfig.volar.setup(vim.tbl_extend("force", lsp_opts, {
         filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
       }))
+      lspconfig.svelte.setup(lsp_opts)
 
     end
   },

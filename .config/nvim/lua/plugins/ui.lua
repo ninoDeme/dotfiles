@@ -1,92 +1,4 @@
 return {
-  { -- BARBAR tabline and buffer management {{{
-    'romgrk/barbar.nvim',
-    config = function()
-      vim.g.barbar_auto_setup = false -- disable auto-setup
-
-      require("barbar").setup({
-        exclude_ft = {
-          "drex",
-          "dosini"
-        },
-        sidebar_filetypes = {
-          NvimTree = true,
-          drex = true,
-          DiffviewFiles = true,
-        },
-      })
-    end,
-    lazy = false,
-    enabled = false,
-    event = "VeryLazy",
-    dependencies = 'nvim-web-devicons',
-    cond = NOT_VSCODE,
-    keys = {
-      {"<leader>bx" , '<cmd>BufferClose<CR>', desc = 'Close Current Buffer'},
-      {"<leader>bb" , '<cmd>BufferPick<CR>', desc = 'Pick Buffer...'},
-      {"<leader>bq" , '<cmd>BufferPickDelete<CR>', desc = 'Close Buffer...'},
-      {"<leader>bp" , '<cmd>BufferPin<CR>', desc = 'Pin Current Buffer'},
-      {'<leader>b>' , '<cmd>BufferMoveNext<CR>', desc = 'Move Buffer Forwards'},
-      {'<leader>b<' , '<cmd>BufferMovePrevious<CR>', desc = 'Move Buffer Backwards'},
-      {'<leader>b.' , '<cmd>BufferNext<CR>', desc = 'Next Buffer'},
-      {'<leader>b,' , '<cmd>BufferPrevious<CR>', desc = 'Previous Buffer'},
-      { "gt", "<cmd>BufferNext<CR>", desc = "Next Buffer"},
-      { "gT", "<cmd>BufferPrevious<CR>", desc = "Previous Buffer"},
-
-      { "<A-1>", "<Cmd>BufferGoto 1<CR>"},
-      { "<A-2>", "<Cmd>BufferGoto 2<CR>"},
-      { "<A-3>", "<Cmd>BufferGoto 3<CR>"},
-      { "<A-4>", "<Cmd>BufferGoto 4<CR>"},
-      { "<A-5>", "<Cmd>BufferGoto 5<CR>"},
-      { "<A-6>", "<Cmd>BufferGoto 6<CR>"},
-      { "<A-7>", "<Cmd>BufferGoto 7<CR>"},
-      { "<A-8>", "<Cmd>BufferGoto 8<CR>"},
-      { "<A-9>", "<Cmd>BufferGoto 9<CR>"},
-      { "<A-0>", "<Cmd>BufferLast<CR>"}
-    }
-  }, --- }}}
-
-  { -- bufferline tabline and buffer management {{{
-    'akinsho/bufferline.nvim',
-    config = function()
-      require("bufferline").setup({
-        options = {
-          mode = "tabs",
-          close_command = "tabclose! %d",
-          diagnostics = "nvim_lsp",
-          always_show_bufferline = false
-        }
-      })
-    end,
-    lazy = false,
-    event = "VeryLazy",
-    dependencies = 'nvim-web-devicons',
-    keys = {
-      {"<leader>bx", '<cmd>tabclose<CR>', desc = 'Close Current Tab'},
-      {"<leader>bb", '<cmd>BufferLinePick<CR>', desc = 'Pick Tab...'},
-      {"<leader>bq", '<cmd>BufferLinePickClose<CR>', desc = 'Close Tab...'},
-      {"<leader>bc", '<cmd>tabnew<CR>', desc = 'New Tab'},
-      {"<leader>bp", '<cmd>BufferLinePin<CR>', desc = 'Pin Current Tab'},
-      {'<leader>b>', '<cmd>BufferLineMoveNext<CR>', desc = 'Move Tab Forwards'},
-      {'<leader>b<', '<cmd>BufferLineMovePrev<CR>', desc = 'Move Tab Backwards'},
-      {'<leader>b.', '<cmd>bnext<CR>', desc = 'Next Buffer'},
-      {'<leader>b,', '<cmd>bprevious<CR>', desc = 'Previous Buffer'},
-
-      { "gt", "<cmd>BufferLineCycleNext<CR>", desc = "Next Tab"},
-      { "gT", "<cmd>BufferLineCyclePrev<CR>", desc = "Previous Tab"},
-
-      { "<A-1>", "<Cmd>BufferLineGoToBuffer 1<CR>"},
-      { "<A-2>", "<Cmd>BufferLineGoToBuffer 2<CR>"},
-      { "<A-3>", "<Cmd>BufferLineGoToBuffer 3<CR>"},
-      { "<A-4>", "<Cmd>BufferLineGoToBuffer 4<CR>"},
-      { "<A-5>", "<Cmd>BufferLineGoToBuffer 5<CR>"},
-      { "<A-6>", "<Cmd>BufferLineGoToBuffer 6<CR>"},
-      { "<A-7>", "<Cmd>BufferLineGoToBuffer 7<CR>"},
-      { "<A-8>", "<Cmd>BufferLineGoToBuffer 8<CR>"},
-      { "<A-9>", "<Cmd>BufferLineGoToBuffer 9<CR>"},
-    },
-    cond = NOT_VSCODE
-  }, -- }}}
 
   { -- LuaLine {{{
     'hoob3rt/lualine.nvim', -- Vim mode line
@@ -117,13 +29,15 @@ return {
           "lazy"
         },
         options = {
-          theme = 'onedark',
+          -- theme = 'auto',
           section_separators = '',
           component_separators = '',
           globalstatus = true
         },
         sections = {
           lualine_b = {
+          },
+          lualine_c = {
             {
               'filename',
               path = 1,
@@ -137,9 +51,7 @@ return {
                 newfile = '󰈔',     -- Text to show for newly created file before first write
               },
             },
-            'location'
-          },
-          lualine_c = {
+            'location',
             {
               'diff',
               symbols = { added = ' ', modified = '󰝤 ', removed = ' ' },
@@ -162,7 +74,7 @@ return {
             {
               'fileformat',
               fmt = string.upper,
-              icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
+              icons_enabled = false,
               color = { fg = colors.green }
             },
             {
@@ -170,11 +82,10 @@ return {
               -- fmt = string.upper,
               -- color = { fg = colors.orange }
             },
-          },
-          lualine_y = {
             {
               'b:gitsigns_head',
-              icon = ''
+              icon = '',
+              color = { fg = colors.purple }
               -- ---@param str string
               -- fmt = function (str)
               --   if str:len() > 40 then
@@ -183,6 +94,8 @@ return {
               --   return str
               -- end
             },
+          },
+          lualine_y = {
           },
           lualine_z = {
             {
@@ -193,10 +106,10 @@ return {
         }
       }
       vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
-      vim.api.nvim_create_autocmd("User LspAttach LspDetach", {
-        group = "lualine_augroup",
-        callback = require("lualine").refresh,
-      })
+      -- vim.api.nvim_create_autocmd("User LspAttach LspDetach", {
+      --   group = "lualine_augroup",
+      --   callback = require("lualine").refresh,
+      -- })
     end,
     dependencies = {
       'nvim-web-devicons',
@@ -230,25 +143,36 @@ return {
   },
   {
     "lukas-reineke/indent-blankline.nvim",
-    opts = {
-      indentLine_enabled = 1,
-      filetype_exclude = {
-        "help",
-        "terminal",
-        "lazy",
-        "lspinfo",
-        "TelescopePrompt",
-        "TelescopeResults",
-        "mason",
-        "alpha",
-        "",
-      },
-      buftype_exclude = { "terminal" },
-      show_trailing_blankline_indent = false,
-      show_first_indent_level = false,
-      show_current_context = true,
-      show_current_context_start = true,
-    },
+    config = function ()
+      require("ibl").setup({
+        enabled = true,
+        exclude = {
+          filetypes = {
+            "help",
+            "terminal",
+            "lazy",
+            "lspinfo",
+            "TelescopePrompt",
+            "TelescopeResults",
+            "mason",
+            "alpha",
+            "",
+          },
+          buftypes = {
+            "terminal"
+          },
+        },
+        
+        scope = {
+          enabled = false,
+          show_start = false,
+          show_end = false,
+          -- char = "│",
+          highlight = {"IblScopeChar", "IblScopeChar", "IblScopeFunction"},
+        }
+    })
+    end,
+    enabled = false,
     event = "VeryLazy",
     cond = NOT_VSCODE
   },

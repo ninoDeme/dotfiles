@@ -198,7 +198,8 @@ return {
       { mode = "n",        "gR",                                        'gr$',                   remap = true },
       { mode = "n",        "cX",                                        'cx$',                   remap = true },
       { '<leader>m',       desc = "+Mini" },
-      { '<leader>me',      function() require("mini.files").open() end, desc = "Open Mini Files" }
+      { '<leader>me',      function() require("mini.files").open() end, desc = "Open Mini Files" },
+      { '<leader>m.',      function() require("mini.files").open(vim.fn.expand("%:p:h")) end, desc = "Open Mini Files at dir" }
     }
   }
 }
