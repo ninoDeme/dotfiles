@@ -37,4 +37,10 @@ return {
     },
     cond = NOT_VSCODE
   },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    dependencies = {
+      "mason.nvim"
+    }
+  },
 }

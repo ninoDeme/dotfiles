@@ -2,6 +2,7 @@ vim.cmd([[
   autocmd VimEnter * if argc() > 0 && isdirectory(argv()[0]) | execute 'cd' fnameescape(argv()[0]) | endif
 ]])
 
+vim.cmd('source ' .. vim.fn.stdpath("config") .. '/autoload/firebird.vim')
 
 if vim.g.neovide then
   vim.g.neovide_scale_factor = 1.0
