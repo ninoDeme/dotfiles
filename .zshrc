@@ -1,14 +1,3 @@
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME" --depth 1
-source "${ZINIT_HOME}/zinit.zsh"
-
-zinit light romkatv/gitstatus
-zinit light bilelmoussaoui/flatpak-zsh-completion
-
-source  $_gitstatus_plugin_dir/gitstatus.prompt.zsh 
-RPROMPT='$GITSTATUS_PROMPT'  # right prompt: git status
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -16,14 +5,31 @@ RPROMPT='$GITSTATUS_PROMPT'  # right prompt: git status
 
 [[ -z "$FUNCNEST" ]] && export FUNCNEST=100          # limits recursive functions, see 'man bash'
 
-# export TERM="xterm-256color"                      # getting proper colors
+bindkey -e
 
-set_prompt() {
-    PS1="%F{green}%n@%m%f %F{blue}%~%f%(?..%F{red} [%?]%f)$ "
-}
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME" --depth 1
+source "${ZINIT_HOME}/zinit.zsh"
 
-# Call the function to set the prompt
-set_prompt
+zinit light romkatv/gitstatus
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-history-substring-search
+
+bindkey '\eOA' history-substring-search-up # or '\eOA'
+bindkey '\eOB' history-substring-search-down # or '\eOB'
+
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
+
+HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+
+source  $_gitstatus_plugin_dir/gitstatus.prompt.zsh 
+
+RPROMPT='$GITSTATUS_PROMPT'  # right prompt: git status
+
+PS1="%F{green}%n@%m%f %F{blue}%~%f%(?..%F{red} [%?]%f)$ "
 
 _open_files_for_editing() {
     # Open any given document file(s) for editing (or just viewing).
@@ -93,9 +99,6 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 
 # alias pacdiff=eos-pacdiff
-
-export ZPWR_EXPAND_TO_HISTORY=true
-export ZPWR_EXPAND_PRE_EXEC_NATIVE=true
 # Lines configured by zsh-newuser-install
 #
 HISTFILE=~/.histfile
@@ -103,9 +106,7 @@ HISTSIZE=1000
 SAVEHIST=1000
 setopt autocd extendedglob nomatch
 unsetopt beep notify
-bindkey -e
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
+
 zstyle :compinstall filename '/home/nino/.zshrc'
 autoload -Uz compinit
 compinit
@@ -118,3 +119,5 @@ zstyle ':completion::complete:*' gain-privileges 1
 # NVM npm version manager
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+alias ssh 'TERM=xterm-color ssh'
