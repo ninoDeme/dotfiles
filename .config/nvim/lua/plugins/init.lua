@@ -33,7 +33,12 @@ return {
     end,
     event = 'VeryLazy'
   },
-
+  {
+    'skywind3000/asyncrun.vim',
+    cmd = {
+      'AsyncRun'
+    }
+  },
   -- -- 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
   -- {
   --   'wellle/targets.vim',

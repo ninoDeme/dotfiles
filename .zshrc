@@ -91,6 +91,8 @@ case "$TERM" in
     xterm-color) color_prompt=yes;;
 esac
 
+fpath+=~/.zfunc
+
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS

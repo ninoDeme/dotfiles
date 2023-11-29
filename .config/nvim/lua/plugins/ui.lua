@@ -135,47 +135,46 @@ return {
           border = require("hover").border
         }
       })
-      vim.print(require("hover").border)
     end,
     ft = 'qf',
     cond = NOT_VSCODE
 
   },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    config = function ()
-      require("ibl").setup({
-        enabled = true,
-        exclude = {
-          filetypes = {
-            "help",
-            "terminal",
-            "lazy",
-            "lspinfo",
-            "TelescopePrompt",
-            "TelescopeResults",
-            "mason",
-            "alpha",
-            "",
-          },
-          buftypes = {
-            "terminal"
-          },
-        },
-        
-        scope = {
-          enabled = false,
-          show_start = false,
-          show_end = false,
-          -- char = "│",
-          highlight = {"IblScopeChar", "IblScopeChar", "IblScopeFunction"},
-        }
-    })
-    end,
-    enabled = false,
-    event = "VeryLazy",
-    cond = NOT_VSCODE
-  },
+  -- {
+  --   "lukas-reineke/indent-blankline.nvim",
+  --   config = function ()
+  --     require("ibl").setup({
+  --       enabled = true,
+  --       exclude = {
+  --         filetypes = {
+  --           "help",
+  --           "terminal",
+  --           "lazy",
+  --           "lspinfo",
+  --           "TelescopePrompt",
+  --           "TelescopeResults",
+  --           "mason",
+  --           "alpha",
+  --           "",
+  --         },
+  --         buftypes = {
+  --           "terminal"
+  --         },
+  --       },
+  --
+  --       scope = {
+  --         enabled = false,
+  --         show_start = false,
+  --         show_end = false,
+  --         -- char = "│",
+  --         highlight = {"IblScopeChar", "IblScopeChar", "IblScopeFunction"},
+  --       }
+  --   })
+  --   end,
+  --   enabled = false,
+  --   event = "VeryLazy",
+  --   cond = NOT_VSCODE
+  -- },
   -- {
   --   "levouh/tint.nvim",
   --   event = "VeryLazy",

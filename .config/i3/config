@@ -37,7 +37,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id picom
 
-exec --no-startup-id setxkbmap -layout us -variant intl
+exec --no-startup-id setxkbmap -option us -variant altgr-intl
 
 exec --no-startup-id dunst
 
