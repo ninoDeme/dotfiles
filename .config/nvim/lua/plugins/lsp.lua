@@ -148,19 +148,6 @@ return {
     end,
     cond = NOT_VSCODE
   },
-
-  {
-    "ThePrimeagen/refactoring.nvim",
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-treesitter/nvim-treesitter" }
-    },
-    config = true,
-    opts = {},
-    event = "VeryLazy",
-    cond = NOT_VSCODE
-  },
-
   {
     "aznhe21/actions-preview.nvim",
     config = function()
@@ -172,49 +159,6 @@ return {
     keys = {
       { "<leader>la", desc = 'Code Actions', mode = { "v", "n" } }
     },
-    cond = NOT_VSCODE
-  },
-
-  {
-    'jose-elias-alvarez/null-ls.nvim',
-    event = "VeryLazy",
-    dependencies = "ThePrimeagen/refactoring.nvim",
-    config = function ()
-      local temEslint = {
-        condition = function(utils)
-          return utils.root_has_file({".eslintrc.json", ".eslintrc.js"})
-        end,
-      }
-      local null_ls = require("null-ls")
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.diagnostics.tsc,
-          null_ls.builtins.diagnostics.eslint_d.with(temEslint),
-          null_ls.builtins.formatting.eslint_d.with(temEslint),
-          null_ls.builtins.code_actions.eslint_d.with(temEslint),
-          null_ls.builtins.code_actions.refactoring,
-          null_ls.builtins.code_actions.gitrebase,
-          null_ls.builtins.code_actions.gitsigns,
-        }
-      })
-    end,
-    cond = NOT_VSCODE
-  },
-
-  {
-    'jay-babu/mason-null-ls.nvim',
-    config = function()
-      require("mason-null-ls").setup({
-        ensure_installed = {
-          'eslint_d',
-        },
-        automatic_installation = false,
-        automatic_setup = false, -- Recommended, but optional
-      })
-    end,
-    lazy = true,
-    event = "VeryLazy",
-    dependencies = { 'williamboman/mason.nvim' },
     cond = NOT_VSCODE
   },
 

@@ -2,7 +2,6 @@ return {
   {
     'mfussenegger/nvim-dap',
     config = function()
-
       local signs = {
         {"DapBreakpoint", ""},
         {"DapBreakpointCondition", ""},
@@ -37,10 +36,10 @@ return {
     },
     cond = NOT_VSCODE
   },
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    dependencies = {
-      "mason.nvim"
-    }
-  },
+  -- {
+  --   "jay-babu/mason-nvim-dap.nvim",
+  --   dependencies = {
+  --     "mason.nvim"
+  --   }
+  -- },
 }

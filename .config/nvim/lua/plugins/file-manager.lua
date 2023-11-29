@@ -187,4 +187,23 @@ return {
   --     {"<leader>e", "<cmd>NnnPicker<CR>", desc = "Open File Browser"}
   --   }
   -- }
+
+  {
+    'stevearc/oil.nvim',
+    opts = {
+      keymaps = {
+        ["<C-l>"] = "actions.select",
+        ["gr"] = "actions.refresh",
+      },
+      columns = {
+        "permissions",
+        "size",
+        "mtime",
+        "icon",
+      },
+    },
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    lazy = false,
+  }
 }

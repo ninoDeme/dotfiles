@@ -9,7 +9,6 @@ local logo = {
   "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
 }
 
-
 return {
   {
     'goolord/alpha-nvim',

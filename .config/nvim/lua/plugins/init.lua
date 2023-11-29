@@ -1,9 +1,16 @@
 return {
-  { 'lambdalisue/vim-manpager',       cond = NOT_VSCODE, event = "VeryLazy" }, -- Use vim as a manpager
-  { 'lambdalisue/vim-pager',          cond = NOT_VSCODE, event = "VeryLazy" }, -- Use vim as a pager
+  { 'lambdalisue/vim-manpager',
+    cond = NOT_VSCODE,
+    cmd = {
+      'ASMANPAGER',
+      'Man'
+    },
+    ft = {
+      'man',
+    }
+  }, -- Use vim as a manpager
   { 'nvim-lua/plenary.nvim',          cond = NOT_VSCODE },             -- Telescope dependency
   { 'kyazdani42/nvim-web-devicons',   cond = NOT_VSCODE },             -- Add icons to plugins
-  { 'christoomey/vim-tmux-navigator', event = "VeryLazy" },
   { 'sedm0784/vim-resize-mode',       cond = NOT_VSCODE, keys = { '<C-w>' } },
   { 'editorconfig/editorconfig-vim',  event = "VeryLazy" }, -- Editor config support
 

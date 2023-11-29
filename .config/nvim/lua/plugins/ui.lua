@@ -8,9 +8,7 @@ return {
         local active_clients = vim.lsp.get_clients({bufnr = vim.api.nvim_get_current_buf()})
         local filtered_clients = {}
         for _, v in ipairs(active_clients) do
-          if (v.name ~= "null-ls") then
-            table.insert(filtered_clients, v)
-          end
+          table.insert(filtered_clients, v)
         end
         if #filtered_clients > 0 then
           local names = ""
@@ -117,14 +115,23 @@ return {
     },
     cond = NOT_VSCODE
   }, -- }}}
+  -- {
+  --   "vigoux/notifier.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require'notifier'.setup {}
+  --   end,
+  --   cond = NOT_VSCODE
+  --
+  -- },
   {
-    "vigoux/notifier.nvim",
+    "j-hui/fidget.nvim",
     event = "VeryLazy",
-    config = function()
-      require'notifier'.setup {}
-    end,
-    cond = NOT_VSCODE
-
+    opts = {
+      notification = {
+        override_vim_notify = true,  -- Automatically override vim.notify() with Fidget
+      }
+    },
   },
   {
     'kevinhwang91/nvim-bqf',
@@ -138,7 +145,6 @@ return {
     end,
     ft = 'qf',
     cond = NOT_VSCODE
-
   },
   -- {
   --   "lukas-reineke/indent-blankline.nvim",
