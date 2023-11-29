@@ -36,6 +36,13 @@ _open_files_for_editing() {
     echo "$FUNCNAME: package 'xdg-utils' or 'exo' is required." >&2
 }
 
+PATH="$HOME/.emacs.d/bin:$PATH"
+if [ -d "$HOME/.local/bin" ] ;
+  then PATH="$HOME/.local/bin:$PATH"
+fi
+PATH="$HOME/.cargo/bin:$PATH"
+PATH="$HOME/.npm-global/bin:$PATH"
+
 if command -v exa &> /dev/null
 then
 	alias ls='exa -al --group-directories-first'
@@ -55,13 +62,6 @@ export EDITOR="nvim"
 # set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
 export MANPAGER="nvim -c MANPAGER -"
 export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
-
-PATH="$HOME/.emacs.d/bin:$PATH"
-if [ -d "$HOME/.local/bin" ] ;
-  then PATH="$HOME/.local/bin:$PATH"
-fi
-PATH="$HOME/.cargo/bin:$PATH"
-PATH="$HOME/.npm-global/bin:$PATH"
 
 case "$TERM" in
     xterm-color) color_prompt=yes;;

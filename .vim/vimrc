@@ -2,16 +2,17 @@ filetype plugin indent on
 
 syntax on
 
-packadd! matchit
+" packadd! matchit
 
 set nocompatible
 set termguicolors
 
+colorscheme gruvbox8
 let mapleader = " "
 
-if has('mouse')
-	set mouse=a
-endif
+" if has('mouse')
+" 	set mouse=a
+" endif
 
 set wildmenu
 
@@ -69,8 +70,9 @@ nnoremap <leader>r :source $MYVIMRC<CR>
 " esc to exit terminal mode
 tnoremap <Esc> <C-\><C-n>
 
+nnoremap <silent> <ESC> :noh<CR><ESC>
+nnoremap <ESC>^[ <ESC>^[
 " Press ESC to clear search
-" noremap <silent> <ESC> :noh<CR><ESC>
 "
 " The fish shell is not very compatible to other shells and unexpectedly
 " breaks things that use 'shell'.

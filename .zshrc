@@ -25,7 +25,19 @@ bindkey '^N' history-substring-search-down
 
 HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
+PATH="$HOME/.emacs.d/bin:$PATH"
+if [ -d "$HOME/.local/bin" ] ;
+  then PATH="$HOME/.local/bin:$PATH"
+fi
+if [ -d "$HOME/.cargo/bin" ] ;
+  then PATH="$HOME/.cargo/bin:$PATH"
+fi
+if [ -d "$HOME/.npm-global/bin" ] ;
+  then PATH="$HOME/.npm-global/bin:$PATH"
+fi
 source  $_gitstatus_plugin_dir/gitstatus.prompt.zsh 
+
+export TERM="xterm-256color"                      # getting proper colors
 
 RPROMPT='$GITSTATUS_PROMPT'  # right prompt: git status
 
@@ -71,21 +83,17 @@ alias cp='cp -i'
 alias rm='rm -i'
 alias mv='mv -i'
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
 export EDITOR="nvim"
+
+if ! command -v nvim &> /dev/null
+then
+	export EDITOR="vim"
+fi
+
 # set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
 # export MANPAGER="nvim -c MANPAGER -"
 export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
-
-PATH="$HOME/.emacs.d/bin:$PATH"
-if [ -d "$HOME/.local/bin" ] ;
-  then PATH="$HOME/.local/bin:$PATH"
-fi
-if [ -d "$HOME/.cargo/bin" ] ;
-  then PATH="$HOME/.cargo/bin:$PATH"
-fi
-if [ -d "$HOME/.npm-global/bin" ] ;
-  then PATH="$HOME/.npm-global/bin:$PATH"
-fi
 
 case "$TERM" in
     xterm-color) color_prompt=yes;;
