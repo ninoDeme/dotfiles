@@ -56,3 +56,5 @@
   :recipe (:host github :repo "xFA25E/sxhkd-mode"))
 
 (package! dimmer)
+
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))

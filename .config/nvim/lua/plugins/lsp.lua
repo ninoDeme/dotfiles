@@ -130,10 +130,10 @@ return {
       lspconfig.tailwindcss.setup(lsp_opts)
       -- lspconfig.rust_analyzer.setup(lsp_opts)
       lspconfig.pyright.setup(lsp_opts)
-      -- lspconfig.tsserver.setup(lsp_opts)
-      lspconfig.volar.setup(vim.tbl_extend("force", lsp_opts, {
-        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
-      }))
+      lspconfig.tsserver.setup(lsp_opts)
+      -- lspconfig.volar.setup(vim.tbl_extend("force", lsp_opts, {
+      --   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
+      -- }))
       lspconfig.svelte.setup(lsp_opts)
 
     end

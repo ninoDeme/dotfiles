@@ -17,7 +17,7 @@ if vim.g.neovide then
   end)
 end
 
-require("hover").setup('dark')
+require("hover").setup('light')
 
 if vim.g.vscode then
 
@@ -49,8 +49,8 @@ vim.opt.ruler          = true
 vim.opt.confirm        = true
 vim.opt.visualbell     = true
 
--- add manual folding
-vim.opt.foldmethod     = 'marker'
+-- -- add manual folding
+-- vim.opt.foldmethod     = 'marker'
 
 vim.opt.cmdheight      = 1
 vim.opt.number         = true

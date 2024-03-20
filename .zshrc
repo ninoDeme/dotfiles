@@ -16,6 +16,8 @@ zinit light romkatv/gitstatus
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-history-substring-search
+# zinit light bobsoppe/zsh-ssh-agent
+
 
 bindkey '\eOA' history-substring-search-up # or '\eOA'
 bindkey '\eOB' history-substring-search-down # or '\eOB'
@@ -32,6 +34,14 @@ fi
 if [ -d "$HOME/.cargo/bin" ] ;
   then PATH="$HOME/.cargo/bin:$PATH"
 fi
+
+if command -v exa &> /dev/null
+  then export GOBIN=$(go env GOPATH)/bin
+fi
+if [ -d "$GOBIN" ] ;
+  then PATH="$GOBIN:$PATH"
+fi
+
 if [ -d "$HOME/.npm-global/bin" ] ;
   then PATH="$HOME/.npm-global/bin:$PATH"
 fi
@@ -129,5 +139,13 @@ zstyle ':completion::complete:*' gain-privileges 1
 # NVM npm version manager
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+# pnpm
+export PNPM_HOME="/home/ricardo/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
 
 alias ssh 'TERM=xterm-color ssh'

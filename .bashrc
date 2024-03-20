@@ -60,7 +60,7 @@ alias mv='mv -i'
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 export EDITOR="nvim"
 # set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
-export MANPAGER="nvim -c MANPAGER -"
+# export MANPAGER="nvim -c MANPAGER -"
 export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
 
 case "$TERM" in
@@ -134,3 +134,11 @@ export NVM_DIR="$HOME/.nvm"
 
 [ -f "$HOME/.ghcup/env" ] && source "/home/nino/.ghcup/env" # ghcup-env
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# pnpm
+export PNPM_HOME="/home/ricardo/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

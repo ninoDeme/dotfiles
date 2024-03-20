@@ -9,7 +9,7 @@ return {
           enable = true,
         },
         rainbow = {
-          enable = true
+          enable = false
         },
         indent = {
           enable = true,

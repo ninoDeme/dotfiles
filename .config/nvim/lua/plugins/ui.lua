@@ -42,6 +42,7 @@ return {
               color = function(_)
                 return { fg = vim.bo.modified and colors.yellow or nil }
               end,
+              shorting_target = 50,
               symbols = {
                 modified = '󰆓',      -- Text to show when the file is modified.
                 readonly = '',      -- Text to show when the file is non-modifiable or readonly.
@@ -81,16 +82,17 @@ return {
               -- color = { fg = colors.orange }
             },
             {
-              'b:gitsigns_head',
+              'branch',
               icon = '',
-              color = { fg = colors.purple }
-              -- ---@param str string
-              -- fmt = function (str)
-              --   if str:len() > 40 then
-              --     str = str:sub(0, 37) .. '...'
-              --   end
-              --   return str
-              -- end
+              color = { fg = colors.purple },
+              ---@param str string
+              fmt = function (str)
+                if str:len() > 50 then
+                  str = str:sub(0, 47) .. '...'
+                end
+                return str
+              end,
+              on_click = function () require("neogit").open() end
             },
           },
           lualine_y = {
@@ -101,7 +103,42 @@ return {
               padding = 0
             }
           }
-        }
+        },
+        -- winbar = {
+        --   lualine_c = {
+        --     {
+        --       'filename',
+        --       path = 1,
+        --       -- color = function(_)
+        --       --   return { fg = vim.bo.modified and colors.yellow or nil }
+        --       -- end,
+        --       symbols = {
+        --         modified = '󰆓',      -- Text to show when the file is modified.
+        --         readonly = '',      -- Text to show when the file is non-modifiable or readonly.
+        --         unnamed = '[*]', -- Text to show for unnamed buffers.
+        --         newfile = '󰈔',     -- Text to show for newly created file before first write
+        --       },
+        --     },
+        --   },
+        -- },
+        -- inactive_winbar = {
+        --   lualine_c = {
+        --     {
+        --       'filename',
+        --       path = 1,
+        --       -- color = function(_)
+        --       --   return { fg = vim.bo.modified and colors.yellow or nil }
+        --       -- end,
+        --       symbols = {
+        --         modified = '󰆓',      -- Text to show when the file is modified.
+        --         readonly = '',      -- Text to show when the file is non-modifiable or readonly.
+        --         unnamed = '[*]', -- Text to show for unnamed buffers.
+        --         newfile = '󰈔',     -- Text to show for newly created file before first write
+        --       },
+        --     }
+        --   },
+        --
+        -- }
       }
       vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
       -- vim.api.nvim_create_autocmd("User LspAttach LspDetach", {

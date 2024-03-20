@@ -4,10 +4,11 @@ return {
     config = function()
       require("toggleterm").setup({
         persist_size = false,
-        shade_terminals = false,
+        -- shade_terminals = false,
         winbar = {
           enabled = true,
-        }
+        },
+        -- direction = 'hori'
       })
       local tmuxTerm
       local function toggle_tmux()
@@ -64,7 +65,7 @@ return {
                   -- terms[path]:send({"", "pnpm start"}, true)
                 else
                   terms[path] = Terminal:new({
-                    cmd = 'pnpm start',
+                    cmd = 'npm start',
                     dir = path,
                     -- id = (#terms + 1),
                     hidden = false,
@@ -90,6 +91,10 @@ return {
       vim.keymap.set('n', '<leader>th', lim, {desc = "Toggle asd Terminal"})
     end,
     cond = NOT_VSCODE,
+    cmd = {
+      'ToggleTerm',
+      'ToggleTermToggleAll',
+    },
     keys = {
       {'<leader>1', "<cmd>ToggleTerm 1<CR>", desc = 'Toggle Terminal 1'},
       {'<leader>2', "<cmd>ToggleTerm 2<CR>", desc = 'Toggle Terminal 2'},
@@ -106,5 +111,10 @@ return {
       -- {'<leader>tP', function() require("harpoon.term").gotoTerminal(0) end, desc = 'Open Drawer Terminal in Current Window'},
       {'<leader>tt', '<cmd>ToggleTerm<CR>', desc = "Toggle Terminal Popup"}
     }
-  }
+  },
+  -- {
+  --   'stevearc/overseer.nvim',
+  --   event = 'VeryLazy',
+  --   opts = {},
+  -- }
 }
