@@ -70,6 +70,8 @@ vim.opt.wrap = false
 -- vim.opt.timeout = false
 -- vim.opt.timeoutlen = 300
 
+vim.opt.backupcopy     = 'yes'
+
 vim.opt.linebreak      = true
 -- save undo history
 vim.opt.undofile       = true
@@ -165,7 +167,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins", {
   dev = {
-    path = "~/projects",
+    path = "~/Projects",
     fallback = true
   },
   defaults = {

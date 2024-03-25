@@ -47,10 +47,8 @@ return {
             { name = 'nvim_lsp_signature_help', priority = 2 },
             { name = 'nvim_lsp', priority = 1, group_index = 1 },
             { name = 'luasnip', priority = 1 },
-            { name = 'treesitter', priority = 0 , group_index = 2 },
-          },
-          {
-            { name = 'buffer' }
+            { name = 'treesitter', priority = 0 ,group_index = 2 },
+            { name = 'buffer', priority = -1}
           }
         ),
         experimental = {

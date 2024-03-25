@@ -50,14 +50,29 @@ return {
     cond = NOT_VSCODE
   }, -- Git stuff
 
+  -- {
+  --   "kdheepak/lazygit.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --   },
+  --   keys = {
+  --     {"<leader>gG", "<cmd>LazyGitCurrentFile<CR>", desc = "LazyGitCurrent"},
+  --     {"<leader>gG", "<cmd>LazyGitCurrentFile<CR>", desc = "LazyGitCurrent"}
+  --   }
+  -- },
   {
-    "kdheepak/lazygit.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
+    "tpope/vim-fugitive",
+    event = "VeryLazy",
+  },
+  {
+    'fredeeb/tardis.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    cmd = {
+      'Tardis'
     },
     keys = {
-      {"<leader>gG", "<cmd>LazyGitCurrentFile<CR>", desc = "LazyGitCurrent"},
-      {"<leader>gG", "<cmd>LazyGitCurrentFile<CR>", desc = "LazyGitCurrent"}
-    }
-  },
+      { mode = 'n', '<leader>gt', '<cmd>:Tardis git<cr>', desc = 'Open tardis Time machine' }
+    },
+    opts = true,
+  }
 }

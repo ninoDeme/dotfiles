@@ -25,7 +25,12 @@ return {
         g = { name = '+Git', },
         d = { name = '+Debug', },
         b = { name = '+Buffers', },
-        W = { 'Create dir to current file', '<Cmd>:call mkdir(expand("%:p:h"),"p")<CR>' },
+        o = {
+          name = '+Open',
+          t = { '<Cmd>:terminal<CR>i', 'Terminal'},
+          ['-'] = { '<cmd>Oil<cr>', 'Oil'},
+        },
+        W = { '<Cmd>:call mkdir(expand("%:p:h"),"p")<CR>', 'Create dir to current file' },
       }, { prefix = '<leader>' })
     end,
     cond = NOT_VSCODE

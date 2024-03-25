@@ -88,7 +88,7 @@ return {
       end
       vim.keymap.set('n', '<leader>tp', toggle_tmux, {desc = "Toggle Tmux Terminal"})
 
-      vim.keymap.set('n', '<leader>th', lim, {desc = "Toggle asd Terminal"})
+      vim.keymap.set('n', '<leader>th', lim, {desc = "Run Task/Pick Term"})
     end,
     cond = NOT_VSCODE,
     cmd = {

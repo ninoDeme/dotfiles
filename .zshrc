@@ -127,15 +127,6 @@ SAVEHIST=1000
 setopt autocd extendedglob nomatch
 unsetopt beep notify
 
-zstyle :compinstall filename '/home/nino/.zshrc'
-autoload -Uz compinit
-compinit
-
-# case insensitive path-completion 
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-
-zstyle ':completion::complete:*' gain-privileges 1
-
 # NVM npm version manager
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
@@ -147,5 +138,20 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+if [ -d "$HOME/.asdf/" ] ;
+then
+  . "$HOME/.asdf/asdf.sh"
+  fpath=(${ASDF_DIR}/completions $fpath)
+fi
+
+zstyle :compinstall filename '/home/nino/.zshrc'
+autoload -Uz compinit
+compinit
+
+# case insensitive path-completion 
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+zstyle ':completion::complete:*' gain-privileges 1
 
 alias ssh 'TERM=xterm-color ssh'
