@@ -23,7 +23,7 @@ return {
         ['<C-e>'] = cmp.mapping.scroll_docs(1),
         ['<C-y>'] = cmp.mapping.scroll_docs(-1),
         ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-l>'] = cmp.mapping.confirm(),
+        ['<C-l>'] = cmp.mapping.confirm({ select = true }),
       })
       cmp.setup {
         window = {
@@ -44,15 +44,19 @@ return {
             { name = 'path' },
           },
           {
-            { name = 'nvim_lsp_signature_help', priority = 2 },
-            { name = 'nvim_lsp', priority = 1, group_index = 1 },
+            { name = 'nvim_lsp_signature_help', priority = 0 },
+            { name = 'nvim_lsp', priority = 1 },
             { name = 'luasnip', priority = 1 },
-            { name = 'treesitter', priority = 0 ,group_index = 2 },
-            { name = 'buffer', priority = -1}
+          },
+          {
+            { name = 'treesitter'},
+          },
+          {
+            { name = 'buffer'}
           }
         ),
         experimental = {
-          -- ghost_text = true
+          ghost_text = true
         },
         formatting = {
           fields = { "kind", "abbr", "menu" },
@@ -66,15 +70,18 @@ return {
         },
       }
       -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-      -- local misc = require('cmp.utils.misc')
       -- cmp.setup.cmdline(':', {
       --   mapping = cmp.mapping.preset.cmdline(),
-      --   sources = cmp.config.sources({
-      --     { name = 'path' }
-      --   }, {
+      --   sources = cmp.config.sources(
+      --     {
+      --       { name = 'path' }
+      --     },
+      --     {
       --       { name = 'cmdline' }
-      --     })
+      --     }
+      --   )
       -- })
     end
   }
 }
+

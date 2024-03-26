@@ -18,16 +18,16 @@ return {
           enable = NOT_VSCODE()
         },
 
-        ensure_installed = { 'typescript', 'lua', 'markdown', 'markdown_inline', 'json', 'jsdoc', 'javascript', 'sql', 'vim', 'html', 'css', 'scss'}
+        ensure_installed = { 'typescript', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'json', 'jsdoc', 'javascript', 'sql', 'vim', 'vimdoc', 'html', 'css', 'scss'}
       }
 
       require 'treesitter-context'.setup { enable = true, throttle = true, }
 
-      if vim.uv.os_uname().sysname == "Windows_NT" then
-         require('nvim-treesitter.install').compilers = { "clang" }
-      end
-
-      require 'nvim-treesitter.install'.prefer_git = false
+      -- if vim.uv.os_uname().sysname == "Windows_NT" then
+      --    require('nvim-treesitter.install').compilers = { "clang" }
+      -- end
+      --
+      -- require 'nvim-treesitter.install'.prefer_git = false
     end,
     dependencies = {
       'romgrk/nvim-treesitter-context',
@@ -35,7 +35,6 @@ return {
       "windwp/nvim-ts-autotag",
     }
   }, -- Parsesr and highlighter for a lot of languages
-  
   {
     'romgrk/nvim-treesitter-context', -- Shows the context (current function or method)
     dependencies = 'nvim-treesitter',

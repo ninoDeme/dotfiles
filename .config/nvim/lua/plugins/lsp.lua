@@ -19,7 +19,9 @@ local function keymappings(client, bufnr)
       a = { function() require("actions-preview").code_actions() end, 'Code Actions'},
       -- a = { function() vim.lsp.buf.code_action() end, "Code Action" },
       i = { "<cmd>LspInfo<CR>", "Lsp Info" },
-      f = { function() vim.lsp.buf.format() end, "Format Document" }
+      f = { function() vim.lsp.buf.format() end, "Format Document" },
+      e = { function() require("telescope.builtin").diagnostics({severity = vim.diagnostic.severity.ERROR}) end, "Errors" },
+      d = { function() require("telescope.builtin").diagnostics() end, "Diagnostics" },
     },
   }
 
@@ -31,7 +33,7 @@ local function keymappings(client, bufnr)
     -- I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
     -- h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
     d = { function() require("telescope.builtin").lsp_definitions({show_line = false}) end, "View Definition" },
-    D = { function() require("telescope.builtin").lsp_references({show_line = false}) end, "View References" },
+    D = { function() require("telescope.builtin").lsp_references({show_line = false, include_declaration = false}) end, "View References" },
     I = { function() require("telescope.builtin").lsp_implementations() end, "Goto Implementation" },
     h = { function() require("telescope.builtin").lsp_type_definitions() end, "View Type Signature" }
   }
@@ -134,6 +136,7 @@ return {
       -- lspconfig.volar.setup(vim.tbl_extend("force", lsp_opts, {
       --   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
       -- }))
+      lspconfig.emmet_language_server.setup(lsp_opts)
       lspconfig.svelte.setup(lsp_opts)
 
     end
