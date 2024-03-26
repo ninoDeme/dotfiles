@@ -13,6 +13,7 @@ return {
         },
         indent = {
           enable = true,
+          disable = { 'dart' }
         },
         autotag = {
           enable = NOT_VSCODE()
