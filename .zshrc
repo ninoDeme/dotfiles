@@ -37,7 +37,7 @@ if [ -d "$HOME/.cargo/bin" ] ;
   then PATH="$HOME/.cargo/bin:$PATH"
 fi
 
-if command -v exa &> /dev/null
+if command -v go &> /dev/null
   then export GOBIN=$(go env GOPATH)/bin
 fi
 if [ -d "$GOBIN" ] ;
