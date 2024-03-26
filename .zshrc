@@ -27,6 +27,8 @@ bindkey '^N' history-substring-search-down
 
 HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
+export XDG_CONFIG_HOME="$HOME/.config"
+
 PATH="$HOME/.emacs.d/bin:$PATH"
 if [ -d "$HOME/.local/bin" ] ;
   then PATH="$HOME/.local/bin:$PATH"
@@ -45,6 +47,7 @@ fi
 if [ -d "$HOME/.npm-global/bin" ] ;
   then PATH="$HOME/.npm-global/bin:$PATH"
 fi
+
 source  $_gitstatus_plugin_dir/gitstatus.prompt.zsh 
 
 export TERM="xterm-256color"                      # getting proper colors
@@ -155,3 +158,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion::complete:*' gain-privileges 1
 
 alias ssh 'TERM=xterm-color ssh'
+
+if [ -e /home/nino/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nino/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

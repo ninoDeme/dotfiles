@@ -130,11 +130,12 @@ return {
       lspconfig.tailwindcss.setup(lsp_opts)
       -- lspconfig.rust_analyzer.setup(lsp_opts)
       lspconfig.pyright.setup(lsp_opts)
-      lspconfig.tsserver.setup(lsp_opts)
-      -- lspconfig.volar.setup(vim.tbl_extend("force", lsp_opts, {
-      --   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
-      -- }))
+      lspconfig.dartls.setup(lsp_opts)
+      lspconfig.clangd.setup(lsp_opts)
       lspconfig.svelte.setup(lsp_opts)
+      lspconfig.elixirls.setup(vim.tbl_extend("force", lsp_opts, {
+        cmd = { vim.fn.expand("~/.local/share/elixir-ls/release/language_server.sh") };
+      }))
 
     end
   },
