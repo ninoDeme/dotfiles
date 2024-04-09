@@ -100,6 +100,7 @@ return {
         {"<leader>sd", function() require("telescope.builtin").diagnostics({severity_limit = vim.diagnostic.severity.HINT}) end, desc = 'Diagnostics' },
         {"<leader>sD", function() require("telescope.builtin").diagnostics({severity_limit = vim.diagnostic.severity.ERROR}) end, desc = 'Errors' },
         {"<leader>,", "<cmd>Telescope buffers<cr>", desc = 'Buffers' },
+        {"<leader>gb", function() require("telescope.builtin").git_branches() end, desc = 'Branches' },
     }
   },
   {

@@ -4,7 +4,7 @@ return {
     lazy = true,
     event = 'VeryLazy',
     config = function()
-      require 'nvim-treesitter.configs'.setup {
+      require 'nvim-treesitter.configs'.setup ({
         highlight = {
           enable = true,
         },
@@ -16,11 +16,15 @@ return {
           disable = { 'dart' }
         },
         autotag = {
-          enable = NOT_VSCODE()
+          enable = NOT_VSCODE(),
+          enable_rename = true,
+          enable_close = true,
+          enable_close_on_slash = false,
+          filetypes = { 'html', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue', 'tsx', 'jsx', 'rescript', 'xml', 'php', 'markdown', 'astro', 'glimmer', 'handlebars', 'hbs', 'angular.html', 'heex' }
         },
 
-        ensure_installed = { 'typescript', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'json', 'jsdoc', 'javascript', 'sql', 'vim', 'vimdoc', 'html', 'css', 'scss'}
-      }
+        ensure_installed = { 'typescript', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'json', 'jsdoc', 'javascript', 'sql', 'vim', 'vimdoc', 'html', 'css', 'scss', 'angular'}
+      })
 
       require 'treesitter-context'.setup { enable = true, throttle = true, }
 
@@ -42,11 +46,22 @@ return {
     cond = NOT_VSCODE
   },
   {
+    'JoosepAlviste/nvim-ts-context-commentstring',
+    dependencies = 'nvim-treesitter',
+    config = function ()
+      require('ts_context_commentstring').setup({
+        enable_autocmd = false
+      })
+    end
+  },
+  {
     'p00f/nvim-ts-rainbow',
+    -- opts = {},
     cond = NOT_VSCODE
   },
   {
     "windwp/nvim-ts-autotag",
+    opts = {},
     cond = NOT_VSCODE
   },
 }

@@ -148,24 +148,24 @@ return {
     },
     cond = NOT_VSCODE
   }, -- }}}
-  {
-    "vigoux/notifier.nvim",
-    event = "VeryLazy",
-    config = function()
-      require'notifier'.setup {}
-    end,
-    cond = NOT_VSCODE
-
-  },
   -- {
-  --   "j-hui/fidget.nvim",
+  --   "vigoux/notifier.nvim",
   --   event = "VeryLazy",
-  --   opts = {
-  --     notification = {
-  --       override_vim_notify = true,  -- Automatically override vim.notify() with Fidget
-  --     }
-  --   },
+  --   config = function()
+  --     require'notifier'.setup {}
+  --   end,
+  --   cond = NOT_VSCODE
+  --
   -- },
+  {
+    "j-hui/fidget.nvim",
+    event = "VeryLazy",
+    opts = {
+      notification = {
+        override_vim_notify = true,  -- Automatically override vim.notify() with Fidget
+      }
+    },
+  },
   {
     'kevinhwang91/nvim-bqf',
     config = function()
