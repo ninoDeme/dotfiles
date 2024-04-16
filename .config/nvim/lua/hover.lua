@@ -1,7 +1,6 @@
 local M = {}
 
-
-local borders = {
+local alt_borders = {
   normal = {
     " ",
     " ",
@@ -21,6 +20,29 @@ local borders = {
     " ",
     " ",
     " ",
+  },
+}
+
+local borders = {
+  normal = {
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  },
+  dark = {
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
   },
   curved = {
     "╭",
@@ -64,17 +86,15 @@ M.style = 'normal'
 ---@return table
 M.mk_border = function(style)
   style = style or M.style
-  local b = borders[style]
-  return {
-    b[1],
-    b[2],
-    b[3],
-    b[4],
-    b[5],
-    b[6],
-    b[7],
-    b[8],
-  }
+  return borders[style]
+end
+
+--- Get Border Style
+---@param style? HoverStyle Border Style
+---@return table
+M.mk_alt_border = function(style)
+  style = style or M.style
+  return alt_borders[style] or borders[style]
 end
 
 --- setup
@@ -82,6 +102,7 @@ end
 M.setup = function(style)
   M.style = style or 'normal'
   M.border = M.mk_border(style)
+  M.alt_border = M.mk_alt_border(style)
 
   vim.diagnostic.config({
     severity_sort = true,
@@ -94,23 +115,26 @@ end
 M.set_highlights = function(colors)
   if M.style == 'normal' then
     return {
-      FloatNormal = { bg = colors.bg },
-      NormalFloat = { bg = colors.bg },
-      FloatBorder = { bg = colors.bg, fg = colors.bg },
-      BqfPreviewTitle = { bg = colors.bg, fg = colors.blue },
+      FloatNormal = { bg = colors.bg1 },
+      PMenu = { bg = colors.bg1 },
+      -- NormalFloat = { bg = colors.bg1 },
+      FloatBorder = { bg = colors.bg1, fg = colors.bg1 },
+      BqfPreviewTitle = { bg = colors.bg1, fg = colors.blue },
     }
   elseif M.style == 'dark' then
     return {
       FloatNormal = { bg = colors.bg_d },
-      NormalFloat = { bg = colors.bg_d },
+      PMenu = { bg = colors.bg_d },
+      -- NormalFloat = { bg = colors.bg_d },
       FloatBorder = { bg = colors.bg_d, fg = colors.bg_d },
       BqfPreviewTitle = { bg = colors.bg_d, fg = colors.blue },
     }
   else
     return {
       FloatNormal = { link = 'Normal' },
-      NormalFloat = { link = 'Normal' },
-      FloatBorder = { bg = colors.bg, fg = colors.blue },
+      PMenu = { link = 'Normal' },
+      -- NormalFloat = { link = 'Normal' },
+      FloatBorder = { bg = colors.bg, fg = colors.fg },
       BqfPreviewTitle = { bg = colors.bg, fg = colors.blue },
     }
   end

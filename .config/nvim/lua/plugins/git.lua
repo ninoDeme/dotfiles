@@ -2,7 +2,13 @@ return {
   {
     "NeogitOrg/neogit",
     config = true,
-    opts = {},
+    opts = {
+      -- graph_style = "unicode",
+      integrations = {
+        telescope = true,
+        diffview = true,
+      }
+    },
     branch = 'nightly',
     dependencies = {
       "nvim-lua/plenary.nvim",         -- required
@@ -11,7 +17,6 @@ return {
     },
     cmd = {
       "NeoGit",
-      "NeoGitMessages",
       "NeoGitResetState"
     },
     keys = {
@@ -26,9 +31,6 @@ return {
         signcolumn = true,
         numhl = true,
         current_line_blame = true,
-        signs = {
-
-        }
       }
     end,
     keys = {

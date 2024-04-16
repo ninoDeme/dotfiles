@@ -58,7 +58,6 @@ return {
 					t = { "<cmd>:tabnew<cr><cmd>:terminal<cr>", "Tab With Terminal" },
 				},
 			}, { prefix = "<leader>" })
-
 		end,
 		cond = NOT_VSCODE,
 	},
@@ -303,14 +302,81 @@ return {
 				end,
 				desc = "Open Mini Files at dir",
 			},
-      { "gs", desc = "+Surrounding" },
+			{ "gs", desc = "+Surrounding" },
 			{ mode = { "n", "v" }, "gsa", desc = "Add surrounding" },
 			{ mode = "n", "gsd", desc = "Delete surrounding" },
 			{ mode = "n", "gsf", desc = "Find surrounding (to the right)" },
 			{ mode = "n", "gsF", desc = "Find surrounding (to the left)" },
-			{ mode = "n", 'gsh', desc = 'Highlight surrounding'},
-			{ mode = "n", 'gsr', desc = 'Replace surrounding'},
-			{ mode = "n", 'gsn', desc = 'Update `n_lines`'},
+			{ mode = "n", "gsh", desc = "Highlight surrounding" },
+			{ mode = "n", "gsr", desc = "Replace surrounding" },
+			{ mode = "n", "gsn", desc = "Update `n_lines`" },
 		},
+	},
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim", "telescope.nvim" },
+    event = "VeryLazy",
+		config = function()
+			local harpoon = require("harpoon")
+			-- Setup harpoon
+			harpoon:setup()
+
+			-- Telescope Setup
+      local conf = require("telescope.config").values
+      local function toggle_telescope(harpoon_files)
+          local file_paths = {}
+          for _, item in ipairs(harpoon_files.items) do
+              table.insert(file_paths, item.value)
+          end
+
+          require("telescope.pickers").new({}, {
+              prompt_title = "Harpoon",
+              finder = require("telescope.finders").new_table({
+                  results = file_paths,
+              }),
+              previewer = conf.file_previewer({}),
+              sorter = conf.generic_sorter({}),
+          }):find()
+      end
+
+			vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end)
+			vim.keymap.set("n", "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+			vim.keymap.set("n", "<leader>sh", function() toggle_telescope(harpoon:list()) end)
+
+			vim.keymap.set("n", "<leader>h1", function() harpoon:list():select(1) end)
+			vim.keymap.set("n", "<leader>h2", function() harpoon:list():select(2) end)
+			vim.keymap.set("n", "<leader>h3", function() harpoon:list():select(3) end)
+			vim.keymap.set("n", "<leader>h4", function() harpoon:list():select(4) end)
+
+			vim.keymap.set("n", "<leader>h5", function() harpoon:list():select(5) end)
+			vim.keymap.set("n", "<leader>h6", function() harpoon:list():select(6) end)
+			vim.keymap.set("n", "<leader>h7", function() harpoon:list():select(7) end)
+			vim.keymap.set("n", "<leader>h8", function() harpoon:list():select(8) end)
+
+			-- Toggle previous & next buffers stored within Harpoon list
+			vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
+			vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
+		end,
+    keys = {
+      {mode = "n", "<leader>h", desc = "+Harpoon"},
+      {mode = "n", "<leader>ha", desc = "Add to list"},
+      {mode = "n", "<leader>hh", desc = "Toggle List"},
+      {mode = "n", "<leader>sh", desc = "Harpoon"},
+
+      {mode = "n", "<leader>h1", desc = "1"},
+      {mode = "n", "<leader>h2", desc = "2"},
+      {mode = "n", "<leader>h3", desc = "3"},
+      {mode = "n", "<leader>h4", desc = "4"},
+
+      {mode = "n", "<leader>h5", desc = "5"},
+      {mode = "n", "<leader>h6", desc = "6"},
+      {mode = "n", "<leader>h7", desc = "7"},
+      {mode = "n", "<leader>h8", desc = "8"},
+
+      -- Toggle previous & next buffers stored within Harpoon list
+      {mode = "n", "<C-S-P>", desc = "Harpoon previous"},
+      {mode = "n", "<C-S-N>", desc = "Harpoon next"},
+    }
 	},
 }

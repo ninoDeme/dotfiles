@@ -12,6 +12,7 @@ return {
       {'hrsh7th/cmp-buffer'},
       -- {'hrsh7th/cmp-cmdline'},
       {'hrsh7th/cmp-nvim-lsp-signature-help'},
+      {'hrsh7th/cmp-nvim-lsp-document-symbol'},
       {'ray-x/cmp-treesitter'},
       {'onsails/lspkind.nvim'}
     },
@@ -28,9 +29,11 @@ return {
       cmp.setup {
         window = {
           completion = {
-            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-            col_offset = -3,
-            side_padding = 0,
+            border = require("hover").border
+          },
+          documentation = {
+            winhighlight = "Normal:FloatNormal",
+            border = require("hover").alt_border
           }
         },
         snippet = {
@@ -45,30 +48,34 @@ return {
           },
           {
             { name = 'nvim_lsp_signature_help', priority = 0 },
-            { name = 'nvim_lsp', priority = 1 },
             { name = 'luasnip', priority = 1 },
+            { name = 'nvim_lsp', priority = 2 },
           },
           {
             { name = 'treesitter'},
-          },
-          {
             { name = 'buffer'}
           }
         ),
         experimental = {
-          ghost_text = true
+          ghost_text = false
         },
         formatting = {
-          fields = { "kind", "abbr", "menu" },
-          format = function(entry, vim_item)
-            local kind = require("lspkind").cmp_format({ mode = "text_symbol", maxwidth = 50 })(entry, vim_item)
-            local strings = vim.split(kind.kind, "%s", { trimempty = true })
-            kind.kind = " " .. (strings[2] or "") .. " "
-            kind.menu = "    (" .. (strings[1] or "") .. ")"
-            return kind
-          end,
+          format = require("lspkind").cmp_format({ mode = "text_symbol", maxwidth = 50 })
         },
       }
+      -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+      -- cmp.setup.cmdline({ '/', '?' }, {
+      --   mapping = cmp.mapping.preset.cmdline(),
+      --   sources = {
+      --     {
+      --       { name = 'nvim_lsp_document_symbol' }
+      --     },
+      --     {
+      --       { name = 'buffer' },
+      --       { name = 'treesitter'},
+      --     }
+      --   }
+      -- })
       -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
       -- cmp.setup.cmdline(':', {
       --   mapping = cmp.mapping.preset.cmdline(),
@@ -84,4 +91,3 @@ return {
     end
   }
 }
-

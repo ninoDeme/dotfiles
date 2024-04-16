@@ -16,8 +16,8 @@ return {
 
 			local dap = require("dap")
 
-      require("dap.ext.vscode").json_decode = require("overseer.json").decode
-      require("overseer").patch_dap(true)
+			require("dap.ext.vscode").json_decode = require("overseer.json").decode
+			require("overseer").patch_dap(true)
 
 			if not dap.adapters["pwa-node"] then
 				require("dap").adapters["pwa-node"] = {
@@ -56,9 +56,9 @@ return {
 							type = "pwa-node",
 							request = "launch",
 							name = "Launch app.ts in folder in ts-node-dev",
-              runtimeExecutable = "node",
-              runtimeArgs = {"node_modules/ts-node-dev/lib/bin.js"},
-              args = {"--env-file=../.env", "app.ts"},
+							runtimeExecutable = "node",
+							runtimeArgs = { "node_modules/ts-node-dev/lib/bin.js" },
+							args = { "--env-file=../.env", "app.ts" },
 							cwd = function()
 								local path = vim.fn.input({
 									prompt = "Path to executable: ",
@@ -88,21 +88,21 @@ return {
       {'<leader>df', function() require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames) end, desc = "Frames Widget"},
       {'<leader>ds', function() require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes) end, desc = "Scopes Widget"},
     },
-		dependencies = {
-			{
-				"theHamsta/nvim-dap-virtual-text",
-				opts = {},
-			},
-			{
-				"stevearc/overseer.nvim",
-			},
-		},
-		cond = NOT_VSCODE,
-	},
-	-- {
-	--   "jay-babu/mason-nvim-dap.nvim",
-	--   dependencies = {
-	--     "mason.nvim"
-	--   }
-	-- },
+    dependencies = {
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        opts = {},
+      },
+      {
+        "stevearc/overseer.nvim",
+      },
+    },
+    cond = NOT_VSCODE,
+  },
+  -- {
+  --   "jay-babu/mason-nvim-dap.nvim",
+  --   dependencies = {
+  --     "mason.nvim"
+  --   }
+  -- },
 }
