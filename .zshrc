@@ -1,3 +1,6 @@
+
+FREETYPE_PROPERTIES="cff:no-stem-darkening=0 autofitter:no-stem-darkening=0"
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 

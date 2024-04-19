@@ -65,7 +65,13 @@ return {
 				pickers = {
 					buffers = {
 						mappings = {
-							["<c-x>"] = telescope_actions.delete_buffer,
+              n = {
+                ["<C-x>"] = telescope_actions.delete_buffer,
+              },
+              i = {
+                ["x"] = telescope_actions.delete_buffer,
+                ["<C-x>"] = telescope_actions.delete_buffer,
+              }
 						},
 					},
 				},

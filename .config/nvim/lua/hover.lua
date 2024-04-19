@@ -117,7 +117,8 @@ M.set_highlights = function(colors)
     return {
       FloatNormal = { bg = colors.bg1 },
       PMenu = { bg = colors.bg1 },
-      -- NormalFloat = { bg = colors.bg1 },
+      NormalFloat = { bg = colors.bg1 },
+      FloatTitle = { bg = colors.bg1, fg = colors.blue },
       FloatBorder = { bg = colors.bg1, fg = colors.bg1 },
       BqfPreviewTitle = { bg = colors.bg1, fg = colors.blue },
     }
@@ -125,7 +126,8 @@ M.set_highlights = function(colors)
     return {
       FloatNormal = { bg = colors.bg_d },
       PMenu = { bg = colors.bg_d },
-      -- NormalFloat = { bg = colors.bg_d },
+      NormalFloat = { bg = colors.bg_d },
+      FloatTitle = { bg = colors.bg_d, fg = colors.blue },
       FloatBorder = { bg = colors.bg_d, fg = colors.bg_d },
       BqfPreviewTitle = { bg = colors.bg_d, fg = colors.blue },
     }
@@ -133,7 +135,8 @@ M.set_highlights = function(colors)
     return {
       FloatNormal = { link = 'Normal' },
       PMenu = { link = 'Normal' },
-      -- NormalFloat = { link = 'Normal' },
+      NormalFloat = { link = 'Normal' },
+      FloatTitle = { bg = colors.bg, fg = colors.blue },
       FloatBorder = { bg = colors.bg, fg = colors.fg },
       BqfPreviewTitle = { bg = colors.bg, fg = colors.blue },
     }

@@ -34,7 +34,7 @@ end
 -- map leader to space
 vim.g.mapleader = " "
 vim.opt.termguicolors = true
-vim.opt.guifont =  "JetBrainsMono Nerd Font:h9"
+vim.opt.guifont =  "NotoMono Nerd Font:h9"
 vim.opt.wildmenu       = true
 
 -- Set highlight on search
