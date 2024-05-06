@@ -17,14 +17,14 @@ if vim.g.neovide then
   end)
 end
 
-require("hover").setup('dark')
-
 if vim.g.vscode then
 
   vim.keymap.set({'n', 'v', 'x'}, 'gc', "<Plug>VSCodeCommentary<CR>")
   vim.keymap.set('n', 'gcc', "<Plug>VSCodeCommentaryLine<CR>")
 
 end
+
+require("hover").setup('dark')
 
 -- Vim settings {{{
 
@@ -69,6 +69,8 @@ vim.opt.expandtab      = true
 
 vim.opt.signcolumn     = 'yes'
 
+vim.opt.cursorline     = true
+
 vim.opt.scrolloff      = 4
 
 vim.opt.wrap = false
@@ -85,8 +87,8 @@ vim.opt.undofile       = true
 if (os.getenv("TERM") == "alacritty") then
   vim.api.nvim_create_autocmd({"VimEnter"}, {
     callback = function()
-      local pid, WINCH = vim.fn.getpid(), vim.loop.constants.SIGWINCH
-      vim.defer_fn(function() vim.loop.kill(pid, WINCH) end, 10)
+      local pid, WINCH = vim.fn.getpid(), vim.uv.constants.SIGWINCH
+      vim.defer_fn(function() vim.uv.kill(pid, WINCH) end, 10)
     end
   })
 end
@@ -162,7 +164,7 @@ end
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",

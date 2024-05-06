@@ -1,3 +1,21 @@
+GetOilDirRel = function()
+  local plenary = require('plenary')
+  return plenary.path:new(require('oil').get_current_dir()):make_relative()
+end
+GetOilDirAbs = function()
+  local plenary = require('plenary')
+  return string.sub(require('oil').get_current_dir(), 0, #require('oil').get_current_dir() - #plenary.path:new(require('oil').get_current_dir()):make_relative() - 1)
+end
+
+vim.cmd([[
+  function! GetOilDirRel()
+    return luaeval("GetOilDirRel()")
+  endfunction
+  function! GetOilDirAbs()
+    return luaeval("GetOilDirAbs()")
+  endfunction
+]])
+
 return {
 	{
 		"stevearc/oil.nvim",
@@ -10,7 +28,7 @@ return {
 				["<leader>ot"] = "actions.open_terminal",
 			},
       win_options = {
-        winbar = ' %f',
+        winbar = ' %{GetOilDirAbs()}%{GetOilDirRel()}',
         wrap = false,
         signcolumn = "no",
         cursorcolumn = false,

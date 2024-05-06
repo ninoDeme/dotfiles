@@ -96,38 +96,38 @@ local function keymappings(client, bufnr)
 	local whichkey = require("which-key")
 	whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>", mode = { "n", "v" } })
 	whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
-	whichkey.register({ K = {
-		function()
-			vim.lsp.buf.hover()
-		end,
-		"View Hover",
-	} }, { buffer = bufnr })
+	-- whichkey.register({ K = {
+	-- 	function()
+	-- 		vim.lsp.buf.hover()
+	-- 	end,
+	-- 	"View Hover",
+	-- } }, { buffer = bufnr })
 end
 
 local lsp_opts = {
 	on_attach = function(client, bufnr)
 		-- Use LSP as the handler for formatexpr.
 		-- See `:help formatexpr` for more information. 'gq'
-		vim.api.nvim_buf_set_option(0, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+		vim.api.nvim_set_option_value("formatexpr", "v:lua.vim.lsp.formatexpr()", { buf = 0 })
 
 		-- Configure key mappings
 		keymappings(client, bufnr)
 	end,
 
 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
-  }
+}
 -- }}}
 
 return {
 	{
 		"neovim/nvim-lspconfig",
-    cond = NOT_VSCODE,
+		cond = NOT_VSCODE,
 		event = "VeryLazy",
-    init = function()
+		init = function()
 			local border = require("hover").border
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = border,
-        silent = true,
+			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+				border = border,
+				silent = true,
 			})
 			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
 				border = border,
@@ -137,7 +137,7 @@ return {
 			})
 
 			-- local signs = { Error = "", Warn = "", Hint = "", Info = "󰋼" }
-      local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 			for type, icon in pairs(signs) do
 				local hl = "DiagnosticSign" .. type
 				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
@@ -256,7 +256,7 @@ return {
 			lspconfig.pyright.setup(lsp_opts)
 			lspconfig.tsserver.setup(vim.tbl_extend("force", lsp_opts, {
 				init_options = {
-          hostInfo = "neovim",
+					hostInfo = "neovim",
 					plugins = {
 						{
 							name = "@vue/typescript-plugin",
@@ -265,8 +265,16 @@ return {
 						},
 					},
 				},
-				filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue" }
-      }))
+				filetypes = {
+					"javascript",
+					"javascriptreact",
+					"javascript.jsx",
+					"typescript",
+					"typescriptreact",
+					"typescript.tsx",
+					"vue",
+				},
+			}))
 			lspconfig.volar.setup(lsp_opts)
 			lspconfig.emmet_language_server.setup(vim.tbl_extend("force", lsp_opts, {
 				filetypes = {
@@ -347,8 +355,7 @@ return {
 					init_options = {
 						bundles = {
 							vim.fn.glob(
-								vim.fn.stdpath("data")
-									.. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+								vim.fn.stdpath("data") .. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
 								true
 							),
 						},

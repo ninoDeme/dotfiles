@@ -16,6 +16,7 @@
   "editorconfig-vim": { "branch": "master", "commit": "8b7da79e9daee7a3f3a8d4fe29886b9756305aff" },
   "fidget.nvim": { "branch": "main", "commit": "1ba38e4cbb24683973e00c2e36f53ae64da38ef5" },
   "gitsigns.nvim": { "branch": "main", "commit": "9cafac31a091267838e1e90fd6e083d37611f516" },
+  "gruvbox.nvim": { "branch": "main", "commit": "dd0ab08b17d2ead7bdb4838b48e1d08034ead0f0" },
   "harpoon": { "branch": "harpoon2", "commit": "0378a6c428a0bed6a2781d459d7943843f374bce" },
   "indent-blankline.nvim": { "branch": "master", "commit": "3d08501caef2329aba5121b753e903904088f7e6" },
   "lazy.nvim": { "branch": "main", "commit": "3f13f080434ac942b150679223d54f5ca91e0d52" },

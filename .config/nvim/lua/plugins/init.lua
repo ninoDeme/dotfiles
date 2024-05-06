@@ -143,6 +143,7 @@ return {
 	-- Color schemes =======================
 	{ "ayu-theme/ayu-vim", cond = NOT_VSCODE },
 	{
+    enabled = true,
 		lazy = false,
 		priority = 1006,
 		"navarasu/onedark.nvim",
@@ -153,10 +154,27 @@ return {
 			})
 			require("onedark").load()
 
-			require("colors")
+			require("colors").setup("onedark")
 		end,
 		cond = NOT_VSCODE,
 	},
+	{
+    enabled = false,
+		lazy = false,
+		priority = 1006,
+		"ellisonleao/gruvbox.nvim",
+		config = function()
+			require("gruvbox").setup({
+        overrides = {
+          SignColumn = { link = 'Normal' }
+        }
+      })
+      vim.cmd("colorscheme gruvbox")
+			require("colors").setup("gruvbox")
+		end,
+		cond = NOT_VSCODE,
+	},
+
 	-- {'kana/vim-textobj-user', --- {{{
 	--   event = 'VeryLazy',
 	--   config = function()
@@ -251,10 +269,10 @@ return {
 			end
 			require("mini.bracketed").setup()
 
-      local spec_treesitter = require('mini.ai').gen_spec.treesitter
+			local spec_treesitter = require("mini.ai").gen_spec.treesitter
 			require("mini.ai").setup({
-        -- Number of lines within which textobject is searched
-        n_lines = 10000,
+				-- Number of lines within which textobject is searched
+				n_lines = 10000,
 				custom_textobjects = {
 					g = function()
 						local from = { line = 1, col = 1 }
@@ -264,9 +282,9 @@ return {
 						}
 						return { from = from, to = to }
 					end,
-          T = spec_treesitter({ a = '@tag_name', i = '@tag_name' }),
-          t = spec_treesitter({ a = '@tag.outer', i = '@tag.inner' }),
-          x = spec_treesitter({ a = '@attribute.outer', i = '@attribute.inner' }),
+					T = spec_treesitter({ a = "@tag_name", i = "@tag_name" }),
+					t = spec_treesitter({ a = "@tag.outer", i = "@tag.inner" }),
+					x = spec_treesitter({ a = "@attribute.outer", i = "@attribute.inner" }),
 					-- x = {
 					-- 	{
 					-- 		'%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b""()',
@@ -317,67 +335,95 @@ return {
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
 		dependencies = { "nvim-lua/plenary.nvim", "telescope.nvim" },
-    event = "VeryLazy",
+		event = "VeryLazy",
 		config = function()
 			local harpoon = require("harpoon")
 			-- Setup harpoon
 			harpoon:setup()
 
 			-- Telescope Setup
-      local conf = require("telescope.config").values
-      local function toggle_telescope(harpoon_files)
-          local file_paths = {}
-          for _, item in ipairs(harpoon_files.items) do
-              table.insert(file_paths, item.value)
-          end
+			local conf = require("telescope.config").values
+			local function toggle_telescope(harpoon_files)
+				local file_paths = {}
+				for _, item in ipairs(harpoon_files.items) do
+					table.insert(file_paths, item.value)
+				end
 
-          require("telescope.pickers").new({}, {
-              prompt_title = "Harpoon",
-              finder = require("telescope.finders").new_table({
-                  results = file_paths,
-              }),
-              previewer = conf.file_previewer({}),
-              sorter = conf.generic_sorter({}),
-          }):find()
-      end
+				require("telescope.pickers")
+					.new({}, {
+						prompt_title = "Harpoon",
+						finder = require("telescope.finders").new_table({
+							results = file_paths,
+						}),
+						previewer = conf.file_previewer({}),
+						sorter = conf.generic_sorter({}),
+					})
+					:find()
+			end
 
-			vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end)
-			vim.keymap.set("n", "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-			vim.keymap.set("n", "<leader>sh", function() toggle_telescope(harpoon:list()) end)
+			vim.keymap.set("n", "<leader>ha", function()
+				harpoon:list():add()
+			end)
+			vim.keymap.set("n", "<leader>hh", function()
+				harpoon.ui:toggle_quick_menu(harpoon:list())
+			end)
+			vim.keymap.set("n", "<leader>sh", function()
+				toggle_telescope(harpoon:list())
+			end)
 
-			vim.keymap.set("n", "<leader>h1", function() harpoon:list():select(1) end)
-			vim.keymap.set("n", "<leader>h2", function() harpoon:list():select(2) end)
-			vim.keymap.set("n", "<leader>h3", function() harpoon:list():select(3) end)
-			vim.keymap.set("n", "<leader>h4", function() harpoon:list():select(4) end)
+			vim.keymap.set("n", "<leader>h1", function()
+				harpoon:list():select(1)
+			end)
+			vim.keymap.set("n", "<leader>h2", function()
+				harpoon:list():select(2)
+			end)
+			vim.keymap.set("n", "<leader>h3", function()
+				harpoon:list():select(3)
+			end)
+			vim.keymap.set("n", "<leader>h4", function()
+				harpoon:list():select(4)
+			end)
 
-			vim.keymap.set("n", "<leader>h5", function() harpoon:list():select(5) end)
-			vim.keymap.set("n", "<leader>h6", function() harpoon:list():select(6) end)
-			vim.keymap.set("n", "<leader>h7", function() harpoon:list():select(7) end)
-			vim.keymap.set("n", "<leader>h8", function() harpoon:list():select(8) end)
+			vim.keymap.set("n", "<leader>h5", function()
+				harpoon:list():select(5)
+			end)
+			vim.keymap.set("n", "<leader>h6", function()
+				harpoon:list():select(6)
+			end)
+			vim.keymap.set("n", "<leader>h7", function()
+				harpoon:list():select(7)
+			end)
+			vim.keymap.set("n", "<leader>h8", function()
+				harpoon:list():select(8)
+			end)
 
 			-- Toggle previous & next buffers stored within Harpoon list
-			vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
-			vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
+			vim.keymap.set("n", "<C-S-P>", function()
+				harpoon:list():prev()
+			end)
+			vim.keymap.set("n", "<C-S-N>", function()
+				harpoon:list():next()
+			end)
 		end,
-    keys = {
-      {mode = "n", "<leader>h", desc = "+Harpoon"},
-      {mode = "n", "<leader>ha", desc = "Add to list"},
-      {mode = "n", "<leader>hh", desc = "Toggle List"},
-      {mode = "n", "<leader>sh", desc = "Harpoon"},
+		keys = {
+			{ mode = "n", "<leader>h", desc = "+Harpoon" },
+			{ mode = "n", "<leader>ha", desc = "Add to list" },
+			{ mode = "n", "<leader>hh", desc = "Toggle List" },
+			{ mode = "n", "<leader>sh", desc = "Harpoon" },
 
-      {mode = "n", "<leader>h1", desc = "1"},
-      {mode = "n", "<leader>h2", desc = "2"},
-      {mode = "n", "<leader>h3", desc = "3"},
-      {mode = "n", "<leader>h4", desc = "4"},
+			{ mode = "n", "<leader>h1", desc = "1" },
+			{ mode = "n", "<leader>h2", desc = "2" },
+			{ mode = "n", "<leader>h3", desc = "3" },
+			{ mode = "n", "<leader>h4", desc = "4" },
 
-      {mode = "n", "<leader>h5", desc = "5"},
-      {mode = "n", "<leader>h6", desc = "6"},
-      {mode = "n", "<leader>h7", desc = "7"},
-      {mode = "n", "<leader>h8", desc = "8"},
+			{ mode = "n", "<leader>h5", desc = "5" },
+			{ mode = "n", "<leader>h6", desc = "6" },
+			{ mode = "n", "<leader>h7", desc = "7" },
+			{ mode = "n", "<leader>h8", desc = "8" },
 
-      -- Toggle previous & next buffers stored within Harpoon list
-      {mode = "n", "<C-S-P>", desc = "Harpoon previous"},
-      {mode = "n", "<C-S-N>", desc = "Harpoon next"},
-    }
+			-- Toggle previous & next buffers stored within Harpoon list
+			{ mode = "n", "<C-S-P>", desc = "Harpoon previous" },
+			{ mode = "n", "<C-S-N>", desc = "Harpoon next" },
+		},
 	},
 }

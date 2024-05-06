@@ -1,14 +1,91 @@
-local c = require("onedark.colors")
+-- get a hex list of gruvbox colors based on current bg and constrast config
+local function get_colors(p, config)
+	for color, hex in pairs(config.palette_overrides) do
+		p[color] = hex
+	end
 
----@class colors
----@field bg '#1f2329',
+	local bg = vim.o.background
+	local contrast = config.contrast
+
+	local color_groups = {
+		dark = {
+			bg_d = p.dark0_hard,
+			bg0 = p.dark0,
+			bg1 = p.dark1,
+			bg2 = p.dark2,
+			bg3 = p.dark3,
+			bg4 = p.dark4,
+			fg0 = p.light0,
+			fg1 = p.light1,
+			fg2 = p.light2,
+			fg3 = p.light3,
+			fg4 = p.light4,
+			red = p.bright_red,
+			green = p.bright_green,
+			yellow = p.bright_yellow,
+			blue = p.bright_blue,
+			purple = p.bright_purple,
+			aqua = p.bright_aqua,
+			orange = p.bright_orange,
+			neutral_red = p.neutral_red,
+			neutral_green = p.neutral_green,
+			neutral_yellow = p.neutral_yellow,
+			neutral_blue = p.neutral_blue,
+			neutral_purple = p.neutral_purple,
+			neutral_aqua = p.neutral_aqua,
+			dark_red = p.dark_red,
+			dark_green = p.dark_green,
+			dark_aqua = p.dark_aqua,
+			gray = p.gray,
+		},
+		light = {
+			bg0 = p.light0,
+			bg1 = p.light1,
+			bg2 = p.light2,
+			bg3 = p.light3,
+			bg4 = p.light4,
+			fg0 = p.dark0,
+			fg1 = p.dark1,
+			fg2 = p.dark2,
+			fg3 = p.dark3,
+			fg4 = p.dark4,
+			red = p.faded_red,
+			green = p.faded_green,
+			yellow = p.faded_yellow,
+			blue = p.faded_blue,
+			purple = p.faded_purple,
+			aqua = p.faded_aqua,
+			orange = p.faded_orange,
+			neutral_red = p.neutral_red,
+			neutral_green = p.neutral_green,
+			neutral_yellow = p.neutral_yellow,
+			neutral_blue = p.neutral_blue,
+			neutral_purple = p.neutral_purple,
+			neutral_aqua = p.neutral_aqua,
+			dark_red = p.light_red,
+			dark_green = p.light_green,
+			dark_aqua = p.light_aqua,
+			gray = p.gray,
+		},
+	}
+
+	if contrast ~= nil and contrast ~= "" then
+		color_groups[bg].bg0 = p[bg .. "0_" .. contrast]
+		color_groups[bg].dark_red = p[bg .. "_red_" .. contrast]
+		color_groups[bg].dark_green = p[bg .. "_green_" .. contrast]
+		color_groups[bg].dark_aqua = p[bg .. "_aqua_" .. contrast]
+	end
+
+	return color_groups[bg]
+end
+
+---@class Colors
 ---@field bg0 '#1f2329',
 ---@field bg1 "#282c34",
 ---@field bg2 "#30363f",
 ---@field bg3 "#323641",
----@field bg_alt '#282c34',
----@field bg_blue "#61afef",
 ---@field bg_d "#181b20",
+---@field bg_blue "#61afef",
 ---@field bg_yellow "#e8c88c",
 ---@field black "#0e1013",
 ---@field blue "#4fa6ed",
@@ -30,57 +107,72 @@ local c = require("onedark.colors")
 ---@field purple "#bf68d9",
 ---@field red "#e55561",
 ---@field yellow "#e2b86b"
-local colors = c
 
-colors.bg = colors.bg0
-colors.bg_alt = colors.bg1
+---@alias ThemeStyle 'onedark' | 'gruvbox' Theme
 
-local highlights = {
+---@class M
+---@field colors Colors
+---@field theme ThemeStyle
+local M = {}
 
-	DapBreakpoint = { fg = colors.red },
-	DapBreakpointCondition = { fg = colors.red },
-	DapLogPoint = { fg = colors.red },
-	DapStopped = { fg = colors.green },
-	DapStoppedLine = { bg = colors.bg2 },
-	DapBreakpointRejected = { fg = colors.yellow },
+--- Get Border Style
+---@param theme ThemeStyle Theme
+M.setup = function(theme)
+  M.theme = theme
+	local highlights = {}
+	if theme == "onedark" then
+		M.colors = require("onedark.colors")
+	elseif theme == "gruvbox" then
+		M.colors = get_colors(require("gruvbox").palette, require("gruvbox").config)
+	end
 
-	IndentBlanklineContextStart = { underline = false, bg = colors.bg1 },
-	IblScopeChar = { link = "IblScope" },
-	IblScopeFunction = { underline = false, bg = colors.bg1 },
+	highlights = vim.tbl_extend("keep", highlights, {
 
-	-- LirFloatNormal = { link = 'LirFloatNormal' },
-	-- LirFloatBorder = { bg = colors.bg_d },
-	-- LirFloatCurdirWindowNormal = { fg = colors.blue, bg = colors.bg_d },
+		DapBreakpoint = { fg = M.colors.red },
+		DapBreakpointCondition = { fg = M.colors.red },
+		DapLogPoint = { fg = M.colors.red },
+		DapStopped = { fg = M.colors.green },
+		DapStoppedLine = { bg = M.colors.bg2 },
+		DapBreakpointRejected = { fg = M.colors.yellow },
 
-	BqfPreviewFloat = { link = "FloatNormal" },
-	FileModified = { fg = colors.yellow },
-	FileLine = { link = "lualine_c_normal" },
-	lualine_b_normal = { bg = colors.bg },
+		IndentBlanklineContextStart = { underline = false, bg = M.colors.bg1 },
+		IblScopeChar = { link = "IblScope" },
+		IblScopeFunction = { underline = false, bg = M.colors.bg1 },
 
-	TreesitterContext = { bg = colors.bg1 },
+		-- LirFloatNormal = { link = 'LirFloatNormal' },
+		-- LirFloatBorder = { bg = M.colors.bg_d },
+		-- LirFloatCurdirWindowNormal = { fg = M.colors.blue, bg = M.colors.bg_d },
 
-	-- Credit  https://astronvim.com/recipes/telescope_theme
-	TelescopeBorder = { fg = colors.bg_alt, bg = colors.bg_d },
-	TelescopeNormal = { bg = colors.bg_d },
-	TelescopePreviewBorder = { fg = colors.bg, bg = colors.bg_d },
-	TelescopePreviewNormal = { bg = colors.bg_d },
-	TelescopePreviewTitle = { fg = colors.bg, bg = colors.green },
-	TelescopePromptBorder = { fg = colors.bg_alt, bg = colors.bg_alt },
-	TelescopePromptNormal = { fg = colors.fg, bg = colors.bg_alt },
-	TelescopePromptPrefix = { fg = colors.red, bg = colors.bg_alt },
-	TelescopePromptTitle = { fg = colors.bg, bg = colors.red },
-	TelescopeResultsBorder = { fg = colors.bg_d, bg = colors.bg_d },
-	TelescopeResultsNormal = { bg = colors.bg_d },
-	TelescopeResultsTitle = { fg = colors.bg, bg = colors.blue },
+		BqfPreviewFloat = { link = "FloatNormal" },
+		FileModified = { fg = M.colors.yellow },
+		FileLine = { link = "lualine_c_normal" },
+		lualine_b_normal = { bg = M.colors.bg0 },
 
-  OilSize = { fg = colors.green },
-  OilMtime = { fg = colors.blue },
-}
+		TreesitterContext = { bg = M.colors.bg1 },
 
-highlights = vim.tbl_extend("force", highlights, require("hover").set_highlights(colors))
+		-- Credit  https://astronvim.com/recipes/telescope_theme
+		TelescopeBorder = { fg = M.colors.bg1, bg = M.colors.bg_d },
+		TelescopeNormal = { bg = M.colors.bg_d },
+		TelescopePreviewBorder = { fg = M.colors.bg0, bg = M.colors.bg_d },
+		TelescopePreviewNormal = { bg = M.colors.bg_d },
+		TelescopePreviewTitle = { fg = M.colors.bg0, bg = M.colors.green },
+		TelescopePromptBorder = { fg = M.colors.bg1, bg = M.colors.bg1 },
+		TelescopePromptNormal = { fg = M.colors.fg, bg = M.colors.bg1 },
+		TelescopePromptPrefix = { fg = M.colors.red, bg = M.colors.bg1 },
+		TelescopePromptTitle = { fg = M.colors.bg0, bg = M.colors.red },
+		TelescopeResultsBorder = { fg = M.colors.bg_d, bg = M.colors.bg_d },
+		TelescopeResultsNormal = { bg = M.colors.bg_d },
+		TelescopeResultsTitle = { fg = M.colors.bg0, bg = M.colors.blue },
 
-for key, val in pairs(highlights) do
-	vim.api.nvim_set_hl(0, key, val)
+		OilSize = { fg = M.colors.green },
+		OilMtime = { fg = M.colors.blue },
+	})
+
+	highlights = vim.tbl_extend("force", highlights, require("hover").set_highlights(M.colors))
+
+	for key, val in pairs(highlights) do
+		vim.api.nvim_set_hl(0, key, val)
+	end
 end
 
-return colors
+return M
