@@ -23,18 +23,19 @@ background = "0x0D1017"
 foreground = "0xe6e1cf"
 
 [font]
-size = 11
+size = 9
+# family = "NotoMono Nerd Font"
 
-[font.bold]
-family = "SauceCodePro Nerd Font"
-style = "Bold"
-
-[font.italic]
-family = "SauceCodePro Nerd Font"
-style = "Italic"
+# [font.bold]
+# family = "NotoMono Nerd Font"
+# style = "Bold"
+#
+# [font.italic]
+# family = "NotoMono Nerd Font"
+# style = "Italic"
 
 [font.normal]
-family = "SauceCodePro Nerd Font"
+family = "NotoMono Nerd Font"
 
 [selection]
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"

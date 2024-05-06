@@ -46,48 +46,61 @@ return {
 		},
 	},
 	{
+		"skywind3000/asyncrun.vim",
+		cmd = {
+			"AsyncRun",
+		},
+    init = function()
+      vim.g.asyncrun_open = 16
+    end,
+    keys = {
+      { "<leader><cr>", ":AsyncRun<space>", desc = "Run Command" },
+      -- { "<leader><cr>", ":AsyncRun<space>", desc = "Run Command" },
+    }
+	},
+	{
 		"ninodeme/overseer.nvim",
 		event = "VeryLazy",
 		dev = true,
 		config = function()
 			require("overseer").setup({
 				dap = false,
-        task_list = {
-          bindings = {
-            ["?"] = "ShowHelp",
-            ["g?"] = "ShowHelp",
-            ["<CR>"] = "RunAction",
-            ["<C-e>"] = "Edit",
-            ["o"] = "Open",
-            ["<C-v>"] = "OpenVsplit",
-            ["<C-s>"] = "OpenSplit",
-            ["<C-f>"] = "OpenFloat",
-            ["<C-q>"] = "OpenQuickFix",
-            ["p"] = "TogglePreview",
-            ["<C-l>"] = "IncreaseDetail",
-            ["<C-h>"] = "DecreaseDetail",
-            ["L"] = "IncreaseAllDetail",
-            ["H"] = "DecreaseAllDetail",
-            ["["] = "DecreaseWidth",
-            ["]"] = "IncreaseWidth",
-            ["{"] = "PrevTask",
-            ["}"] = "NextTask",
-            ["<C-k>"] = "ScrollOutputUp",
-            ["<C-j>"] = "ScrollOutputDown",
-            ["q"] = "Close",
-            ["r"] = '<CMD>OverseerQuickAction restart<CR>',
-          }
-        },
-        task_win = {
-          -- How much space to leave around the floating window
-          padding = 2,
-          border = require("hover").alt_border,
-          -- Set any window options here (e.g. winhighlight)
-          win_opts = {
-            winblend = 0,
-            winhighlight = "Normal:FloatNormal",
-          },
-        },
+				task_list = {
+					bindings = {
+						["?"] = "ShowHelp",
+						["g?"] = "ShowHelp",
+						["<CR>"] = "RunAction",
+						["<C-e>"] = "Edit",
+						["o"] = "Open",
+						["<C-v>"] = "OpenVsplit",
+						["<C-s>"] = "OpenSplit",
+						["<C-f>"] = "OpenFloat",
+						["<C-q>"] = "OpenQuickFix",
+						["p"] = "TogglePreview",
+						["<C-l>"] = "IncreaseDetail",
+						["<C-h>"] = "DecreaseDetail",
+						["L"] = "IncreaseAllDetail",
+						["H"] = "DecreaseAllDetail",
+						["["] = "DecreaseWidth",
+						["]"] = "IncreaseWidth",
+						["{"] = "PrevTask",
+						["}"] = "NextTask",
+						["<C-k>"] = "ScrollOutputUp",
+						["<C-j>"] = "ScrollOutputDown",
+						["q"] = "Close",
+						["r"] = "<CMD>OverseerQuickAction restart<CR>",
+					},
+				},
+				task_win = {
+					-- How much space to leave around the floating window
+					padding = 2,
+					border = require("hover").alt_border,
+					-- Set any window options here (e.g. winhighlight)
+					win_opts = {
+						winblend = 0,
+						winhighlight = "Normal:FloatNormal",
+					},
+				},
 			})
 
 			local function get_search_params()
@@ -168,7 +181,7 @@ return {
 										table.insert(t, str)
 									end
 									vim.fn.setbufline(self.state.bufnr, 1, t)
-                  vim.api.nvim_set_option_value('filetype', 'lua', { buf = self.state.bufnr })
+									vim.api.nvim_set_option_value("filetype", "lua", { buf = self.state.bufnr })
 								end,
 							}),
 						})

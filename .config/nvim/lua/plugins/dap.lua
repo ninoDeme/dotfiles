@@ -7,7 +7,7 @@ return {
 				{ "DapBreakpointCondition", "" },
 				{ "DapLogPoint", "" },
 				{ "DapStopped", "", "DapStoppedLine" },
-				{ "DapBreakpointRejected", "" },
+				{ "DapBreakpointRejected", "" },
 			}
 
 			for _, val in ipairs(signs) do

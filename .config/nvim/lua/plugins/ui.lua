@@ -7,11 +7,14 @@ return {
       local lsp_progress = function()
         local filtered_clients = vim.lsp.get_clients({bufnr = vim.api.nvim_get_current_buf()})
         if #filtered_clients > 0 then
-          local names = ""
-          for _, v in ipairs(filtered_clients) do
-            names = names .. " " .. v.name
-          end
-          return " LSP:" .. names
+          -- local names = ""
+          -- for _, v in ipairs(filtered_clients) do
+          --   names = names .. " " .. v.name
+          -- end
+          -- return " LSP:" .. names
+
+          return " " .. #filtered_clients .. ""
+          -- return "LSP(" .. #filtered_clients .. ")"
         else
           return ""
         end
@@ -40,25 +43,33 @@ return {
               end,
               shorting_target = 50,
               symbols = {
-                modified = '󰆓',      -- Text to show when the file is modified.
-                readonly = '',      -- Text to show when the file is non-modifiable or readonly.
+                -- modified = '󰆓',      -- Text to show when the file is modified.
+                -- readonly = '',      -- Text to show when the file is non-modifiable or readonly.
+                -- unnamed = '[*]', -- Text to show for unnamed buffers.
+                -- newfile = '󰈔',     -- Text to show for newly created file before first write
+
+                modified = '',      -- Text to show when the file is modified.
+                readonly = '',      -- Text to show when the file is non-modifiable or readonly.
                 unnamed = '[*]', -- Text to show for unnamed buffers.
-                newfile = '󰈔',     -- Text to show for newly created file before first write
+                newfile = '',     -- Text to show for newly created file before first write
               },
             },
             'location',
             {
               'diff',
-              symbols = { added = ' ', modified = '󰝤 ', removed = ' ' },
+              -- symbols = { added = ' ', modified = '󰝤 ', removed = ' ' },
+              symbols = { added = ' ', modified = ' ', removed = ' ' },
             },
             {
               'diagnostics',
-              symbols = { error = " ", warn = " ", hint = " ", info = "󰋼 " }
+              -- symbols = { error = " ", warn = " ", hint = " ", info = "󰋼 " }
+              symbols = { error = " ", warn = " ", hint = " ", info = " " }
             }
           },
           lualine_x = {
             {
               lsp_progress,
+              on_click = function () vim.cmd("LspInfo") end,
               color = { fg = colors.blue }
             },
             {
@@ -79,7 +90,8 @@ return {
             },
             {
               'branch',
-              icon = '',
+              -- icon = '',
+              icon = '',
               color = { fg = colors.purple },
               ---@param str string
               fmt = function (str)
@@ -94,53 +106,22 @@ return {
           lualine_y = {
           },
           lualine_z = {
-            {
-              '" "',
-              padding = 0
-            }
+            -- {
+            --   '" "',
+            --   padding = 0
+            -- }
           }
         },
-        -- winbar = {
-        --   lualine_c = {
-        --     {
-        --       'filename',
-        --       path = 1,
-        --       -- color = function(_)
-        --       --   return { fg = vim.bo.modified and colors.yellow or nil }
-        --       -- end,
-        --       symbols = {
-        --         modified = '󰆓',      -- Text to show when the file is modified.
-        --         readonly = '',      -- Text to show when the file is non-modifiable or readonly.
-        --         unnamed = '[*]', -- Text to show for unnamed buffers.
-        --         newfile = '󰈔',     -- Text to show for newly created file before first write
-        --       },
-        --     },
-        --   },
-        -- },
-        -- inactive_winbar = {
-        --   lualine_c = {
-        --     {
-        --       'filename',
-        --       path = 1,
-        --       -- color = function(_)
-        --       --   return { fg = vim.bo.modified and colors.yellow or nil }
-        --       -- end,
-        --       symbols = {
-        --         modified = '󰆓',      -- Text to show when the file is modified.
-        --         readonly = '',      -- Text to show when the file is non-modifiable or readonly.
-        --         unnamed = '[*]', -- Text to show for unnamed buffers.
-        --         newfile = '󰈔',     -- Text to show for newly created file before first write
-        --       },
-        --     }
-        --   },
-        --
-        -- }
       }
       vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
-      -- vim.api.nvim_create_autocmd("User LspAttach LspDetach", {
-      --   group = "lualine_augroup",
-      --   callback = require("lualine").refresh,
-      -- })
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = "lualine_augroup",
+        callback = require("lualine").refresh,
+      })
+      vim.api.nvim_create_autocmd("LspDetach", {
+        group = "lualine_augroup",
+        callback = require("lualine").refresh,
+      })
     end,
     dependencies = {
       'nvim-web-devicons',
@@ -166,19 +147,19 @@ return {
       }
     },
   },
-  {
-    'kevinhwang91/nvim-bqf',
-    config = function()
-      require("bqf").setup({
-        preview = {
-          winblend = 0,
-          border = require("hover").border
-        }
-      })
-    end,
-    ft = 'qf',
-    cond = NOT_VSCODE
-  },
+  -- {
+  --   'kevinhwang91/nvim-bqf',
+  --   config = function()
+  --     require("bqf").setup({
+  --       preview = {
+  --         winblend = 0,
+  --         border = require("hover").border
+  --       }
+  --     })
+  --   end,
+  --   ft = 'qf',
+  --   cond = NOT_VSCODE
+  -- },
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",

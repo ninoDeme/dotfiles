@@ -72,6 +72,9 @@ local highlights = {
 	TelescopeResultsBorder = { fg = colors.bg_d, bg = colors.bg_d },
 	TelescopeResultsNormal = { bg = colors.bg_d },
 	TelescopeResultsTitle = { fg = colors.bg, bg = colors.blue },
+
+  OilSize = { fg = colors.green },
+  OilMtime = { fg = colors.blue },
 }
 
 highlights = vim.tbl_extend("force", highlights, require("hover").set_highlights(colors))

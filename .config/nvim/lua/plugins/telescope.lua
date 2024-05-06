@@ -9,7 +9,7 @@ return {
 			local fb_actions = require("telescope").extensions.file_browser.actions
 			telescope.setup({
 				defaults = {
-					prompt_prefix = "   ",
+					prompt_prefix = "   ",
 					selection_caret = "  ",
 					entry_prefix = "  ",
 					initial_mode = "insert",
@@ -79,7 +79,9 @@ return {
 					file_browser = {
 						hidden = true,
 						hijack_netrw = false,
+            no_ignore = true,
 						respect_gitignore = false,
+            -- dir_icon = "",
 						grouped = true,
 						prompt_path = true,
 						mappings = {
@@ -138,6 +140,7 @@ return {
 		after = { "nvim-telescope/telescope.nvim" },
 		keys = {
 			{ "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+			{ "<leader><leader>", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
 		},
 		lazy = true,
 		dependencies = "nvim-telescope/telescope.nvim",

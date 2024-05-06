@@ -71,12 +71,6 @@ return {
 		end,
 		event = "VeryLazy",
 	},
-	{
-		"skywind3000/asyncrun.vim",
-		cmd = {
-			"AsyncRun",
-		},
-	},
 	-- -- 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
 	-- {
 	--   'wellle/targets.vim',
@@ -256,7 +250,11 @@ return {
 				})
 			end
 			require("mini.bracketed").setup()
+
+      local spec_treesitter = require('mini.ai').gen_spec.treesitter
 			require("mini.ai").setup({
+        -- Number of lines within which textobject is searched
+        n_lines = 10000,
 				custom_textobjects = {
 					g = function()
 						local from = { line = 1, col = 1 }
@@ -266,14 +264,17 @@ return {
 						}
 						return { from = from, to = to }
 					end,
-					x = {
-						{
-							'%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b""()',
-							"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b''()",
-							"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b{}()",
-							"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=[%w_-]+()",
-						},
-					},
+          T = spec_treesitter({ a = '@tag_name', i = '@tag_name' }),
+          t = spec_treesitter({ a = '@tag.outer', i = '@tag.inner' }),
+          x = spec_treesitter({ a = '@attribute.outer', i = '@attribute.inner' }),
+					-- x = {
+					-- 	{
+					-- 		'%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b""()',
+					-- 		"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b''()",
+					-- 		"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b{}()",
+					-- 		"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=[%w_-]+()",
+					-- 	},
+					-- },
 				},
 			})
 			require("mini.align").setup()

@@ -7,7 +7,7 @@ return {
       integrations = {
         telescope = true,
         diffview = true,
-      }
+      },
     },
     branch = 'nightly',
     dependencies = {

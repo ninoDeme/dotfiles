@@ -85,9 +85,8 @@ _open_files_for_editing() {
 
 if command -v exa &> /dev/null
 then
-	alias ls='exa -al --group-directories-first'
 	alias la='exa -a --group-directories-first'
-	alias l='exa -l --group-directories-first'
+	alias l='exa -al --group-directories-first'
 	alias le='exa --group-directories-first'
 	alias lt='exa -aT --group-directories-first'
 fi

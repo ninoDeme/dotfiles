@@ -149,19 +149,15 @@
         :desc "dap breakpoint hit count"   "h" #'dap-breakpoint-hit-condition
         :desc "dap breakpoint log message" "l" #'dap-breakpoint-log-message))
 
-;; (after! prodigy
-;;   (prodigy-define-tag
-;;     :name 'node
-;;     :command "pnpm"
-;;     :args '("start")
-;;     :ready-message "limberFirebirdClient PROCESS"
-;;   )
-;;   (prodigy-define-service
-;;     :name "server"
-;;     :tag '(node)
-;;     :cwd "~/Projects/limber-hub-marktplace/server"
-;;   )
-;; )
+(after! prodigy
+  (prodigy-define-service
+    :name "server"
+    :command "pnpm"
+    :args '("start")
+    :ready-message "limberFirebirdClient PROCESS"
+    :cwd "~/Projects/limber-hub-marktplace/server"
+  )
+)
 
 (use-package! lsp-tailwindcss
   :init

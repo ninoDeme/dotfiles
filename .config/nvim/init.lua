@@ -51,6 +51,11 @@ vim.opt.visualbell     = true
 
 -- -- add manual folding
 -- vim.opt.foldmethod     = 'marker'
+--
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.opt.foldenable = false
+vim.opt.foldlevel = 40
 
 vim.opt.cmdheight      = 1
 vim.opt.number         = true
@@ -141,6 +146,10 @@ if !exists('g:vscode')
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
+endif
+
+if executable('rg') 
+	set grepprg=rg\ --vimgrep
 endif
 
 ]])

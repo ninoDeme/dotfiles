@@ -19,13 +19,12 @@ return {
       local dashboard = require "alpha.themes.dashboard"
       dashboard.section.header.val = logo
       dashboard.section.buttons.val = {
-        dashboard.button("SPC s r", "  Recent Files"),
-        dashboard.button("SPC s f", "󰈞  Find File"),
-        dashboard.button("SPC s t", "  Find Text"),
-        dashboard.button("SPC s e", "󰝰  Open File Browser"),
-        dashboard.button("n", "  New file", ":e<CR>"),
-        dashboard.button("c", "  Configuration", ":e $MYVIMRC | :cd %:p:h<CR>"),
-        dashboard.button("u", "  Update Plugins", ":Lazy update<CR>"),
+        dashboard.button("SPC s r", "  Recent Files"),
+        dashboard.button("SPC s f", "  Find File"),
+        dashboard.button("SPC s e", "  Open File Browser"),
+        dashboard.button("n", "  New file", ":e<CR>"),
+        dashboard.button("c", "  Configuration", ":e $MYVIMRC | :cd %:p:h<CR>"),
+        dashboard.button("u", "  Update Plugins", ":Lazy sync<CR>"),
         dashboard.button("q", "󰗼  Quit Neovim", ":qa!<CR>"),
       }
 
@@ -47,12 +46,12 @@ return {
       local buf_has_content = #lines > 1 or (#lines == 1 and lines[1] ~= "")
 
       local footer = function()
-        local version = " " .. vim.version().major .. "." .. vim.version().minor .. "." .. vim.version().patch
+        local version = " " .. vim.version().major .. "." .. vim.version().minor .. "." .. vim.version().patch
         local lazy_ok, lazy = pcall(require, "lazy")
         if lazy_ok then
-          local total_plugins = "  󰒲 " .. lazy.stats().count .. " Plugins"
+          local total_plugins = "   " .. lazy.stats().count .. " Plugins"
           local startuptime = (math.floor(lazy.stats().startuptime * 100 + 0.5) / 100)
-          return version .. total_plugins .. " 󱎫 " .. startuptime .. "ms"
+          return version .. total_plugins .. " 󰔛 " .. startuptime .. "ms"
         else
           return version
         end
