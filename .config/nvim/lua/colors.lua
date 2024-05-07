@@ -166,6 +166,11 @@ M.setup = function(theme)
 
 		OilSize = { fg = M.colors.green },
 		OilMtime = { fg = M.colors.blue },
+
+    WinBarNC = { bold = false, bg = M.colors.bg_d },
+    WinBar = { bold = false, bg = M.colors.bg_d },
+    WinBarPathAbs = { bold = false, bg = M.colors.bg_d },
+    WinBarPathRel = { bold = false, fg = M.colors.blue, bg = M.colors.bg_d },
 	})
 
 	highlights = vim.tbl_extend("force", highlights, require("hover").set_highlights(M.colors))

@@ -74,6 +74,12 @@ return {
               }
 						},
 					},
+          find_files = {
+            hidden = true
+          },
+          live_grep = {
+            additional_args = { "-." }
+          }
 				},
 				extensions = {
 					file_browser = {
@@ -81,7 +87,7 @@ return {
 						hijack_netrw = false,
             no_ignore = true,
 						respect_gitignore = false,
-            -- dir_icon = "",
+            dir_icon = "",
 						grouped = true,
 						prompt_path = true,
 						mappings = {
