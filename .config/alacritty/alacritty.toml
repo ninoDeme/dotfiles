@@ -23,7 +23,7 @@ background = "0x0D1017"
 foreground = "0xe6e1cf"
 
 [font]
-size = 9
+size = 10
 # family = "NotoMono Nerd Font"
 
 # [font.bold]
@@ -35,7 +35,7 @@ size = 9
 # style = "Italic"
 
 [font.normal]
-family = "NotoMono Nerd Font"
+family = "IosevkaTerm Nerd Font"
 
 [selection]
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"

@@ -34,10 +34,10 @@ battery all {
         format = "%status %percentage %remaining"
         format_down = ""
         # format_percentage = "%.00f%s"
-        status_chr = "⚡ CHR"
-        status_bat = "🔋 BAT"
-        status_full = "☻ FULL"
-        status_unk = "? UNK"
+        status_chr = "CHR"
+        status_bat = "BAT"
+        status_full = "FULL"
+        status_unk = "UNK"
 }
 
 disk "/" {
@@ -55,7 +55,7 @@ memory {
 }
 
 tztime local {
-        format = "%Y-%m-%d %H:%M:%S"
+        format = "%Y-%m-%d %H:%M"
 }
 
 cpu_usage {
