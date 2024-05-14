@@ -197,6 +197,19 @@ return {
 				filetypes = { "html", "templ", "angular.html" },
 			}))
 			lspconfig.cssls.setup(lsp_opts)
+      require("lspconfig.configs").firebird_ls = {
+        default_config = {
+          cmd = { 'node', '/home/ricardo/Projects/firebird-language-server/build/language-server.js', '--stdio' },
+
+          filetypes = { 'sql' },
+          single_file_support = true,
+          settings = { sql = {} },
+        },
+        docs = {
+          description = [[gaming]],
+        },
+      }
+      lspconfig.firebird_ls.setup(lsp_opts);
 			lspconfig.tailwindcss.setup(vim.tbl_extend("force", lsp_opts, {
 				filetypes = {
 					"aspnetcorerazor",
