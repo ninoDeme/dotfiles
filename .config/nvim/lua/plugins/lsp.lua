@@ -41,18 +41,20 @@ local function keymappings(client, bufnr)
 				end,
 				"Format Document",
 			},
-			e = {
-				function()
-					require("telescope.builtin").diagnostics({ severity = vim.diagnostic.severity.ERROR })
-				end,
-				"Errors",
-			},
-			d = {
-				function()
-					require("telescope.builtin").diagnostics()
-				end,
-				"Diagnostics",
-			},
+			-- e = {
+			-- 	function()
+			-- 		require("telescope.builtin").diagnostics({ severity = vim.diagnostic.severity.ERROR })
+			-- 	end,
+			-- 	"Errors",
+			-- },
+			-- d = {
+			-- 	function()
+			-- 		require("telescope.builtin").diagnostics()
+			-- 	end,
+			-- 	"Diagnostics",
+			-- },
+      d = { function() vim.diagnostic.setqflist() end, "View Diagnostics" },
+      e = { function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end, "View Errors" },
 		},
 	}
 
@@ -64,34 +66,34 @@ local function keymappings(client, bufnr)
 			end,
 			"Signature Help",
 		},
-		-- d = { function() vim.lsp.buf.definition() end, "View Definition" },
-		-- D = { function() vim.lsp.buf.references() end, "View References" },
-		-- I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
-		-- h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
-		d = {
-			function()
-				require("telescope.builtin").lsp_definitions({ show_line = false })
-			end,
-			"View Definition",
-		},
-		D = {
-			function()
-				require("telescope.builtin").lsp_references({ show_line = false, include_declaration = false })
-			end,
-			"View References",
-		},
-		I = {
-			function()
-				require("telescope.builtin").lsp_implementations()
-			end,
-			"Goto Implementation",
-		},
-		h = {
-			function()
-				require("telescope.builtin").lsp_type_definitions()
-			end,
-			"View Type Signature",
-		},
+		d = { function() vim.lsp.buf.definition() end, "View Definition" },
+		D = { function() vim.lsp.buf.references() end, "View References" },
+		I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
+		h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
+		-- d = {
+		-- 	function()
+		-- 		require("telescope.builtin").lsp_definitions({ show_line = false })
+		-- 	end,
+		-- 	"View Definition",
+		-- },
+		-- D = {
+		-- 	function()
+		-- 		require("telescope.builtin").lsp_references({ show_line = false, include_declaration = false })
+		-- 	end,
+		-- 	"View References",
+		-- },
+		-- I = {
+		-- 	function()
+		-- 		require("telescope.builtin").lsp_implementations()
+		-- 	end,
+		-- 	"Goto Implementation",
+		-- },
+		-- h = {
+		-- 	function()
+		-- 		require("telescope.builtin").lsp_type_definitions()
+		-- 	end,
+		-- 	"View Type Signature",
+		-- },
 	}
 	local whichkey = require("which-key")
 	whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>", mode = { "n", "v" } })
@@ -204,9 +206,6 @@ return {
           filetypes = { 'sql' },
           single_file_support = true,
           settings = { sql = {} },
-        },
-        docs = {
-          description = [[gaming]],
         },
       }
       lspconfig.firebird_ls.setup(lsp_opts);

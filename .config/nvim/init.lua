@@ -6,6 +6,7 @@ vim.cmd([[
 
 if vim.g.neovide then
   vim.g.neovide_scale_factor = 1.0
+  vim.g.neovide_floating_shadow = false
   local change_scale_factor = function(delta)
     vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
   end
@@ -24,7 +25,7 @@ if vim.g.vscode then
 
 end
 
-require("hover").setup('dark')
+require("hover").setup('light')
 
 -- Vim settings {{{
 
@@ -34,7 +35,8 @@ require("hover").setup('dark')
 -- map leader to space
 vim.g.mapleader = " "
 vim.opt.termguicolors = true
-vim.opt.guifont =  "NotoMono Nerd Font:h9"
+vim.opt.guifont =  "Iosevka Nerd Font:h10"
+vim.opt.linespace = 1
 vim.opt.wildmenu       = true
 
 -- Set highlight on search
@@ -71,7 +73,7 @@ vim.opt.signcolumn     = 'yes'
 
 vim.opt.cursorline     = true
 
-vim.opt.scrolloff      = 4
+vim.opt.scrolloff      = 3
 
 vim.opt.wrap = false
 -- vim.opt.timeout = false

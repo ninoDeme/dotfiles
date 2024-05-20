@@ -1,19 +1,7 @@
 return {
-	{
-		"lambdalisue/vim-manpager",
-		cond = NOT_VSCODE,
-		cmd = {
-			"ASMANPAGER",
-			"Man",
-		},
-		ft = {
-			"man",
-		},
-	}, -- Use vim as a manpager
 	{ "nvim-lua/plenary.nvim", cond = NOT_VSCODE }, -- Telescope dependency
 	{ "kyazdani42/nvim-web-devicons", cond = NOT_VSCODE }, -- Add icons to plugins
 	{ "sedm0784/vim-resize-mode", cond = NOT_VSCODE, keys = { "<C-w>" } },
-	{ "editorconfig/editorconfig-vim", event = "VeryLazy" }, -- Editor config support
 
 	-- { 'tpope/vim-surround',             event = 'VeryLazy' }, -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
 	{
@@ -61,7 +49,6 @@ return {
 		end,
 		cond = NOT_VSCODE,
 	},
-	{ "mg979/vim-visual-multi", cond = NOT_VSCODE, event = "VeryLazy" }, -- Multiple cursors (Ctrl+n to select word and Ctrl+Down/Up)
 	{ "cohama/lexima.vim", cond = NOT_VSCODE, event = "VeryLazy" },
 	{
 		"ggandor/leap.nvim",
@@ -72,11 +59,10 @@ return {
 		event = "VeryLazy",
 	},
 	-- -- 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
-	-- {
-	--   'wellle/targets.vim',
-	--   event = 'VeryLazy'
-	-- },
-	--
+	{
+	  'wellle/targets.vim',
+	  event = 'VeryLazy'
+	},
 	-- {
 	--   'kana/vim-textobj-entire',
 	--   event = 'VeryLazy',
@@ -141,7 +127,7 @@ return {
 	}, -- Snippets plugin
 
 	-- Color schemes =======================
-	{ "ayu-theme/ayu-vim", cond = NOT_VSCODE },
+	-- { "ayu-theme/ayu-vim", cond = NOT_VSCODE },
 	{
     enabled = true,
 		lazy = false,
@@ -175,162 +161,52 @@ return {
 		cond = NOT_VSCODE,
 	},
 
-	-- {'kana/vim-textobj-user', --- {{{
-	--   event = 'VeryLazy',
-	--   config = function()
-	--     vim.cmd[[
-	--     " Regexes
-	--     " Note that all regexes are surrounded by (), use that to your advantage.
-	--
-	--     " Teste usar lookbehind para verificar se não é o nome da tag
-	--     " A word: `attr=value`, with no quotes.
-	--     let s:RE_WORD = '\(\w\+\)'
-	--     " An attribute name: `src`, `data-attr`, `strange_attr`.
-	--     let s:RE_ATTR_NAME = '\([\[\(\#\*]\{0,2}\)\([a-zA-Z0-9\-_:@.]\+\)\([\]\)]\{0,2}\)'
-	--     " A quoted string.
-	--     let s:RE_QUOTED_STR = '\(".\{-}"\)'
-	--     " The value of an attribute: a word with no quotes or a quoted string.
-	--     let s:RE_ATTR_VALUE = '\(' . s:RE_QUOTED_STR . '\|' . s:RE_WORD . '\)'
-	--     " The right-hand side of an XML attr: an optional `=something` or `="str"`.
-	--     let s:RE_ATTR_RHS = '\(=' . s:RE_ATTR_VALUE . '\)\='
-	--
-	--     " The final regex.
-	--     let s:RE_ATTR_I = '\(' . s:RE_ATTR_NAME . s:RE_ATTR_RHS . '\)'
-	--     let s:RE_ATTR_A = '\s\+' . s:RE_ATTR_I
-	--     let s:RE_ATTR_AX = '\s\+' . s:RE_ATTR_NAME
-	--
-	--     call textobj#user#plugin('angularattr', {
-	--     \   'attr-i': {
-	--     \     'pattern': s:RE_ATTR_I,
-	--     \     'select': 'ix',
-	--     \   },
-	--     \   'attr-a': {
-	--     \     'pattern': s:RE_ATTR_A,
-	--     \     'select': 'ax',
-	--     \   },
-	--     \   'attr-iX': {
-	--     \     'pattern': s:RE_ATTR_NAME,
-	--     \     'select': 'iX'
-	--     \   },
-	--     \   'attr-aX': {
-	--     \     'pattern': s:RE_ATTR_AX,
-	--     \     'select': 'aX'
-	--     \   },
-	--     \ })
-	--
-	--     ]]
-	--   end
-	-- }, --- }}}
+	{'kana/vim-textobj-user', --- {{{
+	  event = 'VeryLazy',
+	  config = function()
+	    vim.cmd[[
+	    " Regexes
+	    " Note that all regexes are surrounded by (), use that to your advantage.
 
-	{
-		"echasnovski/mini.nvim",
-		event = "VeryLazy",
-		config = function()
-			if NOT_VSCODE() then
-				require("mini.comment").setup({
-					options = {
-						custom_commentstring = function()
-							return require("ts_context_commentstring").calculate_commentstring() or vim.bo.commentstring
-						end,
-					},
-				})
+	    " Teste usar lookbehind para verificar se não é o nome da tag
+	    " A word: `attr=value`, with no quotes.
+	    let s:RE_WORD = '\(\w\+\)'
+	    " An attribute name: `src`, `data-attr`, `strange_attr`.
+	    let s:RE_ATTR_NAME = '\([\[\(\#\*]\{0,2}\)\([a-zA-Z0-9\-_:@.]\+\)\([\]\)]\{0,2}\)'
+	    " A quoted string.
+	    let s:RE_QUOTED_STR = '\(".\{-}"\)'
+	    " The value of an attribute: a word with no quotes or a quoted string.
+	    let s:RE_ATTR_VALUE = '\(' . s:RE_QUOTED_STR . '\|' . s:RE_WORD . '\)'
+	    " The right-hand side of an XML attr: an optional `=something` or `="str"`.
+	    let s:RE_ATTR_RHS = '\(=' . s:RE_ATTR_VALUE . '\)\='
 
-				require("mini.files").setup()
+	    " The final regex.
+	    let s:RE_ATTR_I = '\(' . s:RE_ATTR_NAME . s:RE_ATTR_RHS . '\)'
+	    let s:RE_ATTR_A = '\s\+' . s:RE_ATTR_I
+	    let s:RE_ATTR_AX = '\s\+' . s:RE_ATTR_NAME
 
-				require("mini.surround").setup({
-					mappings = {
-						add = "gsa", -- Add surrounding in Normal and Visual modes
-						delete = "gsd", -- Delete surrounding
-						find = "gsf", -- Find surrounding (to the right)
-						find_left = "gsF", -- Find surrounding (to the left)
-						highlight = "gsh", -- Highlight surrounding
-						replace = "gsr", -- Replace surrounding
-						update_n_lines = "gsn", -- Update `n_lines`
+	    call textobj#user#plugin('angularattr', {
+	    \   'attr-i': {
+	    \     'pattern': s:RE_ATTR_I,
+	    \     'select': 'ix',
+	    \   },
+	    \   'attr-a': {
+	    \     'pattern': s:RE_ATTR_A,
+	    \     'select': 'ax',
+	    \   },
+	    \   'attr-iX': {
+	    \     'pattern': s:RE_ATTR_NAME,
+	    \     'select': 'iX'
+	    \   },
+	    \   'attr-aX': {
+	    \     'pattern': s:RE_ATTR_AX,
+	    \     'select': 'aX'
+	    \   },
+	    \ })
 
-						suffix_last = "l", -- Suffix to search with "prev" method
-						suffix_next = "n", -- Suffix to search with "next" method
-					},
-				})
-
-				-- require('mini.cursorword').setup()
-				local hipatterns = require("mini.hipatterns")
-				hipatterns.setup({
-					highlighters = {
-						-- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-						fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-						hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-						todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-						note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
-
-						-- Highlight hex color strings (`#rrggbb`) using that color
-						hex_color = hipatterns.gen_highlighter.hex_color(),
-					},
-				})
-			end
-			require("mini.bracketed").setup()
-
-			local spec_treesitter = require("mini.ai").gen_spec.treesitter
-			require("mini.ai").setup({
-				-- Number of lines within which textobject is searched
-				n_lines = 10000,
-				custom_textobjects = {
-					g = function()
-						local from = { line = 1, col = 1 }
-						local to = {
-							line = vim.fn.line("$"),
-							col = math.max(vim.fn.getline("$"):len(), 1),
-						}
-						return { from = from, to = to }
-					end,
-					T = spec_treesitter({ a = "@tag_name", i = "@tag_name" }),
-					t = spec_treesitter({ a = "@tag.outer", i = "@tag.inner" }),
-					x = spec_treesitter({ a = "@attribute.outer", i = "@attribute.inner" }),
-					-- x = {
-					-- 	{
-					-- 		'%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b""()',
-					-- 		"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b''()",
-					-- 		"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b{}()",
-					-- 		"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=[%w_-]+()",
-					-- 	},
-					-- },
-				},
-			})
-			require("mini.align").setup()
-			require("mini.splitjoin").setup()
-			require("mini.operators").setup({
-				exchange = {
-					prefix = "cx",
-				},
-			})
-		end,
-		keys = {
-			{ mode = "n", "gR", "gr$", remap = true },
-			{ mode = "n", "cX", "cx$", remap = true },
-			{ "<leader>m", desc = "+Mini" },
-			{
-				"<leader>me",
-				function()
-					require("mini.files").open()
-				end,
-				desc = "Open Mini Files",
-			},
-			{
-				"<leader>m.",
-				function()
-					require("mini.files").open(vim.fn.expand("%:p:h"))
-				end,
-				desc = "Open Mini Files at dir",
-			},
-			{ "gs", desc = "+Surrounding" },
-			{ mode = { "n", "v" }, "gsa", desc = "Add surrounding" },
-			{ mode = "n", "gsd", desc = "Delete surrounding" },
-			{ mode = "n", "gsf", desc = "Find surrounding (to the right)" },
-			{ mode = "n", "gsF", desc = "Find surrounding (to the left)" },
-			{ mode = "n", "gsh", desc = "Highlight surrounding" },
-			{ mode = "n", "gsr", desc = "Replace surrounding" },
-			{ mode = "n", "gsn", desc = "Update `n_lines`" },
-		},
-	},
+	    ]]
+	  end
+	}, --- }}}
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
@@ -404,4 +280,11 @@ return {
 			{ mode = "n", "<C-S-N>", desc = "Harpoon next" },
 		},
 	},
+  {
+    'brenoprata10/nvim-highlight-colors',
+    event = "VeryLazy",
+    opts = {
+      enable_tailwind = true,
+    }
+  }
 }

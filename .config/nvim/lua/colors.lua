@@ -171,6 +171,8 @@ M.setup = function(theme)
     WinBar = { bold = false, bg = M.colors.bg_d },
     WinBarPathAbs = { bold = false, bg = M.colors.bg_d },
     WinBarPathRel = { bold = false, fg = M.colors.blue, bg = M.colors.bg_d },
+
+    QuickFixLine = { fg = 'none', bg = M.colors.bg1, underline = true }
 	})
 
 	highlights = vim.tbl_extend("force", highlights, require("hover").set_highlights(M.colors))

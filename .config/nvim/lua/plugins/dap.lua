@@ -54,6 +54,18 @@ return {
 						},
 						{
 							type = "pwa-node",
+							request = "attach",
+							name = "attach to port...",
+							port = function()
+								local port = vim.fn.input({
+									prompt = "Port: ",
+									default = "9229",
+								})
+								return port
+							end,
+						},
+						{
+							type = "pwa-node",
 							request = "launch",
 							name = "Launch app.ts in folder in ts-node-dev",
 							runtimeExecutable = "node",
@@ -90,19 +102,9 @@ return {
     },
     dependencies = {
       {
-        "theHamsta/nvim-dap-virtual-text",
-        opts = {},
-      },
-      {
         "stevearc/overseer.nvim",
       },
     },
     cond = NOT_VSCODE,
   },
-  -- {
-  --   "jay-babu/mason-nvim-dap.nvim",
-  --   dependencies = {
-  --     "mason.nvim"
-  --   }
-  -- },
 }

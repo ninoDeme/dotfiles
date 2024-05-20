@@ -10,4 +10,3 @@
 --     vim.treesitter.language.register("angular", "angular.html") -- Register the filetype with treesitter for the `angular` language/parser
 --   end,
 -- })
---

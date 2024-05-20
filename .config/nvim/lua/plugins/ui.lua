@@ -147,7 +147,6 @@ return {
 		end,
 		dependencies = {
 			"nvim-web-devicons",
-			"nvim-lua/lsp-status.nvim",
 		},
 		cond = NOT_VSCODE,
 	}, -- }}}
@@ -220,21 +219,40 @@ return {
 		event = "VeryLazy",
 		cond = NOT_VSCODE,
 	},
-	-- {
-	--   "levouh/tint.nvim",
-	--   event = "VeryLazy",
-	--   config = function()
-	--     require("tint").setup({
-	--       tint = -20,  -- Darken colors, use a positive value to brighten
-	--       saturation = 0.8,  -- Darken colors, use a positive value to brighten
-	--     })
-	--   end
-	-- }
-	-- {
-	--   'rcarriga/nvim-notify',
-	--   init = function()
-	--     vim.notify = require("notify")
-	--   end
-	-- }
-	-- {'stevearc/qf_helper.nvim', cond = NOT_VSCODE}, -- Quickfix helper :QF{command}
+  {
+    'yorickpeterse/nvim-pqf',
+    event = 'VeryLazy',
+    opts = {
+      signs = {
+        error = { text = ' ', hl = 'DiagnosticSignError' },
+        warning = { text = ' ', hl = 'DiagnosticSignWarn' },
+        info = { text = ' ', hl = 'DiagnosticSignInfo' },
+        hint = { text = ' ', hl = 'DiagnosticSignHint' },
+      },
+      -- By default, only the first line of a multi line message will be shown. When this is true, multiple lines will be shown for an entry, separated by a space
+      show_multiple_lines = false,
+      -- How long filenames in the quickfix are allowed to be. 0 means no limit. Filenames above this limit will be truncated from the beginning with `filename_truncate_prefix`.
+      max_filename_length = 0,
+      -- Prefix to use for truncated filenames.
+      filename_truncate_prefix = '[...]',
+    }
+
+  }
+  -- {
+  --   "levouh/tint.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("tint").setup({
+  --       tint = -20,  -- Darken colors, use a positive value to brighten
+  --       saturation = 0.8,  -- Darken colors, use a positive value to brighten
+  --     })
+  --   end
+  -- }
+  -- {
+  --   'rcarriga/nvim-notify',
+  --   init = function()
+  --     vim.notify = require("notify")
+  --   end
+  -- }
+  -- {'stevearc/qf_helper.nvim', cond = NOT_VSCODE}, -- Quickfix helper :QF{command}
 }

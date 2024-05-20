@@ -80,6 +80,6 @@ return {
     keys = {
       { mode = 'n', '<leader>gt', '<cmd>:Tardis git<cr>', desc = 'Open tardis Time machine' }
     },
-    config = {}
+    opts = {}
   }
 }

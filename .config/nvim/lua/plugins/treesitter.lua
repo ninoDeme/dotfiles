@@ -9,41 +9,10 @@ return {
 				highlight = {
 					enable = true,
 				},
-				rainbow = {
-					enable = false,
-				},
 				indent = {
 					enable = true,
 					disable = { "dart" },
 				},
-				autotag = {
-					enable = NOT_VSCODE(),
-					enable_rename = true,
-					enable_close = true,
-					enable_close_on_slash = false,
-					filetypes = {
-						"html",
-						"javascript",
-						"typescript",
-						"javascriptreact",
-						"typescriptreact",
-						"svelte",
-						"vue",
-						"tsx",
-						"jsx",
-						"rescript",
-						"xml",
-						"php",
-						"markdown",
-						"astro",
-						"glimmer",
-						"handlebars",
-						"hbs",
-						"angular.html",
-						"heex",
-					},
-				},
-
 				ensure_installed = {
 					"typescript",
 					"lua",
@@ -74,7 +43,6 @@ return {
 		end,
 		dependencies = {
 			"romgrk/nvim-treesitter-context",
-			"p00f/nvim-ts-rainbow",
 			"windwp/nvim-ts-autotag",
 			{
         "LiadOz/nvim-dap-repl-highlights",
@@ -97,13 +65,18 @@ return {
 		end,
 	},
 	{
-		"p00f/nvim-ts-rainbow",
-		-- opts = {},
-		cond = NOT_VSCODE,
-	},
-	{
 		"windwp/nvim-ts-autotag",
-		opts = {},
-		cond = NOT_VSCODE,
+    opts = {
+      opts = {
+        enable_rename = true,
+        enable_close = true,
+        enable_close_on_slash = false,
+      },
+      aliases = {
+        ["angular.html"] = "html",
+        ["heex"] = "html",
+      }
+    },
+    cond = NOT_VSCODE,
 	},
 }
