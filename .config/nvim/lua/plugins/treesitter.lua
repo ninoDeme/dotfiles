@@ -56,15 +56,6 @@ return {
 		cond = NOT_VSCODE,
 	},
 	{
-		"JoosepAlviste/nvim-ts-context-commentstring",
-		dependencies = "nvim-treesitter",
-		config = function()
-			require("ts_context_commentstring").setup({
-				enable_autocmd = false,
-			})
-		end,
-	},
-	{
 		"windwp/nvim-ts-autotag",
     opts = {
       opts = {
