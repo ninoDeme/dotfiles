@@ -7,7 +7,7 @@ return {
     cond = NOT_VSCODE,
     dependencies = {
       {'hrsh7th/cmp-nvim-lsp'}, -- LSP source for nvim-cmp
-      {'saadparwaiz1/cmp_luasnip'}, -- Snippets source for nvim-cmp
+      -- {'saadparwaiz1/cmp_luasnip'}, -- Snippets source for nvim-cmp
       {'hrsh7th/cmp-path'},
       {'hrsh7th/cmp-buffer'},
       -- {'hrsh7th/cmp-cmdline'},
@@ -40,7 +40,8 @@ return {
         },
         snippet = {
           expand = function(args)
-           require('luasnip').lsp_expand(args.body)
+           -- require('luasnip').lsp_expand(args.body)
+            vim.snippet.expand(args.body)
           end,
         },
         mapping = cmp_map,

@@ -9,7 +9,7 @@ return {
         diffview = true,
       },
     },
-    branch = 'nightly',
+    branch = 'master',
     dependencies = {
       "nvim-lua/plenary.nvim",         -- required
       "nvim-telescope/telescope.nvim", -- optional

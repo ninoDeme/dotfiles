@@ -29,6 +29,35 @@ require("hover").setup('light')
 
 -- Vim settings {{{
 
+local diagnostic_config = {
+  text = {},
+  texthl = {},
+  linehl = {},
+  numhl = {},
+}
+
+-- local signs = {
+--   DapBreakpoint = { "", "DapBreakpoint" },
+--   DapBreakpointCondition = { "", "DapBreakpointCondition" },
+--   DapLogPoint = { "", "DapLogPoint" },
+--   DapStopped = { "", "DapStopped", "DapStoppedLine" },
+--   DapBreakpointRejected = { "", "DapBreakpointRejected" },
+--   Error = {44,  " ", "Error", "Error", nil, "Error" },
+--   Warn = {44,  " ", "Warn", "Warn", nil, "Warn" },
+--   Hint = {44,  " ", "Hint", "Hint", nil, "Hint" },
+--   Info = {44,  " ", "Info", "Info", nil, "Info" },
+-- }
+--
+-- for key, val in ipairs(signs) do
+--   diagnostic_config["text"][key] = val[1]
+--   diagnostic_config["texthl"][key] = val[2]
+--   diagnostic_config["linehl"][key] = val[3]
+--   diagnostic_config["numhl"][key] = val[4]
+-- end
+-- vim.diagnostic.config({
+--   signs = diagnostic_config
+-- })
+
 -- use system clipboard
 -- vim.api.nvim_set_option("clipboard","unnamedplus")
 
@@ -95,6 +124,20 @@ if (os.getenv("TERM") == "alacritty") then
   })
 end
 
+-- press tab to jump snippet
+vim.keymap.set({ 'i', 's' }, '<Tab>', function()
+  if vim.snippet.active({ direction = 1 }) then
+    return '<cmd>lua vim.snippet.jump(1)<cr>'
+  else
+    return '<Tab>'
+  end
+end, { expr = true })
+
+vim.keymap.set({'n'}, '<Leader>y', '"+y', { desc = "Copy to system clipboard" })
+vim.keymap.set({'n'}, '<Leader>p', '"+p', { desc = "Paste from system clipboard" })
+vim.keymap.set({'n'}, '<Leader>Y', '"+y$')
+vim.keymap.set({'n'}, '<Leader>P', '"+p$')
+
 -- }}}
 
 -- Vimscript {{{
@@ -109,7 +152,7 @@ filetype plugin indent on
 set termguicolors
 
 if has('mouse')
-set mouse=a
+  set mouse=a
 endif
 
 " Keybindings {{{
@@ -120,21 +163,6 @@ nnoremap <silent> <ESC> :nohlsearch<CR><ESC>
 " Set completeopt to have a better completion experience
 set completeopt=menu,menuone,noselect,noinsert
 
-" copy and paste from system clipboard
-noremap <Leader>Y "+y$
-noremap <Leader>P "+p$
-noremap <Leader>y "+y
-noremap <Leader>p "+p
-
-" Delete without copying
-" nnoremap <leader>d "_d
-" xnoremap <leader>d "_d
-" nnoremap <leader>D "_D
-" xnoremap <leader>D "_D
-
-" reload config
-" nnoremap <leader>r :source $MYVIMRC<CR>
-
 " Use fold as text object for motions
 xnoremap iz :<C-U>silent!normal![zjV]zk<CR>
 onoremap iz :normal Viz<CR>
@@ -143,14 +171,6 @@ onoremap az :normal Vaz<CR>
 
 " esc to exit terminal mode
 tnoremap <Esc> <C-\><C-n>
-
-if !exists('g:vscode')
-
-  " Use <Tab> and <S-Tab> to navigate through popup menu
-  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-endif
 
 if executable('rg') 
 	set grepprg=rg\ --vimgrep

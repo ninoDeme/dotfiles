@@ -2,17 +2,17 @@ return {
 	{
 		"mfussenegger/nvim-dap",
 		config = function()
-			local signs = {
-				{ "DapBreakpoint", "" },
-				{ "DapBreakpointCondition", "" },
-				{ "DapLogPoint", "" },
-				{ "DapStopped", "", "DapStoppedLine" },
-				{ "DapBreakpointRejected", "" },
-			}
-
-			for _, val in ipairs(signs) do
-				vim.fn.sign_define(val[1], { text = val[2], texthl = val[1], linehl = val[3], numhl = "" })
-			end
+			-- local signs = {
+			-- 	{ "DapBreakpoint", "" },
+			-- 	{ "DapBreakpointCondition", "" },
+			-- 	{ "DapLogPoint", "" },
+			-- 	{ "DapStopped", "", "DapStoppedLine" },
+			-- 	{ "DapBreakpointRejected", "" },
+			-- }
+			--
+			-- for _, val in ipairs(signs) do
+			-- 	vim.fn.sign_define(val[1], { text = val[2], texthl = val[1], linehl = val[3], numhl = "" })
+			-- end
 
 			local dap = require("dap")
 
