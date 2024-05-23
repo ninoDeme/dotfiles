@@ -253,6 +253,8 @@ return {
     event = "VeryLazy",
     opts = {
       enable_tailwind = true,
+      render = 'virtual',
+      virtual_symbol_position = 'eol',
     }
-  }
+  },
 }

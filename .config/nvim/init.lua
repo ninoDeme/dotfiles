@@ -12,7 +12,7 @@ if vim.g.neovide then
   end
   vim.keymap.set("n", "<C-=>", function()
     change_scale_factor(1.05)
-  end)
+ end)
   vim.keymap.set("n", "<C-->", function()
     change_scale_factor(1/1.05)
   end)
@@ -36,27 +36,27 @@ local diagnostic_config = {
   numhl = {},
 }
 
--- local signs = {
---   DapBreakpoint = { "", "DapBreakpoint" },
---   DapBreakpointCondition = { "", "DapBreakpointCondition" },
---   DapLogPoint = { "", "DapLogPoint" },
---   DapStopped = { "", "DapStopped", "DapStoppedLine" },
---   DapBreakpointRejected = { "", "DapBreakpointRejected" },
---   Error = {44,  " ", "Error", "Error", nil, "Error" },
---   Warn = {44,  " ", "Warn", "Warn", nil, "Warn" },
---   Hint = {44,  " ", "Hint", "Hint", nil, "Hint" },
---   Info = {44,  " ", "Info", "Info", nil, "Info" },
--- }
---
--- for key, val in ipairs(signs) do
---   diagnostic_config["text"][key] = val[1]
---   diagnostic_config["texthl"][key] = val[2]
---   diagnostic_config["linehl"][key] = val[3]
---   diagnostic_config["numhl"][key] = val[4]
--- end
--- vim.diagnostic.config({
---   signs = diagnostic_config
--- })
+local signs = {
+  [vim.diagnostic.severity.ERROR] = { " ", nil, "DiagnosticError" },
+  [vim.diagnostic.severity.WARN] = { " ", nil, "DiagnosticWarn" },
+  [vim.diagnostic.severity.HINT] = { " ", nil, "DiagnosticHint" },
+  [vim.diagnostic.severity.INFO] = { " ", nil, "DiagnosticInfo" },
+}
+
+for key, val in ipairs(signs) do
+  diagnostic_config["text"][key] = val[1]
+  diagnostic_config["linehl"][key] = val[2]
+  diagnostic_config["numhl"][key] = val[3]
+end
+
+vim.diagnostic.config({
+  signs = diagnostic_config,
+  float = {
+    source = true,
+    border = require("hover").border --- @diagnostic disable-line
+  },
+  severity_sort = true,
+})
 
 -- use system clipboard
 -- vim.api.nvim_set_option("clipboard","unnamedplus")
@@ -114,6 +114,9 @@ vim.opt.linebreak      = true
 -- save undo history
 vim.opt.undofile       = true
 
+vim.opt.inccommand = 'split'
+vim.opt.incsearch = true
+
 -- fix vim screen geometry on alacritty -e nvim
 if (os.getenv("TERM") == "alacritty") then
   vim.api.nvim_create_autocmd({"VimEnter"}, {
@@ -124,19 +127,10 @@ if (os.getenv("TERM") == "alacritty") then
   })
 end
 
--- press tab to jump snippet
-vim.keymap.set({ 'i', 's' }, '<Tab>', function()
-  if vim.snippet.active({ direction = 1 }) then
-    return '<cmd>lua vim.snippet.jump(1)<cr>'
-  else
-    return '<Tab>'
-  end
-end, { expr = true })
-
-vim.keymap.set({'n'}, '<Leader>y', '"+y', { desc = "Copy to system clipboard" })
-vim.keymap.set({'n'}, '<Leader>p', '"+p', { desc = "Paste from system clipboard" })
-vim.keymap.set({'n'}, '<Leader>Y', '"+y$')
-vim.keymap.set({'n'}, '<Leader>P', '"+p$')
+vim.keymap.set({'n', 'v'}, '<Leader>y', '"+y', { desc = "Copy to system clipboard" })
+vim.keymap.set({'n', 'v'}, '<Leader>p', '"+p', { desc = "Paste from system clipboard" })
+vim.keymap.set({'n', 'v'}, '<Leader>Y', '"+y$')
+vim.keymap.set({'n', 'v'}, '<Leader>P', '"+p$')
 
 -- }}}
 

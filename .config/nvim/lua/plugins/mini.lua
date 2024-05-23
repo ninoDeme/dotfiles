@@ -1,7 +1,7 @@
 return {
   {
     "echasnovski/mini.nvim",
-    event = "VeryLazy",
+    lazy = false,
     config = function()
       if NOT_VSCODE() then
         require("mini.files").setup()
