@@ -34,7 +34,16 @@ return {
         })
       end
       require("mini.bracketed").setup()
+      require('mini.notify').setup({
+        window = {
+          config = {
+            border = require("hover").border
+          }
+        }
+      })
 
+      local opts = { ERROR = { duration = 10000 } }
+      vim.notify = require('mini.notify').make_notify(opts)
       -- local spec_treesitter = require("mini.ai").gen_spec.treesitter
       -- require("mini.ai").setup({
       --   -- Number of lines within which textobject is searched

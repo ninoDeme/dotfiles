@@ -14,7 +14,6 @@ return {
 				dependencies = { "rafamadriz/friendly-snippets" },
 				opts = {
 					friendly_snippets = true,
-					global_snippets = { "all", "global" },
 				},
 				keys = {
 					{

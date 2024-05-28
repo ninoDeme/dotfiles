@@ -117,21 +117,21 @@ M.set_highlights = function(colors)
     }
   elseif M.style == 'dark' then
     return {
-      FloatNormal = { bg = colors.bg_d },
-      -- PMenu = { bg = colors.bg_d },
-      NormalFloat = { bg = colors.bg_d },
-      FloatTitle = { bg = colors.bg_d, fg = colors.blue },
-      FloatBorder = { bg = colors.bg_d, fg = colors.bg_d },
-      BqfPreviewTitle = { bg = colors.bg_d, fg = colors.blue },
+      -- FloatNormal = { bg = colors.bg_d },
+      -- -- PMenu = { bg = colors.bg_d },
+      -- NormalFloat = { bg = colors.bg_d },
+      -- FloatTitle = { bg = colors.bg_d, fg = colors.blue },
+      -- FloatBorder = { bg = colors.bg_d, fg = colors.bg_d },
+      -- BqfPreviewTitle = { bg = colors.bg_d, fg = colors.blue },
     }
   else
     return {
       FloatNormal = { link = 'Normal' },
       -- PMenu = { link = 'Normal' },
       NormalFloat = { link = 'Normal' },
-      FloatTitle = { bg = colors.bg, fg = colors.blue },
-      FloatBorder = { bg = colors.bg, fg = colors.fg },
-      BqfPreviewTitle = { bg = colors.bg, fg = colors.blue },
+      -- FloatTitle = { bg = colors.bg, fg = colors.blue },
+      FloatBorder = { link = 'FloatNormal' },
+      -- BqfPreviewTitle = { bg = colors.bg, fg = colors.blue },
     }
   end
 end

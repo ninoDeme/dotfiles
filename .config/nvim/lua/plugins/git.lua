@@ -2,6 +2,7 @@ return {
   {
     "NeogitOrg/neogit",
     config = true,
+    enabled = false,
     opts = {
       -- graph_style = "unicode",
       integrations = {

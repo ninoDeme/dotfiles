@@ -106,8 +106,7 @@ then
 	export EDITOR="vim"
 fi
 
-# set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
-# export MANPAGER="nvim -c MANPAGER -"
+export MANPAGER="nvim -c Man! -"
 export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
 
 case "$TERM" in

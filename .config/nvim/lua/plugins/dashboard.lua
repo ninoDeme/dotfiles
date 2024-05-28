@@ -13,6 +13,7 @@ return {
   {
     'goolord/alpha-nvim',
     lazy = false,
+    enabled = false,
     dependencies = { 'nvim-web-devicons' },
     config = function ()
 
@@ -32,7 +33,6 @@ return {
       for _,v in ipairs(dashboard.section.buttons.val) do
         v.opts.hl = "DashboardShortCut"
       end
-      
 
       dashboard.opts.opts.autocmd = true
       require('alpha').setup(dashboard.opts)

@@ -17,32 +17,33 @@ return {
 					return ""
 				end
 			end
-			local colors = require("colors").colors
-
-			local custom_gruvbox = nil
-			if require("colors").theme == "gruvbox" then
-				custom_gruvbox = require("lualine.themes.gruvbox")
-
-				-- Change the background of lualine_c section for normal mode
-				custom_gruvbox.normal.c = { bg = colors.bg1, fg = colors.fg }
-				custom_gruvbox.visual.c = { bg = colors.bg1, fg = colors.fg }
-				custom_gruvbox.replace.c = { bg = colors.bg1, fg = colors.fg }
-				custom_gruvbox.insert.c = { bg = colors.bg1, fg = colors.fg }
-				custom_gruvbox.command.c = { bg = colors.bg1, fg = colors.fg }
-
-				custom_gruvbox.normal.x = { bg = colors.bg1, fg = colors.fg }
-				custom_gruvbox.visual.x = { bg = colors.bg1, fg = colors.fg }
-				custom_gruvbox.replace.x = { bg = colors.bg1, fg = colors.fg }
-				custom_gruvbox.insert.x = { bg = colors.bg1, fg = colors.fg }
-				custom_gruvbox.command.x = { bg = colors.bg1, fg = colors.fg }
-			end
+			-- local colors = require("colors").colors
+			--
+			-- local custom_gruvbox = nil
+			-- if require("colors").theme == "gruvbox" then
+			-- 	custom_gruvbox = require("lualine.themes.gruvbox")
+			--
+			-- 	-- Change the background of lualine_c section for normal mode
+			-- 	custom_gruvbox.normal.c = { bg = colors.bg1, fg = colors.fg }
+			-- 	custom_gruvbox.visual.c = { bg = colors.bg1, fg = colors.fg }
+			-- 	custom_gruvbox.replace.c = { bg = colors.bg1, fg = colors.fg }
+			-- 	custom_gruvbox.insert.c = { bg = colors.bg1, fg = colors.fg }
+			-- 	custom_gruvbox.command.c = { bg = colors.bg1, fg = colors.fg }
+			--
+			-- 	custom_gruvbox.normal.x = { bg = colors.bg1, fg = colors.fg }
+			-- 	custom_gruvbox.visual.x = { bg = colors.bg1, fg = colors.fg }
+			-- 	custom_gruvbox.replace.x = { bg = colors.bg1, fg = colors.fg }
+			-- 	custom_gruvbox.insert.x = { bg = colors.bg1, fg = colors.fg }
+			-- 	custom_gruvbox.command.x = { bg = colors.bg1, fg = colors.fg }
+			-- end
 			require("lualine").setup({
 				extensions = {
 					"toggleterm",
 					"lazy",
         },
 				options = {
-					theme = custom_gruvbox or "auto",
+					-- theme = custom_gruvbox or "auto",
+					theme = "auto",
 					section_separators = "",
 					component_separators = "",
 					globalstatus = true,
@@ -54,7 +55,7 @@ return {
 							"filename",
 							path = 1,
 							color = function(_)
-								return { fg = vim.bo.modified and colors.yellow or nil }
+								return { link = vim.bo.modified and 'FileModified' or nil }
 							end,
 							shorting_target = 50,
 							symbols = {
@@ -87,18 +88,18 @@ return {
 							on_click = function()
 								vim.cmd("LspInfo")
 							end,
-							color = { fg = colors.blue },
+							-- color = { fg = colors.blue },
 						},
 						{
 							"encoding",
 							fmt = string.upper,
-							color = { fg = colors.green },
+							-- color = { fg = colors.green },
 						},
 						{
 							"fileformat",
 							fmt = string.upper,
 							icons_enabled = false,
-							color = { fg = colors.green },
+							-- color = { fg = colors.green },
 						},
 						{
 							--        function ()
@@ -113,7 +114,7 @@ return {
 						{
 							"branch",
 							icon = "",
-							color = { fg = colors.purple },
+							-- color = { fg = colors.purple },
 							---@param str string
 							fmt = function(str)
 								if str:len() > 50 then
@@ -159,16 +160,17 @@ return {
 	--   cond = NOT_VSCODE
 	--
 	-- },
-	{
-		"j-hui/fidget.nvim",
-		event = "VeryLazy",
-		opts = {
-			notification = {
-				override_vim_notify = true, -- Automatically override vim.notify() with Fidget
-			},
-		},
-	},
-	-- {
+  {
+    enabled = false,
+    "j-hui/fidget.nvim",
+    event = "VeryLazy",
+    opts = {
+      notification = {
+        override_vim_notify = true, -- Automatically override vim.notify() with Fidget
+      },
+    },
+  },
+  -- {
 	--   'kevinhwang91/nvim-bqf',
 	--   config = function()
 	--     require("bqf").setup({
@@ -213,7 +215,7 @@ return {
 					show_start = false,
 					show_end = false,
 					-- char = "│",
-					highlight = { "IblScopeChar", "IblScopeChar", "IblScopeFunction" },
+					-- highlight = { "IblScopeChar", "IblScopeChar", "IblScopeFunction" },
 				},
 			})
 		end,
