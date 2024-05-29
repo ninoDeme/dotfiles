@@ -41,18 +41,6 @@ local function keymappings(client, bufnr)
 				end,
 				"Format Document",
 			},
-			-- e = {
-			-- 	function()
-			-- 		require("telescope.builtin").diagnostics({ severity = vim.diagnostic.severity.ERROR })
-			-- 	end,
-			-- 	"Errors",
-			-- },
-			-- d = {
-			-- 	function()
-			-- 		require("telescope.builtin").diagnostics()
-			-- 	end,
-			-- 	"Diagnostics",
-			-- },
       d = { function() vim.diagnostic.setqflist() end, "View Diagnostics" },
       e = { function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end, "View Errors" },
 		},
@@ -70,40 +58,10 @@ local function keymappings(client, bufnr)
 		D = { function() vim.lsp.buf.references() end, "View References" },
 		I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
 		h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
-		-- d = {
-		-- 	function()
-		-- 		require("telescope.builtin").lsp_definitions({ show_line = false })
-		-- 	end,
-		-- 	"View Definition",
-		-- },
-		-- D = {
-		-- 	function()
-		-- 		require("telescope.builtin").lsp_references({ show_line = false, include_declaration = false })
-		-- 	end,
-		-- 	"View References",
-		-- },
-		-- I = {
-		-- 	function()
-		-- 		require("telescope.builtin").lsp_implementations()
-		-- 	end,
-		-- 	"Goto Implementation",
-		-- },
-		-- h = {
-		-- 	function()
-		-- 		require("telescope.builtin").lsp_type_definitions()
-		-- 	end,
-		-- 	"View Type Signature",
-		-- },
 	}
 	local whichkey = require("which-key")
 	whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>", mode = { "n", "v" } })
 	whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
-	-- whichkey.register({ K = {
-	-- 	function()
-	-- 		vim.lsp.buf.hover()
-	-- 	end,
-	-- 	"View Hover",
-	-- } }, { buffer = bufnr })
 end
 
 local lsp_opts = {
@@ -114,9 +72,13 @@ local lsp_opts = {
 
 		-- Configure key mappings
 		keymappings(client, bufnr)
-	end,
 
-	capabilities = require("cmp_nvim_lsp").default_capabilities(),
+    if client.server_capabilities.inlayHintProvider then
+        vim.lsp.inlay_hint.enable(true, { bufnr })
+    end
+	end,
+  inlay_hints = { enabled = true }
+	-- capabilities = require("cmp_nvim_lsp").default_capabilities(),
 }
 -- }}}
 
@@ -269,6 +231,15 @@ return {
 							languages = { "javascript", "typescript", "vue" },
 						},
 					},
+          -- preferences = {
+          --   includeInlayParameterNameHints = "all",
+          --   includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+          --   includeInlayFunctionParameterTypeHints = true,
+          --   includeInlayVariableTypeHints = true,
+          --   includeInlayPropertyDeclarationTypeHints = true,
+          --   includeInlayFunctionLikeReturnTypeHints = true,
+          --   includeInlayEnumMemberValueHints = true,
+          -- },
 				},
 				filetypes = {
 					"javascript",
@@ -336,9 +307,7 @@ return {
 		event = "VeryLazy",
 		dependencies = { "williamboman/mason.nvim" },
 		config = function()
-			require("mason-lspconfig").setup({
-				automatic_installation = true,
-			})
+			require("mason-lspconfig").setup({})
 		end,
 	},
 

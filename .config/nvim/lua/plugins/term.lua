@@ -142,7 +142,8 @@ return {
 					pickers
 						.new({}, {
 							prompt_title = "Task Template",
-							layout_strategy = "bottom_pane",
+							-- layout_strategy = "bottom_pane",
+              theme = 'ivy',
 							finder = finders.new_table({
 								results = templates,
 								entry_maker = function(tmpl)

@@ -90,6 +90,12 @@ M.setup = function()
     TelescopePromptBorder = { link = "FloatBorder" },
     TelescopeResultsBorder = { link = "FloatBorder" },
 
+    DiagnosticUnderlineError = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineError" }).sp },
+    DiagnosticUnderlineWarn = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineWarn" }).sp },
+    DiagnosticUnderlineInfo = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineInfo" }).sp },
+    DiagnosticUnderlineHint = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineHint" }).sp },
+    DiagnosticUnderlineOk = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineOk" }).sp },
+
     -- OilSize = { fg = M.colors.green },
     -- OilMtime = { fg = M.colors.blue },
 

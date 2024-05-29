@@ -108,12 +108,12 @@ end
 M.set_highlights = function(colors)
   if M.style == 'normal' then
     return {
-      FloatNormal = { bg = colors.bg1 },
-      -- PMenu = { bg = colors.bg1 },
-      NormalFloat = { bg = colors.bg1 },
-      FloatTitle = { bg = colors.bg1, fg = colors.blue },
-      FloatBorder = { bg = colors.bg1, fg = colors.bg1 },
-      BqfPreviewTitle = { bg = colors.bg1, fg = colors.blue },
+      -- FloatNormal = { bg = colors.bg1 },
+      -- -- PMenu = { bg = colors.bg1 },
+      -- NormalFloat = { bg = colors.bg1 },
+      -- FloatTitle = { bg = colors.bg1, fg = colors.blue },
+      -- FloatBorder = { bg = colors.bg1, fg = colors.bg1 },
+      -- BqfPreviewTitle = { bg = colors.bg1, fg = colors.blue },
     }
   elseif M.style == 'dark' then
     return {
