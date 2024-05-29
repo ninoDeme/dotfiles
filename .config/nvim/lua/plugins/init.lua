@@ -97,7 +97,7 @@ return {
 	-- Color schemes =======================
 	-- { "ayu-theme/ayu-vim", cond = NOT_VSCODE },
 	{
-    enabled = true,
+    enabled = false,
 		lazy = false,
 		priority = 1006,
 		"navarasu/onedark.nvim",
@@ -108,7 +108,7 @@ return {
 			})
 			require("onedark").load()
 
-			require("colors").setup("onedark")
+			require("colors").setup()
 		end,
 		cond = NOT_VSCODE,
 	},
@@ -124,7 +124,7 @@ return {
         }
       })
       vim.cmd("colorscheme gruvbox")
-			require("colors").setup("gruvbox")
+			require("colors").setup()
 		end,
 		cond = NOT_VSCODE,
 	},
@@ -257,4 +257,21 @@ return {
       virtual_symbol_position = 'eol',
     }
   },
+  {
+    'NvChad/base46',
+    config = function()
+      vim.g.base46_cache = vim.fn.stdpath('cache') .. '/base46'
+      require("base46").load_all_highlights()
+      require("colors").setup()
+      vim.api.nvim_create_autocmd('User', {
+        pattern = "NvChadThemeReload",
+        callback = require("colors").setup
+      })
+    end,
+    dependencies = {
+      'NvChad/ui'
+    },
+    lazy = false,
+		priority = 1006,
+  }
 }

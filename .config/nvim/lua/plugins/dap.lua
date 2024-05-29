@@ -68,9 +68,9 @@ return {
 							type = "pwa-node",
 							request = "launch",
 							name = "Launch app.ts in folder in ts-node-dev",
-							runtimeExecutable = "node",
-							runtimeArgs = { "node_modules/ts-node-dev/lib/bin.js" },
-							args = { "--env-file=../.env", "app.ts" },
+              env = {},
+							runtimeExecutable = "npm",
+							runtimeArgs = { "run", "start"},
 							cwd = function()
 								local path = vim.fn.input({
 									prompt = "Path to executable: ",

@@ -25,9 +25,9 @@ return {
 					-- 	vertical = {
 					-- 		mirror = false,
 					-- 	},
-          bottom_pane = {
-            theme = "ivy"
-          },
+					bottom_pane = {
+						theme = "ivy",
+					},
 					-- 	cursor = {
 					-- 		width = 150,
 					-- 		height = 15,
@@ -64,29 +64,29 @@ return {
 				pickers = {
 					buffers = {
 						mappings = {
-              n = {
-                ["<C-x>"] = telescope_actions.delete_buffer,
-              },
-              i = {
-                ["x"] = telescope_actions.delete_buffer,
-                ["<C-x>"] = telescope_actions.delete_buffer,
-              }
+							n = {
+								["<C-x>"] = telescope_actions.delete_buffer,
+							},
+							i = {
+								["x"] = telescope_actions.delete_buffer,
+								["<C-x>"] = telescope_actions.delete_buffer,
+							},
 						},
 					},
-          find_files = {
-            hidden = true
-          },
-          live_grep = {
-            additional_args = { "-." }
-          }
+					find_files = {
+						hidden = true,
+					},
+					live_grep = {
+						additional_args = { "-." },
+					},
 				},
 				extensions = {
 					file_browser = {
 						hidden = true,
 						hijack_netrw = false,
-            no_ignore = true,
+						no_ignore = true,
 						respect_gitignore = false,
-            dir_icon = "",
+						dir_icon = "",
 						grouped = true,
 						prompt_path = true,
 						mappings = {
@@ -105,6 +105,8 @@ return {
 			})
 
 			require("telescope").load_extension("file_browser")
+
+      vim.keymap.set({'n'}, '<leader>st', "<cmd>Telescope themes<cr>", { desc = 'Themes' })
 		end,
 		dependencies = "nvim-lua/plenary.nvim",
 		cond = NOT_VSCODE,

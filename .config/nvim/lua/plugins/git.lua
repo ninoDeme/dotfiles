@@ -56,7 +56,7 @@ return {
     },
     event = 'VeryLazy',
     cond = NOT_VSCODE
-  }, -- Git stuff
+  },
 
   -- {
   --   "kdheepak/lazygit.nvim",
@@ -71,16 +71,19 @@ return {
   {
     "tpope/vim-fugitive",
     event = "VeryLazy",
-  },
-  {
-    'fredeeb/tardis.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    cmd = {
-      'Tardis'
-    },
     keys = {
-      { mode = 'n', '<leader>gt', '<cmd>:Tardis git<cr>', desc = 'Open tardis Time machine' }
-    },
-    opts = {}
-  }
+      {'<leader>gg', "<cmd>Gedit :<cr>", desc = 'Open NeoGit'}
+    }
+  },
+  -- {
+  --   'fredeeb/tardis.nvim',
+  --   dependencies = { 'nvim-lua/plenary.nvim' },
+  --   cmd = {
+  --     'Tardis'
+  --   },
+  --   keys = {
+  --     { mode = 'n', '<leader>gt', '<cmd>:Tardis git<cr>', desc = 'Open tardis Time machine' }
+  --   },
+  --   opts = {}
+  -- }
 }
