@@ -11,6 +11,7 @@ M.ui = {
   transparency = false,
   --
   cmp = {
+    enabled = false,
     icons = true,
     lspkind_text = true,
     style = "flat_light", -- default/flat_light/flat_dark/atom/atom_colored
@@ -20,6 +21,7 @@ M.ui = {
 
   ------------------------------- nvchad_ui modules -----------------------------
   statusline = {
+    enabled = false,
     theme = "default", -- default/vscode/vscode_colored/minimal
     -- default/round/block/arrow separators work only for default statusline theme
     -- round and block will work for minimal theme only
@@ -31,34 +33,35 @@ M.ui = {
   -- lazyload it when there are 1+ buffers
   tabufline = {
     enabled = true,
-    lazyload = true,
-    order = { "treeOffset", "buffers", "tabs", "btns" },
+    lazyload = false,
+    order = { "buffers", "tabs", "btns" },
     modules = nil,
   },
 
   nvdash = {
-    load_on_startup = false,
-
-    header = {
-      "           ▄ ▄                   ",
-      "       ▄   ▄▄▄     ▄ ▄▄▄ ▄ ▄     ",
-      "       █ ▄ █▄█ ▄▄▄ █ █▄█ █ █     ",
-      "    ▄▄ █▄█▄▄▄█ █▄█▄█▄▄█▄▄█ █     ",
-      "  ▄ █▄▄█ ▄ ▄▄ ▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄  ",
-      "  █▄▄▄▄ ▄▄▄ █ ▄ ▄▄▄ ▄ ▄▄▄ ▄ ▄ █ ▄",
-      "▄ █ █▄█ █▄█ █ █ █▄█ █ █▄█ ▄▄▄ █ █",
-      "█▄█ ▄ █▄▄█▄▄█ █ ▄▄█ █ ▄ █ █▄█▄█ █",
-      "    █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ █▄█▄▄▄█    ",
-    },
-
-    buttons = {
-      { "  Find File", "Spc f f", "Telescope find_files" },
-      { "󰈚  Recent Files", "Spc f o", "Telescope oldfiles" },
-      { "󰈭  Find Word", "Spc f w", "Telescope live_grep" },
-      { "  Bookmarks", "Spc m a", "Telescope marks" },
-      { "  Themes", "Spc t h", "Telescope themes" },
-      { "  Mappings", "Spc c h", "NvCheatsheet" },
-    },
+    enabled = false,
+    -- load_on_startup = false,
+    --
+    -- header = {
+    --   "           ▄ ▄                   ",
+    --   "       ▄   ▄▄▄     ▄ ▄▄▄ ▄ ▄     ",
+    --   "       █ ▄ █▄█ ▄▄▄ █ █▄█ █ █     ",
+    --   "    ▄▄ █▄█▄▄▄█ █▄█▄█▄▄█▄▄█ █     ",
+    --   "  ▄ █▄▄█ ▄ ▄▄ ▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄  ",
+    --   "  █▄▄▄▄ ▄▄▄ █ ▄ ▄▄▄ ▄ ▄▄▄ ▄ ▄ █ ▄",
+    --   "▄ █ █▄█ █▄█ █ █ █▄█ █ █▄█ ▄▄▄ █ █",
+    --   "█▄█ ▄ █▄▄█▄▄█ █ ▄▄█ █ ▄ █ █▄█▄█ █",
+    --   "    █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ █▄█▄▄▄█    ",
+    -- },
+    --
+    -- buttons = {
+    --   { "  Find File", "Spc f f", "Telescope find_files" },
+    --   { "󰈚  Recent Files", "Spc f o", "Telescope oldfiles" },
+    --   { "󰈭  Find Word", "Spc f w", "Telescope live_grep" },
+    --   { "  Bookmarks", "Spc m a", "Telescope marks" },
+    --   { "  Themes", "Spc t h", "Telescope themes" },
+    --   { "  Mappings", "Spc c h", "NvCheatsheet" },
+    -- },
   },
 
   cheatsheet = {
@@ -66,7 +69,7 @@ M.ui = {
     excluded_groups = { "terminal (t)", "autopairs", "Nvim", "Opens" }, -- can add group name or with mode
   },
 
-  lsp = { signature = true },
+  lsp = { signature = true, renamer = true },
 
   term = {
     hl = "Normal:term,WinSeparator:WinSeparator",
@@ -91,9 +94,9 @@ M.base46 = {
     "git",
     "lsp",
     "mason",
-    "nvcheatsheet",
-    "nvdash",
-    "nvimtree",
+    -- "nvcheatsheet",
+    -- "nvdash",
+    -- "nvimtree",
     "statusline",
     "syntax",
     "treesitter",

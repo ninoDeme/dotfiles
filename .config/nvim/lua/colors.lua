@@ -70,7 +70,7 @@ M.setup = function()
 
     lualine_b_normal = { link = "lualine_c_normal" },
 
-    TreesitterContext = { link = "Visual" },
+    TreesitterContext = { bg = colors.black2 },
 
     -- Credit  https://astronvim.com/recipes/telescope_theme
     -- TelescopeBorder = { fg = M.colors.bg1, bg = M.colors.bg_d },
@@ -106,6 +106,12 @@ M.setup = function()
     -- WinBar = { bold = false, bg = M.colors.bg_d },
     -- WinBarPathRel = { bold = false, fg = M.colors.blue, bg = M.colors.bg_d },
 
+    TabLineModified = vim.api.nvim_get_hl(0, { name = 'TabLine', link = false }),
+    TabLineTitle = vim.api.nvim_get_hl(0, { name = 'TabLine', link = false }),
+
+    TabLineSelModified = vim.api.nvim_get_hl(0, { name = 'TabLineSel', link = false }),
+    TabLineSelTitle = vim.api.nvim_get_hl(0, { name = 'TabLineSel', link = false }),
+
     lualine_file_modified = { fg = colors.yellow, bg = statusline_hl.bg },
 
     lualine_lsp = { fg = colors.blue, bg = statusline_hl.bg },
@@ -121,6 +127,10 @@ M.setup = function()
   })
 
   highlights.WinBarPathRel.bold = true
+  highlights.TabLineModified.fg = colors.yellow
+  highlights.TabLineTitle.fg = colors.blue
+  highlights.TabLineSelModified.fg = colors.yellow
+  highlights.TabLineSelTitle.fg = colors.blue
 
   highlights = vim.tbl_extend("force", highlights, require("hover").set_highlights(M.colors))
 

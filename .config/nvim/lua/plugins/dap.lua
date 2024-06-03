@@ -102,7 +102,7 @@ return {
     },
     dependencies = {
       {
-        "stevearc/overseer.nvim",
+        "overseer.nvim",
       },
     },
     cond = NOT_VSCODE,

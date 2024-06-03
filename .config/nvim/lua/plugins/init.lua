@@ -1,6 +1,6 @@
 return {
   { "nvim-lua/plenary.nvim",        cond = NOT_VSCODE }, -- Telescope dependency
-  { "kyazdani42/nvim-web-devicons", cond = NOT_VSCODE }, -- Add icons to plugins
+  { "nvim-tree/nvim-web-devicons", cond = NOT_VSCODE }, -- Add icons to plugins
   { "sedm0784/vim-resize-mode",     cond = NOT_VSCODE, keys = { "<C-w>" } },
 
   -- { 'tpope/vim-surround',             event = 'VeryLazy' }, -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding

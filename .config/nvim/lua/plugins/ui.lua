@@ -37,7 +37,7 @@ return {
               "filename",
               path = 1,
               color = function(_)
-              	return vim.bo.modified and 'lualine_file_modified' or nil
+                return vim.bo.modified and "lualine_file_modified" or nil
               end,
               shorting_target = 50,
               symbols = {
@@ -48,7 +48,7 @@ return {
 
                 modified = "", -- Text to show when the file is modified.
                 readonly = "", -- Text to show when the file is non-modifiable or readonly.
-                unnamed = "[*]", -- Text to show for unnamed buffers.
+                unnamed = "[No Name]", -- Text to show for unnamed buffers.
                 newfile = "", -- Text to show for newly created file before first write
               },
             },
@@ -162,8 +162,8 @@ return {
     main = "ibl",
     event = "VeryLazy",
     config = function()
-      local hooks = require("ibl.hooks")
-      hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
+      -- local hooks = require("ibl.hooks")
+      -- hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
 
       require("ibl").setup({
         enabled = true,
@@ -184,12 +184,16 @@ return {
           },
         },
 
+        indent = {
+          char = "│",
+          -- char = "▎",
+          highlight = "IblChar"
+        },
+
         scope = {
-          enabled = false,
-          show_start = false,
-          show_end = false,
-          -- char = "│",
-          -- highlight = { "IblScopeChar", "IblScopeChar", "IblScopeFunction" },
+          char = "│",
+          -- char = "▎",
+          highlight = "IblScopeChar"
         },
       })
     end,
@@ -230,4 +234,11 @@ return {
   --   end
   -- }
   -- {'stevearc/qf_helper.nvim', cond = NOT_VSCODE}, -- Quickfix helper :QF{command}
+  -- {
+  --   "NvChad/ui",
+  --   config = function ()
+  --     require("nvchad")
+  --   end,
+  --   lazy = false
+  -- }
 }

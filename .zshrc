@@ -160,5 +160,12 @@ zstyle ':completion::complete:*' gain-privileges 1
 
 alias ssh 'TERM=xterm-color ssh'
 
+
+if [ -x /usr/bin/fzf ] ; then
+  # Set up fzf key bindings and fuzzy completion
+  source <(fzf --zsh)
+  return
+fi
+
 if [ -e /home/nino/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nino/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

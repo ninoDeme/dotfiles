@@ -7,8 +7,9 @@ return {
 				manual_mode = false,
 				show_hidden = true,
 				silent_chdir = false,
+        scope_chdir = 'tab',
         detection_methods = { "pattern", "lsp" },
-				patterns = { ">Projects", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile" },
+				patterns = { ">Projects", ".git", "_darcs", ".hg", ".bzr", ".svn" },
 			})
 			require("telescope").load_extension("projects")
 		end,

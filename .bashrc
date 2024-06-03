@@ -45,9 +45,8 @@ PATH="$HOME/.npm-global/bin:$PATH"
 
 if command -v exa &> /dev/null
 then
-	alias ls='exa -al --group-directories-first'
-	alias la='exa -a --group-directories-first'
-	alias l='exa -l --group-directories-first'
+	alias l='exa -al --group-directories-first'
+	alias la='exa -l --group-directories-first'
 	alias le='exa --group-directories-first'
 	alias lt='exa -aT --group-directories-first'
 fi
@@ -127,6 +126,11 @@ shopt -s cdable_vars
 # export documents="$HOME/Documents"
 # export dropbox="$HOME/Dropbox"
 
+if [ -x /usr/bin/fzf ] ; then
+  # Set up fzf key bindings and fuzzy completion
+  eval "$(fzf --bash)"
+  return
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
