@@ -115,6 +115,8 @@ return {
 			{ "<leader>sb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
 			{ "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Highlights" },
 			{ "<leader>sr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
+			{ "<leader>ch", "<cmd>Telescope quickfixhistory<cr>", desc = "History" },
+			{ "<leader>sc", "<cmd>Telescope quickfixhistory<cr>", desc = "Quickfix History" },
 			{
 				"<leader>sd",
 				function()

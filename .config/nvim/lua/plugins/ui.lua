@@ -22,6 +22,8 @@ return {
         extensions = {
           "toggleterm",
           "lazy",
+          "quickfix",
+          "overseer"
         },
         options = {
           -- theme = custom_gruvbox or "auto",

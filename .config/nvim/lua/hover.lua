@@ -127,11 +127,8 @@ M.set_highlights = function(colors)
   else
     return {
       FloatNormal = { link = 'Normal' },
-      -- PMenu = { link = 'Normal' },
       NormalFloat = { link = 'Normal' },
-      -- FloatTitle = { bg = colors.bg, fg = colors.blue },
-      FloatBorder = { link = 'FloatNormal' },
-      -- BqfPreviewTitle = { bg = colors.bg, fg = colors.blue },
+      FloatBorder = { link = 'TelescopeBorder' },
     }
   end
 end

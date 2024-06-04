@@ -100,7 +100,7 @@ M.base46 = {
     "statusline",
     "syntax",
     "treesitter",
-    "tbline",
+    -- "tbline",
     "telescope",
     "whichkey",
   }

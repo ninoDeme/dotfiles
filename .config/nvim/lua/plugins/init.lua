@@ -50,14 +50,15 @@ return {
     cond = NOT_VSCODE,
   },
   { "cohama/lexima.vim",         cond = NOT_VSCODE, event = "VeryLazy" },
-  {
-    "ggandor/leap.nvim",
-    dependencies = { "tpope/vim-repeat" },
-    config = function()
-      require("leap").add_default_mappings()
-    end,
-    event = "VeryLazy",
-  },
+  { "tpope/vim-repeat", event = "VeryLazy" },
+  -- {
+  --   "ggandor/leap.nvim",
+  --   dependencies = { "tpope/vim-repeat" },
+  --   config = function()
+  --     require("leap").add_default_mappings()
+  --   end,
+  --   event = "VeryLazy",
+  -- },
   -- -- 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
   {
     'wellle/targets.vim',

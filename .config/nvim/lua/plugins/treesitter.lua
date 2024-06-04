@@ -57,7 +57,8 @@ return {
 	},
 	{
 		"windwp/nvim-ts-autotag",
-    opts = {
+    config = function (_)
+      require('nvim-ts-autotag').setup({
       opts = {
         enable_rename = true,
         enable_close = true,
@@ -65,9 +66,12 @@ return {
       },
       aliases = {
         ["angular.html"] = "html",
+        ["angular"] = "html",
         ["heex"] = "html",
       }
-    },
+    })
+    end,
+    lazy = false,
     cond = NOT_VSCODE,
 	},
 }

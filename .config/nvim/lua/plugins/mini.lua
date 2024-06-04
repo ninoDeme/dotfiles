@@ -7,18 +7,21 @@ return {
         require("mini.files").setup()
 
         require("mini.surround").setup({
-          mappings = {
-            add = "gsa", -- Add surrounding in Normal and Visual modes
-            delete = "gsd", -- Delete surrounding
-            find = "gsf", -- Find surrounding (to the right)
-            find_left = "gsF", -- Find surrounding (to the left)
-            highlight = "gsh", -- Highlight surrounding
-            replace = "gsr", -- Replace surrounding
-            update_n_lines = "gsn", -- Update `n_lines`
+          -- mappings = {
+          --   add = "gsa", -- Add surrounding in Normal and Visual modes
+          --   delete = "gsd", -- Delete surrounding
+          --   find = "gsf", -- Find surrounding (to the right)
+          --   find_left = "gsF", -- Find surrounding (to the left)
+          --   highlight = "gsh", -- Highlight surrounding
+          --   replace = "gsr", -- Replace surrounding
+          --   update_n_lines = "gsn", -- Update `n_lines`
+          --
+          --   suffix_last = "l", -- Suffix to search with "prev" method
+          --   suffix_next = "n", -- Suffix to search with "next" method
+          -- },
+          n_lines = 1000,
 
-            suffix_last = "l", -- Suffix to search with "prev" method
-            suffix_next = "n", -- Suffix to search with "next" method
-          },
+          respect_selection_type = true,
         })
 
         -- require('mini.cursorword').setup()
@@ -96,14 +99,14 @@ return {
         end,
         desc = "Open Mini Files at dir",
       },
-      { "gs", desc = "+Surrounding" },
-      { mode = { "n", "v" }, "gsa", desc = "Add surrounding" },
-      { mode = "n", "gsd", desc = "Delete surrounding" },
-      { mode = "n", "gsf", desc = "Find surrounding (to the right)" },
-      { mode = "n", "gsF", desc = "Find surrounding (to the left)" },
-      { mode = "n", "gsh", desc = "Highlight surrounding" },
-      { mode = "n", "gsr", desc = "Replace surrounding" },
-      { mode = "n", "gsn", desc = "Update `n_lines`" },
+      -- { "gs", desc = "+Surrounding" },
+      -- { mode = { "n", "v" }, "sa", desc = "Add surrounding" },
+      -- { mode = "n", "sd", desc = "Delete surrounding" },
+      -- { mode = "n", "sf", desc = "Find surrounding (to the right)" },
+      -- { mode = "n", "sF", desc = "Find surrounding (to the left)" },
+      -- { mode = "n", "sh", desc = "Highlight surrounding" },
+      -- { mode = "n", "sr", desc = "Replace surrounding" },
+      -- { mode = "n", "sn", desc = "Update `n_lines`" },
     },
   },
 }
