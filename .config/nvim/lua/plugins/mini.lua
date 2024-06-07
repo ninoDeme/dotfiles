@@ -4,7 +4,27 @@ return {
     lazy = false,
     config = function()
       if NOT_VSCODE() then
-        require("mini.files").setup()
+        require("mini.files").setup({
+          mappings = {
+            close       = 'q',
+            go_in       = '<c-l>',
+            go_in_plus  = 'L',
+            go_out      = '<c-h>',
+            go_out_plus = 'H',
+            reset       = '<BS>',
+            reveal_cwd  = '@',
+            show_help   = 'g?',
+            synchronize = '=',
+            trim_left   = '<',
+            trim_right  = '>',
+          },
+          windows = {
+            -- Whether to show preview of file/directory under cursor
+            preview = true,
+            -- Width of preview window
+            width_preview = 60,
+          }
+        })
 
         require("mini.surround").setup({
           -- mappings = {
@@ -19,22 +39,12 @@ return {
           --   suffix_last = "l", -- Suffix to search with "prev" method
           --   suffix_next = "n", -- Suffix to search with "next" method
           -- },
-          n_lines = 1000,
+          n_lines = 5000,
 
           respect_selection_type = true,
         })
 
         -- require('mini.cursorword').setup()
-        local hipatterns = require("mini.hipatterns")
-        hipatterns.setup({
-          highlighters = {
-            -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-            fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-            hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-            todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-            note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
-          },
-        })
       end
       require("mini.bracketed").setup()
       require('mini.notify').setup({
@@ -47,32 +57,6 @@ return {
 
       local opts = { ERROR = { duration = 10000 } }
       vim.notify = require('mini.notify').make_notify(opts)
-      -- local spec_treesitter = require("mini.ai").gen_spec.treesitter
-      -- require("mini.ai").setup({
-      --   -- Number of lines within which textobject is searched
-      --   n_lines = 10000,
-      --   custom_textobjects = {
-      --     g = function()
-      --       local from = { line = 1, col = 1 }
-      --       local to = {
-      --         line = vim.fn.line("$"),
-      --         col = math.max(vim.fn.getline("$"):len(), 1),
-      --       }
-      --       return { from = from, to = to }
-      --     end,
-      --     -- T = spec_treesitter({ a = "@tag_name", i = "@tag_name" }),
-      --     -- t = spec_treesitter({ a = "@tag.outer", i = "@tag.inner" }),
-      --     -- x = spec_treesitter({ a = "@attribute.outer", i = "@attribute.inner" }),
-      --     x = {
-      --     	{
-          		-- '%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b""()',
-      --     		"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b''()",
-      --     		"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=%b{}()",
-      --     		"%s()%[?%(?[%w_%.#%*%-@:]+%)?%]?=[%w_-]+()",
-      --     	},
-      --     },
-      --   },
-      -- })
       require("mini.align").setup()
       require("mini.splitjoin").setup()
       require("mini.operators").setup({
@@ -80,6 +64,34 @@ return {
           prefix = "cx",
         },
       })
+
+      -- MiniStatusline = require("mini.statusline")
+      --
+      -- MiniStatusline.setup({
+      --   content = {
+      --     active = function()
+      --       local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
+      --       local git           = MiniStatusline.section_git({ trunc_width = 40 })
+      --       local diff          = MiniStatusline.section_diff({ trunc_width = 75 })
+      --       local diagnostics   = MiniStatusline.section_diagnostics({ trunc_width = 75 })
+      --       local lsp           = MiniStatusline.section_lsp({ trunc_width = 75 })
+      --       local filename      = MiniStatusline.section_filename({ trunc_width = 140 })
+      --       local fileinfo      = MiniStatusline.section_fileinfo({ trunc_width = 120 })
+      --       -- local location      = MiniStatusline.section_location({ trunc_width = 75 })
+      --       local search        = MiniStatusline.section_searchcount({ trunc_width = 75 })
+      --
+      --       return MiniStatusline.combine_groups({
+      --         { hl = mode_hl,                  strings = { mode } },
+      --         { hl = 'MiniStatuslineDevinfo',  strings = { git, diff, diagnostics, lsp } },
+      --         '%<', -- Mark general truncate point
+      --         { hl = 'MiniStatuslineFilename', strings = { filename } },
+      --         '%=', -- End left alignment
+      --         { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
+      --         { hl = mode_hl,                  strings = { search } },
+      --       })
+      --     end
+      --   }
+      -- })
     end,
     keys = {
       { mode = "n", "gR", "gr$", remap = true },

@@ -82,6 +82,26 @@ M.setup = function()
     lualine_c_diff_modified_replace = { bg = lualine_c.bg, fg = colors.yellow },
     lualine_c_diff_modified_inactive = { bg = lualine_c.bg, fg = colors.yellow },
 
+    lualine_a_terminal = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_terminal" }).bg, bold = true },
+    lualine_a_insert = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_insert" }).bg, bold = true },
+    lualine_a_normal = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" }).bg, bold = true },
+    lualine_a_visual = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_visual" }).bg, bold = true },
+    lualine_a_command = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_command" }).bg, bold = true },
+    lualine_a_replace = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_replace" }).bg, bold = true },
+    lualine_a_inactive = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_inactive" }).bg, bold = true },
+
+    -- MiniStatuslineModeNormal = { link = "St_NormalMode" },
+    -- MiniStatuslineModeInsert = { link = "St_InsertMode" },
+    -- MiniStatuslineModeVisual = { link = "St_VisualMode" },
+    -- MiniStatuslineModeReplace = { link = "St_ReplaceMode" },
+    -- MiniStatuslineModeCommand = { link = "St_CommandMode" },
+    -- MiniStatuslineModeOther = { link = "St_TerminalMode" },
+    --
+    -- MiniStatuslineFilename = { link = 'StatusLine' },
+    --
+    -- StatusLineNC = { bg = lualine_c.bg },
+    -- StatusLine = { bg = lualine_c.bg },
+
     TreesitterContext = { bg = colors.black2 },
 
     -- Credit  https://astronvim.com/recipes/telescope_theme
@@ -102,11 +122,11 @@ M.setup = function()
     -- TelescopePromptBorder = { link = "FloatBorder" },
     -- TelescopeResultsBorder = { link = "FloatBorder" },
     --
-    DiagnosticUnderlineError = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineError" }).sp },
-    DiagnosticUnderlineWarn = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineWarn" }).sp },
-    DiagnosticUnderlineInfo = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineInfo" }).sp },
-    DiagnosticUnderlineHint = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineHint" }).sp },
-    DiagnosticUnderlineOk = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineOk" }).sp },
+    DiagnosticUnderlineError = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticError" }).fg },
+    DiagnosticUnderlineWarn = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticWarn" }).fg },
+    DiagnosticUnderlineInfo = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticInfo" }).fg },
+    DiagnosticUnderlineHint = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticHint" }).fg },
+    DiagnosticUnderlineOk = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticOk" }).fg },
 
     OilSize = { fg = colors.green },
     OilMtime = { ctermfg = "LightBlue", fg = colors.blue },
@@ -115,6 +135,8 @@ M.setup = function()
     TabLineSelModified = vim.api.nvim_get_hl(0, { name = 'TabLineSel', link = false }),
     TabLineTitle = vim.api.nvim_get_hl(0, { name = 'TabLine', link = false }),
     TabLineSelTitle = vim.api.nvim_get_hl(0, { name = 'TabLineSel', link = false }),
+
+    TabLineBranch = { fg = colors.purple, bg = vim.api.nvim_get_hl(0, { name = 'TabLineFill' }).bg },
 
     lualine_file_modified = { fg = colors.yellow, bg = lualine_c.bg },
 
@@ -141,6 +163,30 @@ M.setup = function()
   for key, val in pairs(highlights) do
     vim.api.nvim_set_hl(0, key, val)
   end
+
+  -- local heirline_utils = require("heirline.utils")
+  -- local st_colors = {
+  --   bright_bg = theme.base01,
+  --   bright_fg = theme.base06,
+  --   red = colors.red,
+  --   dark_red = theme.base0F,
+  --   green = colors.green,
+  --   blue = colors.blue,
+  --   gray = colors.grey,
+  --   yellow = colors.yellow,
+  --   orange = colors.orange,
+  --   purple = colors.purple,
+  --   cyan = colors.cyan,
+  --   diag_warn = heirline_utils.get_highlight("DiagnosticWarn").fg,
+  --   diag_error = heirline_utils.get_highlight("DiagnosticError").fg,
+  --   diag_hint = heirline_utils.get_highlight("DiagnosticHint").fg,
+  --   diag_info = heirline_utils.get_highlight("DiagnosticInfo").fg,
+  --   git_del = heirline_utils.get_highlight("DiffDeleted").fg,
+  --   git_add = heirline_utils.get_highlight("DiffAdded").fg,
+  --   git_change = heirline_utils.get_highlight("DiffChanged").fg,
+  -- }
+  --
+  -- require("heirline").load_colors(st_colors)
 end
 
 return M

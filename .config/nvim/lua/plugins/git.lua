@@ -54,7 +54,8 @@ return {
       { mode = {'o', 'x'}, 'ih', '<cmd><C-U>Gitsigns select_hunk<CR>'},
       { mode = {'o', 'x'}, 'ah', '<cmd><C-U>Gitsigns select_hunk<CR>'}
     },
-    event = 'VeryLazy',
+    -- event = 'VeryLazy',
+    lazy = false,
     cond = NOT_VSCODE
   },
 
@@ -70,7 +71,13 @@ return {
   -- },
   {
     "tpope/vim-fugitive",
-    event = "VeryLazy",
+    lazy = false,
+    config = function ()
+      vim.api.nvim_create_autocmd({"User"}, {
+        pattern = {"FugitiveIndex", "FugitiveObject"},
+        callback = function () vim.keymap.set({ 'n' }, "<tab>", "=", { buffer = 0, remap = true }) end
+      })
+    end,
     keys = {
       {'<leader>gg', "<cmd>Gedit :<cr>", desc = 'Open NeoGit'}
     }

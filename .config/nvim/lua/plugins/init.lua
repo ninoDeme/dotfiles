@@ -1,7 +1,7 @@
 return {
   { "nvim-lua/plenary.nvim",        cond = NOT_VSCODE }, -- Telescope dependency
   { "nvim-tree/nvim-web-devicons", cond = NOT_VSCODE }, -- Add icons to plugins
-  { "sedm0784/vim-resize-mode",     cond = NOT_VSCODE, keys = { "<C-w>" } },
+  { "sedm0784/vim-resize-mode",     cond = NOT_VSCODE, event = "VeryLazy" },
 
   -- { 'tpope/vim-surround',             event = 'VeryLazy' }, -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
   {
@@ -41,9 +41,10 @@ return {
         ["<tab>"] = {
           name = "+Tabs",
           n = { "<Cmd>tabnew<cr>", "New Tab" },
+          c = { "<Cmd>tabnew<cr>", "New Tab" },
           ["<tab>"] = { "gt", "Next Tab" },
-          q = { "<cmd>:tabclose<cr>", "Close Tab" },
-          t = { "<cmd>:tabnew<cr><cmd>:terminal<cr>", "Tab With Terminal" },
+          x = { "<cmd>:tabclose<cr>", "Close Tab" },
+          t = { "<cmd>:tabnew<cr><cmd>:terminal<cr>i", "Tab With Terminal" },
         },
       }, { prefix = "<leader>" })
     end,
@@ -64,11 +65,11 @@ return {
     'wellle/targets.vim',
     event = 'VeryLazy'
   },
-  -- {
-  --   'kana/vim-textobj-entire',
-  --   event = 'VeryLazy',
-  --   dependencies ={'kana/vim-textobj-user'}
-  -- },
+  {
+    'kana/vim-textobj-entire',
+    event = 'VeryLazy',
+    dependencies ={'kana/vim-textobj-user'}
+  },
   {
     "michaeljsmith/vim-indent-object",
     event = "VeryLazy",
@@ -134,47 +135,39 @@ return {
     'kana/vim-textobj-user', --- {{{
     event = 'VeryLazy',
     config = function()
-      vim.cmd [[
-	    " Regexes
-	    " Note that all regexes are surrounded by (), use that to your advantage.
+      local re_word = [[\(\w\+\)]]
+      -- An attribute name: `src`, `data-attr`, `strange_attr`.
+      local re_attr_name = [[\([\[\(\#\*]\{0,2}\)\([a-zA-Z0-9\-_:@.]\+\)\([\]\)]\{0,2}\)]]
+      -- A quoted string.
+      local re_quoted_str = [[\(".\{-}"\)]]
+      -- The value of an attribute: a word with no quotes or a quoted string.
+      local re_attr_value = [[\(]] .. re_quoted_str .. [[\|]] .. re_word .. [[\)]]
+      -- The right-hand side of an XML attr: an optional `=something` or `="str"`.
+      local re_attr_rhs = [[\(=]] .. re_attr_value .. [[\)\=]]
 
-	    " Teste usar lookbehind para verificar se não é o nome da tag
-	    " A word: `attr=value`, with no quotes.
-	    let s:RE_WORD = '\(\w\+\)'
-	    " An attribute name: `src`, `data-attr`, `strange_attr`.
-	    let s:RE_ATTR_NAME = '\([\[\(\#\*]\{0,2}\)\([a-zA-Z0-9\-_:@.]\+\)\([\]\)]\{0,2}\)'
-	    " A quoted string.
-	    let s:RE_QUOTED_STR = '\(".\{-}"\)'
-	    " The value of an attribute: a word with no quotes or a quoted string.
-	    let s:RE_ATTR_VALUE = '\(' . s:RE_QUOTED_STR . '\|' . s:RE_WORD . '\)'
-	    " The right-hand side of an XML attr: an optional `=something` or `="str"`.
-	    let s:RE_ATTR_RHS = '\(=' . s:RE_ATTR_VALUE . '\)\='
+      -- The final regex.
+      local re_attr_i = [[\(]] .. re_attr_name .. re_attr_rhs .. [[\)]]
+      local re_attr_a = [[\s\+]] .. re_attr_i
+      local re_attr_ax = [[\s\+]] .. re_attr_name
 
-	    " The final regex.
-	    let s:RE_ATTR_I = '\(' . s:RE_ATTR_NAME . s:RE_ATTR_RHS . '\)'
-	    let s:RE_ATTR_A = '\s\+' . s:RE_ATTR_I
-	    let s:RE_ATTR_AX = '\s\+' . s:RE_ATTR_NAME
-
-	    call textobj#user#plugin('angularattr', {
-	    \   'attr-i': {
-	    \     'pattern': s:RE_ATTR_I,
-	    \     'select': 'ix',
-	    \   },
-	    \   'attr-a': {
-	    \     'pattern': s:RE_ATTR_A,
-	    \     'select': 'ax',
-	    \   },
-	    \   'attr-iX': {
-	    \     'pattern': s:RE_ATTR_NAME,
-	    \     'select': 'iX'
-	    \   },
-	    \   'attr-aX': {
-	    \     'pattern': s:RE_ATTR_AX,
-	    \     'select': 'aX'
-	    \   },
-	    \ })
-
-	    ]]
+      vim.fn["textobj#user#plugin"]("angularattr", {
+        ['attr-i'] =  {
+          pattern =  re_attr_i,
+          select =  'ix',
+        },
+        ['attr-a'] =  {
+          pattern =  re_attr_a,
+          select =  'ax',
+        },
+        ['attr-iX'] =  {
+          pattern =  re_attr_name,
+          select =  'iX'
+        },
+        ['attr-aX'] =  {
+          pattern =  re_attr_ax,
+          select =  'aX'
+        },
+      })
     end
   }, --- }}}
   {

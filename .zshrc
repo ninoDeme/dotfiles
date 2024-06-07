@@ -1,6 +1,3 @@
-
-FREETYPE_PROPERTIES="cff:no-stem-darkening=0 autofitter:no-stem-darkening=0"
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -15,9 +12,8 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME" --depth 1
 source "${ZINIT_HOME}/zinit.zsh"
 
-zinit light romkatv/gitstatus
 zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-syntax-highlighting
+# zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-history-substring-search
 # zinit light bobsoppe/zsh-ssh-agent
 
@@ -32,12 +28,14 @@ HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
 export XDG_CONFIG_HOME="$HOME/.config"
 
-PATH="$HOME/.emacs.d/bin:$PATH"
 if [ -d "$HOME/.local/bin" ] ;
   then PATH="$HOME/.local/bin:$PATH"
 fi
 if [ -d "$HOME/.cargo/bin" ] ;
   then PATH="$HOME/.cargo/bin:$PATH"
+fi
+if [ -d "$HOME/.config/emacs/bin" ] ;
+  then PATH="$HOME/.config/emacs/bin:$PATH"
 fi
 
 if command -v go &> /dev/null
@@ -51,37 +49,9 @@ if [ -d "$HOME/.npm-global/bin" ] ;
   then PATH="$HOME/.npm-global/bin:$PATH"
 fi
 
-source  $_gitstatus_plugin_dir/gitstatus.prompt.zsh 
-
 export TERM="xterm-256color"                      # getting proper colors
 
-RPROMPT='$GITSTATUS_PROMPT'  # right prompt: git status
-
 PS1="%F{green}%n@%m%f %F{blue}%~%f%(?..%F{red} [%?]%f)$ "
-
-_open_files_for_editing() {
-    # Open any given document file(s) for editing (or just viewing).
-    # Note1:
-    #    - Do not use for executable files!
-    # Note2:
-    #    - Uses 'mime' bindings, so you may need to use
-    #      e.g. a file manager to make proper file bindings.
-
-    if [ -x /usr/bin/exo-open ] ; then
-        echo "exo-open $@" >&2
-        setsid exo-open "$@" >& /dev/null
-        return
-    fi
-    if [ -x /usr/bin/xdg-open ] ; then
-        for file in "$@" ; do
-            echo "xdg-open $file" >&2
-            setsid xdg-open "$file" >& /dev/null
-        done
-        return
-    fi
-
-    echo "$FUNCNAME: package 'xdg-utils' or 'exo' is required." >&2
-}
 
 if command -v exa &> /dev/null
 then
@@ -90,8 +60,6 @@ then
 	alias le='exa --group-directories-first'
 	alias lt='exa -aT --group-directories-first'
 fi
-
-alias ef='_open_files_for_editing'     # 'ef' opens given file(s) for editing
 
 alias emt='emacsclient -nw -a=\"\"'
 alias cp='cp -i'
@@ -111,6 +79,7 @@ export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/sha
 
 case "$TERM" in
     xterm-color) color_prompt=yes;;
+    xterm-256color) color_prompt=yes;;
 esac
 
 fpath+=~/.zfunc
@@ -122,7 +91,6 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 
-# alias pacdiff=eos-pacdiff
 # Lines configured by zsh-newuser-install
 #
 HISTFILE=~/.histfile
@@ -134,6 +102,7 @@ unsetopt beep notify
 # NVM npm version manager
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # pnpm
 export PNPM_HOME="/home/ricardo/.local/share/pnpm"
@@ -158,14 +127,4 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 zstyle ':completion::complete:*' gain-privileges 1
 
-alias ssh 'TERM=xterm-color ssh'
-
-
-if [ -x /usr/bin/fzf ] ; then
-  # Set up fzf key bindings and fuzzy completion
-  source <(fzf --zsh)
-  return
-fi
-
 if [ -e /home/nino/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nino/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
