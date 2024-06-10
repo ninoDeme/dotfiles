@@ -136,7 +136,7 @@ M.setup = function()
     TabLineTitle = vim.api.nvim_get_hl(0, { name = 'TabLine', link = false }),
     TabLineSelTitle = vim.api.nvim_get_hl(0, { name = 'TabLineSel', link = false }),
 
-    TabLineBranch = { fg = colors.purple, bg = vim.api.nvim_get_hl(0, { name = 'TabLineFill' }).bg },
+    TabLineBranch = { fg = colors.purple, bg = vim.api.nvim_get_hl(0, { name = 'TabLineFill', link = false }).bg },
 
     lualine_file_modified = { fg = colors.yellow, bg = lualine_c.bg },
 
@@ -163,30 +163,40 @@ M.setup = function()
   for key, val in pairs(highlights) do
     vim.api.nvim_set_hl(0, key, val)
   end
+end
 
-  -- local heirline_utils = require("heirline.utils")
-  -- local st_colors = {
-  --   bright_bg = theme.base01,
-  --   bright_fg = theme.base06,
-  --   red = colors.red,
-  --   dark_red = theme.base0F,
-  --   green = colors.green,
-  --   blue = colors.blue,
-  --   gray = colors.grey,
-  --   yellow = colors.yellow,
-  --   orange = colors.orange,
-  --   purple = colors.purple,
-  --   cyan = colors.cyan,
-  --   diag_warn = heirline_utils.get_highlight("DiagnosticWarn").fg,
-  --   diag_error = heirline_utils.get_highlight("DiagnosticError").fg,
-  --   diag_hint = heirline_utils.get_highlight("DiagnosticHint").fg,
-  --   diag_info = heirline_utils.get_highlight("DiagnosticInfo").fg,
-  --   git_del = heirline_utils.get_highlight("DiffDeleted").fg,
-  --   git_add = heirline_utils.get_highlight("DiffAdded").fg,
-  --   git_change = heirline_utils.get_highlight("DiffChanged").fg,
-  -- }
-  --
-  -- require("heirline").load_colors(st_colors)
+M.heirline_colors = function ()
+  --- @type base_30
+  local colors = require("base46").get_theme_tb("base_30")
+  --- @type base_16
+  local theme = require("base46").get_theme_tb("base_16")
+
+  local heirline_utils = require("heirline.utils")
+  return {
+    bright_bg = theme.base01,
+    bright_fg = theme.base06,
+    red = colors.red,
+    dark_red = theme.base0F,
+    green = colors.green,
+    blue = colors.blue,
+    gray = colors.grey,
+    yellow = colors.yellow,
+    orange = colors.orange,
+    purple = colors.purple,
+    cyan = colors.cyan,
+    diag_warn = heirline_utils.get_highlight("DiagnosticWarn").fg,
+    diag_error = heirline_utils.get_highlight("DiagnosticError").fg,
+    diag_hint = heirline_utils.get_highlight("DiagnosticHint").fg,
+    diag_info = heirline_utils.get_highlight("DiagnosticInfo").fg,
+    git_del = heirline_utils.get_highlight("Removed").fg,
+    git_add = heirline_utils.get_highlight("Added").fg,
+    git_change = heirline_utils.get_highlight("Changed").fg,
+  }
+end
+
+M.update_colors = function ()
+  M.setup()
+  require("heirline").load_colors(M.heirline_colors())
 end
 
 return M

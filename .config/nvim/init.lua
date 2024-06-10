@@ -83,7 +83,7 @@ vim.opt.foldlevel = 40
 vim.opt.cmdheight = 1
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.laststatus = 3
+vim.opt.laststatus = 2
 
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2

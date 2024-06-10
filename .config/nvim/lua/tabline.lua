@@ -122,7 +122,7 @@ M.setup = function()
 		if git_head ~= "" then
 			git_head = " " .. git_head .. " "
 		end
-		tabline = tabline .. "%#TabLineFill# %= %#lualine_branch#" .. git_head
+		tabline = tabline .. "%#TabLineFill# %= %#TabLineBranch#" .. git_head
 		return tabline
 	end
 
