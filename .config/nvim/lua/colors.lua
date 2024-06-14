@@ -58,7 +58,6 @@ M.setup = function()
   --- @type base_16
   local theme = require("base46").get_theme_tb("base_16")
 
-  local lualine_c = vim.api.nvim_get_hl(0, { name = 'lualine_c_normal' })
   highlights = vim.tbl_extend("keep", highlights, {
 
     DapBreakpoint = { ctermfg = "Red", fg = colors.red },
@@ -69,38 +68,6 @@ M.setup = function()
     DapBreakpointRejected = { ctermfg = "Yellow", fg = colors.yellow },
 
     BqfPreviewFloat = { link = "FloatNormal" },
-
-    -- FileLine = { link = "lualine_c_normal" },
-
-    -- lualine_b_normal = { link = "lualine_c_normal" },
-
-    lualine_c_diff_modified_terminal = { bg = lualine_c.bg, fg = colors.yellow },
-    lualine_c_diff_modified_insert = { bg = lualine_c.bg, fg = colors.yellow },
-    lualine_c_diff_modified_normal = { bg = lualine_c.bg, fg = colors.yellow },
-    lualine_c_diff_modified_visual = { bg = lualine_c.bg, fg = colors.yellow },
-    lualine_c_diff_modified_command = { bg = lualine_c.bg, fg = colors.yellow },
-    lualine_c_diff_modified_replace = { bg = lualine_c.bg, fg = colors.yellow },
-    lualine_c_diff_modified_inactive = { bg = lualine_c.bg, fg = colors.yellow },
-
-    lualine_a_terminal = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_terminal" }).bg, bold = true },
-    lualine_a_insert = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_insert" }).bg, bold = true },
-    lualine_a_normal = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" }).bg, bold = true },
-    lualine_a_visual = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_visual" }).bg, bold = true },
-    lualine_a_command = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_command" }).bg, bold = true },
-    lualine_a_replace = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_replace" }).bg, bold = true },
-    lualine_a_inactive = { fg = lualine_c.bg, bg = vim.api.nvim_get_hl(0, { name = "lualine_a_inactive" }).bg, bold = true },
-
-    -- MiniStatuslineModeNormal = { link = "St_NormalMode" },
-    -- MiniStatuslineModeInsert = { link = "St_InsertMode" },
-    -- MiniStatuslineModeVisual = { link = "St_VisualMode" },
-    -- MiniStatuslineModeReplace = { link = "St_ReplaceMode" },
-    -- MiniStatuslineModeCommand = { link = "St_CommandMode" },
-    -- MiniStatuslineModeOther = { link = "St_TerminalMode" },
-    --
-    -- MiniStatuslineFilename = { link = 'StatusLine' },
-    --
-    -- StatusLineNC = { bg = lualine_c.bg },
-    -- StatusLine = { bg = lualine_c.bg },
 
     TreesitterContext = { bg = colors.black2 },
 
@@ -138,18 +105,15 @@ M.setup = function()
 
     TabLineBranch = { fg = colors.purple, bg = vim.api.nvim_get_hl(0, { name = 'TabLineFill', link = false }).bg },
 
-    lualine_file_modified = { fg = colors.yellow, bg = lualine_c.bg },
-
-    lualine_lsp = { fg = colors.blue, bg = lualine_c.bg },
-    lualine_encoding = { fg = colors.green, bg = lualine_c.bg },
-    lualine_line_ending = { fg = colors.green, bg = lualine_c.bg },
-    lualine_branch = { fg = colors.purple, bg = lualine_c.bg },
-
     WinBarNC = { link = "Normal" },
     WinBar = { link = "Normal" },
     WinBarPathRel = vim.api.nvim_get_hl(0, { name = "Title" }),
 
     QuickFixLine = { fg = "none", underline = true, sp = theme.base05 },
+
+    HeirLine = { bg = colors.statusline_bg },
+
+    StatusLine = { link = "StatusLineNC" }
   })
 
   highlights.WinBarPathRel.bold = true

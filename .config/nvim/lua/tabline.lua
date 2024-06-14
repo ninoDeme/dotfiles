@@ -33,9 +33,7 @@ end
 local function format_buffer_name(bufnr, rel)
 	local buf = vim.bo[bufnr]
 	local bufname = vim.fn.bufname(bufnr)
-	if buf.filetype == "fugitive" then
-		return "fugitive: " .. vim.fn.fnamemodify(bufname, ":h:h:t")
-	elseif buf.filetype == "harpoon" then
+	if buf.filetype == "harpoon" then
 		return "Harpoon"
 	elseif buf.filetype == "TelescopePrompt" then
 		return "Telescope"
@@ -45,9 +43,9 @@ local function format_buffer_name(bufnr, rel)
 		return "lazy"
 	elseif buf.buftype == "help" then
 		return "help:" .. vim.fn.fnamemodify(bufname, ":t:r")
-	elseif buf.buftype == "terminal" then
-		local match = string.match(vim.split(bufname, " ")[1], "term:.*:(%a+)")
-		return match ~= nil and match or vim.fn.fnamemodify(vim.env.SHELL, ":t")
+  elseif buf.buftype == "terminal" then
+    local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
+    return " " .. tname
 	elseif bufname == "" then
 		return "[No Name]"
 	else

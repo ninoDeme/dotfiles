@@ -260,7 +260,7 @@ return {
       require("colors").setup()
       vim.api.nvim_create_autocmd('User', {
         pattern = "NvChadThemeReload",
-        callback = require("colors").setup
+        callback = require("colors").update_colors
       })
     end,
     dependencies = {

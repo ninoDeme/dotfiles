@@ -33,7 +33,7 @@ return {
 				},
 			})
 
-			require("treesitter-context").setup({ enable = true, throttle = true })
+			-- require("treesitter-context").setup({ enable = true, throttle = true })
 
 			-- if vim.uv.os_uname().sysname == "Windows_NT" then
 			--    require('nvim-treesitter.install').compilers = { "clang" }
@@ -42,7 +42,11 @@ return {
 			-- require 'nvim-treesitter.install'.prefer_git = false
 		end,
 		dependencies = {
-			"romgrk/nvim-treesitter-context",
+      {
+        "romgrk/nvim-treesitter-context", -- Shows the context (current function or method)
+        dependencies = "nvim-treesitter",
+        cond = NOT_VSCODE,
+      },
 			"windwp/nvim-ts-autotag",
 			{
         "LiadOz/nvim-dap-repl-highlights",
@@ -50,11 +54,6 @@ return {
       },
 		},
 	}, -- Parsesr and highlighter for a lot of languages
-	{
-		"romgrk/nvim-treesitter-context", -- Shows the context (current function or method)
-		dependencies = "nvim-treesitter",
-		cond = NOT_VSCODE,
-	},
 	{
 		"windwp/nvim-ts-autotag",
     config = function (_)
