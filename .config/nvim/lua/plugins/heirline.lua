@@ -103,7 +103,7 @@ return {
 				-- 		vim.cmd("redrawstatus")
 				-- 	end),
 				-- },
-				flexible = 1,
+				flexible = 3,
 				{
 					provider = function(self)
 						return " " .. self.mode_names[self.mode]:upper() .. " "
@@ -311,10 +311,17 @@ return {
 					local session = require("dap").session()
 					return session ~= nil
 				end,
-				provider = function()
-					-- return "  " .. require("dap").status()
-					return "  " .. require("dap").status()
-				end,
+        flexible = 1,
+        {
+          provider = function()
+            return "  " .. require("dap").status()
+          end,
+        },
+        {
+          provider = function()
+            return " "
+          end,
+        },
 				hl = "Debug",
 			}
 			local Lsp = {
@@ -401,14 +408,14 @@ return {
 				Ruler,
 				Padding,
 				{
-					flexible = 3,
+					flexible = 4,
 					Diff2,
 					Diff,
 				},
 				Diagnostics,
 				Spacer,
 				{
-					flexible = 4,
+					flexible = 5,
 					DAPMessages,
 					{ provider = "" },
 				},

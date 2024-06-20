@@ -49,7 +49,7 @@ local function keymappings(client, bufnr)
       "Signature Help",
     },
     d = { function() vim.lsp.buf.definition() end, "View Definition" },
-    D = { function() vim.lsp.buf.references() end, "View References" },
+    D = { function() vim.lsp.buf.references({ includeDeclaration = false }) end, "View References" },
     I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
     h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
   }
@@ -67,11 +67,11 @@ local lsp_opts = {
     -- Configure key mappings
     keymappings(client, bufnr)
 
-    if client.server_capabilities.inlayHintProvider then
-      vim.lsp.inlay_hint.enable(true, { bufnr })
-    end
+    -- if client.server_capabilities.inlayHintProvider then
+    --   vim.lsp.inlay_hint.enable(true, { bufnr })
+    -- end
   end,
-  inlay_hints = { enabled = true }
+  -- inlay_hints = { enabled = true }
   -- capabilities = require("cmp_nvim_lsp").default_capabilities(),
 }
 -- }}}
