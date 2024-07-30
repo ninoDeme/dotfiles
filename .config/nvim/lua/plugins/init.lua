@@ -1,22 +1,31 @@
 return {
-  { "nvim-lua/plenary.nvim",        cond = NOT_VSCODE }, -- Telescope dependency
-  { "nvim-tree/nvim-web-devicons", cond = NOT_VSCODE }, -- Add icons to plugins
-  { "sedm0784/vim-resize-mode",     cond = NOT_VSCODE, event = "VeryLazy" },
+	{ "nvim-lua/plenary.nvim", cond = NOT_VSCODE }, -- Telescope dependency
+	{ "nvim-tree/nvim-web-devicons", cond = NOT_VSCODE }, -- Add icons to plugins
+	{ "sedm0784/vim-resize-mode", cond = NOT_VSCODE, event = "VeryLazy" },
 
-  -- { 'tpope/vim-surround',             event = 'VeryLazy' }, -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
-  {
-    "folke/which-key.nvim",
+	-- { 'tpope/vim-surround',             event = 'VeryLazy' }, -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
+	{
+		"folke/which-key.nvim",
     event = "VeryLazy",
-    config = function()
-      require("which-key").register({
-        s = { name = "Telescope" },
-        t = { name = "+Toggle Numbered Terminals" },
-        g = { name = "+Git" },
-        d = { name = "+Debug" },
-        b = { name = "+Buffers" },
-        c = {
-          name = "+QuickFix",
-          c = {
+		config = function()
+      require("which-key").setup({
+        preset = "modern",
+        delay = function(ctx)
+          return 1000
+        end,
+        spec = {
+          { "<leader><tab>", group = "Tabs" },
+          { "<leader><tab><tab>", "gt", desc = "Next Tab" },
+          { "<leader><tab>c", "<Cmd>tabnew<cr>", desc = "New Tab" },
+          { "<leader><tab>n", "<Cmd>tabnew<cr>", desc = "New Tab" },
+          { "<leader><tab>t", "<cmd>:tabnew<cr><cmd>:terminal<cr>i", desc = "Tab With Terminal" },
+          { "<leader><tab>x", "<cmd>:tabclose<cr>", desc = "Close Tab" },
+          { "<leader>W", '<Cmd>:call mkdir(expand("%:p:h"),"p")<CR>', desc = "Create dir to current file" },
+          { "<leader>b", group = "Buffers" },
+          { "<leader>c", group = "QuickFix" },
+          { "<leader>cb", "<cmd>:cprevious<cr>", desc = "Previous Item" },
+          {
+            "<leader>cc",
             function()
               local windows = vim.fn.getwininfo()
               for _, win in pairs(windows) do
@@ -27,264 +36,215 @@ return {
               end
               vim.cmd.copen()
             end,
-            "Toggle QuickFix",
+            desc = "Toggle QuickFix",
           },
-          n = { "<cmd>:cnext<cr>", "Next Item" },
-          b = { "<cmd>:cprevious<cr>", "Previous Item" },
-        },
-        o = {
-          name = "+Open",
-          t = { "<Cmd>:terminal<CR>i", "Terminal" },
-          ["-"] = { "<cmd>Oil<cr>", "Oil" },
-        },
-        W = { '<Cmd>:call mkdir(expand("%:p:h"),"p")<CR>', "Create dir to current file" },
-        ["<tab>"] = {
-          name = "+Tabs",
-          n = { "<Cmd>tabnew<cr>", "New Tab" },
-          c = { "<Cmd>tabnew<cr>", "New Tab" },
-          ["<tab>"] = { "gt", "Next Tab" },
-          x = { "<cmd>:tabclose<cr>", "Close Tab" },
-          t = { "<cmd>:tabnew<cr><cmd>:terminal<cr>i", "Tab With Terminal" },
-        },
-      }, { prefix = "<leader>" })
-    end,
-    cond = NOT_VSCODE,
-  },
-  { "cohama/lexima.vim",         cond = NOT_VSCODE, event = "VeryLazy" },
-  { "tpope/vim-repeat", event = "VeryLazy" },
-  -- {
-  --   "ggandor/leap.nvim",
-  --   dependencies = { "tpope/vim-repeat" },
-  --   config = function()
-  --     require("leap").add_default_mappings()
-  --   end,
-  --   event = "VeryLazy",
-  -- },
-  -- -- 'vim-scripts/argtextobj.vim' -- add argument text object ia aa
-  {
-    'wellle/targets.vim',
-    event = 'VeryLazy'
-  },
-  {
-    'kana/vim-textobj-entire',
-    event = 'VeryLazy',
-    dependencies ={'kana/vim-textobj-user'}
-  },
-  {
-    "michaeljsmith/vim-indent-object",
-    event = "VeryLazy",
-  }, -- add indent text object for motions ii ai
-  {
-    "sindrets/diffview.nvim",
-    cmd = {
-      "DiffviewOpen",
-      "DiffviewClose",
-      "DiffviewLog",
-      "DiffviewRefresh",
-      "DiffviewReference",
-      "DiffviewFileHistory",
-      "DiffviewToggleFiles",
-    },
-    cond = NOT_VSCODE,
-  },
-
-  {
-    "williamboman/mason.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("mason").setup()
-    end,
-  },
-
-  -- Color schemes =======================
-  -- { "ayu-theme/ayu-vim", cond = NOT_VSCODE },
-  {
-    enabled = false,
-    lazy = false,
-    priority = 1006,
-    "navarasu/onedark.nvim",
-    config = function()
-      require("onedark").setup({
-        -- toggle_style_key = "<leader>tc", -- keybind to toggle theme style. Leave it nil to disable it, or set it to a string, for example "<leader>ts"
-        style = "darker",
-      })
-      require("onedark").load()
-
-      require("colors").setup()
-    end,
-    cond = NOT_VSCODE,
-  },
-  {
-    enabled = false,
-    lazy = false,
-    priority = 1006,
-    "ellisonleao/gruvbox.nvim",
-    config = function()
-      require("gruvbox").setup({
-        overrides = {
-          SignColumn = { link = 'Normal' }
+          { "<leader>cn", "<cmd>:cnext<cr>", desc = "Next Item" },
+          { "<leader>d", group = "Debug" },
+          { "<leader>g", group = "Git" },
+          { "<leader>o", group = "Open" },
+          { "<leader>o-", "<cmd>Oil<cr>", desc = "Oil" },
+          { "<leader>ot", "<Cmd>:terminal<CR>i", desc = "Terminal" },
+          { "<leader>s", group = "Telescope" },
+          { "<leader>t", group = "Toggle Numbered Terminals" },
+          { "[e", function() vim.diagnostic.jump({ severity = vim.diagnostic.severity.ERROR, count = -1, float = true }) end, desc = 'Previous Error' },
+          { "]e", function() vim.diagnostic.jump({ severity = vim.diagnostic.severity.ERROR, count = 1, float = true }) end, desc = 'Next Error' },
         }
+      });
+		end,
+		cond = NOT_VSCODE,
+	},
+	{ "cohama/lexima.vim", cond = NOT_VSCODE, event = "VeryLazy" },
+	{ "tpope/vim-repeat", event = "VeryLazy" },
+	-- {
+	--   "ggandor/leap.nvim",
+	--   dependencies = { "tpope/vim-repeat" },
+	--   config = function()
+	--     require("leap").add_default_mappings()
+	--   end,
+	--   event = "VeryLazy",
+	-- },
+	{
+		"wellle/targets.vim",
+		event = "VeryLazy",
+	},
+	{
+		"kana/vim-textobj-entire",
+		event = "VeryLazy",
+		dependencies = { "kana/vim-textobj-user" },
+	},
+	{
+		"michaeljsmith/vim-indent-object",
+		event = "VeryLazy",
+	}, -- add indent text object for motions ii ai
+	{
+		"williamboman/mason.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("mason").setup()
+		end,
+	},
+
+	-- Color schemes =======================
+	-- { "ayu-theme/ayu-vim", cond = NOT_VSCODE },
+	{
+		enabled = false,
+		lazy = false,
+		priority = 1006,
+		"navarasu/onedark.nvim",
+		config = function()
+			require("onedark").setup({
+				-- toggle_style_key = "<leader>tc", -- keybind to toggle theme style. Leave it nil to disable it, or set it to a string, for example "<leader>ts"
+				style = "darker",
+			})
+			require("onedark").load()
+
+			require("colors").setup()
+		end,
+		cond = NOT_VSCODE,
+	},
+	{
+		enabled = false,
+		lazy = false,
+		priority = 1006,
+		"ellisonleao/gruvbox.nvim",
+		config = function()
+			require("gruvbox").setup({
+				overrides = {
+					SignColumn = { link = "Normal" },
+				},
+			})
+			vim.cmd("colorscheme gruvbox")
+			require("colors").setup()
+		end,
+		cond = NOT_VSCODE,
+	},
+	{
+		"kana/vim-textobj-user", --- {{{
+		event = "VeryLazy",
+		config = function()
+			local re_word = [[\(\w\+\)]]
+			-- An attribute name: `src`, `data-attr`, `strange_attr`.
+			local re_attr_name = [[\([\[\(\#\*]\{0,2}\)\([a-zA-Z0-9\-_:@.]\+\)\([\]\)]\{0,2}\)]]
+			-- A quoted string.
+			local re_quoted_str = [[\(".\{-}"\)]]
+			-- The value of an attribute: a word with no quotes or a quoted string.
+			local re_attr_value = [[\(]] .. re_quoted_str .. [[\|]] .. re_word .. [[\)]]
+			-- The right-hand side of an XML attr: an optional `=something` or `="str"`.
+			local re_attr_rhs = [[\(=]] .. re_attr_value .. [[\)\=]]
+
+			-- The final regex.
+			local re_attr_i = [[\(]] .. re_attr_name .. re_attr_rhs .. [[\)]]
+			local re_attr_a = [[\s\+]] .. re_attr_i
+			local re_attr_ax = [[\s\+]] .. re_attr_name
+
+			vim.fn["textobj#user#plugin"]("angularattr", {
+				["attr-i"] = {
+					pattern = re_attr_i,
+					select = "ix",
+				},
+				["attr-a"] = {
+					pattern = re_attr_a,
+					select = "ax",
+				},
+				["attr-iX"] = {
+					pattern = re_attr_name,
+					select = "iX",
+				},
+				["attr-aX"] = {
+					pattern = re_attr_ax,
+					select = "aX",
+				},
+			})
+		end,
+	}, --- }}}
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim", "telescope.nvim" },
+		event = "VeryLazy",
+		config = function()
+			local harpoon = require("harpoon")
+			-- Setup harpoon
+			harpoon:setup()
+
+			-- Telescope Setup
+			local conf = require("telescope.config").values
+			local function toggle_telescope(harpoon_files)
+				local file_paths = {}
+				for _, item in ipairs(harpoon_files.items) do
+					table.insert(file_paths, item.value)
+				end
+
+				require("telescope.pickers")
+					.new({}, {
+						prompt_title = "Harpoon",
+						finder = require("telescope.finders").new_table({
+							results = file_paths,
+						}),
+						previewer = conf.file_previewer({}),
+						sorter = conf.generic_sorter({}),
+					})
+					:find()
+			end
+
+      require("which-key").add({
+        { mode = "n", "<leader>h", group = "+Harpoon"},
+        { mode = "n", "<leader>ha", function() harpoon:list():add() end, desc = "Add to List"},
+        { mode = "n", "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, desc = "Open Harpoon"},
+        { mode = "n", "<leader>sh", function() toggle_telescope(harpoon:list()) end, desc = "Harpoon"},
+        { mode = "n", "<leader>1", function() harpoon:list():select(1) end, hidden = true },
+        { mode = "n", "<leader>2", function() harpoon:list():select(2) end, hidden = true },
+        { mode = "n", "<leader>3", function() harpoon:list():select(3) end, hidden = true },
+        { mode = "n", "<leader>4", function() harpoon:list():select(4) end, hidden = true },
+        { mode = "n", "<leader>5", function() harpoon:list():select(5) end, hidden = true },
+        { mode = "n", "<leader>6", function() harpoon:list():select(6) end, hidden = true },
+        { mode = "n", "<leader>7", function() harpoon:list():select(7) end, hidden = true },
+        { mode = "n", "<leader>8", function() harpoon:list():select(8) end, hidden = true },
       })
-      vim.cmd("colorscheme gruvbox")
-      require("colors").setup()
-    end,
-    cond = NOT_VSCODE,
-  },
-
-  {
-    'kana/vim-textobj-user', --- {{{
-    event = 'VeryLazy',
-    config = function()
-      local re_word = [[\(\w\+\)]]
-      -- An attribute name: `src`, `data-attr`, `strange_attr`.
-      local re_attr_name = [[\([\[\(\#\*]\{0,2}\)\([a-zA-Z0-9\-_:@.]\+\)\([\]\)]\{0,2}\)]]
-      -- A quoted string.
-      local re_quoted_str = [[\(".\{-}"\)]]
-      -- The value of an attribute: a word with no quotes or a quoted string.
-      local re_attr_value = [[\(]] .. re_quoted_str .. [[\|]] .. re_word .. [[\)]]
-      -- The right-hand side of an XML attr: an optional `=something` or `="str"`.
-      local re_attr_rhs = [[\(=]] .. re_attr_value .. [[\)\=]]
-
-      -- The final regex.
-      local re_attr_i = [[\(]] .. re_attr_name .. re_attr_rhs .. [[\)]]
-      local re_attr_a = [[\s\+]] .. re_attr_i
-      local re_attr_ax = [[\s\+]] .. re_attr_name
-
-      vim.fn["textobj#user#plugin"]("angularattr", {
-        ['attr-i'] =  {
-          pattern =  re_attr_i,
-          select =  'ix',
-        },
-        ['attr-a'] =  {
-          pattern =  re_attr_a,
-          select =  'ax',
-        },
-        ['attr-iX'] =  {
-          pattern =  re_attr_name,
-          select =  'iX'
-        },
-        ['attr-aX'] =  {
-          pattern =  re_attr_ax,
-          select =  'aX'
-        },
-      })
-    end
-  }, --- }}}
-  {
-    "ThePrimeagen/harpoon",
-    branch = "harpoon2",
-    dependencies = { "nvim-lua/plenary.nvim", "telescope.nvim" },
-    event = "VeryLazy",
-    config = function()
-      local harpoon = require("harpoon")
-      -- Setup harpoon
-      harpoon:setup()
-
-      -- Telescope Setup
-      local conf = require("telescope.config").values
-      local function toggle_telescope(harpoon_files)
-        local file_paths = {}
-        for _, item in ipairs(harpoon_files.items) do
-          table.insert(file_paths, item.value)
-        end
-
-        require("telescope.pickers")
-            .new({}, {
-              prompt_title = "Harpoon",
-              finder = require("telescope.finders").new_table({
-                results = file_paths,
-              }),
-              previewer = conf.file_previewer({}),
-              sorter = conf.generic_sorter({}),
-            })
-            :find()
-      end
-
-      vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end)
-      vim.keymap.set("n", "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-      vim.keymap.set("n", "<leader>sh", function() toggle_telescope(harpoon:list()) end)
-
-      vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
-      vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
-      vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
-      vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
-
-      vim.keymap.set("n", "<leader>5", function() harpoon:list():select(5) end)
-      vim.keymap.set("n", "<leader>6", function() harpoon:list():select(6) end)
-      vim.keymap.set("n", "<leader>7", function() harpoon:list():select(7) end)
-      vim.keymap.set("n", "<leader>8", function() harpoon:list():select(8) end)
-
-      -- Toggle previous & next buffers stored within Harpoon list
-      vim.keymap.set("n", "<C-S-P>", function()
-        harpoon:list():prev()
-      end)
-      vim.keymap.set("n", "<C-S-N>", function()
-        harpoon:list():next()
-      end)
-    end,
-    keys = {
-      { mode = "n", "<leader>h",  desc = "+Harpoon" },
-      { mode = "n", "<leader>ha", desc = "Add to list" },
-      { mode = "n", "<leader>hh", desc = "Toggle List" },
-      { mode = "n", "<leader>sh", desc = "Harpoon" },
-
-      { mode = "n", "<leader>h1", desc = "1" },
-      { mode = "n", "<leader>h2", desc = "2" },
-      { mode = "n", "<leader>h3", desc = "3" },
-      { mode = "n", "<leader>h4", desc = "4" },
-
-      { mode = "n", "<leader>h5", desc = "5" },
-      { mode = "n", "<leader>h6", desc = "6" },
-      { mode = "n", "<leader>h7", desc = "7" },
-      { mode = "n", "<leader>h8", desc = "8" },
-
-      -- Toggle previous & next buffers stored within Harpoon list
-      { mode = "n", "<C-S-P>",    desc = "Harpoon previous" },
-      { mode = "n", "<C-S-N>",    desc = "Harpoon next" },
-    },
-  },
-  {
-    'brenoprata10/nvim-highlight-colors',
-    event = "VeryLazy",
-    opts = {
-      enable_tailwind = true,
-      render = 'virtual',
-      virtual_symbol_position = 'eol',
-    }
-  },
-  {
-    'NvChad/base46',
-    config = function()
-      vim.g.base46_cache = vim.fn.stdpath('cache') .. '/base46'
-      require("base46").load_all_highlights()
-      require("colors").setup()
-      vim.api.nvim_create_autocmd('User', {
-        pattern = "NvChadThemeReload",
-        callback = require("colors").update_colors
-      })
-    end,
-    dependencies = {
-      'NvChad/ui'
-    },
-    lazy = false,
-    priority = 1006,
-  },
-  {
-    "andrewferrier/debugprint.nvim",
-    opts ={  },
-    keys = {
-      { mode = { 'n', 'x' }, "g?", desc = "+Debug Print" },
-      { mode = { 'n', 'x' }, "g?v", desc = "Print variable below" },
-      { mode = { 'n', 'x' }, "g?V", desc = "Print variable above" },
-      { mode = "n", "g?p", desc = "Print below" },
-      { mode = "n", "g?P", desc = "Print above" },
-    },
-    cmd = {
-      "DeleteDebugPrints",
-      "ToggleCommentDebugPrints",
-    },
-    dependencies = {
-        "echasnovski/mini.nvim" -- Needed to enable :ToggleCommentDebugPrints for NeoVim 0.9
-    },
-},
+		end,
+	},
+	{
+		"brenoprata10/nvim-highlight-colors",
+		event = "VeryLazy",
+		opts = {
+			enable_tailwind = true,
+			render = "virtual",
+			virtual_symbol_position = "eol",
+		},
+	},
+	{
+		"NvChad/base46",
+		config = function()
+			vim.g.base46_cache = vim.fn.stdpath("cache") .. "/base46"
+			require("base46").load_all_highlights()
+			require("colors").setup()
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "NvChadThemeReload",
+				callback = require("colors").update_colors,
+			})
+		end,
+		dependencies = {
+			"NvChad/ui",
+		},
+		lazy = false,
+		priority = 1006,
+	},
+	{
+		"andrewferrier/debugprint.nvim",
+		opts = {},
+		keys = {
+			{ mode = { "n", "x" }, "g?", desc = "+Debug Print" },
+			{ mode = { "n", "x" }, "g?v", desc = "Print variable below" },
+			{ mode = { "n", "x" }, "g?V", desc = "Print variable above" },
+			{ mode = "n", "g?p", desc = "Print below" },
+			{ mode = "n", "g?P", desc = "Print above" },
+		},
+		cmd = {
+			"DeleteDebugPrints",
+			"ToggleCommentDebugPrints",
+		},
+		dependencies = {
+			"echasnovski/mini.nvim", -- Needed to enable :ToggleCommentDebugPrints for NeoVim 0.9
+		},
+	},
 }

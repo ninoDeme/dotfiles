@@ -99,7 +99,10 @@ return {
 					ghost_text = false,
 				},
 				formatting = {
-					format = require("lspkind").cmp_format({ mode = "text_symbol", maxwidth = 50 }),
+					format = require("lspkind").cmp_format({
+						mode = "text_symbol",
+						maxwidth = 60,
+					}),
 				},
 			})
 			-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).

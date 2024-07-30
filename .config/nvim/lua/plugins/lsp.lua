@@ -1,78 +1,12 @@
 -- lsp setup functions {{{
 
-local function keymappings(client, bufnr)
-  local opts = { noremap = true, silent = true }
-
-  -- lsp Key mappings
-  vim.keymap.set("n", "[e", function()
-    vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-  end, opts)
-  vim.keymap.set("n", "]e", function()
-    vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
-  end, opts)
-
-  -- Whichkey
-  local keymap_l = {
-    l = {
-      name = "Code",
-      r = {
-        function()
-          vim.lsp.buf.rename()
-        end,
-        "Rename",
-      },
-      a = {
-        function()
-          require("actions-preview").code_actions()
-        end,
-        "Code Actions",
-      },
-      -- a = { function() vim.lsp.buf.code_action() end, "Code Action" },
-      i = { "<cmd>LspInfo<CR>", "Lsp Info" },
-      f = {
-        function()
-          vim.lsp.buf.format()
-        end,
-        "Format Document",
-      },
-      d = { function() vim.diagnostic.setqflist() end, "View Diagnostics" },
-      e = { function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end, "View Errors" },
-    },
-  }
-
-  local keymap_g = {
-    name = "Goto",
-    s = {
-      function()
-        vim.lsp.buf.signature_help()
-      end,
-      "Signature Help",
-    },
-    d = { function() vim.lsp.buf.definition() end, "View Definition" },
-    D = { function() vim.lsp.buf.references({ includeDeclaration = false }) end, "View References" },
-    I = { function() vim.lsp.buf.implementation() end, "Goto Implementation" },
-    h = { function() vim.lsp.buf.type_definition() end, "View Type Signature" }
-  }
-  local whichkey = require("which-key")
-  whichkey.register(keymap_l, { buffer = bufnr, prefix = "<leader>", mode = { "n", "v" } })
-  whichkey.register(keymap_g, { buffer = bufnr, prefix = "g" })
-end
-
 local lsp_opts = {
   on_attach = function(client, bufnr)
     -- Use LSP as the handler for formatexpr.
     -- See `:help formatexpr` for more information. 'gq'
     vim.api.nvim_set_option_value("formatexpr", "v:lua.vim.lsp.formatexpr()", { buf = 0 })
 
-    -- Configure key mappings
-    keymappings(client, bufnr)
-
-    -- if client.server_capabilities.inlayHintProvider then
-    --   vim.lsp.inlay_hint.enable(true, { bufnr })
-    -- end
   end,
-  -- inlay_hints = { enabled = true }
-  -- capabilities = require("cmp_nvim_lsp").default_capabilities(),
 }
 -- }}}
 
@@ -89,9 +23,13 @@ return {
       })
       vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = border,
-        focusable = false,
+        focusable = true,
+        zindex = 1005,
         relative = "cursor",
         silent = true,
+      })
+      require("which-key").add({
+        { '<leader>l', group = "+LSP" }
       })
     end,
     config = function()
@@ -141,11 +79,9 @@ return {
         capabilities = lsp_opts.capabilities,
       }) -- }}}
 
-      lspconfig.angularls.setup(vim.tbl_extend("force", lsp_opts, {
-        filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx", "angular.html" },
-      }))
+      lspconfig.angularls.setup(lsp_opts)
       lspconfig.html.setup(vim.tbl_extend("force", lsp_opts, {
-        filetypes = { "html", "templ", "angular.html" },
+        filetypes = { 'html', 'templ', 'htmlangular' }
       }))
       lspconfig.cssls.setup(lsp_opts)
       require("lspconfig.configs").firebird_ls = {
@@ -158,61 +94,7 @@ return {
         },
       }
       lspconfig.firebird_ls.setup(lsp_opts);
-      lspconfig.tailwindcss.setup(vim.tbl_extend("force", lsp_opts, {
-        filetypes = {
-          "aspnetcorerazor",
-          "astro",
-          "astro-markdown",
-          "blade",
-          "clojure",
-          "django-html",
-          "htmldjango",
-          "edge",
-          "eelixir",
-          "elixir",
-          "ejs",
-          "erb",
-          "eruby",
-          "gohtml",
-          "gohtmltmpl",
-          "haml",
-          "handlebars",
-          "hbs",
-          "html",
-          "html-eex",
-          "heex",
-          "jade",
-          "leaf",
-          "liquid",
-          "markdown",
-          "mdx",
-          "mustache",
-          "njk",
-          "nunjucks",
-          "php",
-          "razor",
-          "slim",
-          "twig",
-          "css",
-          "less",
-          "postcss",
-          "sass",
-          "scss",
-          "stylus",
-          "sugarss",
-          "javascript",
-          "javascriptreact",
-          "reason",
-          "rescript",
-          "typescript",
-          "typescriptreact",
-          "vue",
-          "svelte",
-          "templ",
-          "angular.html",
-          "heex",
-        },
-      }))
+      lspconfig.tailwindcss.setup(lsp_opts)
       -- lspconfig.rust_analyzer.setup(lsp_opts)
       lspconfig.pyright.setup(lsp_opts)
       lspconfig.tsserver.setup(vim.tbl_extend("force", lsp_opts, {
@@ -225,42 +107,11 @@ return {
               languages = { "javascript", "typescript", "vue" },
             },
           },
-          -- preferences = {
-          --   includeInlayParameterNameHints = "all",
-          --   includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-          --   includeInlayFunctionParameterTypeHints = true,
-          --   includeInlayVariableTypeHints = true,
-          --   includeInlayPropertyDeclarationTypeHints = true,
-          --   includeInlayFunctionLikeReturnTypeHints = true,
-          --   includeInlayEnumMemberValueHints = true,
-          -- },
         },
-        filetypes = {
-          "javascript",
-          "javascriptreact",
-          "javascript.jsx",
-          "typescript",
-          "typescriptreact",
-          "typescript.tsx",
-          "vue",
-        },
+        filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", },
       }))
       lspconfig.volar.setup(lsp_opts)
-      lspconfig.emmet_language_server.setup(vim.tbl_extend("force", lsp_opts, {
-        filetypes = {
-          "css",
-          "eruby",
-          "html",
-          "htmldjango",
-          "javascriptreact",
-          "less",
-          "pug",
-          "sass",
-          "scss",
-          "typescriptreact",
-          "angular.html",
-        },
-      }))
+      lspconfig.emmet_language_server.setup(lsp_opts)
 
       lspconfig.dartls.setup(lsp_opts)
       lspconfig.clangd.setup(lsp_opts)
@@ -268,7 +119,24 @@ return {
       lspconfig.elixirls.setup(vim.tbl_extend("force", lsp_opts, {
         cmd = { vim.fn.expand("~/.local/share/elixir-ls/release/language_server.sh") },
       }))
+
+      lspconfig.ocamllsp.setup(lsp_opts)
     end,
+    keys = {
+      { mode = { 'n', 'v' }, '<leader>lr', function() vim.lsp.buf.rename() end, desc = "Rename"},
+      { mode = { 'n', 'v' }, '<leader>la', function() require("actions-preview").code_actions() end, desc = "Code Actions"},
+      { mode = { 'n', 'v' }, '<leader>li', "<cmd>LspInfo<CR>", desc = "Lsp Info" },
+      { mode = { 'n', 'v' }, '<leader>lF', function() vim.lsp.buf.format() end, desc = "Format Document", },
+      { mode = { 'n', 'v' }, '<leader>ld', function() vim.diagnostic.setqflist() end, desc = "View Diagnostics" },
+      { mode = { 'n', 'v' }, '<leader>le', function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end, desc = "View Errors" },
+
+      { mode = { 'n', 'v' }, 'gK', function() vim.lsp.buf.signature_help() end, desc = "Signature Help" },
+      { mode = { 'i' }, '<c-k>', function() vim.lsp.buf.signature_help() end, desc = "Signature Help" },
+      { mode = { 'n', 'v' }, 'gd', function() vim.lsp.buf.definition() end, desc = "View Definition" },
+      { mode = { 'n', 'v' }, 'gD', function() vim.lsp.buf.references({ includeDeclaration = false }) end, desc = "View References" },
+      { mode = { 'n', 'v' }, 'gI', function() vim.lsp.buf.implementation() end, desc = "Goto Implementation" },
+      { mode = { 'n', 'v' }, 'gh', function() vim.lsp.buf.type_definition() end, desc = "View Type Signature" }
+    }
   },
 
   {

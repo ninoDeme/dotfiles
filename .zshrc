@@ -118,6 +118,8 @@ then
   fpath=(${ASDF_DIR}/completions $fpath)
 fi
 
+[[ ! -r /home/ricardo/.opam/opam-init/init.zsh ]] || source /home/ricardo/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
 zstyle :compinstall filename '/home/nino/.zshrc'
 autoload -Uz compinit
 compinit

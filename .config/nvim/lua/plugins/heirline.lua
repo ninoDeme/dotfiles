@@ -1,3 +1,57 @@
+---shortens path by turning apple/orange -> a/orange
+---@param path string
+---@param sep string path separator
+---@param max_len integer maximum length of the full filename string
+---@return string
+local function shorten_path(path, sep, max_len)
+	local len = #path
+	if len <= max_len then
+		return path
+	end
+
+	local segments = vim.split(path, sep)
+	for idx = 1, #segments - 1 do
+		if len <= max_len then
+			break
+		end
+
+		local segment = segments[idx]
+		local shortened = segment:sub(1, vim.startswith(segment, ".") and 2 or 1)
+		segments[idx] = shortened
+		len = len - (#segment - #shortened)
+	end
+
+	return table.concat(segments, sep)
+end
+
+local escape_lua_pattern = function(s)
+	return string.gsub(s, "[%$%^%(%)%%%.%[%]*+%-%?]", "%%%1")
+end
+
+local function format_buffer_name(bufnr, rel)
+	local buf = vim.bo[bufnr]
+	local bufname = vim.fn.bufname(bufnr)
+	if buf.filetype == "harpoon" then
+		return "Harpoon"
+	elseif buf.filetype == "TelescopePrompt" then
+		return "Telescope"
+	elseif buf.filetype == "TelescopeResults" then
+		return "Telescope"
+	elseif buf.filetype == "lazy" then
+		return "lazy"
+	elseif buf.buftype == "help" then
+		return "help:" .. vim.fn.fnamemodify(bufname, ":t:r")
+	elseif buf.buftype == "terminal" then
+		local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
+		return tname
+	elseif bufname == "" then
+		return "[No Name]"
+	else
+		local result = string.gsub(vim.fn.fnamemodify(bufname, ":p"), escape_lua_pattern(rel) .. "/", "", 1)
+		return shorten_path(result, "/", 60)
+	end
+end
+
 return {
 	{
 		"rebelot/heirline.nvim",
@@ -24,6 +78,7 @@ return {
 						niI = "Normal!",
 						niR = "Normal!",
 						niV = "Normal!",
+						ntT = "Normal!",
 						nt = "Normal",
 						v = "Visual",
 						vs = "Visual!",
@@ -60,7 +115,8 @@ return {
 						niI = "Ni",
 						niR = "Nr",
 						niV = "Nv",
-						nt = "Nt",
+						nt = "N",
+						ntT = "Nt",
 						v = "V",
 						vs = "Vs",
 						V = "V_",
@@ -116,49 +172,49 @@ return {
 				},
 			}
 			local FileName = {
-        init = function(self)
-          local buf = vim.bo
-          local bufname = vim.fn.bufname()
-          self.pick_child = {1}
-          if buf.filetype == "harpoon" then
-            self.f_name_result = "Harpoon"
-          elseif buf.filetype == "TelescopePrompt" then
-            self.f_name_result = "Telescope"
-          elseif buf.filetype == "TelescopeResults" then
-            self.f_name_result = "Telescope"
-          elseif buf.filetype == "OverseerList" then
-            self.f_name_result = "Telescope"
-          elseif buf.buftype == "help" then
-            self.f_name_result = "help:" .. vim.fn.fnamemodify(bufname, ":t:r")
-          elseif buf.buftype == "terminal" then
-            local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
-            self.f_name_result = " " .. tname
-          elseif vim.w.quickfix_title then
-            self.f_name_result = vim.w.quickfix_title
-          elseif bufname == "" then
-            self.f_name_result = "[No Name]"
-          else
-            self.f_name_result = bufname
-            self.pick_child = {1, 2, 3}
-          end
-        end,
+				init = function(self)
+					local buf = vim.bo
+					local bufname = vim.fn.bufname()
+					self.pick_child = { 1 }
+					if buf.filetype == "harpoon" then
+						self.f_name_result = "Harpoon"
+					elseif buf.filetype == "TelescopePrompt" then
+						self.f_name_result = "Telescope"
+					elseif buf.filetype == "TelescopeResults" then
+						self.f_name_result = "Telescope"
+					elseif buf.filetype == "OverseerList" then
+						self.f_name_result = "Telescope"
+					elseif buf.buftype == "help" then
+						self.f_name_result = "help:" .. vim.fn.fnamemodify(bufname, ":t:r")
+					elseif buf.buftype == "terminal" then
+						local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
+						self.f_name_result = tname
+					elseif vim.w.quickfix_title then
+						self.f_name_result = vim.w.quickfix_title
+					elseif bufname == "" then
+						self.f_name_result = "[No Name]"
+					else
+						self.f_name_result = bufname
+						self.pick_child = { 1, 2, 3 }
+					end
+				end,
 
-        flexible = 2,
-        {
-          provider = function (self)
-            return self.f_name_result
-          end
-        },
-        {
-          provider = function (self)
-            return vim.fn.pathshorten(self.f_name_result, 2)
-          end
-        },
-        {
-          provider = function (self)
-            return vim.fn.pathshorten(self.f_name_result, 1)
-          end
-        }
+				flexible = 2,
+				{
+					provider = function(self)
+						return self.f_name_result
+					end,
+				},
+				{
+					provider = function(self)
+						return vim.fn.pathshorten(self.f_name_result, 2)
+					end,
+				},
+				{
+					provider = function(self)
+						return vim.fn.pathshorten(self.f_name_result, 1)
+					end,
+				},
 			}
 			local BufferFlags = {
 				{
@@ -311,17 +367,17 @@ return {
 					local session = require("dap").session()
 					return session ~= nil
 				end,
-        flexible = 1,
-        {
-          provider = function()
-            return "  " .. require("dap").status()
-          end,
-        },
-        {
-          provider = function()
-            return " "
-          end,
-        },
+				flexible = 1,
+				{
+					provider = function()
+						return "  " .. require("dap").status()
+					end,
+				},
+				{
+					provider = function()
+						return " "
+					end,
+				},
 				hl = "Debug",
 			}
 			local Lsp = {
@@ -397,11 +453,11 @@ return {
 				{
 					FileName,
 					BufferFlags,
-          hl = function()
-            if vim.bo.modified and conditions.is_active() then
-              return { fg = "yellow" }
-            end
-          end,
+					hl = function()
+						if vim.bo.modified and conditions.is_active() then
+							return { fg = "yellow" }
+						end
+					end,
 					{ provider = "%<" },
 				},
 				Padding2,
@@ -486,8 +542,150 @@ return {
 				DefaultStatusLine,
 			}
 
+			local Tabpage = {
+				{
+					provider = function(self)
+						return "%" .. self.tabnr .. "T "
+					end,
+				},
+				{
+					provider = function(self)
+						return self.tabnr
+					end,
+					hl = function(self)
+						if self.is_active then
+							return "TabLineSelTitle"
+						end
+						return "TabLineTitle"
+					end,
+				},
+				{
+					provider = " - ",
+				},
+				{
+					condition = function(self)
+						return #self.not_hidden_bufs > 3
+					end,
+					provider = function(self)
+						local not_hidden_bufs = self.not_hidden_bufs
+						return "[+" .. tostring(#not_hidden_bufs - 3) .. "] "
+					end,
+				},
+				{
+					provider = function(self)
+						local not_hidden_bufs = self.not_hidden_bufs or {}
+						return string.format(
+							"%s%s%s",
+							(not_hidden_bufs[1] or ""),
+							(not_hidden_bufs[2] or ""),
+							(not_hidden_bufs[3] or "")
+						)
+					end,
+				},
+				{
+					condition = function(self)
+						return self.any_modified
+					end,
+					provider = "  ",
+					hl = function(self)
+						if self.is_active then
+							return "TabLineSelModified"
+						end
+						return "TabLineModified"
+					end,
+				},
+				init = function(self)
+					local tabnr = self.tabnr
+					local tab_cwd = vim.fn.getcwd(-1, tabnr)
+					local buflist = vim.fn.tabpagebuflist(tabnr)
+					local buflist_without_duplicates = {}
+
+					local hash = {}
+					for _, v in ipairs(buflist) do
+						if not hash[v] then
+							buflist_without_duplicates[#buflist_without_duplicates + 1] = v
+							hash[v] = true
+						end
+					end
+
+					local winnr = vim.fn.tabpagewinnr(tabnr)
+					local curr_bufr = buflist[winnr]
+					local not_hidden_bufs = { format_buffer_name(curr_bufr, tab_cwd) .. " " }
+					self.any_modified = false
+					for _, bufnr in ipairs(buflist_without_duplicates) do
+						local buf = vim.bo[bufnr]
+						if buf.modified then
+							self.any_modified = true
+						end
+						if bufnr ~= curr_bufr and buf.bufhidden == "" then
+							table.insert(not_hidden_bufs, format_buffer_name(bufnr, tab_cwd) .. " ")
+						end
+					end
+					self.not_hidden_bufs = not_hidden_bufs
+				end,
+				hl = function(self)
+					if self.is_active then
+						return "TabLineSel"
+					else
+						return "TabLine"
+					end
+				end,
+			}
+
+			local TabpageClose = {
+				provider = "%999X  %X",
+				hl = "TabLine",
+			}
+
+			local TabPages = {
+				-- only show this component if there's 2 or more tabpages
+				-- condition = function()
+				-- 	return #vim.api.nvim_list_tabpages() >= 2
+				-- end,
+				utils.make_tablist(Tabpage),
+			}
+
+			local Branch = {
+				condition = conditions.is_git_repo,
+				provider = function()
+					return " " .. vim.b.gitsigns_head .. " "
+				end,
+				hl = "TabLineBranch",
+			}
+
+			local Tasks = {
+				condition = function()
+					local ok, _ = pcall(require, "overseer")
+					if ok then
+						return true
+					end
+				end,
+				provider = function(self)
+					local tasks = require("overseer").task_list.list_tasks()
+					if tasks == nil or #tasks == 0 then
+						return ""
+					end
+					return "  " .. tostring(#tasks) .. "  "
+				end,
+
+				hl = { fg = "blue" },
+			}
+
+			local TabLine = {
+				TabPages,
+        { provider = "%=" },
+        {
+          Tasks,
+          Branch,
+          TabpageClose,
+          hl = "TabLineFill",
+        },
+      }
+
+			vim.opt.showtabline = 2
 			require("heirline").setup({
 				statusline = StatusLine,
+				tabline = TabLine,
 				opts = {
 					colors = h_colors,
 				},

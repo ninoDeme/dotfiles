@@ -62,6 +62,11 @@ return {
 		"ninodeme/overseer.nvim",
 		event = "VeryLazy",
 		dev = true,
+    init = function()
+      require("which-key").add({
+        { "<leader>r", group = "+Task Runner" }
+      })
+    end,
 		config = function()
 			require("overseer").setup({
 				dap = false,
@@ -90,6 +95,7 @@ return {
 						["q"] = "Close",
 						["r"] = "<CMD>OverseerQuickAction restart<CR>",
 					},
+          direction = "left"
 				},
 				task_win = {
 					-- How much space to leave around the floating window
@@ -170,7 +176,7 @@ return {
 										}
 									end
 									for _, tmpl in ipairs(selection) do
-										require("overseer").run_template(tmpl.value)
+										require("overseer").run_template({name = tmpl.value.name})
 									end
 								end)
 								return true

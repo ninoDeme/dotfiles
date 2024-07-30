@@ -45,7 +45,7 @@ local function format_buffer_name(bufnr, rel)
 		return "help:" .. vim.fn.fnamemodify(bufname, ":t:r")
   elseif buf.buftype == "terminal" then
     local tname, _ = vim.api.nvim_buf_get_name(0):gsub(".*:", "")
-    return " " .. tname
+    return tname
 	elseif bufname == "" then
 		return "[No Name]"
 	else
@@ -60,7 +60,6 @@ end
 
 M.setup = function()
 	function MAKE_TAB_LINE()
-		local project_nvim = require("project_nvim")
 		local tabline = ""
 		local current_tab_page = vim.api.nvim_get_current_tabpage()
 		for _, tab_handle in ipairs(vim.api.nvim_list_tabpages()) do
@@ -68,7 +67,6 @@ M.setup = function()
 			local tab_cwd = vim.fn.getcwd(-1, tabnr)
 			local buflist = vim.fn.tabpagebuflist(tabnr)
 			local default_hl = tab_handle == current_tab_page and "TabLineSel" or "TabLine"
-			local recent_projects = project_nvim.get_recent_projects()
 			local buflist_without_duplicates = {}
 
 			local hash = {}
@@ -82,13 +80,6 @@ M.setup = function()
 			local winnr = vim.fn.tabpagewinnr(tabnr)
 			local curr_bufr = buflist[winnr]
 			local modified = ""
-			local project_name = tab_cwd
-			for _, project in pairs(recent_projects) do
-				if project == tab_cwd then
-					project_name = vim.fn.fnamemodify(project, ":t")
-					break
-				end
-			end
 			local not_hidden_bufs = { format_buffer_name(curr_bufr, tab_cwd) .. " " }
 			for _, bufnr in ipairs(buflist_without_duplicates) do
 				local buf = vim.bo[bufnr]
@@ -108,7 +99,7 @@ M.setup = function()
 				tabline,
 				default_hl,
 				tabnr,
-				make_hl(project_name, "Title", default_hl),
+				make_hl(tostring(tabnr), "Title", default_hl),
 				buffers_length,
 				(not_hidden_bufs[1] or ""),
 				(not_hidden_bufs[2] or ""),
@@ -124,7 +115,7 @@ M.setup = function()
 		return tabline
 	end
 
-	vim.opt.tabline = "%{%v:lua.MAKE_TAB_LINE()%}"
+	-- vim.opt.tabline = "%{%v:lua.MAKE_TAB_LINE()%}"
 	vim.opt.showtabline = 2
 end
 

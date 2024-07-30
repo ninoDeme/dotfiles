@@ -75,10 +75,10 @@ vim.opt.visualbell = true
 -- -- add manual folding
 -- vim.opt.foldmethod     = 'marker'
 --
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 -- vim.opt.foldenable = false
-vim.opt.foldlevel = 40
+-- vim.opt.foldlevel = 40
 
 vim.opt.cmdheight = 1
 vim.opt.number = true
@@ -109,6 +109,8 @@ vim.opt.undofile = true
 vim.opt.inccommand = "split"
 vim.opt.incsearch = true
 
+vim.opt.completeopt = "menu,menuone,noselect,noinsert"
+
 -- fix vim screen geometry on alacritty -e nvim
 if os.getenv("TERM") == "alacritty" then
 	vim.api.nvim_create_autocmd({ "VimEnter" }, {
@@ -121,10 +123,36 @@ if os.getenv("TERM") == "alacritty" then
 	})
 end
 
+vim.api.nvim_create_autocmd({ "TermOpen" }, {
+  pattern = "*",
+  callback = function ()
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+  end
+})
+
+vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+  pattern = "*",
+  callback = function ()
+    vim.highlight.on_yank({ timeout = 200 })
+  end
+})
+
 vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y', { desc = "Copy to system clipboard" })
 vim.keymap.set({ "n", "v" }, "<Leader>p", '"+p', { desc = "Paste from system clipboard" })
 vim.keymap.set({ "n", "v" }, "<Leader>Y", '"+y$')
 vim.keymap.set({ "n", "v" }, "<Leader>P", '"+p$')
+
+vim.keymap.set({ "n" }, "<ESC>", "<CMD>nohlsearch<CR><ESC>", { silent = true, noremap = true })
+
+-- vim.kemap.set({ "i", "c" }, "<C-b>", "<Left>", { silent = true, noremap = true })
+-- vim.kemap.set({ "i", "c" }, "<C-f>", "<Right>", { silent = true, noremap = true })
+-- vim.kemap.set({ "i", "c" }, "<C-a>", "<Home>", { silent = true, noremap = true })
+-- vim.kemap.set({ "i", "c" }, "<C-e>", "<End>", { silent = true, noremap = true })
+-- vim.kemap.set({ "i", "c" }, "<C-d>", "<Del>", { silent = true, noremap = true })
+-- vim.kemap.set({ "i", "c" }, "<C-h>", "<BS>", { silent = true, noremap = true })
+-- vim.kemap.set({ "i" }, "<C-k>", "<C-r>=<SID>kill_line()<CR>", { silent = true, noremap = true })
+-- vim.kemap.set({ "c" }, "<C-k>", "<C-f>D<C-c><C-c>:<Up>", { silent = true, noremap = true })
 
 if vim.fn.has('mouse') then
   vim.opt.mouse = 'a'
@@ -132,32 +160,13 @@ end
 
 -- }}}
 
--- Vimscript {{{
 vim.cmd([[
-
-let g:VM_theme = 'iceblue'
-
-au TextYankPost * silent! lua vim.highlight.on_yank()
-
 filetype plugin indent on
-
-" Keybindings {{{
-
-" Press ESC to clear search
-nnoremap <silent> <ESC> :nohlsearch<CR><ESC>
-
-" Set completeopt to have a better completion experience
-set completeopt=menu,menuone,noselect,noinsert
-
-" esc to exit terminal mode
-tnoremap <Esc> <C-\><C-n>
-
-if executable('rg')
-	set grepprg=rg\ --vimgrep
-endif
-
 ]])
--- }}} }}}
+
+if vim.fn.executable('rg') then
+  vim.opt.grepprg = 'rg --vimgrep'
+end
 
 function NOT_VSCODE()
 	return not vim.g.vscode
@@ -187,6 +196,6 @@ require("lazy").setup("plugins", {
 	},
 })
 
-require("tabline").setup()
+-- require("tabline").setup()
 
 -- vim: ts=2 sts=2 sw=2 et
