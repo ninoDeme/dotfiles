@@ -106,7 +106,6 @@ return {
       require("telescope").load_extension("file_browser")
 
       require("telescope").load_extension("zf-native")
-      vim.keymap.set({'n'}, '<leader>st', "<cmd>Telescope themes<cr>", { desc = 'Themes' })
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",

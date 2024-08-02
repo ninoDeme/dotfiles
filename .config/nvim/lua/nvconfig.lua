@@ -65,8 +65,6 @@ M = {
       -- },
     },
 
-    lsp = { signature = true, renamer = true },
-
     term = {
       hl = "Normal:term,WinSeparator:WinSeparator",
       sizes = { sp = 0.3, vsp = 0.2 },
@@ -80,6 +78,10 @@ M = {
       },
     },
   },
+
+  lsp = { signature = false, renamer = false },
+
+  mason = {},
 
   cheatsheet = {
     theme = "grid", -- simple/grid
