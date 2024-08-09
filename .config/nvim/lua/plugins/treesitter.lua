@@ -5,6 +5,12 @@ return {
 		lazy = true,
 		event = "VeryLazy",
 		config = function()
+      local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+      parser_config.angular.install_info = {
+        files = { "src/parser.c", "src/scanner.c" },                                                                                                                                                                                                                              
+        generate_requires_npm = true,                                                                                                                                                                                                                                             
+        url = "~/Projects/tree-sitter-angular"                                                                                                                                                                                                               
+      }
 			require("nvim-treesitter.configs").setup({
 				highlight = {
 					enable = true,

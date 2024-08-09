@@ -2,9 +2,6 @@
 
 local lsp_opts = {
   on_attach = function(client, bufnr)
-    -- Use LSP as the handler for formatexpr.
-    -- See `:help formatexpr` for more information. 'gq'
-    vim.api.nvim_set_option_value("formatexpr", "v:lua.vim.lsp.formatexpr()", { buf = 0 })
   end,
 }
 -- }}}
@@ -28,7 +25,7 @@ return {
         silent = true,
       })
       require("which-key").add({
-        { '<leader>l', group = "+LSP" }
+        { '<leader>c', group = "+Code" }
       })
     end,
     config = function()
@@ -45,6 +42,9 @@ return {
         opts.border = border
         return opts
       end
+
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       -- Lua Language Server Config {{{
       lspconfig.lua_ls.setup({
@@ -83,16 +83,16 @@ return {
         filetypes = { 'html', 'templ', 'htmlangular' }
       }))
       lspconfig.cssls.setup(lsp_opts)
-      require("lspconfig.configs").firebird_ls = {
-        default_config = {
-          cmd = { 'node', '/home/ricardo/Projects/firebird-language-server/build/language-server.js', '--stdio' },
-
-          filetypes = { 'sql' },
-          single_file_support = true,
-          settings = { sql = {} },
-        },
-      }
-      lspconfig.firebird_ls.setup(lsp_opts);
+      -- require("lspconfig.configs").firebird_ls = {
+      --   default_config = {
+      --     cmd = { 'node', '/home/ricardo/Projects/firebird-language-server/build/language-server.js', '--stdio' },
+      --
+      --     filetypes = { 'sql' },
+      --     single_file_support = true,
+      --     settings = { sql = {} },
+      --   },
+      -- }
+      -- lspconfig.firebird_ls.setup(lsp_opts);
       lspconfig.tailwindcss.setup(lsp_opts)
       -- lspconfig.rust_analyzer.setup(lsp_opts)
       lspconfig.pyright.setup(lsp_opts)
@@ -105,7 +105,7 @@ return {
                 {
                   name = "@vue/typescript-plugin",
                   location = require("mason-registry").get_package("vue-language-server"):get_install_path() .. "/node_modules/@vue/language-server",
-                  languages = { "javascript", "typescript", "vue" },
+                  languages = { "vue" },
                   configNamespace = "typescript",
                   enableForWorkspaceTypeScriptVersions = true,
                 },
@@ -127,13 +127,13 @@ return {
       lspconfig.ocamllsp.setup(lsp_opts)
     end,
     keys = {
-      { mode = { 'n', 'v' }, '<leader>lr', function() vim.lsp.buf.rename() end,                                                   desc = "Rename" },
-      { mode = { 'n', 'v' }, '<leader>la', function() require("actions-preview").code_actions() end,                              desc = "Code Actions" },
-      { mode = { 'n', 'v' }, '<leader>li', "<cmd>LspInfo<CR>",                                                                    desc = "Lsp Info" },
-      { mode = { 'n', 'v' }, '<leader>lF', function() vim.lsp.buf.format() end,                                                   desc = "Format Document", },
-      { mode = { 'n', 'v' }, '<leader>ld', function() vim.diagnostic.setqflist() end,                                             desc = "View Diagnostics" },
-      { mode = { 'n', 'v' }, '<leader>le', function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity
-        .ERROR }) end,                                                                                                            desc = "View Errors" },
+      { mode = { 'n', 'v' }, '<leader>cr', function() vim.lsp.buf.rename() end,                                                   desc = "Rename" },
+      { mode = { 'n', 'v' }, '<leader>ca', function() require("actions-preview").code_actions() end,                              desc = "Code Actions" },
+      { mode = { 'n', 'v' }, '<leader>cA', function() vim.lsp.buf.code_action() end,                                              desc = "Code Actions" },
+      { mode = { 'n', 'v' }, '<leader>ci', "<cmd>LspInfo<CR>",                                                                    desc = "Lsp Info" },
+      { mode = { 'n', 'v' }, '<leader>cF', function() vim.lsp.buf.format() end,                                                   desc = "Format Document", },
+      { mode = { 'n', 'v' }, '<leader>cd', function() vim.diagnostic.setqflist() end,                                             desc = "View Diagnostics" },
+      { mode = { 'n', 'v' }, '<leader>ce', function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end, desc = "View Errors" },
 
       { mode = { 'n', 'v' }, 'gK',         function() vim.lsp.buf.signature_help() end,                                           desc = "Signature Help" },
       { mode = { 'i' },      '<c-k>',      function() vim.lsp.buf.signature_help() end,                                           desc = "Signature Help" },
@@ -161,9 +161,6 @@ return {
       })
     end,
     dependencies = { "nvim-telescope/telescope.nvim" },
-    keys = {
-      { "<leader>la", desc = "Code Actions", mode = { "v", "n" } },
-    },
     cond = NOT_VSCODE,
   },
 

@@ -22,10 +22,10 @@ return {
 					{ "<leader><tab>x", "<cmd>:tabclose<cr>", desc = "Close Tab" },
 					{ "<leader>W", '<Cmd>:call mkdir(expand("%:p:h"),"p")<CR>', desc = "Create dir to current file" },
 					{ "<leader>b", group = "Buffers" },
-					{ "<leader>c", group = "QuickFix" },
-					{ "<leader>cb", "<cmd>:cprevious<cr>", desc = "Previous Item" },
+					{ "<leader>q", group = "QuickFix" },
+					{ "<leader>qb", "<cmd>:cprevious<cr>", desc = "Previous Item" },
 					{
-						"<leader>cc",
+						"<leader>qq",
 						function()
 							local windows = vim.fn.getwininfo()
 							for _, win in pairs(windows) do
@@ -38,7 +38,7 @@ return {
 						end,
 						desc = "Toggle QuickFix",
 					},
-					{ "<leader>cn", "<cmd>:cnext<cr>", desc = "Next Item" },
+					{ "<leader>qn", "<cmd>:cnext<cr>", desc = "Next Item" },
 					{ "<leader>d", group = "Debug" },
 					{ "<leader>g", group = "Git" },
 					{ "<leader>o", group = "Open" },
