@@ -145,6 +145,9 @@ vim.keymap.set({ "n", "v" }, "<Leader>P", '"+p$')
 
 vim.keymap.set({ "n" }, "<ESC>", "<CMD>nohlsearch<CR><ESC>", { silent = true, noremap = true })
 
+vim.keymap.set({ "v" }, "g/", ":'<,'>s///g<Left><left>", { silent = false, noremap = true })
+vim.keymap.set({ "n" }, "g/", ':%s///g<Left><left>', { silent = false, noremap = true })
+
 -- vim.kemap.set({ "i", "c" }, "<C-b>", "<Left>", { silent = true, noremap = true })
 -- vim.kemap.set({ "i", "c" }, "<C-f>", "<Right>", { silent = true, noremap = true })
 -- vim.kemap.set({ "i", "c" }, "<C-a>", "<Home>", { silent = true, noremap = true })

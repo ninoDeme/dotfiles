@@ -14,17 +14,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 zinit light zsh-users/zsh-completions
 # zinit light zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-history-substring-search
 # zinit light bobsoppe/zsh-ssh-agent
-
-
-bindkey '\eOA' history-substring-search-up # or '\eOA'
-bindkey '\eOB' history-substring-search-down # or '\eOB'
-
-bindkey '^P' history-substring-search-up
-bindkey '^N' history-substring-search-down
-
-HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
 export XDG_CONFIG_HOME="$HOME/.config"
 
@@ -100,17 +90,9 @@ setopt autocd extendedglob nomatch
 unsetopt beep notify
 
 # NVM npm version manager
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# pnpm
-export PNPM_HOME="/home/ricardo/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 if [ -d "$HOME/.asdf/" ] ;
 then
@@ -120,7 +102,6 @@ fi
 
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
-zstyle :compinstall filename '/home/nino/.zshrc'
 autoload -Uz compinit
 compinit
 
