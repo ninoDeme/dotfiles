@@ -4,27 +4,27 @@ return {
     lazy = false,
     config = function()
       if NOT_VSCODE() then
-        require("mini.files").setup({
-          mappings = {
-            close       = 'q',
-            go_in       = '<c-l>',
-            go_in_plus  = 'L',
-            go_out      = '<c-h>',
-            go_out_plus = 'H',
-            reset       = '<BS>',
-            reveal_cwd  = '@',
-            show_help   = 'g?',
-            synchronize = '=',
-            trim_left   = '<',
-            trim_right  = '>',
-          },
-          windows = {
-            -- Whether to show preview of file/directory under cursor
-            preview = true,
-            -- Width of preview window
-            width_preview = 60,
-          }
-        })
+        -- require("mini.files").setup({
+        --   mappings = {
+        --     close       = 'q',
+        --     go_in       = '<c-l>',
+        --     go_in_plus  = 'L',
+        --     go_out      = '<c-h>',
+        --     go_out_plus = 'H',
+        --     reset       = '<BS>',
+        --     reveal_cwd  = '@',
+        --     show_help   = 'g?',
+        --     synchronize = '=',
+        --     trim_left   = '<',
+        --     trim_right  = '>',
+        --   },
+        --   windows = {
+        --     -- Whether to show preview of file/directory under cursor
+        --     preview = true,
+        --     -- Width of preview window
+        --     width_preview = 60,
+        --   }
+        -- })
 
         require("mini.surround").setup({
           -- mappings = {
@@ -69,20 +69,20 @@ return {
     keys = {
       { mode = "n", "gR", "gr$", remap = true },
       { mode = "n", "cX", "cx$", remap = true },
-      {
-        "<leader>me",
-        function()
-          require("mini.files").open()
-        end,
-        desc = "Open Mini Files",
-      },
-      {
-        "<leader>m.",
-        function()
-          require("mini.files").open(vim.fn.expand("%:p:h"))
-        end,
-        desc = "Open Mini Files at dir",
-      },
+      -- {
+      --   "<leader>me",
+      --   function()
+      --     require("mini.files").open()
+      --   end,
+      --   desc = "Open Mini Files",
+      -- },
+      -- {
+      --   "<leader>m.",
+      --   function()
+      --     require("mini.files").open(vim.fn.expand("%:p:h"))
+      --   end,
+      --   desc = "Open Mini Files at dir",
+      -- },
       -- { "gs", desc = "+Surrounding" },
       -- { mode = { "n", "v" }, "sa", desc = "Add surrounding" },
       -- { mode = "n", "sd", desc = "Delete surrounding" },

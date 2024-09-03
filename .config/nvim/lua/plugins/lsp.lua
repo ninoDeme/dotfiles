@@ -1,6 +1,7 @@
 -- lsp setup functions {{{
 
 local lsp_opts = {
+  capabilities = require("cmp_nvim_lsp").default_capabilities(),
   on_attach = function(client, bufnr)
   end,
 }
@@ -157,13 +158,15 @@ return {
     "aznhe21/actions-preview.nvim",
     config = function()
       require("actions-preview").setup({
-        telescope = { make_value = nil, make_make_display = nil, layout_strategy = "bottom_pane" },
+        telescope = { make_value = nil, make_make_display = nil},
+        diff = {
+          ignore_whitespace = true,
+        },
       })
     end,
     dependencies = { "nvim-telescope/telescope.nvim" },
     cond = NOT_VSCODE,
   },
-
   {
     "williamboman/mason-lspconfig.nvim",
     cond = NOT_VSCODE,

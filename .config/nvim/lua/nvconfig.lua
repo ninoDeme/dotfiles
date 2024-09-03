@@ -4,12 +4,6 @@ M = {
   ui = {
     ------------------------------- base46 -------------------------------------
     -- hl = highlights
-    hl_add = {},
-    hl_override = {},
-    changed_themes = {},
-    theme_toggle = { "onedark", "one_light" },
-    theme = "everblush", -- default theme
-    transparency = false,
     --
     cmp = {
       enabled = false,
@@ -84,7 +78,7 @@ M = {
   mason = {},
 
   cheatsheet = {
-    theme = "grid", -- simple/grid
+    theme = "grid",                                                     -- simple/grid
     excluded_groups = { "terminal (t)", "autopairs", "Nvim", "Opens" }, -- can add group name or with mode
   },
 
@@ -106,8 +100,14 @@ M = {
       -- "tbline",
       "telescope",
       "whichkey",
-    }
-  }
+    },
+    theme = "everblush", -- default theme
+    hl_add = {},
+    hl_override = {},
+    changed_themes = {},
+    theme_toggle = { "onedark", "one_light" },
+    transparency = false,
+  },
 }
 
 

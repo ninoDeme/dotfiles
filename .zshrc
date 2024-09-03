@@ -58,13 +58,17 @@ alias mv='mv -i'
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 export EDITOR="nvim"
+export MANPAGER="nvim -c Man! -"
 
 if ! command -v nvim &> /dev/null
 then
 	export EDITOR="vim"
 fi
 
-export MANPAGER="nvim -c Man! -"
+if [ -v NVIM ]; then
+  alias nvimr='nvim --server $NVIM --remote '
+fi
+
 export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
 
 case "$TERM" in

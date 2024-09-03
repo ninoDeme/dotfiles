@@ -98,13 +98,21 @@ return {
 				experimental = {
 					ghost_text = false,
 				},
-				formatting = {
-					format = require("lspkind").cmp_format({
-						mode = "text_symbol",
-						maxwidth = 60,
-					}),
-				},
-			})
+        formatting = {
+          format = function(entry, item)
+            local color_item = require("nvim-highlight-colors").format(entry, { kind = item.kind })
+            item = require("lspkind").cmp_format({
+              mode = "text_symbol",
+              maxwidth = 60,
+            })(entry, item)
+            if color_item.abbr_hl_group then
+              item.kind_hl_group = color_item.abbr_hl_group
+              item.kind = "Color " .. color_item.abbr
+            end
+            return item
+          end
+        },
+      })
 			-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 			-- cmp.setup.cmdline({ '/', '?' }, {
 			--   mapping = cmp.mapping.preset.cmdline(),
