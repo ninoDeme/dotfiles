@@ -53,7 +53,7 @@ fi
 
 alias emt='emacsclient -nw -a=\"\"'
 alias cp='cp -i'
-alias rm='rm -i'
+alias rm='rm -I'
 alias mv='mv -i'
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
@@ -97,6 +97,11 @@ unsetopt beep notify
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+if [ -d "$HOME/.deno/" ]; then
+  export DENO_INSTALL="$HOME/.deno"
+  export PATH="$DENO_INSTALL/bin:$PATH"
+fi
 
 if [ -d "$HOME/.asdf/" ] ;
 then

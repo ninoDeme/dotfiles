@@ -8,62 +8,53 @@
 
 # Set prompt
 # PS1="\[\033[1;33m\][\[\033[1;36m\]\u\[\033[1;37m\]@\[\033[1;32m\]\h\[\033[1;37m\]:\[\033[1;31m\]\w\[\033[1;33m\]]\[\033[1;37m\]>\[\033[0m\] "
-PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-
-export TERM="xterm-256color"                      # getting proper colors
-
-_open_files_for_editing() {
-    # Open any given document file(s) for editing (or just viewing).
-    # Note1:
-    #    - Do not use for executable files!
-    # Note2:
-    #    - Uses 'mime' bindings, so you may need to use
-    #      e.g. a file manager to make proper file bindings.
-
-    if [ -x /usr/bin/exo-open ] ; then
-        echo "exo-open $@" >&2
-        setsid exo-open "$@" >& /dev/null
-        return
-    fi
-    if [ -x /usr/bin/xdg-open ] ; then
-        for file in "$@" ; do
-            echo "xdg-open $file" >&2
-            setsid xdg-open "$file" >& /dev/null
-        done
-        return
-    fi
-
-    echo "$FUNCNAME: package 'xdg-utils' or 'exo' is required." >&2
+PS1_PROMPT() {
+  local e=$?
+  (( e )) && printf " \033[01;31m[$e]\033[00m"  # color
+  return $e
 }
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]$(PS1_PROMPT)\$ '
 
-PATH="$HOME/.emacs.d/bin:$PATH"
+# export TERM="xterm-256color"                      # getting proper colors
+
 if [ -d "$HOME/.local/bin" ] ;
   then PATH="$HOME/.local/bin:$PATH"
 fi
-PATH="$HOME/.cargo/bin:$PATH"
-PATH="$HOME/.npm-global/bin:$PATH"
+if [ -d "$HOME/.cargo/bin" ] ;
+  then PATH="$HOME/.cargo/bin:$PATH"
+fi
+if [ -d "$HOME/.config/emacs/bin" ] ;
+  then PATH="$HOME/.config/emacs/bin:$PATH"
+fi
 
 if command -v exa &> /dev/null
 then
+	alias la='exa -a --group-directories-first'
 	alias l='exa -al --group-directories-first'
-	alias la='exa -l --group-directories-first'
 	alias le='exa --group-directories-first'
 	alias lt='exa -aT --group-directories-first'
 fi
 
-alias ef='_open_files_for_editing'     # 'ef' opens given file(s) for editing
 alias emt='emacsclient -nw -a=\"\"'
 alias cp='cp -i'
-alias rm='rm -i'
+alias rm='rm -I'
 alias mv='mv -i'
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-export EDITOR="nvim"
-# set -x MANPAGER 'nvim -M +MANPAGER +"silent %s/^[\[[0-9;]*m//g" -'
-# export MANPAGER="nvim -c MANPAGER -"
+
+if command -v nvim &> /dev/null
+then
+  export MANPAGER="nvim -c Man! -"
+	export EDITOR="nvim"
+else
+	export EDITOR="vim"
+fi
+
+
 export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share"
 
 case "$TERM" in
     xterm-color) color_prompt=yes;;
+    xterm-256color) color_prompt=yes;;
 esac
 
 # alias pacdiff=eos-pacdiff
@@ -126,18 +117,31 @@ shopt -s cdable_vars
 # export documents="$HOME/Documents"
 # export dropbox="$HOME/Dropbox"
 
-if [ -x /usr/bin/fzf ] ; then
-  # Set up fzf key bindings and fuzzy completion
-  eval "$(fzf --bash)"
-  return
-fi
+# if [ -x /usr/bin/fzf ] ; then
+#   # Set up fzf key bindings and fuzzy completion
+#   eval "$(fzf --bash)"
+#   return
+# fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+[ -s "/etc/profile.d/bash_completion.sh" ] && \. "/etc/profile.d/bash_completion.sh"
+
 [ -f "$HOME/.ghcup/env" ] && source "/home/nino/.ghcup/env" # ghcup-env
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+if command -v go &> /dev/null
+  then export GOBIN=$(go env GOPATH)/bin
+fi
+if [ -d "$GOBIN" ] ;
+  then PATH="$GOBIN:$PATH"
+fi
+
+if [ -d "$HOME/.npm-global/bin" ] ;
+  then PATH="$HOME/.npm-global/bin:$PATH"
+fi
 
 # pnpm
 export PNPM_HOME="/home/ricardo/.local/share/pnpm"
@@ -146,3 +150,21 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+if [ -d "$HOME/.deno/" ]; then
+  export DENO_INSTALL="$HOME/.deno"
+  export PATH="$DENO_INSTALL/bin:$PATH"
+fi
+
+if [ -d "$HOME/.asdf/" ] ;
+then
+  source "$HOME/.asdf/asdf.sh"
+fi
+
+# [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ] ;
+then
+  source $HOME/.nix-profile/etc/profile.d/nix.sh
+fi # added by Nix installer
+

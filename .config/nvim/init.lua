@@ -148,6 +148,20 @@ vim.keymap.set({ "n" }, "<ESC>", "<CMD>nohlsearch<CR><ESC>", { silent = true, no
 vim.keymap.set({ "v" }, "g/", ":'<,'>s///g<Left><left>", { silent = false, noremap = true })
 vim.keymap.set({ "n" }, "g/", ':%s///g<Left><left>', { silent = false, noremap = true })
 
+vim.keymap.set({ "t" }, "<C-\\><C-R>", "'<C-\\><C-N>\"'.nr2char(getchar()).'pi'", { expr = true, noremap = true })
+
+vim.api.nvim_create_autocmd('CmdwinEnter', {
+  pattern = '[:>]',
+  desc = 'If the treesitter vim parser is installed, set the syntax again to get highlighting in the command window',
+  group = vim.api.nvim_create_augroup('cmdwin_syntax', {}),
+  callback = function ()
+    local is_loadable, _ = pcall(vim.treesitter.language.add, 'vim')
+    if is_loadable then
+      vim.cmd('set syntax=vim')
+    end
+  end
+})
+
 -- vim.kemap.set({ "i", "c" }, "<C-b>", "<Left>", { silent = true, noremap = true })
 -- vim.kemap.set({ "i", "c" }, "<C-f>", "<Right>", { silent = true, noremap = true })
 -- vim.kemap.set({ "i", "c" }, "<C-a>", "<Home>", { silent = true, noremap = true })
@@ -165,6 +179,12 @@ end
 
 vim.cmd([[
 filetype plugin indent on
+
+augroup Term
+  autocmd!
+  autocmd TermClose * ++nested stopinsert | au Term TermEnter <buffer> stopinsert
+augroup end
+
 ]])
 
 if vim.fn.executable('rg') then
@@ -198,6 +218,33 @@ require("lazy").setup("plugins", {
 		lazy = true,
 	},
 })
+
+-- vim.api.nvim_create_autocmd({ 'TermRequest' }, {
+--   desc = 'Handles OSC 7 dir change requests',
+--   pattern = "*",
+--   callback = function(ev)
+--     vim.notify("received => " .. vim.v.termrequest)
+--     if string.sub(vim.v.termrequest, 1, 4) == '\x1b]7;' then
+--       -- local dir = string.gsub(vim.v.termrequest, '\x1b]7;file://[^/]*', '')
+--       -- if vim.fn.isdirectory(dir) == 0 then
+--       --   vim.notify('invalid dir: '..dir)
+--       --   return
+--       -- end
+--       -- vim.api.nvim_buf_set_var(ev.buf, 'osc7_dir', dir)
+--       -- vim.cmd.lcd(dir)
+--       -- if vim.o.autochdir and vim.api.nvim_get_current_buf() == ev.buf then
+--       --   vim.cmd.cd(dir)
+--       -- end
+--     end
+--   end
+-- })
+-- vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter', 'DirChanged' }, {
+--   callback = function(ev)
+--     if vim.b.osc7_dir and vim.fn.isdirectory(vim.b.osc7_dir) == 1 then
+--       vim.cmd.cd(vim.b.osc7_dir)
+--     end
+--   end
+-- })
 
 -- require("tabline").setup()
 
