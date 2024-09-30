@@ -53,7 +53,8 @@ return {
             local cwd = oil.get_current_dir()
 
             local cmd = vim.fn.input({
-              prompt = "!"
+              prompt = "!",
+              completion = "custom,CompleteShell"
             })
             if cmd == "" then return end
             local result = ""
