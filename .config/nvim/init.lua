@@ -12,11 +12,6 @@ if vim.g.neovide then
   end)
 end
 
-if vim.g.vscode then
-  vim.keymap.set({ "n", "v", "x" }, "gc", "<Plug>VSCodeCommentary<CR>")
-  vim.keymap.set("n", "gcc", "<Plug>VSCodeCommentaryLine<CR>")
-end
-
 require("hover").setup("light")
 
 -- Vim settings {{{
@@ -145,7 +140,7 @@ vim.keymap.set({ "n", "v" }, "<Leader>P", '"+p$')
 
 vim.keymap.set({ "n" }, "<ESC>", "<CMD>nohlsearch<CR><ESC>", { silent = true, noremap = true })
 
-vim.keymap.set({ "v" }, "g/", ":'<,'>s///g<Left><left>", { silent = false, noremap = true })
+vim.keymap.set({ "v" }, "g/", ":s///g<Left><left>", { silent = false, noremap = true })
 vim.keymap.set({ "n" }, "g/", ':%s///g<Left><left>', { silent = false, noremap = true })
 
 vim.keymap.set({ "t" }, "<C-\\><C-R>", "'<C-\\><C-N>\"'.nr2char(getchar()).'pi'", { expr = true, noremap = true })
@@ -189,10 +184,6 @@ augroup end
 
 if vim.fn.executable('rg') then
   vim.opt.grepprg = 'rg --vimgrep'
-end
-
-function NOT_VSCODE()
-  return not vim.g.vscode
 end
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

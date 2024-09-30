@@ -3,57 +3,56 @@ return {
     "echasnovski/mini.nvim",
     lazy = false,
     config = function()
-      if NOT_VSCODE() then
-        -- require("mini.files").setup({
-        --   mappings = {
-        --     close       = 'q',
-        --     go_in       = '<c-l>',
-        --     go_in_plus  = 'L',
-        --     go_out      = '<c-h>',
-        --     go_out_plus = 'H',
-        --     reset       = '<BS>',
-        --     reveal_cwd  = '@',
-        --     show_help   = 'g?',
-        --     synchronize = '=',
-        --     trim_left   = '<',
-        --     trim_right  = '>',
-        --   },
-        --   windows = {
-        --     -- Whether to show preview of file/directory under cursor
-        --     preview = true,
-        --     -- Width of preview window
-        --     width_preview = 60,
-        --   }
-        -- })
+      -- require("mini.files").setup({
+      --   mappings = {
+      --     close       = 'q',
+      --     go_in       = '<c-l>',
+      --     go_in_plus  = 'L',
+      --     go_out      = '<c-h>',
+      --     go_out_plus = 'H',
+      --     reset       = '<BS>',
+      --     reveal_cwd  = '@',
+      --     show_help   = 'g?',
+      --     synchronize = '=',
+      --     trim_left   = '<',
+      --     trim_right  = '>',
+      --   },
+      --   windows = {
+      --     -- Whether to show preview of file/directory under cursor
+      --     preview = true,
+      --     -- Width of preview window
+      --     width_preview = 60,
+      --   }
+      -- })
 
-        require("mini.surround").setup({
-          -- mappings = {
-          --   add = "gsa", -- Add surrounding in Normal and Visual modes
-          --   delete = "gsd", -- Delete surrounding
-          --   find = "gsf", -- Find surrounding (to the right)
-          --   find_left = "gsF", -- Find surrounding (to the left)
-          --   highlight = "gsh", -- Highlight surrounding
-          --   replace = "gsr", -- Replace surrounding
-          --   update_n_lines = "gsn", -- Update `n_lines`
-          --
-          --   suffix_last = "l", -- Suffix to search with "prev" method
-          --   suffix_next = "n", -- Suffix to search with "next" method
-          -- },
-          n_lines = 5000,
+      require("mini.surround").setup({
+        -- mappings = {
+        --   add = "gsa", -- Add surrounding in Normal and Visual modes
+        --   delete = "gsd", -- Delete surrounding
+        --   find = "gsf", -- Find surrounding (to the right)
+        --   find_left = "gsF", -- Find surrounding (to the left)
+        --   highlight = "gsh", -- Highlight surrounding
+        --   replace = "gsr", -- Replace surrounding
+        --   update_n_lines = "gsn", -- Update `n_lines`
+        --
+        --   suffix_last = "l", -- Suffix to search with "prev" method
+        --   suffix_next = "n", -- Suffix to search with "next" method
+        -- },
+        n_lines = 5000,
 
-          respect_selection_type = true,
-        })
+        respect_selection_type = true,
+      })
 
-        -- require('mini.cursorword').setup()
-        require('mini.notify').setup({
-          window = {
-            config = {
-              border = require("hover").border
-            }
+      -- require('mini.cursorword').setup()
+      require('mini.notify').setup({
+        window = {
+          config = {
+            border = require("hover").border
           }
-        })
-      end
+        }
+      })
       require("mini.bracketed").setup()
+      require('mini.comment').setup({})
 
       local opts = { ERROR = { duration = 10000 } }
       vim.notify = require('mini.notify').make_notify(opts)
@@ -64,7 +63,6 @@ return {
           prefix = "cx",
         },
       })
-
     end,
     keys = {
       { mode = "n", "gR", "gr$", remap = true },

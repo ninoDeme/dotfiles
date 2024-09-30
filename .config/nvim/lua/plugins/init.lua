@@ -1,7 +1,7 @@
 return {
-	{ "nvim-lua/plenary.nvim", cond = NOT_VSCODE }, -- Telescope dependency
-	{ "nvim-tree/nvim-web-devicons", cond = NOT_VSCODE }, -- Add icons to plugins
-	{ "sedm0784/vim-resize-mode", cond = NOT_VSCODE, event = "VeryLazy" },
+	{ "nvim-lua/plenary.nvim" }, -- Telescope dependency
+	{ "nvim-tree/nvim-web-devicons" }, -- Add icons to plugins
+	{ "sedm0784/vim-resize-mode", event = "VeryLazy" },
 
 	-- { 'tpope/vim-surround',             event = 'VeryLazy' }, -- change surrounding of text object (ys<motion> to add surround and cs<motion> to change surrounding
 	{
@@ -63,9 +63,8 @@ return {
 				},
 			})
 		end,
-		cond = NOT_VSCODE,
 	},
-	{ "cohama/lexima.vim", cond = NOT_VSCODE, event = "VeryLazy" },
+	{ "cohama/lexima.vim", event = "VeryLazy" },
 	{ "tpope/vim-repeat", event = "VeryLazy" },
 	-- {
 	--   "ggandor/leap.nvim",
@@ -97,7 +96,7 @@ return {
 	},
 
 	-- Color schemes =======================
-	-- { "ayu-theme/ayu-vim", cond = NOT_VSCODE },
+	-- { "ayu-theme/ayu-vim" },
 	{
 		enabled = false,
 		lazy = false,
@@ -112,7 +111,6 @@ return {
 
 			require("colors").setup()
 		end,
-		cond = NOT_VSCODE,
 	},
 	{
 		enabled = false,
@@ -128,7 +126,6 @@ return {
 			vim.cmd("colorscheme gruvbox")
 			require("colors").setup()
 		end,
-		cond = NOT_VSCODE,
 	},
 	{
 		"kana/vim-textobj-user", --- {{{

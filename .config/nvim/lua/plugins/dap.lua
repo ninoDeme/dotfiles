@@ -138,6 +138,5 @@ return {
 				"overseer.nvim",
 			},
 		},
-		cond = NOT_VSCODE,
 	},
 }

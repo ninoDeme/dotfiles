@@ -111,7 +111,6 @@ return {
       "nvim-lua/plenary.nvim",
       "natecraddock/telescope-zf-native.nvim",
     },
-    cond = NOT_VSCODE,
     keys = {
       { "<leader>ss", "<cmd>Telescope live_grep<cr>", desc = "Grep" },
       { "<leader>sb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
@@ -151,7 +150,6 @@ return {
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
     lazy = true,
     event = "VeryLazy",
-    cond = NOT_VSCODE,
     keys = {
       {
         "<leader>.",

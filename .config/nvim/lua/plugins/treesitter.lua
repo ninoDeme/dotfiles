@@ -1,7 +1,6 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    cond = NOT_VSCODE,
     lazy = true,
     event = "VeryLazy",
     config = function()
@@ -48,7 +47,6 @@ return {
       {
         "romgrk/nvim-treesitter-context", -- Shows the context (current function or method)
         dependencies = "nvim-treesitter",
-        cond = NOT_VSCODE,
       },
       "windwp/nvim-ts-autotag",
       {
@@ -74,6 +72,5 @@ return {
       })
     end,
     lazy = false,
-    cond = NOT_VSCODE,
   },
 }

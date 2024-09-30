@@ -5,7 +5,7 @@ local lsp_opts = {
     completionList = {
       itemDefaults = {
         'commitCharacters',
-        -- 'editRange',
+        'editRange',
         'insertTextFormat',
         'insertTextMode',
         'data',
@@ -20,7 +20,6 @@ local lsp_opts = {
 return {
   {
     "neovim/nvim-lspconfig",
-    cond = NOT_VSCODE,
     event = "VeryLazy",
     init = function()
       local border = require("hover").border
@@ -54,8 +53,8 @@ return {
         return opts
       end
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
+      -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+      -- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       -- Lua Language Server Config {{{
       lspconfig.lua_ls.setup({
@@ -162,7 +161,6 @@ return {
         preset = "codicons",
       })
     end,
-    cond = NOT_VSCODE,
   },
   {
     "aznhe21/actions-preview.nvim",
@@ -175,11 +173,9 @@ return {
       })
     end,
     dependencies = { "nvim-telescope/telescope.nvim" },
-    cond = NOT_VSCODE,
   },
   {
     "williamboman/mason-lspconfig.nvim",
-    cond = NOT_VSCODE,
     lazy = true,
     event = "VeryLazy",
     dependencies = { "williamboman/mason.nvim" },
@@ -188,69 +184,68 @@ return {
     end,
   },
 
-  {
-    "mfussenegger/nvim-jdtls",
-    cond = NOT_VSCODE,
-    event = "VeryLazy",
-    dependencies = {
-      "mason.nvim",
-      "nvim-dap",
-    },
-    config = function()
-      local function setup_server()
-        local java_opts = vim.tbl_extend("force", lsp_opts, {
-          cmd = { vim.fn.stdpath("data") .. "/mason/bin/jdtls" },
-          root_dir = vim.fs.dirname(
-            vim.fs.find({ "gradlew", ".git", "mvnw", "pom.xml" }, { upward = true })[1]
-          ),
-          init_options = {
-            bundles = {
-              vim.fn.glob(
-                vim.fn.stdpath("data") ..
-                "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
-                true
-              ),
-            },
-          },
-        })
-        require("jdtls").start_or_attach(java_opts)
-      end
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "java",
-        callback = function()
-          local mason_reg = require("mason-registry")
-          if not mason_reg.is_installed("jdtls") then
-            if vim.fn.confirm("Download Language Server (jdtls)?", "&Yes\n&No", 1) == 1 then
-              local pkg = mason_reg.get_package("jdtls")
-
-              vim.notify("Installing jdtls", nil, { title = "Mason Install" })
-              pkg:install()
-
-              pkg:on(
-                "install:success",
-                vim.schedule_wrap(function()
-                  vim.notify("[mason.nvim] jdtls was successfully installed")
-                  setup_server()
-                end)
-              )
-              pkg:on(
-                "install:failed",
-                vim.schedule_wrap(function()
-                  vim.notify(
-                    "[mason.nvim] failed to install jdtls. Installation logs are available in :Mason and :MasonLog",
-                    vim.log.levels.ERROR
-                  )
-                end)
-              )
-            end
-          else
-            setup_server()
-          end
-        end,
-      })
-    end,
-  },
+  -- {
+  --   "mfussenegger/nvim-jdtls",
+  --   event = "VeryLazy",
+  --   dependencies = {
+  --     "mason.nvim",
+  --     "nvim-dap",
+  --   },
+  --   config = function()
+  --     local function setup_server()
+  --       local java_opts = vim.tbl_extend("force", lsp_opts, {
+  --         cmd = { vim.fn.stdpath("data") .. "/mason/bin/jdtls" },
+  --         root_dir = vim.fs.dirname(
+  --           vim.fs.find({ "gradlew", ".git", "mvnw", "pom.xml" }, { upward = true })[1]
+  --         ),
+  --         init_options = {
+  --           bundles = {
+  --             vim.fn.glob(
+  --               vim.fn.stdpath("data") ..
+  --               "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+  --               true
+  --             ),
+  --           },
+  --         },
+  --       })
+  --       require("jdtls").start_or_attach(java_opts)
+  --     end
+  --
+  --     vim.api.nvim_create_autocmd("FileType", {
+  --       pattern = "java",
+  --       callback = function()
+  --         local mason_reg = require("mason-registry")
+  --         if not mason_reg.is_installed("jdtls") then
+  --           if vim.fn.confirm("Download Language Server (jdtls)?", "&Yes\n&No", 1) == 1 then
+  --             local pkg = mason_reg.get_package("jdtls")
+  --
+  --             vim.notify("Installing jdtls", nil, { title = "Mason Install" })
+  --             pkg:install()
+  --
+  --             pkg:on(
+  --               "install:success",
+  --               vim.schedule_wrap(function()
+  --                 vim.notify("[mason.nvim] jdtls was successfully installed")
+  --                 setup_server()
+  --               end)
+  --             )
+  --             pkg:on(
+  --               "install:failed",
+  --               vim.schedule_wrap(function()
+  --                 vim.notify(
+  --                   "[mason.nvim] failed to install jdtls. Installation logs are available in :Mason and :MasonLog",
+  --                   vim.log.levels.ERROR
+  --                 )
+  --               end)
+  --             )
+  --           end
+  --         else
+  --           setup_server()
+  --         end
+  --       end,
+  --     })
+  --   end,
+  -- },
   -- {
   --   'mrded/nvim-lsp-notify',
   --   config = function()
