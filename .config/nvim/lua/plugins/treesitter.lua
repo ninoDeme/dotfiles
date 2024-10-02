@@ -2,6 +2,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     lazy = true,
+    dev = true,
     event = "VeryLazy",
     config = function()
       -- local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
@@ -65,7 +66,7 @@ return {
           enable_close_on_slash = false,
         },
         aliases = {
-          ["angular.html"] = "html",
+          ["htmlangular"] = "html",
           ["angular"] = "html",
           ["heex"] = "html",
         }

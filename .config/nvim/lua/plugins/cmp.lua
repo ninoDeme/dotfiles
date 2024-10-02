@@ -90,8 +90,8 @@ return {
           { name = "path" },
         }, {
           { name = "nvim_lsp_signature_help", priority = 0 },
-          { name = "snippets",                priority = 1 },
           { name = "nvim_lsp",                priority = 1 },
+          { name = "snippets",                priority = 2 },
         }, {
           { name = "treesitter" },
           { name = "buffer" },

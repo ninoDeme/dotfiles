@@ -319,7 +319,7 @@ return {
 				local action_state = require("telescope.actions.state")
 
 				local function reload_theme(name)
-					require("nvconfig").ui.theme = name
+					require("nvconfig").base46.theme = name
 					require("base46").load_all_highlights()
 					vim.api.nvim_exec_autocmds("User", { pattern = "NvChadThemeReload" })
 				end
@@ -386,6 +386,12 @@ return {
 						------------ save theme to chadrc on enter ----------------
 						actions.select_default:replace(function()
 							if action_state.get_selected_entry() then
+                local new_theme = action_state.get_selected_entry()[1]
+                if new_theme ~= require("nvconfig").base46.theme then
+                  require("nvconfig").base46.theme = new_theme
+                  require("base46").load_all_highlights()
+                  vim.api.nvim_exec_autocmds("User", { pattern = "NvChadThemeReload" })
+                end
 								actions.close(prompt_bufnr)
 							end
 						end)
