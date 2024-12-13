@@ -160,7 +160,7 @@ end
 
 M.update_colors = function ()
   M.setup()
-  require("heirline").load_colors(M.heirline_colors())
+  -- require("heirline").load_colors(M.heirline_colors())
 end
 
 return M

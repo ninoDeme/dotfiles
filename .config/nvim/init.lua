@@ -212,6 +212,7 @@ require("lazy").setup("plugins", {
 
 BASHCOMP_SRC = '/etc/bash_completion'
 BASHCOMP_FUNCS = {}
+LAST_CMD = nil
 
 --- Check if a string starts with another string.
 -- @DOC_text_gears_string_startswith_EXAMPLE@
@@ -356,16 +357,26 @@ end
 
 local run_cmd = function(opts)
   local cmd = opts.args
-  local bang = opts.bang
-  local flags = {}
-  if bang then
-    table.insert(flags, '-mode=terminal')
+  if cmd ~= nil and string.match(cmd, "%S") then
+    local bang = opts.bang
+    local flags = {}
+    if bang then
+      table.insert(flags, '-mode=terminal')
+    end
+    local flags_str = ""
+    for _, value in ipairs(flags) do
+      flags_str = flags_str .. " " .. value
+    end
+    cmd = string.format(' %s %s', flags_str, cmd)
+  else
+    if LAST_CMD ~= nil then
+      cmd = LAST_CMD
+    else
+      error("Empty")
+    end
   end
-  local flags_str = ""
-  for _, value in ipairs(flags) do
-    flags_str = flags_str .. " " .. value
-  end
-  vim.cmd['AsyncRun'](string.format('%s %s', flags_str, cmd))
+  LAST_CMD = cmd
+  vim.cmd['AsyncRun'](cmd)
 end
 
 BASHCOMP_LOAD()
@@ -377,7 +388,7 @@ endfun
 ]])
 
 vim.api.nvim_create_user_command('R', run_cmd, {
-  nargs = "+",
+  nargs = "*",
   complete = "custom,CompleteShell",
   bang = true
 })

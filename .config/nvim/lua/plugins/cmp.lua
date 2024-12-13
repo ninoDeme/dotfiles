@@ -1,6 +1,7 @@
 return {
   -- Autocompletion =======================
   {
+    enabled = true,
     "hrsh7th/nvim-cmp",
     event = "VeryLazy",
     version = false,
@@ -8,7 +9,7 @@ return {
       { "hrsh7th/cmp-nvim-lsp" }, -- LSP source for nvim-cmp
       -- {'saadparwaiz1/cmp_luasnip'}, -- Snippets source for nvim-cmp
       {
-        enable = false,
+        -- enabled = false,
         "garymjr/nvim-snippets",
         event = "VeryLazy",
         dependencies = { "rafamadriz/friendly-snippets" },
@@ -72,8 +73,9 @@ return {
       cmp.setup({
         window = {
           completion = {
-            border = require("hover").border,
-            winhighlight = "Normal:FloatNormal",
+            -- border = require("hover").border,
+            border = { "", "", "", "", "", "", "", "", },
+            -- winhighlight = "Normal:FloatNormal",
           },
           documentation = {
             winhighlight = "Normal:FloatNormal",
@@ -89,9 +91,9 @@ return {
         sources = cmp.config.sources({
           { name = "path" },
         }, {
-          { name = "nvim_lsp_signature_help", priority = 0 },
-          { name = "nvim_lsp",                priority = 1 },
-          { name = "snippets",                priority = 2 },
+          { name = "nvim_lsp_signature_help", priority = 100 },
+          { name = "nvim_lsp",                priority = 10 },
+          { name = "snippets",                priority = 0, keyword_length = 3 },
         }, {
           { name = "treesitter" },
           { name = "buffer" },
@@ -140,5 +142,60 @@ return {
       --   )
       -- })
     end,
+  },
+  {
+    enabled = false,
+    'saghen/blink.cmp',
+    lazy = false, -- lazy loading handled internally
+    -- optional: provides snippets for the snippet source
+    dependencies = 'rafamadriz/friendly-snippets',
+
+    -- use a release tag to download pre-built binaries
+    version = 'v0.*',
+    -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+    -- build = 'cargo build --release',
+    -- If you use nix, you can build from source using latest nightly rust with:
+    -- build = 'nix run .#build-plugin',
+
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      -- 'default' for mappings similar to built-in completion
+      -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+      -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+      -- see the "default configuration" section below for full documentation on how to define
+      -- your own keymap.
+      keymap = { preset = 'default' },
+
+      highlight = {
+        -- sets the fallback highlight groups to nvim-cmp's highlight groups
+        -- useful for when your theme doesn't support blink.cmp
+        -- will be removed in a future release, assuming themes add support
+        use_nvim_cmp_as_default = true,
+      },
+      -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+      -- adjusts spacing to ensure icons are aligned
+      nerd_font_variant = 'normal',
+
+      -- experimental auto-brackets support
+      -- accept = { auto_brackets = { enabled = true } }
+
+      -- experimental signature help support
+      trigger = { signature_help = { enabled = true } },
+      windows = {
+        documentation = {
+          border = require("hover").border,
+          auto_show = true,
+          direction_priority = {
+            autocomplete_north = { 'e', 'w', 'n', 's' },
+            autocomplete_south = { 'e', 'w', 's', 'n' },
+          },
+        }
+      },
+      auto_show_delay_ms = 100,
+    },
+    -- allows extending the enabled_providers array elsewhere in your config
+    -- without having to redefining it
+    opts_extend = { "sources.completion.enabled_providers" }
   },
 }

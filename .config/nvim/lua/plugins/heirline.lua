@@ -55,6 +55,7 @@ end
 return {
 	{
 		"rebelot/heirline.nvim",
+    -- enabled = false,
 		-- You can optionally lazy-load heirline on UiEnter
 		-- to make sure all required plugins and colorschemes are loaded before setup
 		event = "UiEnter",
@@ -63,6 +64,8 @@ return {
 			local utils = require("heirline.utils")
 
 			local h_colors = require("colors").heirline_colors()
+
+      local use_icons = false
 
 			local ModeIndicator = {
 				init = function(self)
@@ -183,7 +186,7 @@ return {
 					elseif buf.filetype == "TelescopeResults" then
 						self.f_name_result = "Telescope"
 					elseif buf.filetype == "OverseerList" then
-						self.f_name_result = "Telescope"
+						self.f_name_result = "Overseer"
 					elseif buf.buftype == "help" then
 						self.f_name_result = "help:" .. vim.fn.fnamemodify(bufname, ":t:r")
 					elseif buf.buftype == "terminal" then
@@ -207,12 +210,12 @@ return {
 				},
 				{
 					provider = function(self)
-						return vim.fn.pathshorten(self.f_name_result, 2)
+						return shorten_path(self.f_name_result, '/', 40)
 					end,
 				},
 				{
 					provider = function(self)
-						return vim.fn.pathshorten(self.f_name_result, 1)
+						return shorten_path(self.f_name_result, '/', 20)
 					end,
 				},
 			}
@@ -221,16 +224,16 @@ return {
 					condition = function()
 						return vim.bo.modified
 					end,
-					provider = " ",
+					provider = use_icons and " " or " [+]",
 					hl = function()
 						return conditions.is_active() and { fg = "yellow" }
 					end,
 				},
 				{
 					condition = function()
-						return not vim.bo.modifiable or vim.bo.readonly
+						return not vim.bo.filetype == "OverseerList" and (not vim.bo.modifiable or vim.bo.readonly)
 					end,
-					provider = " ",
+					provider = use_icons and " " or " [RO]",
 				},
 			}
 			local Ruler = {
@@ -271,7 +274,9 @@ return {
 				},
 			}
 			local Diff = {
-				condition = conditions.is_git_repo,
+				condition = function (self)
+				    return conditions.is_git_repo() and self.has_changes
+				end,
 				init = function(self)
 					self.status_dict = vim.b.gitsigns_status_dict
 					self.has_changes = self.status_dict.added ~= 0
@@ -310,12 +315,17 @@ return {
 
 				condition = conditions.has_diagnostics,
 
-				static = {
+				static = use_icons and {
 					error_icon = vim.diagnostic.config().signs.text[vim.diagnostic.severity.ERROR],
 					warn_icon = vim.diagnostic.config().signs.text[vim.diagnostic.severity.WARN],
 					info_icon = vim.diagnostic.config().signs.text[vim.diagnostic.severity.INFO],
 					hint_icon = vim.diagnostic.config().signs.text[vim.diagnostic.severity.HINT],
-				},
+				} or {
+					error_icon = "E:",
+					warn_icon = "W:",
+					info_icon = "I:",
+					hint_icon = "H:"
+        },
 
 				init = function(self)
 					self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
@@ -326,10 +336,10 @@ return {
 
 				update = { "DiagnosticChanged", "BufEnter" },
 
-				-- {
-				-- 	-- provider = "![",
-				-- 	provider = " ",
-				-- },
+				{
+					-- provider = "![",
+					provider = use_icons and nil or " ",
+				},
 				{
 					provider = function(self)
 						return self.errors > 0 and (self.error_icon .. self.errors .. " ")
@@ -361,7 +371,13 @@ return {
 			}
 			local Spacer = { provider = " %= " }
 			local Padding = { provider = " " }
-			local Padding2 = { provider = "  " }
+			local Padding2 = {
+			  flexible = 0,
+        {
+          provider = "  "
+        },
+        Padding
+			}
 			local DAPMessages = {
 				condition = function()
 					local session = require("dap").session()
@@ -370,12 +386,12 @@ return {
 				flexible = 1,
 				{
 					provider = function()
-						return "  " .. require("dap").status()
+						return (use_icons and "  " or "DAP " ).. require("dap").status()
 					end,
 				},
 				{
 					provider = function()
-						return " "
+						return use_icons and " " or "DAP"
 					end,
 				},
 				hl = "Debug",
@@ -383,11 +399,12 @@ return {
 			local Lsp = {
 				provider = function()
 					local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
-					return #clients > 0 and " " .. #clients
+					return #clients > 0 and (use_icons and " " or "LSP:" ).. #clients
 				end,
 				hl = { fg = "blue" },
 			}
 			local FileTypeIcon = {
+        condition = function() return use_icons end,
 				init = function(self)
 					local bufname = vim.fn.bufname()
 					local extension = vim.fn.fnamemodify(bufname, ":e")
@@ -463,19 +480,13 @@ return {
 				Padding2,
 				Ruler,
 				Padding,
-				{
+        use_icons and {
 					flexible = 4,
 					Diff2,
 					Diff,
-				},
+				} or Diff,
 				Diagnostics,
 				Spacer,
-				{
-					flexible = 5,
-					DAPMessages,
-					{ provider = "" },
-				},
-				Padding2,
 				Lsp,
 				Padding2,
 				FileEncoding,
@@ -542,6 +553,38 @@ return {
 				DefaultStatusLine,
 			}
 
+      local WorkDir = {
+        init = function(self)
+          self.icon = (vim.fn.haslocaldir(0) == 1 and "l" or "") .. " " .. (use_icons and " " or "")
+          local cwd = vim.fn.getcwd(0)
+          self.cwd = vim.fn.fnamemodify(cwd, ":~")
+        end,
+        hl = { fg = "blue", bold = false },
+
+        flexible = 1,
+
+        {
+          -- evaluates to the full-lenth path
+          provider = function(self)
+            local trail = self.cwd:sub(-1) == "/" and "" or "/"
+            local cwd = shorten_path(self.cwd, "/", 60)
+            return self.icon .. cwd .. trail .." "
+          end,
+        },
+        {
+          -- evaluates to the shortened path
+          provider = function(self)
+            local cwd = shorten_path(self.cwd, "/", 30)
+            local trail = self.cwd:sub(-1) == "/" and "" or "/"
+            return self.icon .. cwd .. trail .. " "
+          end,
+        },
+        {
+          -- evaluates to "", hiding the component
+          provider = "",
+        }
+      }
+
 			local Tabpage = {
 				{
 					provider = function(self)
@@ -563,22 +606,13 @@ return {
 					provider = " - ",
 				},
 				{
-					condition = function(self)
-						return #self.not_hidden_bufs > 3
-					end,
-					provider = function(self)
-						local not_hidden_bufs = self.not_hidden_bufs
-						return "[+" .. tostring(#not_hidden_bufs - 3) .. "] "
-					end,
-				},
-				{
 					provider = function(self)
 						local not_hidden_bufs = self.not_hidden_bufs or {}
 						return string.format(
-							"%s%s%s",
-							(not_hidden_bufs[1] or ""),
-							(not_hidden_bufs[2] or ""),
-							(not_hidden_bufs[3] or "")
+							"%s",
+							(not_hidden_bufs[1] or "")
+							-- (not_hidden_bufs[2] or "")
+							-- (not_hidden_bufs[3] or "")
 						)
 					end,
 				},
@@ -592,6 +626,15 @@ return {
 							return "TabLineSelModified"
 						end
 						return "TabLineModified"
+					end,
+				},
+				{
+					condition = function(self)
+						return #self.not_hidden_bufs > 1
+					end,
+					provider = function(self)
+						local not_hidden_bufs = self.not_hidden_bufs
+						return "[+" .. tostring(#not_hidden_bufs - 1) .. "] "
 					end,
 				},
 				init = function(self)
@@ -648,7 +691,8 @@ return {
 			local Branch = {
 				condition = conditions.is_git_repo,
 				provider = function()
-					return " " .. vim.b.gitsigns_head .. " "
+					-- return " " .. vim.b.gitsigns_head .. " "
+					return " " .. vim.b.gitsigns_head .. " "
 				end,
 				hl = "TabLineBranch",
 			}
@@ -676,6 +720,14 @@ return {
         { provider = "%=" },
         {
           Tasks,
+          {
+            flexible = 5,
+            DAPMessages,
+            { provider = "" },
+          },
+          Padding2,
+          WorkDir,
+          Padding,
           Branch,
           TabpageClose,
           hl = "TabLineFill",

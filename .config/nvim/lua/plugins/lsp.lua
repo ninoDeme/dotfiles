@@ -12,6 +12,7 @@ local lsp_opts = {
       }
     }
   }),
+  -- capabilities = require('blink.cmp').get_lsp_capabilities(),
   on_attach = function(client, bufnr)
   end,
 }
@@ -118,6 +119,11 @@ return {
                   languages = { "vue" },
                   configNamespace = "typescript",
                   enableForWorkspaceTypeScriptVersions = true,
+                },
+                {
+                  name = "@angular/language-server",
+                  location = require("mason-registry").get_package("angular-language-server"):get_install_path() .. "/node_modules/@angular/language-server",
+                  enableForWorkspaceTypeScriptVersions = false,
                 },
               }
             }
