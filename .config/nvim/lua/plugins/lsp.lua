@@ -1,20 +1,18 @@
 -- lsp setup functions {{{
 
 local lsp_opts = {
-  capabilities = require("cmp_nvim_lsp").default_capabilities({
-    completionList = {
-      itemDefaults = {
-        'commitCharacters',
-        'editRange',
-        'insertTextFormat',
-        'insertTextMode',
-        'data',
-      }
-    }
-  }),
-  -- capabilities = require('blink.cmp').get_lsp_capabilities(),
-  on_attach = function(client, bufnr)
-  end,
+  -- capabilities = require("cmp_nvim_lsp").default_capabilities({
+  --   completionList = {
+  --     itemDefaults = {
+  --       'commitCharacters',
+  --       'editRange',
+  --       'insertTextFormat',
+  --       'insertTextMode',
+  --       'data',
+  --     }
+  --   }
+  -- }),
+  capabilities = require('blink.cmp').get_lsp_capabilities(),
 }
 -- }}}
 
@@ -24,17 +22,28 @@ return {
     event = "VeryLazy",
     init = function()
       local border = require("hover").border
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = border,
-        silent = true,
-      })
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = border,
-        focusable = true,
-        zindex = 1005,
-        relative = "cursor",
-        silent = true,
-      })
+
+      local oldHover = vim.lsp.buf.hover;
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.lsp.buf.hover = function(config)
+        oldHover(vim.tbl_extend('keep', config or {}, {
+          border = border,
+          silent = true,
+        }))
+      end
+
+      local oldSigHelp = vim.lsp.buf.hover;
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.lsp.buf.signature_help = function(config)
+        oldSigHelp(vim.tbl_extend('keep', config or {}, {
+          border = border,
+          focusable = true,
+          zindex = 1005,
+          relative = "cursor",
+          silent = true,
+        }))
+      end
+
       require("which-key").add({
         { '<leader>c', group = "+Code" }
       })
@@ -85,6 +94,7 @@ return {
             },
           },
         },
+
         on_attach = lsp_opts.on_attach,
         capabilities = lsp_opts.capabilities,
       }) -- }}}
@@ -115,14 +125,16 @@ return {
               globalPlugins = {
                 {
                   name = "@vue/typescript-plugin",
-                  location = require("mason-registry").get_package("vue-language-server"):get_install_path() .. "/node_modules/@vue/language-server",
+                  location = require("mason-registry").get_package("vue-language-server"):get_install_path() ..
+                  "/node_modules/@vue/language-server",
                   languages = { "vue" },
                   configNamespace = "typescript",
                   enableForWorkspaceTypeScriptVersions = true,
                 },
                 {
                   name = "@angular/language-server",
-                  location = require("mason-registry").get_package("angular-language-server"):get_install_path() .. "/node_modules/@angular/language-server",
+                  location = require("mason-registry").get_package("angular-language-server"):get_install_path() ..
+                  "/node_modules/@angular/language-server",
                   enableForWorkspaceTypeScriptVersions = false,
                 },
               }
@@ -149,7 +161,7 @@ return {
       { mode = { 'n', 'v' }, '<leader>ci', "<cmd>LspInfo<CR>",                                                                    desc = "Lsp Info" },
       { mode = { 'n', 'v' }, '<leader>cF', function() vim.lsp.buf.format() end,                                                   desc = "Format Document", },
       { mode = { 'n', 'v' }, '<leader>cd', function() vim.diagnostic.setqflist() end,                                             desc = "View Diagnostics" },
-      { mode = { 'n', 'v' }, '<leader>ce', function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end, desc = "View Errors" },
+      { mode = { 'n', 'v' }, '<leader>ce', function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end,                                                                                                            desc = "View Errors" },
 
       { mode = { 'n', 'v' }, 'gK',         function() vim.lsp.buf.signature_help() end,                                           desc = "Signature Help" },
       { mode = { 'i' },      '<c-k>',      function() vim.lsp.buf.signature_help() end,                                           desc = "Signature Help" },
@@ -172,7 +184,7 @@ return {
     "aznhe21/actions-preview.nvim",
     config = function()
       require("actions-preview").setup({
-        telescope = { make_value = nil, make_make_display = nil},
+        telescope = { make_value = nil, make_make_display = nil },
         diff = {
           ignore_whitespace = true,
         },
