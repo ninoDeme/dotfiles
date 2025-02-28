@@ -21,7 +21,7 @@ return {
       "NeoGitResetState"
     },
     keys = {
-      {'<leader>gg', function() require("neogit").open() end, desc = 'Open NeoGit'}
+      {'<leader>gG', function() require("neogit").open() end, desc = 'Open NeoGit'}
     },
   },
   {

@@ -190,8 +190,8 @@ return {
           }
         }
       },
-      sources = {
-        cmdline = {}
+      cmdline = {
+        enabled = false
       }
     },
     -- allows extending the enabled_providers array elsewhere in your config
