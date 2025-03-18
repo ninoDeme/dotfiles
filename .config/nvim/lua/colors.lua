@@ -71,24 +71,6 @@ M.setup = function()
 
     TreesitterContext = { bg = colors.black2 },
 
-    -- Credit  https://astronvim.com/recipes/telescope_theme
-    -- TelescopeBorder = { fg = M.colors.bg1, bg = M.colors.bg_d },
-    -- TelescopeNormal = { bg = M.colors.bg_d },
-    -- TelescopePreviewBorder = { fg = M.colors.bg0, bg = M.colors.bg_d },
-    -- TelescopePreviewNormal = { bg = M.colors.bg_d },
-    -- TelescopePreviewTitle = { fg = M.colors.bg0, bg = M.colors.green },
-    -- TelescopePromptBorder = { fg = M.colors.bg1, bg = M.colors.bg1 },
-    -- TelescopePromptNormal = { fg = M.colors.fg, bg = M.colors.bg1 },
-    -- TelescopePromptPrefix = { fg = M.colors.red, bg = M.colors.bg1 },
-    -- TelescopePromptTitle = { fg = M.colors.bg0, bg = M.colors.red },
-    -- TelescopeResultsBorder = { fg = M.colors.bg_d, bg = M.colors.bg_d },
-    -- TelescopeResultsNormal = { bg = M.colors.bg_d },
-    -- TelescopeResultsTitle = { fg = M.colors.bg0, bg = M.colors.blue },
-
-    -- TelescopePreviewBorder = { link = "FloatBorder" },
-    -- TelescopePromptBorder = { link = "FloatBorder" },
-    -- TelescopeResultsBorder = { link = "FloatBorder" },
-    --
     DiagnosticUnderlineError = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticError" }).fg },
     DiagnosticUnderlineWarn = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticWarn" }).fg },
     DiagnosticUnderlineInfo = { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticInfo" }).fg },
@@ -98,12 +80,12 @@ M.setup = function()
     OilSize = { fg = colors.green },
     OilMtime = { ctermfg = "LightBlue", fg = colors.blue },
 
-    TabLineModified = vim.api.nvim_get_hl(0, { name = 'TabLine', link = false }),
-    TabLineSelModified = vim.api.nvim_get_hl(0, { name = 'TabLineSel', link = false }),
-    TabLineTitle = vim.api.nvim_get_hl(0, { name = 'TabLine', link = false }),
-    TabLineSelTitle = vim.api.nvim_get_hl(0, { name = 'TabLineSel', link = false }),
+    TabLine = { bg = colors.lightbg },
+    TabLineSel = { bold = true, bg = colors.statusline_bg },
+    TabLineModified = { fg = colors.yellow },
+    TabLineTitle = { fg = colors.blue },
 
-    TabLineBranch = { fg = colors.purple, bg = vim.api.nvim_get_hl(0, { name = 'TabLineFill', link = false }).bg },
+    TabLineBranch = { fg = colors.purple },
 
     WinBarNC = { link = "Normal" },
     WinBar = { link = "Normal" },
@@ -117,10 +99,6 @@ M.setup = function()
   })
 
   highlights.WinBarPathRel.bold = true
-  highlights.TabLineModified.fg = colors.yellow
-  highlights.TabLineTitle.fg = colors.blue
-  highlights.TabLineSelModified.fg = colors.yellow
-  highlights.TabLineSelTitle.fg = colors.blue
 
   highlights = vim.tbl_extend("force", highlights, require("hover").set_highlights(M.colors))
 

@@ -59,7 +59,7 @@ return {
             if cmd == "" then return end
             local result = ""
             local i = 1
-            local flags = {'-cwd=' .. cwd}
+            local flags = { '-cwd=' .. cwd }
             if cmd:sub(i, i) == '!' then
               i = i + 1
               table.insert(flags, '-mode=terminal')
@@ -110,14 +110,14 @@ return {
         -- winbar = ' %#WinBarPathAbs#%{GetOilDirAbs()}%#WinBarPathRel#%{GetOilDirRel()}%#WinBar#',
         winbar = '     %#WinBarPathRel#%{luaeval("GetOilDir()")}:',
         wrap = false,
-        signcolumn = "no",
+        -- signcolumn = "no",
         cursorcolumn = false,
         foldcolumn = "0",
         spell = false,
         list = false,
         conceallevel = 3,
         concealcursor = "nvic",
-
+        signcolumn = "yes:2",
       },
       view_options = {
         -- Show files and directories that start with "."
@@ -152,5 +152,13 @@ return {
     -- Optional dependencies
     dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = false,
+  },
+  {
+    "refractalize/oil-git-status.nvim",
+    dependencies = {
+      "stevearc/oil.nvim",
+    },
+    config = true,
+    event = 'VeryLazy'
   },
 }

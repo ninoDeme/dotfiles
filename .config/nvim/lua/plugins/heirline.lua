@@ -596,9 +596,9 @@ return {
 						return self.tabnr
 					end,
 					hl = function(self)
-						if self.is_active then
-							return "TabLineSelTitle"
-						end
+						-- if self.is_active then
+						-- 	return "TabLineSelTitle"
+						-- end
 						return "TabLineTitle"
 					end,
 				},
@@ -622,9 +622,9 @@ return {
 					end,
 					provider = "  ",
 					hl = function(self)
-						if self.is_active then
-							return "TabLineSelModified"
-						end
+						-- if self.is_active then
+						-- 	return "TabLineSelModified"
+						-- end
 						return "TabLineModified"
 					end,
 				},

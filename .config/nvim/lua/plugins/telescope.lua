@@ -61,6 +61,7 @@ return {
           },
           find_files = {
             hidden = true,
+            respect_gitignore = false
           },
           live_grep = {
             additional_args = { "-." },
