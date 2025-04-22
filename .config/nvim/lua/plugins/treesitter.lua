@@ -46,7 +46,7 @@ return {
     end,
     dependencies = {
       {
-        "romgrk/nvim-treesitter-context", -- Shows the context (current function or method)
+        "nvim-treesitter/nvim-treesitter-context", -- Shows the context (current function or method)
         dependencies = "nvim-treesitter",
       },
       "windwp/nvim-ts-autotag",

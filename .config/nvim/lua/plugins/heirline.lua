@@ -620,7 +620,7 @@ return {
 					condition = function(self)
 						return self.any_modified
 					end,
-					provider = "  ",
+					provider = use_icons and "  " or "[+] ",
 					hl = function(self)
 						-- if self.is_active then
 						-- 	return "TabLineSelModified"
@@ -634,7 +634,7 @@ return {
 					end,
 					provider = function(self)
 						local not_hidden_bufs = self.not_hidden_bufs
-						return "[+" .. tostring(#not_hidden_bufs - 1) .. "] "
+						return "(+" .. tostring(#not_hidden_bufs - 1) .. ") "
 					end,
 				},
 				init = function(self)
@@ -692,7 +692,7 @@ return {
 				condition = conditions.is_git_repo,
 				provider = function()
 					-- return " " .. vim.b.gitsigns_head .. " "
-					return " " .. vim.b.gitsigns_head .. " "
+					return (use_icons and " " or "") .. vim.b.gitsigns_head .. " "
 				end,
 				hl = "TabLineBranch",
 			}
@@ -709,7 +709,7 @@ return {
 					if tasks == nil or #tasks == 0 then
 						return ""
 					end
-					return "  " .. tostring(#tasks) .. "  "
+					return (use_icons and "  " or " !") .. tostring(#tasks) .. "  "
 				end,
 
 				hl = { fg = "blue" },
