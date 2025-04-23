@@ -1,21 +1,3 @@
--- lsp setup functions {{{
-
-local lsp_opts = {
-  -- capabilities = require("cmp_nvim_lsp").default_capabilities({
-  --   completionList = {
-  --     itemDefaults = {
-  --       'commitCharacters',
-  --       'editRange',
-  --       'insertTextFormat',
-  --       'insertTextMode',
-  --       'data',
-  --     }
-  --   }
-  -- }),
-  capabilities = require('blink.cmp').get_lsp_capabilities(),
-}
--- }}}
-
 return {
   {
     "neovim/nvim-lspconfig",
@@ -49,8 +31,6 @@ return {
       })
     end,
     config = function()
-      local lspconfig = require("lspconfig")
-
       -- Borders for LspInfo winodw
       local win = require("lspconfig.ui.windows")
       local _default_opts = win.default_opts
@@ -67,19 +47,30 @@ return {
       -- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       -- Lua Language Server Config {{{
-      lspconfig.lua_ls.setup({
+      vim.lsp.config('*', {
+        -- capabilities = require("cmp_nvim_lsp").default_capabilities({
+        --   completionList = {
+        --     itemDefaults = {
+        --       'commitCharacters',
+        --       'editRange',
+        --       'insertTextFormat',
+        --       'insertTextMode',
+        --       'data',
+        --     }
+        --   }
+        -- }),
+        capabilities = require('blink.cmp').get_lsp_capabilities()
+      })
+      vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
             runtime = {
-              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
               version = "LuaJIT",
             },
             diagnostics = {
-              -- Get the language server to recognize the `vim` global
               globals = { "vim" },
             },
             workspace = {
-              -- Make the server aware of Neovim runtime files
               -- library = vim.api.nvim_get_runtime_file("", true),
               library = {
                 [vim.fn.expand("$VIMRUNTIME/lua")] = true,
@@ -88,22 +79,19 @@ return {
               },
               checkThirdParty = false,
             },
-            -- Do not send telemetry data containing a randomized but unique identifier
             telemetry = {
               enable = false,
             },
           },
         },
-
-        on_attach = lsp_opts.on_attach,
-        capabilities = lsp_opts.capabilities,
       }) -- }}}
-
-      lspconfig.angularls.setup(lsp_opts)
-      lspconfig.html.setup(vim.tbl_extend("force", lsp_opts, {
+      vim.lsp.enable('lua_ls')
+      vim.lsp.enable('angularls')
+      vim.lsp.config('html', {
         filetypes = { 'html', 'templ', 'htmlangular' }
-      }))
-      lspconfig.cssls.setup(lsp_opts)
+      })
+      vim.lsp.enable('html')
+      vim.lsp.enable('cssls')
       -- require("lspconfig.configs").firebird_ls = {
       --   default_config = {
       --     cmd = { 'node', '/home/ricardo/Projects/firebird-language-server/build/language-server.js', '--stdio' },
@@ -113,12 +101,12 @@ return {
       --     settings = { sql = {} },
       --   },
       -- }
-      -- lspconfig.firebird_ls.setup(lsp_opts);
-      lspconfig.tailwindcss.setup(lsp_opts)
-      -- lspconfig.rust_analyzer.setup(lsp_opts)
-      lspconfig.pyright.setup(lsp_opts)
-      lspconfig.volar.setup(lsp_opts)
-      lspconfig.vtsls.setup(vim.tbl_extend("force", lsp_opts, {
+      -- vim.lsp.enable('firebird_ls');
+      vim.lsp.enable('tailwindcss')
+      -- vim.lsp.enable('rust_analyzer')
+      vim.lsp.enable('pyright')
+      vim.lsp.enable('volar')
+      vim.lsp.config('vtsls', {
         settings = {
           vtsls = {
             tsserver = {
@@ -126,7 +114,7 @@ return {
                 {
                   name = "@vue/typescript-plugin",
                   location = require("mason-registry").get_package("vue-language-server"):get_install_path() ..
-                  "/node_modules/@vue/language-server",
+                    "/node_modules/@vue/language-server",
                   languages = { "vue" },
                   configNamespace = "typescript",
                   enableForWorkspaceTypeScriptVersions = true,
@@ -134,7 +122,7 @@ return {
                 {
                   name = "@angular/language-server",
                   location = require("mason-registry").get_package("angular-language-server"):get_install_path() ..
-                  "/node_modules/@angular/language-server",
+                    "/node_modules/@angular/language-server",
                   enableForWorkspaceTypeScriptVersions = false,
                 },
               }
@@ -142,17 +130,20 @@ return {
           }
         },
         filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", },
-      }))
-      lspconfig.emmet_language_server.setup(lsp_opts)
+      })
 
-      lspconfig.dartls.setup(lsp_opts)
-      lspconfig.clangd.setup(lsp_opts)
-      lspconfig.svelte.setup(lsp_opts)
-      lspconfig.elixirls.setup(vim.tbl_extend("force", lsp_opts, {
+      vim.lsp.enable('vtsls')
+      vim.lsp.enable('emmet_language_server')
+
+      vim.lsp.enable('dartls')
+      vim.lsp.enable('clangd')
+      vim.lsp.enable('svelte')
+      vim.lsp.config('elixirls', {
         cmd = { vim.fn.expand("~/.local/share/elixir-ls/release/language_server.sh") },
-      }))
+      })
+      vim.lsp.enable('elixirls')
 
-      lspconfig.ocamllsp.setup(lsp_opts)
+      vim.lsp.enable('ocamllsp')
     end,
     keys = {
       { mode = { 'n', 'v' }, '<leader>cr', function() vim.lsp.buf.rename() end,                                                   desc = "Rename" },
