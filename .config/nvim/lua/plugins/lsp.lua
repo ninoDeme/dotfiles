@@ -88,9 +88,10 @@ return {
       vim.lsp.enable('lua_ls')
       vim.lsp.enable('angularls')
       vim.lsp.config('html', {
-        filetypes = { 'html', 'templ', 'htmlangular' }
+        filetypes = { 'html', 'templ', 'htmlangular', 'vue' }
       })
       vim.lsp.enable('html')
+      -- vim.lsp.enable("roslyn")
       vim.lsp.enable('cssls')
       -- require("lspconfig.configs").firebird_ls = {
       --   default_config = {
@@ -106,6 +107,7 @@ return {
       -- vim.lsp.enable('rust_analyzer')
       vim.lsp.enable('pyright')
       vim.lsp.enable('volar')
+
       vim.lsp.config('vtsls', {
         settings = {
           vtsls = {
@@ -113,7 +115,8 @@ return {
               globalPlugins = {
                 {
                   name = "@vue/typescript-plugin",
-                  location = require("mason-registry").get_package("vue-language-server"):get_install_path() ..
+                  -- location = require("mason-registry").get_package("vue-language-server"):get_install_path() ..
+                  location = vim.fn.stdpath("data") .. "/mason/packages/vue-language-server/" ..
                     "/node_modules/@vue/language-server",
                   languages = { "vue" },
                   configNamespace = "typescript",
@@ -121,7 +124,8 @@ return {
                 },
                 {
                   name = "@angular/language-server",
-                  location = require("mason-registry").get_package("angular-language-server"):get_install_path() ..
+                  -- location = require("mason-registry").get_package("angular-language-server"):get_install_path() ..
+                  location = vim.fn.stdpath("data") .. "/mason/packages/angular-language-server/" ..
                     "/node_modules/@angular/language-server",
                   enableForWorkspaceTypeScriptVersions = false,
                 },
@@ -133,7 +137,10 @@ return {
       })
 
       vim.lsp.enable('vtsls')
-      vim.lsp.enable('emmet_language_server')
+      -- vim.lsp.config('emmet_language_server', {
+      --   { "css", "eruby", "html", "htmldjango", "javascriptreact", "less", "pug", "sass", "scss", "typescriptreact", "htmlangular", "vue" }
+      -- })
+      -- vim.lsp.enable('emmet_language_server')
 
       vim.lsp.enable('dartls')
       vim.lsp.enable('clangd')
@@ -183,16 +190,6 @@ return {
     end,
     dependencies = { "nvim-telescope/telescope.nvim" },
   },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    lazy = true,
-    event = "VeryLazy",
-    dependencies = { "williamboman/mason.nvim" },
-    config = function()
-      require("mason-lspconfig").setup({})
-    end,
-  },
-
   -- {
   --   "mfussenegger/nvim-jdtls",
   --   event = "VeryLazy",

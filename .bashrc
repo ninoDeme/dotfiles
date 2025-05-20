@@ -57,8 +57,10 @@ case "$TERM" in
     xterm-256color) color_prompt=yes;;
 esac
 
-# alias pacdiff=eos-pacdiff
 ################################################################################
+
+# Match dotfiles on *
+shopt -s dotglob
 
 # bash-sensible
 set -o noclobber # Prevent file overwrite on stdout redirect. Use `>|` to force redirection to an existing file
