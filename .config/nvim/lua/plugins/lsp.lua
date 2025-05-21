@@ -117,7 +117,7 @@ return {
                   name = "@vue/typescript-plugin",
                   -- location = require("mason-registry").get_package("vue-language-server"):get_install_path() ..
                   location = vim.fn.stdpath("data") .. "/mason/packages/vue-language-server/" ..
-                    "/node_modules/@vue/language-server",
+                      "/node_modules/@vue/language-server",
                   languages = { "vue" },
                   configNamespace = "typescript",
                   enableForWorkspaceTypeScriptVersions = true,
@@ -126,7 +126,7 @@ return {
                   name = "@angular/language-server",
                   -- location = require("mason-registry").get_package("angular-language-server"):get_install_path() ..
                   location = vim.fn.stdpath("data") .. "/mason/packages/angular-language-server/" ..
-                    "/node_modules/@angular/language-server",
+                      "/node_modules/@angular/language-server",
                   enableForWorkspaceTypeScriptVersions = false,
                 },
               }
@@ -159,8 +159,7 @@ return {
       { mode = { 'n', 'v' }, '<leader>ci', "<cmd>LspInfo<CR>",                                                                    desc = "Lsp Info" },
       { mode = { 'n', 'v' }, '<leader>cF', function() vim.lsp.buf.format() end,                                                   desc = "Format Document", },
       { mode = { 'n', 'v' }, '<leader>cd', function() vim.diagnostic.setqflist() end,                                             desc = "View Diagnostics" },
-      { mode = { 'n', 'v' }, '<leader>ce', function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end,                                                                                                            desc = "View Errors" },
-
+      { mode = { 'n', 'v' }, '<leader>ce', function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end, desc = "View Errors" },
       { mode = { 'n', 'v' }, 'gK',         function() vim.lsp.buf.signature_help() end,                                           desc = "Signature Help" },
       { mode = { 'i' },      '<c-k>',      function() vim.lsp.buf.signature_help() end,                                           desc = "Signature Help" },
       { mode = { 'n', 'v' }, 'gd',         function() vim.lsp.buf.definition() end,                                               desc = "View Definition" },
@@ -169,7 +168,14 @@ return {
       { mode = { 'n', 'v' }, 'gh',         function() vim.lsp.buf.type_definition() end,                                          desc = "View Type Signature" }
     }
   },
-
+  {
+    "zeioth/garbage-day.nvim",
+    dependencies = "neovim/nvim-lspconfig",
+    event = "VeryLazy",
+    opts = {
+      excluded_lsp_clients = { "null-ls", "jdtls", "marksman", "lua_ls", "roslyn", "rzls" }
+    }
+  },
   {
     "onsails/lspkind.nvim",
     config = function()
