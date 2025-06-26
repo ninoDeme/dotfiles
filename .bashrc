@@ -18,16 +18,6 @@ PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]$(if [[ $? ==
 
 # export TERM="xterm-256color"                      # getting proper colors
 
-if [ -d "$HOME/.local/bin" ] ;
-  then PATH="$HOME/.local/bin:$PATH"
-fi
-if [ -d "$HOME/.cargo/bin" ] ;
-  then PATH="$HOME/.cargo/bin:$PATH"
-fi
-if [ -d "$HOME/.config/emacs/bin" ] ;
-  then PATH="$HOME/.config/emacs/bin:$PATH"
-fi
-
 if command -v eza &> /dev/null
 then
   alias la='eza -a --group-directories-first'
@@ -57,6 +47,7 @@ export XDG_DATA_DIRS="/usr/local/share/:/usr/share/:/var/lib/flatpak/exports/sha
 
 case "$TERM" in
     xterm-color) color_prompt=yes;;
+    alacritty) color_prompt=yes;;
     xterm-256color) color_prompt=yes;;
 esac
 
@@ -156,22 +147,6 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-if [ -d "$HOME/.deno/" ]; then
-  export DENO_INSTALL="$HOME/.deno"
-  export PATH="$DENO_INSTALL/bin:$PATH"
-fi
-
-if [ -d "$HOME/.asdf/" ] ;
-then
-  source "$HOME/.asdf/asdf.sh"
-fi
-
-# [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-
-if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ] ;
-then
-  source $HOME/.nix-profile/etc/profile.d/nix.sh
-fi # added by Nix installer
 
 if [[ -n "$ALACRITTY_WINDOW_ID" ]]; then
   theme() {
@@ -242,6 +217,3 @@ fi
 # alias clear="unset PROMPT_COMMAND; clear; PROMPT_COMMAND='export PROMPT_COMMAND=echo'"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-

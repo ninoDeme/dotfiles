@@ -170,7 +170,7 @@ local run_cmd = function(opts)
 end
 
 M.setup = function()
-  BASHCOMP_LOAD()
+  -- BASHCOMP_LOAD()
 
   vim.cmd([[
 fun! CompleteShell(argLead, cmdLine, curPos)
