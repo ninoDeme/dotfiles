@@ -6,7 +6,7 @@ return {
     event = "VeryLazy",
     config = function()
       local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-      parser_config.angular.install_info.url = "~/Projects/tree-sitter-angular/"
+      -- parser_config.angular.install_info.url = "~/Projects/tree-sitter-angular/"
       -- parser_config.angular.install_info.revision = "9353df6189cd174848d873d7e4ebc3c7caec4ddb"
       require("nvim-treesitter.configs").setup({
         highlight = {

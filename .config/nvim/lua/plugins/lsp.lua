@@ -3,49 +3,11 @@ return {
     "neovim/nvim-lspconfig",
     event = "VeryLazy",
     init = function()
-      local border = require("hover").border
-
-      local oldHover = vim.lsp.buf.hover;
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.lsp.buf.hover = function(config)
-        oldHover(vim.tbl_extend('keep', config or {}, {
-          border = border,
-          silent = true,
-        }))
-      end
-
-      local oldSigHelp = vim.lsp.buf.hover;
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.lsp.buf.signature_help = function(config)
-        oldSigHelp(vim.tbl_extend('keep', config or {}, {
-          border = border,
-          focusable = true,
-          zindex = 1005,
-          relative = "cursor",
-          silent = true,
-        }))
-      end
-
       require("which-key").add({
         { '<leader>c', group = "+Code" }
       })
     end,
     config = function()
-      -- Borders for LspInfo winodw
-      local win = require("lspconfig.ui.windows")
-      local _default_opts = win.default_opts
-
-      local border = require("hover").border
-
-      win.default_opts = function(options)
-        local opts = _default_opts(options)
-        opts.border = border
-        return opts
-      end
-
-      -- local capabilities = vim.lsp.protocol.make_client_capabilities()
-      -- capabilities.textDocument.completion.completionItem.snippetSupport = true
-
       -- Lua Language Server Config {{{
       vim.lsp.config('*', {
         -- capabilities = require("cmp_nvim_lsp").default_capabilities({
@@ -86,12 +48,15 @@ return {
         },
       }) -- }}}
       vim.lsp.enable('lua_ls')
+
       vim.lsp.enable('angularls')
+      -- vim.lsp.enable('angularls2')
+
       vim.lsp.config('html', {
         filetypes = { 'html', 'templ', 'htmlangular', 'vue' }
       })
       vim.lsp.enable('html')
-      -- vim.lsp.enable("roslyn")
+
       vim.lsp.enable('cssls')
       -- require("lspconfig.configs").firebird_ls = {
       --   default_config = {
@@ -106,7 +71,7 @@ return {
       vim.lsp.enable('tailwindcss')
       -- vim.lsp.enable('rust_analyzer')
       vim.lsp.enable('pyright')
-      vim.lsp.enable('volar')
+      vim.lsp.enable('vue_ls')
 
       vim.lsp.config('vtsls', {
         settings = {
@@ -137,6 +102,7 @@ return {
       })
 
       vim.lsp.enable('vtsls')
+
       -- vim.lsp.config('emmet_language_server', {
       --   { "css", "eruby", "html", "htmldjango", "javascriptreact", "less", "pug", "sass", "scss", "typescriptreact", "htmlangular", "vue" }
       -- })
@@ -159,7 +125,7 @@ return {
       { mode = { 'n', 'v' }, '<leader>ci', "<cmd>LspInfo<CR>",                                                                    desc = "Lsp Info" },
       { mode = { 'n', 'v' }, '<leader>cF', function() vim.lsp.buf.format() end,                                                   desc = "Format Document", },
       { mode = { 'n', 'v' }, '<leader>cd', function() vim.diagnostic.setqflist() end,                                             desc = "View Diagnostics" },
-      { mode = { 'n', 'v' }, '<leader>ce', function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end, desc = "View Errors" },
+      { mode = { 'n', 'v' }, '<leader>ce', function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity .ERROR }) end,desc = "View Errors" },
       { mode = { 'n', 'v' }, 'gK',         function() vim.lsp.buf.signature_help() end,                                           desc = "Signature Help" },
       { mode = { 'i' },      '<c-k>',      function() vim.lsp.buf.signature_help() end,                                           desc = "Signature Help" },
       { mode = { 'n', 'v' }, 'gd',         function() vim.lsp.buf.definition() end,                                               desc = "View Definition" },
