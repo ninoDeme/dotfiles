@@ -12,7 +12,15 @@ if vim.g.neovide then
   end)
 end
 
-require("hover").setup("light")
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function ()
+    require("highlights").setup()
+  end
+})
+
+
+require("hover").setup("normal")
+vim.cmd.colorscheme("gruber")
 
 -- Vim settings {{{
 

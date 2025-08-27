@@ -135,10 +135,22 @@ return {
       { '<leader>dS', function() require("dap.ui.widgets").preview() end,                                          desc = "Preview Widget" },
       { '<leader>df', function() require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames) end,   desc = "Frames Widget" },
       { '<leader>ds', function() require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes) end,   desc = "Scopes Widget" },
+      { '<leader>dd', "<CMD>DapViewToggle<CR>",                                                                    desc = "Toggle Dap View" },
     },
     dependencies = {
       { "overseer.nvim" },
-      { "igorlfs/nvim-dap-view", opts = {} },
+      {
+        "igorlfs/nvim-dap-view",
+        opts = {
+          winbar = {
+            sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl", "console" },
+            default_section = { "repl" },
+            controls = {
+              enable = true
+            }
+          }
+        }
+      },
     },
   },
 }

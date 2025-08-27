@@ -61,7 +61,7 @@ return {
           },
           find_files = {
             hidden = true,
-            respect_gitignore = false
+            respect_gitignore = true
           },
           live_grep = {
             additional_args = { "-." },
@@ -94,13 +94,6 @@ return {
               match_filename = true,
             }
           },
-          project = {
-            base_dirs = {
-              { "~/Projects", max_depth = 2 }
-            },
-            hidden_files = true,
-            -- { 'tab' }
-          }
         },
       })
 
@@ -171,18 +164,5 @@ return {
       {
         -- your config goes here
       }
-  },
-  {
-    'nvim-telescope/telescope-project.nvim',
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
-    event = "VeryLazy",
-    config = function ()
-      require'telescope'.load_extension('project')
-    end,
-    keys = {
-      { "<leader>sp", function () require'telescope'.extensions.project.project{} end, desc = "Projects" }
-    }
   }
 }

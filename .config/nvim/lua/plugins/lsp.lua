@@ -49,8 +49,8 @@ return {
       }) -- }}}
       vim.lsp.enable('lua_ls')
 
-      vim.lsp.enable('angularls')
-      -- vim.lsp.enable('angularls2')
+      -- vim.lsp.enable('angularls')
+      vim.lsp.enable('angularls2')
 
       vim.lsp.config('html', {
         filetypes = { 'html', 'templ', 'htmlangular', 'vue' }
@@ -58,16 +58,6 @@ return {
       vim.lsp.enable('html')
 
       vim.lsp.enable('cssls')
-      -- require("lspconfig.configs").firebird_ls = {
-      --   default_config = {
-      --     cmd = { 'node', '/home/ricardo/Projects/firebird-language-server/build/language-server.js', '--stdio' },
-      --
-      --     filetypes = { 'sql' },
-      --     single_file_support = true,
-      --     settings = { sql = {} },
-      --   },
-      -- }
-      -- vim.lsp.enable('firebird_ls');
       vim.lsp.enable('tailwindcss')
       -- vim.lsp.enable('rust_analyzer')
       vim.lsp.enable('pyright')
@@ -225,13 +215,6 @@ return {
   --     })
   --   end,
   -- },
-  -- {
-  --   'mrded/nvim-lsp-notify',
-  --   config = function()
-  --     require('lsp-notify').setup({})
-  --   end,
-  --   event = "VeryLazy"
-  -- }
 }
 
 -- vim: ts=2 sts=2 sw=2 et

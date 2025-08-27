@@ -1,34 +1,3 @@
--- GetOilDirRel = function()
---   local plenary = require('plenary')
---   local path = plenary.path:new(require('oil').get_current_dir()):make_relative(
---     plenary.path.new(vim.uv.cwd()):joinpath('..'):absolute()
---   )
---   if path == "." then
---     return plenary.path:new(require('oil').get_current_dir()):make_relative() .. "/"
---   end
---   return path .. "/"
--- end
---
--- GetOilDirAbs = function()
---   local absolute = require('oil').get_current_dir()
---   local relative = GetOilDirRel()
---   if relative == "/." then
---     return absolute:sub(0, -1)
---   end
---   if absolute:sub(-#relative) == relative then
---     return absolute:sub(0, -#relative - 1)
---   end
---   return ""
--- end
---
--- vim.cmd([[
---   function! GetOilDirRel()
---     return luaeval("GetOilDirRel()")
---   endfunction
---   function! GetOilDirAbs()
---     return luaeval("GetOilDirAbs()")
---   endfunction
--- ]])
 
 function GetOilDir()
   return require('oil').get_current_dir()
@@ -85,17 +54,6 @@ return {
               end
               i = i + 1
             end
-            -- local cmd_list = vim.fn.split(vim.o.shell)
-            -- for _, value in ipairs(vim.fn.split(vim.o.shellcmdflag)) do
-            --   table.insert(cmd_list, value)
-            -- end
-            -- table.insert(cmd_list, result)
-            -- local handle = vim.system(cmd_list, {
-            --   cwd = cwd,
-            --   text = true,
-            -- }):wait()
-            -- local out = handle.stdout
-            -- vim.api.nvim_echo({ { vim.inspect(cmd_list) .. "\n" .. out } }, false, {})
             local flags_str = ""
             for _, value in ipairs(flags) do
               flags_str = flags_str .. " " .. value

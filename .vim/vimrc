@@ -1,8 +1,7 @@
+packadd! matchit comment editorconfig
 filetype plugin indent on
 
 syntax on
-
-" packadd! matchit
 
 set nocompatible
 set termguicolors
@@ -10,9 +9,9 @@ set termguicolors
 colorscheme gruvbox8
 let mapleader = " "
 
-" if has('mouse')
-" 	set mouse=a
-" endif
+if has('mouse')
+	set mouse=a
+endif
 
 set wildmenu
 
@@ -32,9 +31,7 @@ set confirm
 set ttyfast
 set backspace   =indent,eol,start  " Make backspace work as you would expect.
 
-" add manual folding
-set foldmethod=marker
-set cmdheight=2
+set cmdheight=1
 set number
 set relativenumber
 
@@ -58,6 +55,9 @@ set viewoptions-=options
 " Disable a legacy behavior that can break plugin maps.
 set nolangremap
 
+" Netrw mv fix
+let g:netrw_keepdir = 0
+
 " copy and paste from system clipboard 
 noremap <Leader>Y "*y
 noremap <Leader>P "*p
@@ -67,13 +67,10 @@ noremap <Leader>p "+p
 " reload config
 nnoremap <leader>r :source $MYVIMRC<CR>
 
-" esc to exit terminal mode
-tnoremap <Esc> <C-\><C-n>
-
+" Press ESC to clear search
 nnoremap <silent> <ESC> :noh<CR><ESC>
 nnoremap <ESC>^[ <ESC>^[
-" Press ESC to clear search
-"
+
 " The fish shell is not very compatible to other shells and unexpectedly
 " breaks things that use 'shell'.
 if &shell =~# 'fish$'
