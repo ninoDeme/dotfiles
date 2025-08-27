@@ -1,7 +1,6 @@
 -- credit: https://github.com/notken12/base46-colors
-if vim.g.colors_name then
-  vim.cmd('hi clear')
-end
+vim.o.background = 'dark'
+vim.cmd.hi('clear')
 
 vim.opt.termguicolors = true
 vim.g.colors_name = 'everblush'
@@ -88,6 +87,9 @@ local theme = {
   DiffAdd = { fg = c.vibrant_green, bg = 'NONE' },
   DiffChange = { fg = c.blue, bg = 'NONE' },
   DiffDelete = { fg = c.red, bg = 'NONE' },
+  Added = { fg = c.vibrant_green, bg = 'NONE' },
+  Changed = { fg = c.blue, bg = 'NONE' },
+  Removed = { fg = c.red, bg = 'NONE' },
   QuickFixLine = { fg = 'NONE', bg = c.base01, sp = 'NONE', },
   PmenuSbar = { fg = 'NONE', bg = c.one_bg },
   PmenuThumb = { fg = 'NONE', bg = c.grey },
