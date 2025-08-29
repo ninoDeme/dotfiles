@@ -1,8 +1,8 @@
 vim.o.background = 'dark'
 vim.cmd.hi('clear')
+vim.g.colors_name = 'gruber'
 
 vim.opt.termguicolors = true
-vim.g.colors_name = 'gruber'
 
 local fg0 = "#e4e4ef"
 local fg1 = "#f4f4ff"
@@ -12,6 +12,7 @@ local fg4 = "#686868"
 local bg0 = "#181818"
 local bg1 = "#282828"
 local bg2 = "#453d41"
+local bg3 = "#484848"
 local bg4 = "#52494e"
 local bg5 = "#404040"
 local bg6 = "#232323"
@@ -35,10 +36,72 @@ local niagara1 = "#303540"
 local wisteria = "#9e95c7"
 local aqua1 = "#8ec07c"
 
+-- local c = {
+--   fg0 = { hex = "#e4e4ef", x256 = 255, h256 = "#eeeeee" },
+--   fg1 = { hex = "#f4f4ff", x256 = 15, h256 = "#ffffff" },
+--   fg2 = { hex = "#f5f5f5", x256 = 255, h256 = "#eeeeee" },
+--   fg3 = { hex = "#a89984", x256 = 144, h256 = "#afaf87" },
+--   fg4 = { hex = "#686868", x256 = 242, h256 = "#6c6c6c" },
+--   bg0 = { hex = "#181818", x256 = 234, h256 = "#1c1c1c" },
+--   bg1 = { hex = "#282828", x256 = 235, h256 = "#262626" },
+--   bg2 = { hex = "#453d41", x256 = 238, h256 = "#444444" },
+--   bg3 = { hex = "#484848", x256 = 238, h256 = "#444444" },
+--   bg4 = { hex = "#52494e", x256 = 239, h256 = "#4e4e4e" },
+--   bg5 = { hex = "#404040", x256 = 238, h256 = "#444444" },
+--   bg6 = { hex = "#232323", x256 = 235, h256 = "#262626" },
+--   bg7 = { hex = "#3f3f3f", x256 = 237, h256 = "#3a3a3a" },
+--   bg8 = { hex = "#2c2c2c", x256 = 236, h256 = "#303030" },
+--   red0 = { hex = "#f43841", x256 = 09, h256 = "#ff0000" },
+--   red1 = { hex = "#ff4f58", x256 = 203, h256 = "#ff5f5f" },
+--   red2 = { hex = "#2B0A0B", x256 = 52, h256 = "#5f0000" },
+--   red3 = { hex = "#fb4934", x256 = 203, h256 = "#ff5f5f" },
+--   green0 = { hex = "#73c936", x256 = 112, h256 = "#87d700" },
+--   green1 = { hex = "#b8bb26", x256 = 142, h256 = "#afaf00" },
+--   yellow0 = { hex = "#ffdd33", x256 = 220, h256 = "#ffd700" },
+--   yellow1 = { hex = "#655814", x256 = 58, h256 = "#5f5f00" },
+--   blue0 = { hex = "#5292c8", x256 = 74, h256 = "#5fafd7" },
+--   orange0 = { hex = "#d65d0e", x256 = 166, h256 = "#d75f00" },
+--   orange1 = { hex = "#fe8019", x256 = 208, h256 = "#ff8700" },
+--   brown0 = { hex = "#cc8c3c", x256 = 172, h256 = "#d78700" },
+--   quartz = { hex = "#95a99f", x256 = 247, h256 = "#9e9e9e" },
+--   niagara0 = { hex = "#96a6c8", x256 = 146, h256 = "#afafff" },
+--   niagara1 = { hex = "#303540", x256 = 237, h256 = "#3a3a3a" },
+--   wisteria = { hex = "#9e95c7", x256 = 146, h256 = "#d7afff" },
+--   aqua1 = { hex = "#8ec07c", x256 = 108, h256 = "#87af87" },
+-- }
+
+-- local ansi_term = {
+--   { dark = bg0,      bright = bg2 },      -- black
+--   { dark = red1,     bright = red0 },     -- red
+--   { dark = green0,   bright = aqua1 },    -- green
+--   { dark = yellow0,  bright = yellow0 },  -- yellow
+--   { dark = niagara0, bright = blue0 },    -- blue
+--   { dark = niagara1, bright = wisteria }, -- magenta
+--   { dark = quartz,   bright = quartz },   -- cyan
+--   { dark = fg0,      bright = fg1 },      -- white
+-- }
+
+local ansi_term = {
+  { dark = bg0,      bright = bg2 },      -- black
+  { dark = red1,     bright = red0 },     -- red
+  { dark = green0,   bright = aqua1 },    -- green
+  { dark = yellow0,  bright = yellow0 },  -- yellow
+  { dark = blue0,    bright = blue0 },    -- blue
+  { dark = wisteria, bright = wisteria }, -- magenta
+  { dark = quartz,   bright = quartz },   -- cyan
+  { dark = fg0,      bright = fg1 },      -- white
+}
+
+for i, color in ipairs(ansi_term) do
+  vim.g['terminal_color_' .. (i - 1)] = color.dark
+  vim.g['terminal_color_' .. (i - 1 + 8)] = color.dark
+end
+
 local theme = {
   Normal = { fg = fg0, bg = bg0 },
-  NormalNC = { link = "Normal" },
-  Boolean = {},
+  NormalNC = { fg = fg0, bg = bg0 },
+  -- NormalNC = { fg = fg0, bg = "#1a1a1a" },
+  Boolean = { fg = wisteria },
   Character = { fg = green0, },
   ColorColumn = {},
   Comment = { fg = brown0, },
@@ -73,18 +136,18 @@ local theme = {
   Label = { link = "Keyword" },
   LineNr = { fg = fg3 },
   -- Macro = {},
-  MatchParen = {bg = bg1 },
+  MatchParen = { bg = bg1 },
   ModeMsg = { fg = brown0, },
   MoreMsg = { fg = yellow0, },
   MsgArea = {},
-  MsgSeparator = {bg = bg1 },
+  MsgSeparator = { bg = bg1 },
   NonText = { fg = brown0 },
   Number = { fg = wisteria },
   Operator = {},
   Pmenu = { fg = fg0, bg = bg6 },
-  PmenuSbar = {bg = yellow0 },
-  PmenuSel = {bg = bg5, bold = true },
-  PmenuThumb = {bg = yellow1 },
+  PmenuSbar = { bg = yellow0 },
+  PmenuSel = { bg = bg5, bold = true },
+  PmenuThumb = { bg = yellow1 },
   PreCondit = { fg = yellow0, bold = true },
   PreProc = { fg = yellow0, bold = true },
   Question = { fg = yellow0, },
@@ -105,18 +168,18 @@ local theme = {
   StorageClass = { link = "Keyword" },
   String = { fg = green0 },
   Structure = { link = "Keyword" },
-  Substitute = {bg = bg1 },
+  Substitute = { bg = bg1 },
   TabLine = { bg = bg2 },
   TabLineFill = { bg = bg1 },
   TabLineSel = { bg = bg0 },
   TermCursor = {},
-  TermCursorNC = {bg = fg1 },
+  TermCursorNC = { bg = fg1 },
   Title = { fg = quartz, bold = true, },
   Todo = { fg = quartz, },
   Type = { fg = quartz, },
   Typedef = { link = "Keyword" },
   Underlined = { underline = true },
-  Variable = { link = "Normal" },
+  Variable = { fg = fg0 },
   Visual = { bg = bg8, },
   -- VisualNOS = {},
   WarningMsg = { fg = orange0, },
@@ -132,13 +195,13 @@ local theme = {
   DiagnosticUnnecessary = { fg = fg4, },
 
   DiffAdd = { fg = green0, },
-  DiffChange = { fg = yellow0, },
-  DiffDelete = { fg = red0, },
+  DiffChange = { fg = green1, },
+  DiffDelete = { fg = red1, },
   DiffText = { fg = orange0, },
 
   Added = { fg = green0, },
-  Changed = { fg = yellow0, },
-  Removed = { fg = red0, },
+  Changed = { fg = green1, },
+  Removed = { fg = red1, },
 
   -- DapBreakpoint = { fg = red0 },
   -- DapBreakpointCondition = { fg  },
@@ -147,7 +210,7 @@ local theme = {
   -- DapBreakpointRejected = {},
 
   ["@constructor"] = { fg = quartz },
-  ["@variable"] = { link = "Normal" },
+  ["@variable"] = { fg = fg0 },
 
   ["@tag.delimiter"] = { link = "Delimiter" },
   ["@tag.attribute"] = { link = "Variable" },

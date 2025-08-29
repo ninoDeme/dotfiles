@@ -172,6 +172,8 @@ return {
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
         -- configuration goes here, for example:
+        ft_ignore = { "OverseerList", "dap-view", "dap-repl" },
+        bt_ignore = { "terminal" },
         segments = {
           { text = { "%C" }, click = "v:lua.ScFa" },
           {

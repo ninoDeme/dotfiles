@@ -6,11 +6,11 @@ syntax on
 set nocompatible
 set termguicolors
 
-colorscheme gruvbox8
+colorscheme retrobox
 let mapleader = " "
 
 if has('mouse')
-	set mouse=a
+  set mouse=a
 endif
 
 set wildmenu

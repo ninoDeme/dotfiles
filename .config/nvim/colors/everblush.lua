@@ -55,6 +55,22 @@ local c = {
   base0F = "#ef7d7d",
 }
 
+local ansi_term = {
+  { dark = c.base01, bright = c.base03, },     -- black
+  { dark = c.base08, bright = c.base08, },    -- red
+  { dark = c.base0B, bright = c.base0B, },   -- green
+  { dark = c.base0A, bright = c.base0A, }, -- yellow
+  { dark = c.base0D, bright = c.base0D, },   -- blue
+  { dark = c.base0E, bright = c.base0E, }, -- magenta
+  { dark = c.base0C, bright = c.base0C, },  -- cyan
+  { dark = c.base05, bright = c.base06, },     -- white
+}
+
+for i, color in ipairs(ansi_term) do
+  vim.g['terminal_color_' .. (i - 1)] = color.dark
+  vim.g['terminal_color_' .. (i - 1 + 8)] = color.bright
+end
+
 local theme = {
   Normal = { fg = c.base05, bg = c.base00 },
   SignColumn = { fg = c.base03, bg = 'NONE', sp = 'NONE', },
