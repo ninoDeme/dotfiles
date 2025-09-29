@@ -64,6 +64,9 @@ return {
       vim.lsp.enable('vue_ls')
 
       vim.lsp.config('vtsls', {
+        root_dir = false,
+        root_markers = { 'package-lock.json', 'yarn.lock', 'pnpm-lock.yaml', 'bun.lockb', 'bun.lock', 'deno.lock' },
+        -- init_options = false,
         settings = {
           vtsls = {
             tsserver = {
@@ -109,19 +112,29 @@ return {
       vim.lsp.enable('ocamllsp')
     end,
     keys = {
-      { mode = { 'n', 'v' }, '<leader>cr', function() vim.lsp.buf.rename() end,                                                   desc = "Rename" },
-      { mode = { 'n', 'v' }, '<leader>ca', function() require("actions-preview").code_actions() end,                              desc = "Code Actions" },
-      { mode = { 'n', 'v' }, '<leader>cA', function() vim.lsp.buf.code_action() end,                                              desc = "Code Actions" },
-      { mode = { 'n', 'v' }, '<leader>ci', "<cmd>LspInfo<CR>",                                                                    desc = "Lsp Info" },
-      { mode = { 'n', 'v' }, '<leader>cF', function() vim.lsp.buf.format() end,                                                   desc = "Format Document", },
-      { mode = { 'n', 'v' }, '<leader>cd', function() vim.diagnostic.setqflist() end,                                             desc = "View Diagnostics" },
-      { mode = { 'n', 'v' }, '<leader>ce', function() vim.diagnostic.setqflist({ severity = vim.diagnostic.severity .ERROR }) end,desc = "View Errors" },
-      { mode = { 'n', 'v' }, 'gK',         function() vim.lsp.buf.signature_help() end,                                           desc = "Signature Help" },
-      { mode = { 'i' },      '<c-k>',      function() vim.lsp.buf.signature_help() end,                                           desc = "Signature Help" },
-      { mode = { 'n', 'v' }, 'gd',         function() vim.lsp.buf.definition() end,                                               desc = "View Definition" },
-      { mode = { 'n', 'v' }, 'gD',         function() vim.lsp.buf.references({ includeDeclaration = false }) end,                 desc = "View References" },
-      { mode = { 'n', 'v' }, 'gI',         function() vim.lsp.buf.implementation() end,                                           desc = "Goto Implementation" },
-      { mode = { 'n', 'v' }, 'gh',         function() vim.lsp.buf.type_definition() end,                                          desc = "View Type Signature" }
+      { mode = { 'n', 'v' }, '<leader>cr', function() vim.lsp.buf.rename() end,                      desc = "Rename" },
+      { mode = { 'n', 'v' }, '<leader>ca', function() require("actions-preview").code_actions() end, desc = "Code Actions" },
+      { mode = { 'n', 'v' }, '<leader>cA', function() vim.lsp.buf.code_action() end,                 desc = "Code Actions" },
+      { mode = { 'n', 'v' }, '<leader>ci', "<cmd>LspInfo<CR>",                                       desc = "Lsp Info" },
+      { mode = { 'n', 'v' }, '<leader>cF', function() vim.lsp.buf.format() end,                      desc = "Format Document", },
+      { mode = { 'n', 'v' }, '<leader>cd', function() vim.diagnostic.setqflist() end,                desc = "View Diagnostics" },
+      {
+        mode = { 'n', 'v' },
+        '<leader>ce',
+        function()
+          vim.diagnostic.setqflist({
+            severity = vim.diagnostic.severity
+                .ERROR
+          })
+        end,
+        desc = "View Errors"
+      },
+      { mode = { 'n', 'v' }, 'gK',    function() vim.lsp.buf.signature_help() end,                           desc = "Signature Help" },
+      { mode = { 'i' },      '<c-k>', function() vim.lsp.buf.signature_help() end,                           desc = "Signature Help" },
+      { mode = { 'n', 'v' }, 'gd',    function() vim.lsp.buf.definition() end,                               desc = "View Definition" },
+      { mode = { 'n', 'v' }, 'gD',    function() vim.lsp.buf.references({ includeDeclaration = false }) end, desc = "View References" },
+      { mode = { 'n', 'v' }, 'gI',    function() vim.lsp.buf.implementation() end,                           desc = "Goto Implementation" },
+      { mode = { 'n', 'v' }, 'gh',    function() vim.lsp.buf.type_definition() end,                          desc = "View Type Signature" }
     }
   },
   {

@@ -23,24 +23,13 @@ M.setup = function()
     OilSize = { link = "String" },
     OilMtime = { link = "Directory" },
 
-    -- TabLine = { bg = colors.lightbg },
-    -- TabLineSel = { bold = true, bg = colors.statusline_bg },
-    -- TabLineModified = { fg = colors.yellow },
-    -- TabLineTitle = { fg = colors.blue },
-
-    -- TabLineBranch = { fg = colors.purple },
-
     WinBarNC = { link = "Normal" },
     WinBar = { link = "Normal" },
     WinBarPathRel = { link = "Title" },
 
     QuickFixLine = { fg = "none", underline = true, sp = "none" },
 
-    -- Identifier = { link = "" }
-
-    -- HeirLine = { bg = colors.statusline_bg },
-
-    -- StatusLine = { link = "StatusLineNC" }
+    OverseerTaskBorder = { link = "WinSeparator" },
   }
 
   highlights = vim.tbl_extend("force", highlights, require("hover").set_highlights(M.colors))

@@ -44,6 +44,8 @@ return {
             ["]"] = "IncreaseWidth",
             ["{"] = "PrevTask",
             ["}"] = "NextTask",
+            ["C-p"] = "PrevTask",
+            ["C-n"] = "NextTask",
             ["<C-k>"] = "ScrollOutputUp",
             ["<C-j>"] = "ScrollOutputDown",
             ["q"] = "Close",

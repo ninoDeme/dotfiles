@@ -175,14 +175,33 @@ return {
         ft_ignore = { "OverseerList", "dap-view", "dap-repl" },
         bt_ignore = { "terminal" },
         segments = {
-          { text = { "%C" }, click = "v:lua.ScFa" },
+          {
+            text = { "%C" },
+            click = "v:lua.ScFa",
+            sign = { auto = true },
+            condition = {
+              function(args)
+                return args.nu or args.rnu
+              end
+            },
+          },
           {
             sign = { namespace = { ".*" }, name = { ".*" } },
+            condition = {
+              function(args)
+                return args.nu or args.rnu
+              end
+            },
             click = "v:lua.ScSa"
           },
           {
             sign = { name = { "Dap.*" }, auto = true },
-            click = "v:lua.ScSa"
+            click = "v:lua.ScSa",
+            condition = {
+              function(args)
+                return args.nu or args.rnu
+              end
+            },
           },
           {
             text = { builtin.lnumfunc, " " },
@@ -196,6 +215,11 @@ return {
               colwidth = 1
             },
             click = "v:lua.ScSa",
+            condition = {
+              function(args)
+                return args.nu or args.rnu
+              end
+            },
           }
         }
       })

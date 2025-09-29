@@ -24,75 +24,80 @@
 # XTerm's default colors
 
 # Default colors
-# [colors.primary]
-# background = '#000000'
-# foreground = '#ffffff'
-#
-# # Normal colors
-# [colors.normal]
-# black   = '#000000'
-# red     = '#cd0000'
-# green   = '#00cd00'
-# yellow  = '#cdcd00'
-# blue    = '#0000ee'
-# magenta = '#cd00cd'
-# cyan    = '#00cdcd'
-# white   = '#e5e5e5'
-#
-# # Bright colors
-# [colors.bright]
-# black   = '#7f7f7f'
-# red     = '#ff0000'
-# green   = '#00ff00'
-# yellow  = '#ffff00'
-# blue    = '#5c5cff'
-# magenta = '#ff00ff'
-# cyan    = '#00ffff'
-# white   = '#ffffff'
+[colors.primary]
+background = '#000000'
+foreground = '#ffffff'
+
+# Normal colors
+[colors.normal]
+black   = '#000000'
+red     = '#cd0000'
+green   = '#00cd00'
+yellow  = '#cdcd00'
+blue    = '#0000ee'
+magenta = '#cd00cd'
+cyan    = '#00cdcd'
+white   = '#e5e5e5'
+
+# Bright colors
+[colors.bright]
+black   = '#7f7f7f'
+red     = '#ff0000'
+green   = '#00ff00'
+yellow  = '#ffff00'
+blue    = '#5c5cff'
+magenta = '#ff00ff'
+cyan    = '#00ffff'
+white   = '#ffffff'
 
 # Colors (Ayu Dark)
 
 # Default colors
-[colors.primary]
-background = '#0A0E14'
-foreground = '#B3B1AD'
+# [colors.primary]
+# background = '#0A0E14'
+# foreground = '#B3B1AD'
+#
+# # Normal colors
+# [colors.normal]
+# black   = '#01060E'
+# red     = '#EA6C73'
+# green   = '#91B362'
+# yellow  = '#F9AF4F'
+# blue    = '#53BDFA'
+# magenta = '#FAE994'
+# cyan    = '#90E1C6'
+# white   = '#C7C7C7'
+#
+# # Bright colors
+# [colors.bright]
+# black   = '#686868'
+# red     = '#F07178'
+# green   = '#C2D94C'
+# yellow  = '#FFB454'
+# blue    = '#59C2FF'
+# magenta = '#FFEE99'
+# cyan    = '#95E6CB'
+# white   = '#FFFFFF'
 
-# Normal colors
-[colors.normal]
-black   = '#01060E'
-red     = '#EA6C73'
-green   = '#91B362'
-yellow  = '#F9AF4F'
-blue    = '#53BDFA'
-magenta = '#FAE994'
-cyan    = '#90E1C6'
-white   = '#C7C7C7'
-
-# Bright colors
-[colors.bright]
-black   = '#686868'
-red     = '#F07178'
-green   = '#C2D94C'
-yellow  = '#FFB454'
-blue    = '#59C2FF'
-magenta = '#FFEE99'
-cyan    = '#95E6CB'
-white   = '#FFFFFF'
+# [font]
+# size = 10
+# builtin_box_drawing = false
+# [font.normal]
+# family = "IosevkaTermSlab Nerd Font"
 
 [font]
-size = 10
-# family = "NotoMono Nerd Font"
-
-# [font.bold]
-# family = "NotoMono Nerd Font"
-# style = "Bold"
-#
-# [font.italic]
-# family = "NotoMono Nerd Font"
-# style = "Italic"
-
+size = 13
+offset = { x = 1, y = 1 }
+builtin_box_drawing = true
 [font.normal]
-family = "IosevkaTermSlab Nerd Font"
+family = "Cozette"
+style = "HiDpi"
+
+# [font]
+# size = 9
+# builtin_box_drawing = true
+# [font.normal]
+# family = "Terminess Nerd Font"
 
 [selection]
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"

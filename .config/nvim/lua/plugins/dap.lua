@@ -144,9 +144,9 @@ return {
         opts = {
           winbar = {
             sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl", "console" },
-            default_section = { "repl" },
+            default_section = "repl",
             controls = {
-              enable = true
+              enabled = true
             }
           }
         }

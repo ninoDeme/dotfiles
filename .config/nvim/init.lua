@@ -141,6 +141,8 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   end
 })
 
+vim.opt.listchars = { tab = "→ ",trail = "·",eol = "¬",extends = "…",precedes = "…", space = "·" }
+
 vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y', { desc = "Copy to system clipboard" })
 vim.keymap.set({ "n", "v" }, "<Leader>p", '"+p', { desc = "Paste from system clipboard" })
 vim.keymap.set({ "n", "v" }, "<Leader>Y", '"+y$')

@@ -105,13 +105,13 @@ local theme = {
   Character = { fg = green0, },
   ColorColumn = {},
   Comment = { fg = brown0, },
-  Conceal = { fg = bg1, },
+  Conceal = { fg = fg3 },
   Conditional = {},
   Constant = {},
   Cursor = { fg = niagara1, bg = fg0, },
   CursorColumn = {},
   -- CursorIM = {},
-  CursorLine = {},
+  CursorLine = { bg = bg6 },
   CursorLineNr = { fg = yellow0, },
   Debug = { fg = red0, },
   Define = { fg = yellow0, bold = true },
@@ -183,7 +183,8 @@ local theme = {
   Visual = { bg = bg8, },
   -- VisualNOS = {},
   WarningMsg = { fg = orange0, },
-  Whitespace = {},
+  -- Whitespace = { fg = bg2 },
+  Whitespace = { fg = bg2 },
   WinSeparator = { fg = bg4 },
   WildMenu = { link = "PmenuSel" },
   lCursor = {},
@@ -217,6 +218,7 @@ local theme = {
   Tag = { link = "Function" },
 
   TelescopeBorder = { fg = bg4 },
+  TelescopeMultiSelection = { fg = aqua1 },
 
   -- Cmp
   -- CmpItemAbbrDeprecated = { fg = 'NONE', bg = 'NONE', strikethrough=true, },
