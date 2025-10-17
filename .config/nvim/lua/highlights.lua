@@ -32,8 +32,6 @@ M.setup = function()
     OverseerTaskBorder = { link = "WinSeparator" },
   }
 
-  highlights = vim.tbl_extend("force", highlights, require("hover").set_highlights(M.colors))
-
   M.apply_highlights(highlights)
 end
 

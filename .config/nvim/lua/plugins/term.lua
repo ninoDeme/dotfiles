@@ -56,11 +56,10 @@ return {
         task_win = {
           -- How much space to leave around the floating window
           padding = 2,
-          border = require("hover").alt_border,
+          -- border = require('hover').border,
           -- Set any window options here (e.g. winhighlight)
           win_opts = {
             winblend = 0,
-            winhighlight = "Normal:FloatNormal",
           },
         },
       })

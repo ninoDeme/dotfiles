@@ -1,6 +1,6 @@
 [user]
-	email = ninodemeterko@hotmail.com
-	name = ricardo.demeterko
+	email = mail@ninodeme.com
+	name = Ricardo S. Demeterko
 [credential]
 	credentialStore = secretservice
 [core]
@@ -8,3 +8,6 @@
   editor = nvim
 [diff]
   tool = nvimdiff
+
+[includeIf "hasconfig:remote.*.url:ssh://git@gitlab.limbersoftware.com.br:*/**"]
+  path = ~/.gitconfig.work

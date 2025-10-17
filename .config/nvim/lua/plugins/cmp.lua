@@ -42,7 +42,7 @@ return {
           auto_show_delay_ms = 100,
           auto_show = true,
           window = {
-            border = require("hover").border,
+            border = 'solid',
           }
         }
       },

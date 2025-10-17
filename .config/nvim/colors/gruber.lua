@@ -82,7 +82,7 @@ local aqua1 = "#8ec07c"
 -- }
 
 local ansi_term = {
-  { dark = bg0,      bright = bg2 },      -- black
+  { dark = "#000000",bright = bg2 },      -- black
   { dark = red1,     bright = red0 },     -- red
   { dark = green0,   bright = aqua1 },    -- green
   { dark = yellow0,  bright = yellow0 },  -- yellow
@@ -94,7 +94,7 @@ local ansi_term = {
 
 for i, color in ipairs(ansi_term) do
   vim.g['terminal_color_' .. (i - 1)] = color.dark
-  vim.g['terminal_color_' .. (i - 1 + 8)] = color.dark
+  vim.g['terminal_color_' .. (i - 1 + 8)] = color.bright
 end
 
 local theme = {

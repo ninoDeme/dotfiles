@@ -13,13 +13,13 @@ if vim.g.neovide then
 end
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = function ()
+  callback = function()
     require("highlights").setup()
   end
 })
 
 
-require("hover").setup("normal")
+require("hover").setup("none", "solid")
 vim.cmd.colorscheme("gruber")
 
 -- Vim settings {{{
@@ -48,7 +48,6 @@ vim.diagnostic.config({
   signs = diagnostic_config,
   float = {
     source = true,
-    border = require("hover").border, --- @diagnostic disable-line
   },
   severity_sort = true,
 })
@@ -141,7 +140,7 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   end
 })
 
-vim.opt.listchars = { tab = "→ ",trail = "·",eol = "¬",extends = "…",precedes = "…", space = "·" }
+vim.opt.listchars = { tab = "→ ", trail = "·", eol = "¬", extends = "…", precedes = "…", space = "·" }
 
 vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y', { desc = "Copy to system clipboard" })
 vim.keymap.set({ "n", "v" }, "<Leader>p", '"+p', { desc = "Paste from system clipboard" })

@@ -47,7 +47,7 @@ return {
       require('mini.notify').setup({
         window = {
           config = {
-            border = require("hover").border
+            border = 'solid'
           }
         }
       })

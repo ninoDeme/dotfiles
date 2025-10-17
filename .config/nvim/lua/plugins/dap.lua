@@ -86,18 +86,6 @@ return {
             },
             {
               type = "node",
-              request = "attach",
-              name = "attach to port...",
-              port = function()
-                local port = vim.fn.input({
-                  prompt = "Port: ",
-                  default = "9229",
-                })
-                return port
-              end,
-            },
-            {
-              type = "node",
               request = "launch",
               name = "Npm start in folder",
               env = {},

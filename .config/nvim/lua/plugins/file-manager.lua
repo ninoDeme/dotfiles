@@ -101,10 +101,10 @@ return {
         },
       },
       keymaps_help = {
-        border = require("hover").alt_border,
-        win_opts = {
-          winhighlight = "Normal:FloatNormal",
-        },
+        border = require('hover').alt_border,
+        -- win_opts = {
+        --   winhighlight = "Normal:FloatNormal",
+        -- },
       },
     },
     -- Optional dependencies
