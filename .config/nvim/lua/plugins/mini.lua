@@ -44,13 +44,15 @@ return {
       })
 
       -- require('mini.cursorword').setup()
-      require('mini.notify').setup({
-        window = {
-          config = {
-            border = 'solid'
-          }
-        }
-      })
+      -- require('mini.notify').setup({
+      --   window = {
+      --     config = {
+      --       -- border = 'solid'
+      --     }
+      --   }
+      -- })
+      -- local opts = { ERROR = { duration = 10000 } }
+      -- vim.notify = require('mini.notify').make_notify(opts)
       require("mini.bracketed").setup()
 
       local imap_expr = function(lhs, rhs)
@@ -59,8 +61,6 @@ return {
       imap_expr('<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]])
       imap_expr('<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]])
 
-      local opts = { ERROR = { duration = 10000 } }
-      vim.notify = require('mini.notify').make_notify(opts)
       require("mini.align").setup()
       require("mini.splitjoin").setup()
       require("mini.operators").setup({
@@ -95,5 +95,5 @@ return {
       -- { mode = "n", "sr", desc = "Replace surrounding" },
       -- { mode = "n", "sn", desc = "Update `n_lines`" },
     },
-  },
+  }
 }

@@ -32,6 +32,13 @@ M.setup = function()
     OverseerTaskBorder = { link = "WinSeparator" },
   }
 
+  if vim.g.colors_name == 'badwolf' then
+    dd(vim.g.colors_name)
+    highlights = vim.tbl_extend('force', highlights, {
+      DiffDelete = { link = "Removed" }
+    })
+  end
+
   M.apply_highlights(highlights)
 end
 

@@ -224,5 +224,15 @@ return {
         }
       })
     end,
+  },
+  {
+    "LunarVim/bigfile.nvim",
+    opts = {
+      features = {
+        "filetype",
+        "syntax"
+      }
+    },
+    event = "VeryLazy"
   }
 }

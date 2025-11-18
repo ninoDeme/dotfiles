@@ -9,7 +9,6 @@ return {
     end,
     keys = {
       { "<leader><cr>", ":AsyncRun<space>", desc = "Run Command" },
-      -- { "<leader><cr>", ":AsyncRun<space>", desc = "Run Command" },
     }
   },
   {
@@ -80,7 +79,7 @@ return {
         }
       end
 
-      local telescope_run_template = function()
+      local run_template_picker = function()
         local search_params = get_search_params()
         require("overseer.template").list(search_params, function(templates)
           templates = vim.tbl_filter(function(tmpl)
@@ -93,90 +92,65 @@ return {
           -- elseif #templates == 1 then
           -- 	handle_tmpl(templates[1])
           -- else
-          local pickers = require("telescope.pickers")
-          local finders = require("telescope.finders")
-          local previewers = require("telescope.previewers")
-          local conf = require("telescope.config").values
-          local actions = require("telescope.actions")
-          local action_state = require("telescope.actions.state")
 
-          pickers
-              .new({}, {
-                prompt_title = "Task Template",
-                -- layout_strategy = "bottom_pane",
-                theme = 'ivy',
-                finder = finders.new_table({
-                  results = templates,
-                  entry_maker = function(tmpl)
-                    return {
-                      value = tmpl,
-                      display = tmpl.desc and string.format("%s (%s)", tmpl.name, tmpl.desc)
-                          or tmpl.name,
-                      ordinal = tmpl.desc and string.format("%s (%s)", tmpl.name, tmpl.desc)
-                          or tmpl.name,
-                    }
-                  end,
-                }),
-                sorter = conf.generic_sorter({}),
-                attach_mappings = function(prompt_bufnr, map)
-                  actions.select_default:replace(function()
-                    local picker = action_state.get_current_picker(prompt_bufnr)
-                    actions.close(prompt_bufnr)
+          local items = {}
 
-                    local selection = picker:get_multi_selection()
+          for idx, tmpl in ipairs(templates) do
+            local item = {
+              idx = idx,
+              name = tmpl.name,
+              text = tmpl.name,
+              action = tmpl.name,
+              preview = {
+                text = vim.inspect(tmpl),
+                ft = "lua"
+              }
+            }
+            table.insert(items, item)
+          end
 
-                    if not selection or #selection == 0 then
-                      selection = {
-                        action_state.get_selected_entry(),
-                      }
-                    end
-                    for _, tmpl in ipairs(selection) do
-                      require("overseer").run_template({ name = tmpl.value.name })
-                    end
-                  end)
-                  return true
-                end,
-                previewer = previewers.new_buffer_previewer({
-                  define_preview = function(self, entry, status)
-                    local t = {}
-                    for str in string.gmatch(vim.inspect(entry.value), "([^\n]+)") do
-                      table.insert(t, str)
-                    end
-                    vim.fn.setbufline(self.state.bufnr, 1, t)
-                    vim.api.nvim_set_option_value("filetype", "lua", { buf = self.state.bufnr })
-                  end,
-                }),
-              })
-              :find()
+          Snacks.picker({
+            title = "Task Template",
+            items = items,
+            layout = {
+              preset = "default",
+              -- preview = false,
+            },
+            preview = "preview",
+            format = function(item, _)
+              return { { item.text, items.text_hl } }
+            end,
+            confirm = function(picker, item)
+              local selection = picker:selected({ fallback = true })
+
+              if not selection or #selection == 0 then
+                selection = {
+                  item
+                }
+              end
+              return picker:norm(
+                function()
+                  picker:close()
+                  for _, tmpl in ipairs(selection) do
+                    require("overseer").run_task({ name = tmpl.action })
+                  end
+                end
+              )
+            end,
+          })
         end)
       end
 
-      vim.keymap.set("n", "<leader>rr", telescope_run_template, { desc = "Overseer Run" })
+      vim.keymap.set("n", "<leader>rr", run_template_picker, { desc = "Overseer Run" })
     end,
 
     keys = {
-      { "<leader>rr", desc = "Overseer Run (telescope)" },
+      { "<leader>rr", desc = "Overseer Run (Picker)" },
       { "<leader>rR", "<cmd>OverseerRun<CR>",                 desc = "Overseer Run (vim.select)" },
       { "<leader>rR", "<cmd>OverseerQuickAction restart<CR>", desc = "Overseer Restart Action" },
       { "<leader>rt", "<cmd>OverseerToggle<CR>",              desc = "Overseer Toggle" },
       { "<leader>ri", "<cmd>OverseerInfo<CR>",                desc = "Overseer Info" },
       { "<leader>ra", "<cmd>OverseerTaskAction<CR>",          desc = "Overseer Task Actions" },
     },
-  },
-  {
-    "m00qek/baleia.nvim",
-    version = "*",
-    event = "VeryLazy",
-    config = function()
-      vim.g.baleia = require("baleia").setup({})
-
-      -- Command to colorize the current buffer
-      vim.api.nvim_create_user_command("BaleiaColorize", function()
-        vim.g.baleia.once(vim.api.nvim_get_current_buf())
-      end, { bang = true })
-
-      -- Command to show logs
-      vim.api.nvim_create_user_command("BaleiaLogs", vim.g.baleia.logger.show, { bang = true })
-    end,
   }
 }

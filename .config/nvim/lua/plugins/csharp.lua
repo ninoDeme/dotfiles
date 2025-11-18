@@ -1,7 +1,7 @@
 return {
   {
     "seblyng/roslyn.nvim",
-    ft = { "cs", "razor" },
+    ft = { "cs", "razor", "cshtml" },
     dependencies = {
       {
         -- By loading as a dependencies, we ensure that we are available to set
@@ -16,7 +16,7 @@ return {
         "roslyn",
         "--stdio",
         "--logLevel=Information",
-        "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+        "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.log.get_filename()),
         "--razorSourceGenerator=" .. vim.fs.joinpath(rzls_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"),
         "--razorDesignTimePath=" .. vim.fs.joinpath(rzls_path, "Targets", "Microsoft.NET.Sdk.Razor.DesignTime.targets"),
         "--extension",

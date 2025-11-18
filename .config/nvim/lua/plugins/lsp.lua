@@ -1,7 +1,7 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    event = "VeryLazy",
+    lazy = false,
     init = function()
       require("which-key").add({
         { '<leader>c', group = "+Code" }
@@ -10,17 +10,7 @@ return {
     config = function()
       -- Lua Language Server Config {{{
       vim.lsp.config('*', {
-        -- capabilities = require("cmp_nvim_lsp").default_capabilities({
-        --   completionList = {
-        --     itemDefaults = {
-        --       'commitCharacters',
-        --       'editRange',
-        --       'insertTextFormat',
-        --       'insertTextMode',
-        --       'data',
-        --     }
-        --   }
-        -- }),
+        -- capabilities = require("cmp_nvim_lsp").default_capabilities(),
         capabilities = require('blink.cmp').get_lsp_capabilities()
       })
       vim.lsp.config('lua_ls', {
@@ -49,8 +39,8 @@ return {
       }) -- }}}
       vim.lsp.enable('lua_ls')
 
-      -- vim.lsp.enable('angularls')
-      vim.lsp.enable('angularls2')
+      vim.lsp.enable('angularls')
+      -- vim.lsp.enable('angularls2')
 
       vim.lsp.config('html', {
         filetypes = { 'html', 'templ', 'htmlangular', 'vue' }
@@ -158,13 +148,14 @@ return {
     "aznhe21/actions-preview.nvim",
     config = function()
       require("actions-preview").setup({
-        telescope = { make_value = nil, make_make_display = nil },
+        backend = { "snacks", "telescope" },
+        -- telescope = { make_value = nil, make_make_display = nil },
         diff = {
           ignore_whitespace = true,
         },
       })
     end,
-    dependencies = { "nvim-telescope/telescope.nvim" },
+    dependencies = { "folke/snacks.nvim" },
   },
   -- {
   --   "mfussenegger/nvim-jdtls",

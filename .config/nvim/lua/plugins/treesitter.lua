@@ -43,13 +43,6 @@ return {
         "angular",
         "dap_repl",
       })
-      -- require("treesitter-context").setup({ enable = true, throttle = true })
-
-      -- if vim.uv.os_uname().sysname == "Windows_NT" then
-      --    require('nvim-treesitter.install').compilers = { "clang" }
-      -- end
-      --
-      -- require 'nvim-treesitter.install'.prefer_git = false
     end,
     dependencies = {
       {
@@ -62,7 +55,7 @@ return {
         opts = {},
       },
     },
-  }, -- Parsesr and highlighter for a lot of languages
+  },
   {
     "windwp/nvim-ts-autotag",
     config = function(_)
@@ -76,6 +69,7 @@ return {
           ["htmlangular"] = "html",
           ["angular"] = "html",
           ["heex"] = "html",
+          ["razor"] = "html",
         }
       })
     end,
