@@ -43,19 +43,26 @@ return {
       -- vim.lsp.enable('angularls2')
 
       vim.lsp.config('html', {
-        filetypes = { 'html', 'templ', 'htmlangular', 'vue' }
+        filetypes = { 'html', 'templ', 'htmlangular', 'vue', 'ejs' }
       })
       vim.lsp.enable('html')
 
       vim.lsp.enable('cssls')
+
+      vim.lsp.config('tailwindcss', {
+        filetypes = vim.tbl_extend('force', vim.lsp.config.tailwindcss.filetypes, { 'ejs' })
+      })
       vim.lsp.enable('tailwindcss')
       -- vim.lsp.enable('rust_analyzer')
       vim.lsp.enable('pyright')
       vim.lsp.enable('vue_ls')
 
+      vim.g.markdown_fenced_languages = {
+        "ts=typescript"
+      }
+
+      vim.lsp.enable('denols')
       vim.lsp.config('vtsls', {
-        root_dir = false,
-        root_markers = { 'package-lock.json', 'yarn.lock', 'pnpm-lock.yaml', 'bun.lockb', 'bun.lock', 'deno.lock' },
         -- init_options = false,
         settings = {
           vtsls = {
@@ -86,10 +93,9 @@ return {
 
       vim.lsp.enable('vtsls')
 
-      -- vim.lsp.config('emmet_language_server', {
-      --   { "css", "eruby", "html", "htmldjango", "javascriptreact", "less", "pug", "sass", "scss", "typescriptreact", "htmlangular", "vue" }
-      -- })
-      -- vim.lsp.enable('emmet_language_server')
+      vim.lsp.enable('eslint')
+
+      vim.lsp.enable('emmet_language_server')
 
       vim.lsp.enable('dartls')
       vim.lsp.enable('clangd')

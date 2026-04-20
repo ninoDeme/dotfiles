@@ -1,10 +1,10 @@
 [general]
 import = [
-  # "~/.config/alacritty/xterm.toml",
-  # "~/.config/alacritty/ayu.toml",
-  # "~/.config/alacritty/base16_default_dark.toml",
-  "~/.config/alacritty/gruber_darker.toml",
-  # "~/.config/alacritty/gruvbox_dark.toml.toml",
+  # "xterm.toml",
+  # "ayu.toml",
+  # "base16_default_dark.toml",
+  # "gruber_darker.toml",
+  # "gruvbox_dark.toml.toml",
 ]
 
 # [font]

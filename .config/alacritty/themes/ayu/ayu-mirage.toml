@@ -1,0 +1,28 @@
+# Colors (ayu-mirage)
+
+# Default colors
+[colors.primary]
+background = '#1f2430'
+foreground = '#cccac2'
+
+# Normal colors
+[colors.normal]
+black   = '#707A8C'
+red     = '#FF6666'
+green   = '#D5FF80'
+yellow  = '#FFCC66'
+blue    = '#5CCFE6'
+magenta = '#DFBFFF'
+cyan    = '#95E6CB'
+white   = '#6C7A8B'
+
+# Bright colors
+[colors.bright]
+black   = '#1F2430'
+red     = '#F28779'
+green   = '#D5FF80'
+yellow  = '#FFCC66'
+blue    = '#5CCFE6'
+magenta = '#DFBFFF'
+cyan    = '#95E6CB'
+white   = '#CCCAC2'

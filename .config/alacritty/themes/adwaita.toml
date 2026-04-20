@@ -1,0 +1,28 @@
+# Colors (adwaita)
+
+# Default colors
+[colors.primary]
+background = '#1d1d20'
+foreground = '#deddda'
+
+# Normal colors
+[colors.normal]
+black   = '#9A9996'
+red     = '#F66151'
+green   = '#8FF0A4'
+yellow  = '#FFA348'
+blue    = '#99C1F1'
+magenta = '#DC8ADD'
+cyan    = '#93DDC2'
+white   = '#F6F5F4'
+
+# Bright colors
+[colors.bright]
+black   = '#1D1D20'
+red     = '#ED333B'
+green   = '#57E389'
+yellow  = '#FF7800'
+blue    = '#62A0EA'
+magenta = '#9141AC'
+cyan    = '#5BC8AF'
+white   = '#DEDDDA'

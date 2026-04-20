@@ -1,0 +1,28 @@
+# Colors (zaibatsu)
+
+# Default colors
+[colors.primary]
+background = '#0e0024'
+foreground = '#ffffff'
+
+# Normal colors
+[colors.normal]
+black   = '#878092'
+red     = '#ff5faf'
+green   = '#00d700'
+yellow  = '#ffd700'
+blue    = '#8787ff'
+magenta = '#ff87ff'
+cyan    = '#00ffff'
+white   = '#ffffff'
+
+# Bright colors
+[colors.bright]
+black   = '#0e0024'
+red     = '#d7005f'
+green   = '#00af5f'
+yellow  = '#ffaf00'
+blue    = '#5f5fff'
+magenta = '#d700ff'
+cyan    = '#00afff'
+white   = '#d7d5db'

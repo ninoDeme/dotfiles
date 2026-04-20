@@ -17,7 +17,6 @@ return {
       local dap = require("dap")
 
       require("dap.ext.vscode").json_decode = require("overseer.json").decode
-      require("overseer").patch_dap(true)
 
       dap.providers.configs["npm_scripts"] = function(bufnr)
         local result = {}
@@ -27,7 +26,7 @@ return {
           if res.scripts then
             for script, command in pairs(res.scripts) do
               table.insert(result, {
-                type = "node",
+                type = "pwa-node",
                 request = "launch",
                 name = "npm - " .. script,
                 description = command,
@@ -42,18 +41,11 @@ return {
         return result
       end
 
-      if not dap.adapters["node"] then
+      if not dap.adapters["pwa-node"] then
         local node_adapter = {
           type = "server",
           host = "localhost",
           port = "${port}",
-          enrich_config = function(config, on_config)
-            local final_config = vim.deepcopy(config)
-            if final_config.type == "node" then
-              final_config.type = "pwa-node"
-            end
-            on_config(final_config)
-          end,
           executable = {
             command = "node",
             args = {
@@ -64,28 +56,27 @@ return {
             },
           },
         }
-        require("dap").adapters["node"] = node_adapter
         require("dap").adapters["pwa-node"] = node_adapter
       end
       for _, language in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact" }) do
         if not dap.configurations[language] then
           dap.configurations[language] = {
             {
-              type = "node",
+              type = "pwa-node",
               request = "launch",
               name = "Launch file",
               program = "${file}",
               cwd = "${workspaceFolder}",
             },
             {
-              type = "node",
+              type = "pwa-node",
               request = "attach",
               name = "Attach",
               processId = require("dap.utils").pick_process,
               cwd = "${workspaceFolder}",
             },
             {
-              type = "node",
+              type = "pwa-node",
               request = "launch",
               name = "Npm start in folder",
               env = {},
@@ -130,13 +121,13 @@ return {
       {
         "igorlfs/nvim-dap-view",
         opts = {
-          winbar = {
-            sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl", "console" },
-            default_section = "repl",
-            controls = {
-              enabled = true
-            }
-          }
+          -- winbar = {
+          --   sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl", "console" },
+          --   default_section = "repl",
+          --   controls = {
+          --     enabled = true
+          --   }
+          -- }
         }
       },
     },

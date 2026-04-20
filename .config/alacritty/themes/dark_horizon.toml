@@ -1,0 +1,28 @@
+# Colors (dark_horizon)
+
+# Default colors
+[colors.primary]
+background = '#0e0e0e'
+foreground = '#c9c7be'
+
+# Normal colors
+[colors.normal]
+black   = '#363636'
+red     = '#db627e'
+green   = '#E3A587'
+yellow  = '#169AC9'
+blue    = '#32d5e3'
+magenta = '#6BE4E6'
+cyan    = '#F09483'
+white   = '#D9D7CE'
+
+# Bright colors
+[colors.bright]
+black   = '#181818'
+red     = '#db627e'
+green   = '#E3A587'
+yellow  = '#169AC9'
+blue    = '#32d5e3'
+magenta = '#6BE4E6'
+cyan    = '#F09483'
+white   = '#c9c7be'

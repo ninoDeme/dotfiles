@@ -11,3 +11,6 @@
 
 [includeIf "hasconfig:remote.*.url:ssh://git@gitlab.limbersoftware.com.br:*/**"]
   path = ~/.gitconfig.work
+
+[includeIf "hasconfig:remote.*.url:git@gitlab.limbersoftware.com.br:*/**"]
+  path = ~/.gitconfig.work

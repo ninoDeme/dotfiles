@@ -1,0 +1,28 @@
+# Colors (boo)
+
+# Default colors
+[colors.primary]
+background = '#0f0f10'
+foreground = '#e1d9ea'
+
+# Normal colors
+[colors.normal]
+black   = '#5d6f74'
+red     = '#cd749c'
+green   = '#63b0b0'
+yellow  = '#c0c0dd'
+blue    = '#5786bc'
+magenta = '#3f3442'
+cyan    = '#849da2'
+white   = '#d9d6cf'
+
+# Bright colors
+[colors.bright]
+black   = '#222827'
+red     = '#d5a8e4'
+green   = '#9c75dd'
+yellow  = '#9898ae'
+blue    = '#654a96'
+magenta = '#625566'
+cyan    = '#a9d1df'
+white   = '#e6ebe5'

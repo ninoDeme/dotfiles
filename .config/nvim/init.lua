@@ -1,11 +1,12 @@
 _G.dd = function(...)
   Snacks.debug.inspect(...)
+  return ...
 end
 _G.bt = function()
   Snacks.debug.backtrace()
 end
 if vim.fn.has("nvim-0.11") == 1 then
----@diagnostic disable-next-line: duplicate-set-field
+  ---@diagnostic disable-next-line: duplicate-set-field
   vim._print = function(_, ...)
     dd(...)
   end
@@ -29,11 +30,9 @@ end
 
 vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
-    require("highlights").setup()
+    require("highlights").apply_hl()
   end
 })
-
-require("hover").setup("none", "solid")
 
 -- Vim settings {{{
 
@@ -232,8 +231,31 @@ require("lazy").setup("plugins", {
   },
 })
 
-vim.cmd.colorscheme("badwolf")
+require('highlights').setup({
+  "rose-pine",
+  "gruber",
+  "everblush",
+  "badwolf",
+  "retrobox",
+  "srcery",
+  "zaibatsu",
+  "koda",
+  "koda-moss",
+  "nord",
+  "adwaita",
+  "boo",
+  "dark_horizon",
+  { "onedark-dark", "onedark-darker", "onedark-cool", "onedark-deep", "onedark-warm", "onedark-warmer", name = "onedark" },
+  { "ayu-dark",     "ayu-mirage",     name = "ayu" },
+  { "nightfox",     "duskfox",        "nordfox",      "terafox",      "carbonfox",    name = "nightfox" }
+})
+
+vim.o.winborder = 'single'
 
 require("run").setup();
+
+require('vim._core.ui2').enable({
+  enable = true,
+})
 
 -- vim: ts=2 sts=2 sw=2 et

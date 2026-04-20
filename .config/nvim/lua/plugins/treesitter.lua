@@ -25,6 +25,15 @@ return {
         end,
       })
 
+      vim.filetype.add({
+        extension = {
+          ejs = 'ejs'
+        }
+      })
+
+
+      vim.treesitter.language.register('embedded_template', { 'ejs' })
+
       require('nvim-treesitter').install({
         "typescript",
         "lua",
@@ -42,6 +51,7 @@ return {
         "scss",
         "angular",
         "dap_repl",
+        "embedded_template"
       })
     end,
     dependencies = {
@@ -70,6 +80,7 @@ return {
           ["angular"] = "html",
           ["heex"] = "html",
           ["razor"] = "html",
+          ["ejs"] = "html",
         }
       })
     end,

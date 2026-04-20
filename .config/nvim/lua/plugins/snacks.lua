@@ -110,15 +110,14 @@ return {
           -- your explorer picker configuration comes here
           -- or leave it empty to use the default settings
         },
+        smart = {
+          hidden = true,
+        },
         files = {
           hidden = true,
-          ignored = true,
-          follow = true,
         },
         grep = {
           hidden = true,
-          ignored = true,
-          follow = true,
         },
         folder = {
           finder = FolderPicker.files,
@@ -126,7 +125,6 @@ return {
           preview = "file",
           show_empty = true,
           hidden = true,
-          ignored = true,
         }
       }
     },
@@ -188,7 +186,7 @@ return {
     { "<leader>sq",      function() Snacks.picker.qflist() end,             desc = "Quickfix List" },
     { "<leader>sR",      function() Snacks.picker.resume() end,             desc = "Resume" },
     { "<leader>su",      function() Snacks.picker.undo() end,               desc = "Undo History" },
-    { "<leader>uc",      function() Snacks.picker.colorschemes() end,       desc = "Colorschemes" },
+    { "<leader>st",      function() Snacks.picker.colorschemes() end,       desc = "Colorschemes" },
     -- LSP
     -- { "gd",              function() Snacks.picker.lsp_definitions() end,                         desc = "Goto Definition" },
     -- { "gD",              function() Snacks.picker.lsp_declarations() end,                        desc = "Goto Declaration" },

@@ -171,3 +171,75 @@ then
   source $HOME/.nix-profile/etc/profile.d/nix.sh
 fi # added by Nix installer
 
+if [[ -n "$ALACRITTY_WINDOW_ID" ]]; then
+  theme() {
+    local THEME_NAME="$1"
+
+    if [ -z "$THEME_NAME" ]; then
+      echo "$TERMINAL_THEME"
+      return
+    fi
+
+    local FOUND_THEME_PATH=$(find "$HOME/.config/alacritty/themes/" -type f -name "${THEME_NAME}.toml" | head -n 1)
+
+    if [ -z "$FOUND_THEME_PATH" ]; then
+      echo "Theme $THEME_NAME not found."
+      return 1
+    fi
+
+    if [[ -n $TERMINAL_THEME ]]; then
+      echo $THEME_NAME
+    fi
+
+
+    export TERMINAL_THEME="$THEME_NAME"
+    export THEME_PATH="$FOUND_THEME_PATH"
+    local PRE=""
+
+    while read p; do
+      local LINE=$p
+      if [ "$LINE" != "" ] && [ "${LINE:0:1}" != "#" ]; then
+        if [[ "$LINE" =~ \[[a-z.]+\] ]]; then
+          local PRE=${LINE:1:-1}
+        else
+          alacritty msg config "$PRE.$LINE"
+        fi
+      fi
+    done < "$THEME_PATH"
+  }
+
+  _theme_completion() {
+    local cur themes
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    # Find all .toml files, get their basename, and remove the .toml extension
+    themes=$(find "$HOME/.config/alacritty/themes/" -type f -name "*.toml" -exec basename {} .toml \;)
+    COMPREPLY=( $(compgen -W "${themes}" -- ${cur}) )
+    return 0
+  }
+  complete -F _theme_completion theme
+
+  change_theme() {
+    local CURR_PATH="${1:-"$HOME/.config/alacritty/themes/"}"
+    local THEME_FILE="$(ls $CURR_PATH | shuf -n 1)"
+    if [ -d "$CURR_PATH/$THEME_FILE" ]; then
+      change_theme "$CURR_PATH$THEME_FILE/"
+      return
+    fi
+
+    local THEME_NAME=${THEME_FILE%.toml}
+
+    theme "$THEME_NAME"
+  }
+  if [[ -z "$TERMINAL_THEME" ]]; then
+    change_theme
+  fi
+fi
+
+# PROMPT_COMMAND="export PROMPT_COMMAND=echo"
+# alias clear="unset PROMPT_COMMAND; clear; PROMPT_COMMAND='export PROMPT_COMMAND=echo'"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+

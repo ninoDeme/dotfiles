@@ -92,11 +92,6 @@ local ansi_term = {
   { dark = fg0,      bright = fg1 },      -- white
 }
 
-for i, color in ipairs(ansi_term) do
-  vim.g['terminal_color_' .. (i - 1)] = color.dark
-  vim.g['terminal_color_' .. (i - 1 + 8)] = color.bright
-end
-
 local theme = {
   Normal = { fg = fg0, bg = bg0 },
   NormalNC = { fg = fg0, bg = bg0 },
@@ -252,3 +247,4 @@ local theme = {
 }
 
 require('highlights').apply_highlights(theme)
+require('highlights').apply_term(ansi_term)

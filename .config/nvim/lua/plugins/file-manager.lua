@@ -67,15 +67,11 @@ return {
       win_options = {
         -- winbar = ' %#WinBarPathAbs#%{GetOilDirAbs()}%#WinBarPathRel#%{GetOilDirRel()}%#WinBar#',
         winbar = '     %#WinBarPathRel#%{luaeval("GetOilDir()")}:',
-        wrap = false,
-        -- signcolumn = "no",
-        cursorcolumn = false,
-        foldcolumn = "0",
-        spell = false,
-        list = false,
-        conceallevel = 3,
-        concealcursor = "nvic",
         signcolumn = "yes:2",
+      },
+      buf_options = {
+        buflisted = true,
+        bufhidden = "hide",
       },
       view_options = {
         -- Show files and directories that start with "."
@@ -101,7 +97,6 @@ return {
         },
       },
       keymaps_help = {
-        border = require('hover').alt_border,
         -- win_opts = {
         --   winhighlight = "Normal:FloatNormal",
         -- },

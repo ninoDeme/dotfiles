@@ -1,3 +1,5 @@
+set background=dark
+
 packadd! matchit comment editorconfig
 filetype plugin indent on
 
