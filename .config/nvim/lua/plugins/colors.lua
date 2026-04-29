@@ -65,7 +65,7 @@ return {
     priority = 500,
   },
   {
-    "base46",
+    "ninoDeme/base46",
     lazy = true,
     keys = {
       vim.keymap.set("n", "<leader>tn", function()
@@ -79,25 +79,45 @@ return {
             text = tmpl,
             action = tmpl,
             preview = {
-              text = tmpl,
+              text = vim.inspect(require('base46.themes.' .. tmpl)),
+              ft = 'lua'
             }
           }
           table.insert(items, item)
         end
+        local last_color = vim.g.colors_name
+        local last_color_base46 = require('base46').opts.theme
+        local picked = false
         Snacks.picker({
-          title = "Task Template",
+          title = "Base46 Themes",
           items = items,
           layout = {
-            preset = "default",
-            -- preview = false,
+            preset = "ivy",
           },
           preview = "preview",
           format = function(item, _)
-            return { { item.text, item.text_hl } }
+            return { { item.text, item.text_hl, item.ft } }
+          end,
+          on_close = function()
+            if not picked then
+              vim.schedule(function()
+                if last_color:find('base46') then
+                  require('base46').apply_theme(last_color_base46)
+                else
+                  vim.cmd.colorscheme(last_color)
+                end
+              end)
+            end
+          end,
+          on_change = function(picker, item)
+            vim.schedule(function()
+              require('base46').apply_theme(item.action)
+            end)
           end,
           confirm = function(picker, item)
             return picker:norm(
               function()
+                picked = true
                 require('base46').apply_theme(item.action)
                 picker:close()
               end

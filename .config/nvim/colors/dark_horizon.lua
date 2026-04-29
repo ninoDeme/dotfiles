@@ -1,6 +1,6 @@
 vim.o.background = 'dark'
 vim.cmd.hi('clear')
-vim.g.colors_name = 'onedark'
+vim.g.colors_name = 'dark_horizon'
 
 vim.opt.termguicolors = true
 
