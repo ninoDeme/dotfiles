@@ -34,14 +34,13 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 #
 exec --no-startup-id nm-applet
-exec --no-startup-id nitrogen --restore
-exec --no-startup-id picom
+# exec --no-startup-id nitrogen --restore
+# exec --no-startup-id picom
 
 exec --no-startup-id setxkbmap -option us -variant altgr-intl
 
 exec --no-startup-id dunst
 
-exec --no-startup-id sxhkd -c ~/.config/i3/sxhkdrc
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
@@ -71,8 +70,8 @@ for_window [class="Gpick" instance="gpick"] floating enable
 bindsym $mod+Shift+c kill
 
 # start dmenu (a program launcher)
-bindsym $mod+Control+space exec --no-startup-id dmenu_run
-# bindsym $mod+space exec --no-startup-id sh "$HOME/scripts/rofi-exec.sh"
+bindsym $mod+space exec --no-startup-id wmenu-run
+bindsym $mod+Control+space exec --no-startup-id sh "$HOME/scripts/rofi-exec.sh"
 # bindsym $mod+Control+c exec --no-startup-id sh "$HOME/scripts/open_project.sh"
 
 # change focus
@@ -168,7 +167,7 @@ bindsym $mod+Control+r reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # bindsym $mod+Control+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-bindsym $mod+Control+q exec i3-msg exit
+bindsym $mod+Control+q exec swaymsg exit
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -193,6 +192,14 @@ mode "resize" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
+}
+
+input "type:touchpad" {
+    tap enabled         # enables click-on-tap
+    tap_button_map lrm  # tap with 1 finger = left click, 2 fingers = right click, 3 fingers = middle click
+    dwt enabled         # disable (touchpad) while typing
+    dwtp enabled        # disable (touchpad) while track pointing
+    natural_scroll enabled
 }
 
 bindsym $mod+r mode "resize"

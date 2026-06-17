@@ -2,7 +2,7 @@ return {
   {
     -- cond = false,
     "tris203/roslyn.nvim",
-    branch = "cohosting",
+    -- branch = "cohosting",
     ft = { "cs", "razor", "cshtml" },
     -- dependencies = {
     --   {

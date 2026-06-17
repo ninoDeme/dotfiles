@@ -28,12 +28,12 @@ if [ -d "$HOME/.config/emacs/bin" ] ;
   then PATH="$HOME/.config/emacs/bin:$PATH"
 fi
 
-if command -v exa &> /dev/null
+if command -v eza &> /dev/null
 then
-	alias la='exa -a --group-directories-first'
-	alias l='exa -al --group-directories-first'
-	alias le='exa --group-directories-first'
-	alias lt='exa -aT --group-directories-first'
+  alias la='eza -a --group-directories-first'
+  alias l='eza -al --group-directories-first'
+  alias le='eza --group-directories-first'
+  alias lt='eza -aT --group-directories-first'
 fi
 
 alias emt='emacsclient -nw -a=\"\"'
@@ -46,7 +46,8 @@ if command -v nvim &> /dev/null
 then
   export MANPAGER="nvim -c Man! -"
 	export EDITOR="nvim"
-else
+elif command -v vim &> /dev/null
+then
 	export EDITOR="vim"
 fi
 

@@ -120,3 +120,5 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion::complete:*' gain-privileges 1
 
 if [ -e /home/nino/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nino/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
