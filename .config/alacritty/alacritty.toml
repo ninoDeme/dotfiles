@@ -7,18 +7,18 @@ import = [
   # "gruvbox_dark.toml.toml",
 ]
 
-# [font]
-# size = 10
-# builtin_box_drawing = false
-# [font.normal]
-# family = "IosevkaTermSlab Nerd Font"
-
 [font]
-size = 13
-offset = { x = 1, y = 1 }
+size = 10
 builtin_box_drawing = true
 [font.normal]
-family = "Cozette"
+family = "IosevkaTermSlab Nerd Font"
+
+# [font]
+# size = 13
+# offset = { x = 1, y = 1 }
+# builtin_box_drawing = true
+# [font.normal]
+# family = "Cozette"
 # style = "HiDpi"
 
 # [font]

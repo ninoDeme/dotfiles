@@ -245,6 +245,10 @@ require('highlights').setup({
   "adwaita",
   "boo",
   "dark_horizon",
+  "olive-crt",
+  "kanagawa-wave",
+  "melange",
+  { "everforest-soft", "everforest-medium", "everforest-hard", name = "everforest"},
   { "onedark-dark", "onedark-darker", "onedark-cool", "onedark-deep", "onedark-warm", "onedark-warmer", name = "onedark" },
   { "ayu-dark",     "ayu-mirage",     name = "ayu" },
   { "nightfox",     "duskfox",        "nordfox",      "terafox",      "carbonfox",    name = "nightfox" }

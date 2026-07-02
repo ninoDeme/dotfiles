@@ -37,6 +37,7 @@ then
 fi
 
 alias emt='emacsclient -nw -a=\"\"'
+alias ls='ls --color=auto'
 alias cp='cp -i'
 alias rm='rm -I'
 alias mv='mv -i'

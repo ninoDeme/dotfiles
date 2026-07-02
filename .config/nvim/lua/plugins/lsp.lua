@@ -106,6 +106,11 @@ return {
       vim.lsp.enable('elixirls')
 
       vim.lsp.enable('ocamllsp')
+
+      -- vim.lsp.config('roslyn_ls_ninodeme', {
+      --   cmd = { "roslyn", "--logLevel", "Information", "--extensionLogDirectory", "/tmp/roslyn_ls/logs", "--stdio" },
+      -- })
+      -- vim.lsp.enable('roslyn_ls_ninodeme')
     end,
     keys = {
       { mode = { 'n', 'v' }, '<leader>cr', function() vim.lsp.buf.rename() end,                      desc = "Rename" },

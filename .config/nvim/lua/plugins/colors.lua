@@ -24,6 +24,7 @@ return {
     lazy = false,
     priority = 500
   },
+
   {
     'Shatur/neovim-ayu',
     lazy = false,
@@ -130,6 +131,27 @@ return {
   },
   {
     "rockerBOO/boo-colorscheme-nvim",
+    lazy = false,
+    priority = 500
+  },
+  {
+    "vimcolorschemes/olive-crt.nvim",
+    lazy = false,
+    priority = 500,
+    opts = {},
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = false,
+    priority = 500,
+  },
+  {
+    "savq/melange-nvim",
+    lazy = false,
+    priority = 500
+  },
+  {
+    "sainnhe/everforest",
     lazy = false,
     priority = 500
   }

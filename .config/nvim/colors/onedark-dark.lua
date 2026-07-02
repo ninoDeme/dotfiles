@@ -4,3 +4,5 @@ end
 
 require('onedark').setup({style = "dark"})
 require('onedark').colorscheme()
+
+vim.g.colors_name = 'onedark-dark'

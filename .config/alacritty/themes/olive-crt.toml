@@ -1,0 +1,28 @@
+# Colors (olive-crt)
+
+# Default colors
+[colors.primary]
+background = '#171a15'
+foreground = '#fbfcf6'
+
+# Normal colors
+[colors.normal]
+black   = '#99A293'
+red     = '#EA938B'
+green   = '#ECF6AE'
+yellow  = '#FBE09F'
+blue    = '#90DDE4'
+magenta = '#DAC3ED'
+cyan    = '#A5D6CB'
+white   = '#FBFCF7'
+
+# Bright colors
+[colors.bright]
+black   = '#1D211A'
+red     = '#EA938B'
+green   = '#BCCD80'
+yellow  = '#F7C775'
+blue    = '#90DDE4'
+magenta = '#DAC3ED'
+cyan    = '#A5D6CB'
+white   = '#FBFCF6'

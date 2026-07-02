@@ -14,3 +14,7 @@
 
 [includeIf "hasconfig:remote.*.url:git@gitlab.limbersoftware.com.br:*/**"]
   path = ~/.gitconfig.work
+
+[filter "strip-debug"]
+	clean = sed '/@DEBUG@/d'
+	smudge = cat
