@@ -6,8 +6,9 @@ return {
     opts = {
       -- graph_style = "unicode",
       integrations = {
-        telescope = true,
+        snacks = true,
         diffview = true,
+        codediff = true,
       },
     },
     dependencies = {
